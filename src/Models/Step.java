@@ -76,6 +76,8 @@ public class Step {
 
 	//遷移元の主系列のステップID
 	public int sourceStepId;
+	//遷移する理由、条件
+	public String condition;
 	//GOTO先のStepID
 	public int gotoStepId;
 	//外部のUsecaseID
