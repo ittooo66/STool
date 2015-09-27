@@ -6,7 +6,7 @@ public class Usecase {
 
 	//名前と番号
 	public int id;
-	public int name;
+	public String name;
 
 	//生成元のゴールID
 	public int parentLeafGoalId;
