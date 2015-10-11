@@ -4,8 +4,11 @@ public class Step {
 	//StepのId
 	public int id;
 
+
+	public StepType stepType;
+
 	/**
-	* ステップタイプ（ALT_INDEX,EXCEP_INDEX,GOTO,INCLUDE,ACTION）
+	 * ステップタイプ（ALT_INDEX,EXCEP_INDEX,GOTO,INCLUDE,ACTION）
 	 *
 	 * ALT_INDEX,EXCEP_INDEX:代替・例外系列の頭出し
 	 * 	>sourceStepId:起点となる主系列のステップID
@@ -16,8 +19,6 @@ public class Step {
 	 * ACTION:何らかの動作を行うステップ
 	 * 	>subjectDomainId,objectDomainId,Event:
 	 */
-	public StepType stepType;
-
 	public enum StepType {
 		ACTION {
 			@Override
