@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 66 on 2015/10/11.
+ * プロブレムフレームエディタタブで出力するProcessingコンポーネント
  */
 public class PFGraph extends PApplet {
 	List<Integer> mouseX_temp=new ArrayList();
