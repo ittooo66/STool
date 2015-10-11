@@ -1,5 +1,7 @@
 .idea/workspace.xml
 
+#Sandbox用クラス
+/src/TESTCLASS.java
 
 /out/
 *.class
