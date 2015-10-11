@@ -22,6 +22,52 @@ public class SToolEditor extends JFrame implements ActionListener{
 	PFGraph pfGraph;
 	UCGraph ucGraph;
 
+	//バージョン指定
+	VERSION version;
+	enum VERSION{
+		ASIS,TOBE;
+		public static VERSION parse(String str) {
+			switch (str) {
+				case "ASIS":
+					return VERSION.ASIS;
+				case "TOBE":
+					return VERSION.TOBE;
+			}
+			return null;
+		}
+		public static String toString(VERSION v) {
+			switch (v) {
+				case ASIS:
+					return "ASIS";
+				case TOBE:
+					return "TOBE";
+			}
+			return null;
+		}
+	}
+	//ビュー指定
+	VIEWMODE viewmode;
+	enum VIEWMODE{
+		ALL,REDUCED;
+		public static VIEWMODE parse(String str) {
+			switch (str) {
+				case "ALL":
+					return VIEWMODE.ALL;
+				case "REDUCED":
+					return VIEWMODE.REDUCED;
+			}
+			return null;
+		}
+		public static String toString(VIEWMODE v) {
+			switch (v) {
+				case ALL:
+					return "ALL";
+				case REDUCED:
+					return "REDUCED";
+			}
+			return null;
+		}
+	}
 
 	SToolEditor(){
 		//tabペイン
@@ -35,16 +81,21 @@ public class SToolEditor extends JFrame implements ActionListener{
 		//TODO: ここに各種コンポーネント追加メソッドを記入
 /*これは後で消します*/ggeditPanel.add(new JButton("buttonGG"));
 		ggPanel.add(ggeditPanel,BorderLayout.LINE_END);
-		ggGraph = new GGGraph();
+		ggGraph = new GGGraph(this);
 		ggGraph.init();
 		ggPanel.add(ggGraph,BorderLayout.CENTER);
 
 		//UCTab部分生成
 		ucPanel = new JPanel();
-		ucPanel.add(new JLabel("Name:"));
-		ucPanel.add(new JTextField("", 10));
-		//TODO: UC周りをつくる
-
+		ucPanel.setLayout(new BorderLayout());
+		uceditPanel= new JPanel();
+		uceditPanel.setLayout(new FlowLayout());
+		//TODO:ここに各種コンポーネント追加メソッドを記入
+/*これは後で消します*/uceditPanel.add(new JButton("buttonUC"));
+		ucPanel.add(uceditPanel,BorderLayout.LINE_END);
+		ucGraph = new UCGraph();
+		ucGraph.init();
+		ucPanel.add(ucGraph,BorderLayout.CENTER);
 
 		//PFTab部分生成
 		pfPanel = new JPanel();
@@ -64,29 +115,55 @@ public class SToolEditor extends JFrame implements ActionListener{
 		tabbedpane.addTab("PF", pfPanel);
 
 
-
-
 		//下部分共通パネル
 		JPanel sharedEndPanel = new JPanel();
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		//version_RadioButton作成
-		JRadioButton asIs=new JRadioButton("As-Is");
-		JRadioButton toBe=new JRadioButton("To-Be");
+		JRadioButton asIsVer=new JRadioButton("As-Is");
+		asIsVer.setSelected(true);
+		version=VERSION.ASIS;
+		asIsVer.addActionListener(
+				e -> {
+					version = VERSION.ASIS;
+					redraw_graphs();
+				}
+		);
+		JRadioButton toBeVer=new JRadioButton("To-Be");
+		toBeVer.addActionListener(
+				e -> {
+					version = VERSION.TOBE;
+					redraw_graphs();
+				}
+		);
 		//version_ButtonGroup作成
 		ButtonGroup versionGroup = new ButtonGroup();
-		versionGroup.add(asIs);
-		versionGroup.add(toBe);
+		versionGroup.add(asIsVer);
+		versionGroup.add(toBeVer);
 		//version_グループのラベル（パネル）作成
 		JPanel version = new JPanel();
-		version.add(asIs);
-		version.add(toBe);
+		version.add(asIsVer);
+		version.add(toBeVer);
 		version.setBorder(new TitledBorder(new EtchedBorder(), "version"));
 		sharedEndPanel.add(version);
 
 		//viewmode_RadioButton作成
 		JRadioButton viewAll =new JRadioButton("All");
+		viewAll.addActionListener(
+				e -> {
+					viewmode = VIEWMODE.ALL;
+					redraw_graphs();
+				}
+		);
+		viewAll.setSelected(true);
+		viewmode=VIEWMODE.ALL;
 		JRadioButton viewReduced =new JRadioButton("Reduced");
+		viewReduced.addActionListener(
+				e -> {
+					viewmode =VIEWMODE.REDUCED;
+					redraw_graphs();
+				}
+		);
 		//viewmode_ButtonGroup作成
 		ButtonGroup viewModeGroup = new ButtonGroup();
 		viewModeGroup.add(viewAll);
@@ -109,11 +186,16 @@ public class SToolEditor extends JFrame implements ActionListener{
 		getContentPane().add(sharedEndPanel, BorderLayout.PAGE_END);
 	}
 
+	private void redraw_graphs() {
+		ggGraph.redraw();
+		pfGraph.redraw();
+		ucGraph.redraw();
+	}
+
 	public static void main(String[] args){
 		SToolEditor ste = new SToolEditor();
-
 		ste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ste.setBounds(10, 10, 300, 200);
+		ste.setBounds(10, 10, 800, 600);
 		ste.setTitle("SToolEditor");
 		ste.setVisible(true);
 	}

@@ -10,15 +10,19 @@ public class GGGraph extends PApplet{
 	List<Integer> mouseX_temp=new ArrayList();
 	List<Integer> mouseY_temp=new ArrayList();
 
-	int x;
+	SToolEditor sToolEditor;
 
-	public GGGraph(){
-		x=100;
+	public GGGraph(SToolEditor sToolEditor){
+		this.sToolEditor=sToolEditor;
 	}
 
 	public void draw(){
+		background(0);
+		stroke(200,200,200);
 
-		text(x+"W:"+width+",H:"+height,mouseX,mouseY);
+		text(sToolEditor.version.toString(),10,10);
+
+		text("W:"+width+",H:"+height,mouseX,mouseY);
 
 		for(int x: mouseX_temp){
 			line(x,10,x,height-10);
