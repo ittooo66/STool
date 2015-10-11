@@ -10,13 +10,6 @@ import java.awt.event.ActionListener;
  */
 public class SToolEditor extends JFrame implements ActionListener{
 
-	//使用しているコンポーネントたちである
-	//タブペイン
-	JTabbedPane tabbedpane;
-	//各種エディタのパネル全体、PAppletとエディタ部分を含む
-	JPanel ggPanel,ucPanel,pfPanel;
-	//エディット部分
-	JPanel ggeditPanel,uceditPanel,pfeditPanel;
 	//PApplet部分
 	GGGraph ggGraph;
 	PFGraph pfGraph;
@@ -134,14 +127,13 @@ public class SToolEditor extends JFrame implements ActionListener{
 		JButton diffBrouseButton = new JButton("Open Diff Browser");
 		sharedEndPanel.add(diffBrouseButton);
 
-
 		//tabペイン
-		tabbedpane = new JTabbedPane();
+		JTabbedPane tabbedpane = new JTabbedPane();
 
 		//GGTab部分生成
-		ggPanel = new JPanel();
+		JPanel ggPanel = new JPanel();
 		ggPanel.setLayout(new BorderLayout());
-		ggeditPanel = new JPanel();
+		JPanel ggeditPanel = new JPanel();
 		ggeditPanel.setLayout(new FlowLayout());
 		//TODO: ここに各種コンポーネント追加メソッドを記入
 /*これは後で消します*/ggeditPanel.add(new JButton("buttonGG"));
@@ -151,9 +143,9 @@ public class SToolEditor extends JFrame implements ActionListener{
 		ggPanel.add(ggGraph,BorderLayout.CENTER);
 
 		//UCTab部分生成
-		ucPanel = new JPanel();
+		JPanel ucPanel = new JPanel();
 		ucPanel.setLayout(new BorderLayout());
-		uceditPanel= new JPanel();
+		JPanel uceditPanel= new JPanel();
 		uceditPanel.setLayout(new FlowLayout());
 		//TODO:ここに各種コンポーネント追加メソッドを記入
 /*これは後で消します*/uceditPanel.add(new JButton("buttonUC"));
@@ -163,9 +155,9 @@ public class SToolEditor extends JFrame implements ActionListener{
 		ucPanel.add(ucGraph,BorderLayout.CENTER);
 
 		//PFTab部分生成
-		pfPanel = new JPanel();
+		JPanel pfPanel = new JPanel();
 		pfPanel.setLayout(new BorderLayout());
-		pfeditPanel= new JPanel();
+		JPanel pfeditPanel= new JPanel();
 		pfeditPanel.setLayout(new FlowLayout());
 		//TODO:ここに各種コンポーネント追加メソッドを記入
 /*これは後で消します*/pfeditPanel.add(new JButton("buttonPF"));
