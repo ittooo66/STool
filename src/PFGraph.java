@@ -1,5 +1,3 @@
-package PApplets;
-
 import processing.core.PApplet;
 
 import java.util.ArrayList;

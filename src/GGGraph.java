@@ -1,5 +1,3 @@
-package PApplets;
-
 import processing.core.PApplet;
 
 import java.util.ArrayList;
@@ -12,10 +10,15 @@ public class GGGraph extends PApplet{
 	List<Integer> mouseX_temp=new ArrayList();
 	List<Integer> mouseY_temp=new ArrayList();
 
+	int x;
+
+	public GGGraph(){
+		x=100;
+	}
 
 	public void draw(){
 
-		text("W:"+width+",H:"+height,mouseX,mouseY);
+		text(x+"W:"+width+",H:"+height,mouseX,mouseY);
 
 		for(int x: mouseX_temp){
 			line(x,10,x,height-10);
