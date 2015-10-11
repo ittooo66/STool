@@ -3,6 +3,8 @@ import PApplets.PFGraph;
 import PApplets.UCGraph;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,24 +14,21 @@ import java.awt.event.ActionListener;
  */
 public class SToolEditor extends JFrame implements ActionListener{
 
-	//使用しているコンポーネント
-
+	//使用しているコンポーネントたちである
 	//タブペイン
 	JTabbedPane tabbedpane;
-
 	//各種エディタのパネル全体、PAppletとエディタ部分を含む
 	JPanel ggPanel,ucPanel,pfPanel;
-
 	//エディット部分
 	JPanel ggeditPanel,uceditPanel,pfeditPanel;
-
 	//PApplet部分
 	GGGraph ggGraph;
 	PFGraph pfGraph;
 	UCGraph ucGraph;
 
-	SToolEditor(){
 
+	SToolEditor(){
+		//tabペイン
 		tabbedpane = new JTabbedPane();
 
 		//GGTab部分生成
@@ -63,28 +62,55 @@ public class SToolEditor extends JFrame implements ActionListener{
 		pfGraph.init();
 		pfPanel.add(pfGraph,BorderLayout.CENTER);
 
-
 		//TabbedPaneに挿入
 		tabbedpane.addTab("GG", ggPanel);
 		tabbedpane.addTab("UC", ucPanel);
 		tabbedpane.addTab("PF", pfPanel);
 
 
-		JButton selectButton = new JButton("select");
-		selectButton.addActionListener(this);
 
-		JButton button3 = new JButton("Button3");
-		JButton button4 = new JButton("Button4");
 
-		//FlowLayout系テスト
-		JPanel p2 = new JPanel();
-		p2.setLayout(new FlowLayout(FlowLayout.LEFT));
-		p2.add(button3);
-		p2.add(button4);
+		//下部分共通パネル
+		JPanel sharedEndPanel = new JPanel();
+		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+		//version_RadioButton作成
+		JRadioButton asIs=new JRadioButton("As-Is");
+		JRadioButton toBe=new JRadioButton("To-Be");
+		//version_ButtonGroup作成
+		ButtonGroup versionGroup = new ButtonGroup();
+		versionGroup.add(asIs);
+		versionGroup.add(toBe);
+		//version_グループのラベル（パネル）作成
+		JPanel version = new JPanel();
+		version.add(asIs);
+		version.add(toBe);
+		version.setBorder(new TitledBorder(new EtchedBorder(), "version"));
+		sharedEndPanel.add(version);
+
+		//viewmode_RadioButton作成
+		JRadioButton viewAll =new JRadioButton("All");
+		JRadioButton viewReduced =new JRadioButton("Reduced");
+		//viewmode_ButtonGroup作成
+		ButtonGroup viewModeGroup = new ButtonGroup();
+		viewModeGroup.add(viewAll);
+		viewModeGroup.add(viewReduced);
+		//viewmode_グループのラベル（パネル）作成
+		JPanel viewMode = new JPanel();
+		viewMode.add(viewAll);
+		viewMode.add(viewReduced);
+		viewMode.setBorder(new TitledBorder(new EtchedBorder(), "viewmode"));
+		sharedEndPanel.add(viewMode);
+
+		//差分ブラウザを開く
+		JButton diffBrouseButton = new JButton("Open Diff Browser");
+		sharedEndPanel.add(diffBrouseButton);
+
+
+
+		//中身のつまったパネルを追加
 		getContentPane().add(tabbedpane, BorderLayout.CENTER);
-		getContentPane().add(p2, BorderLayout.PAGE_END);
-
+		getContentPane().add(sharedEndPanel, BorderLayout.PAGE_END);
 	}
 
 	public static void main(String[] args){
