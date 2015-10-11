@@ -1,7 +1,3 @@
-import PApplets.GGGraph;
-import PApplets.PFGraph;
-import PApplets.UCGraph;
-
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
