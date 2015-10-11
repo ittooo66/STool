@@ -20,7 +20,7 @@ public class GGGraph extends PApplet{
 		background(0);
 		stroke(200,200,200);
 
-		text(sToolEditor.version.toString(),10,10);
+		text("Version:"+sToolEditor.version.toString()+",Mode:"+sToolEditor.viewmode.toString(),10,20);
 
 		text("W:"+width+",H:"+height,mouseX,mouseY);
 

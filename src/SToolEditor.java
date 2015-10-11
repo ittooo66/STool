@@ -70,51 +70,6 @@ public class SToolEditor extends JFrame implements ActionListener{
 	}
 
 	SToolEditor(){
-		//tabペイン
-		tabbedpane = new JTabbedPane();
-
-		//GGTab部分生成
-		ggPanel = new JPanel();
-		ggPanel.setLayout(new BorderLayout());
-		ggeditPanel = new JPanel();
-		ggeditPanel.setLayout(new FlowLayout());
-		//TODO: ここに各種コンポーネント追加メソッドを記入
-/*これは後で消します*/ggeditPanel.add(new JButton("buttonGG"));
-		ggPanel.add(ggeditPanel,BorderLayout.LINE_END);
-		ggGraph = new GGGraph(this);
-		ggGraph.init();
-		ggPanel.add(ggGraph,BorderLayout.CENTER);
-
-		//UCTab部分生成
-		ucPanel = new JPanel();
-		ucPanel.setLayout(new BorderLayout());
-		uceditPanel= new JPanel();
-		uceditPanel.setLayout(new FlowLayout());
-		//TODO:ここに各種コンポーネント追加メソッドを記入
-/*これは後で消します*/uceditPanel.add(new JButton("buttonUC"));
-		ucPanel.add(uceditPanel,BorderLayout.LINE_END);
-		ucGraph = new UCGraph();
-		ucGraph.init();
-		ucPanel.add(ucGraph,BorderLayout.CENTER);
-
-		//PFTab部分生成
-		pfPanel = new JPanel();
-		pfPanel.setLayout(new BorderLayout());
-		pfeditPanel= new JPanel();
-		pfeditPanel.setLayout(new FlowLayout());
-		//TODO:ここに各種コンポーネント追加メソッドを記入
-/*これは後で消します*/pfeditPanel.add(new JButton("buttonPF"));
-		pfPanel.add(pfeditPanel,BorderLayout.LINE_END);
-		pfGraph = new PFGraph();
-		pfGraph.init();
-		pfPanel.add(pfGraph,BorderLayout.CENTER);
-
-		//TabbedPaneに挿入
-		tabbedpane.addTab("GG", ggPanel);
-		tabbedpane.addTab("UC", ucPanel);
-		tabbedpane.addTab("PF", pfPanel);
-
-
 		//下部分共通パネル
 		JPanel sharedEndPanel = new JPanel();
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -180,6 +135,49 @@ public class SToolEditor extends JFrame implements ActionListener{
 		sharedEndPanel.add(diffBrouseButton);
 
 
+		//tabペイン
+		tabbedpane = new JTabbedPane();
+
+		//GGTab部分生成
+		ggPanel = new JPanel();
+		ggPanel.setLayout(new BorderLayout());
+		ggeditPanel = new JPanel();
+		ggeditPanel.setLayout(new FlowLayout());
+		//TODO: ここに各種コンポーネント追加メソッドを記入
+/*これは後で消します*/ggeditPanel.add(new JButton("buttonGG"));
+		ggPanel.add(ggeditPanel,BorderLayout.LINE_END);
+		ggGraph = new GGGraph(this);
+		ggGraph.init();
+		ggPanel.add(ggGraph,BorderLayout.CENTER);
+
+		//UCTab部分生成
+		ucPanel = new JPanel();
+		ucPanel.setLayout(new BorderLayout());
+		uceditPanel= new JPanel();
+		uceditPanel.setLayout(new FlowLayout());
+		//TODO:ここに各種コンポーネント追加メソッドを記入
+/*これは後で消します*/uceditPanel.add(new JButton("buttonUC"));
+		ucPanel.add(uceditPanel,BorderLayout.LINE_END);
+		ucGraph = new UCGraph();
+		ucGraph.init();
+		ucPanel.add(ucGraph,BorderLayout.CENTER);
+
+		//PFTab部分生成
+		pfPanel = new JPanel();
+		pfPanel.setLayout(new BorderLayout());
+		pfeditPanel= new JPanel();
+		pfeditPanel.setLayout(new FlowLayout());
+		//TODO:ここに各種コンポーネント追加メソッドを記入
+/*これは後で消します*/pfeditPanel.add(new JButton("buttonPF"));
+		pfPanel.add(pfeditPanel,BorderLayout.LINE_END);
+		pfGraph = new PFGraph();
+		pfGraph.init();
+		pfPanel.add(pfGraph,BorderLayout.CENTER);
+
+		//TabbedPaneに挿入
+		tabbedpane.addTab("GG", ggPanel);
+		tabbedpane.addTab("UC", ucPanel);
+		tabbedpane.addTab("PF", pfPanel);
 
 		//中身のつまったパネルを追加
 		getContentPane().add(tabbedpane, BorderLayout.CENTER);
