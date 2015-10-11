@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * TODO:各種PApplet（GGGraph,PFGraph...）に移行させてこいつを消す
+ */
 public class PAppletMain extends PApplet {
 	//融合ゴールモデル
 	FGModel fgm;
