@@ -12,14 +12,15 @@ public class Goal {
 	//親ゴールのID
 	public int parentId;
 
+
+	public ChildrenType childrenType;
+
 	/**
 	 * 子のタイプ（子のゴール分解のタイプ）
 	 * NONE:子がいない（葉ゴール）
 	 * AND:下でAND分解をしている、または子ゴール１個
 	 * OR:下でOR分解をしている、または子ゴール１個
 	 */
-	public ChildrenType childrenType;
-
 	public enum ChildrenType {
 		NONE {
 			@Override
