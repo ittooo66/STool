@@ -18,8 +18,6 @@ public class PAppletMain extends PApplet {
 	//融合ゴールモデル
 	FGModel fgm;
 
-	//呼び出し元をいれておくところ
-	SToolEditor sToolEditor;
 
 	//選択中のタブ
 	SelectedTab selectedTab;
@@ -28,7 +26,7 @@ public class PAppletMain extends PApplet {
 	}
 
 	int selectedDomainId = -1;
-	int selectedGoalId = -1;
+
 
 	public void setup() {
 		//初期設定
@@ -40,40 +38,10 @@ public class PAppletMain extends PApplet {
 	public void draw() {
 		background(128);
 		//タブで記述内容切り替え
-		if (selectedTab == SelectedTab.GGEDIT) {
-			drawGG();
-		} else if (selectedTab == SelectedTab.UCEDIT) {
+		if (selectedTab == SelectedTab.UCEDIT) {
 			drawUC();
 		} else if (selectedTab == SelectedTab.PFEDIT) {
 			drawPF();
-		} else if (selectedTab == SelectedTab.METRICS) {
-			drawME();
-		}
-	}
-
-	void drawGG() {
-		//各ゴールを描画
-		for (Goal g : fgm.goals) {
-			noStroke();
-			fill(252, 252, 252);
-			ellipse(g.x - g.name.length() * (float) 3.5 + 20, g.y, 40 + g.name.length() * 7, 40);
-
-			if (g.id == selectedGoalId)
-				//選択されたドメインは赤
-				stroke(255, 0, 0);
-			else
-				stroke(128, 128, 128);
-
-			ellipse(g.x - g.name.length() * (float) 3.5 + 20, g.y, 40 + g.name.length() * 7, 40);
-
-			// AND/OR記述
-			//TODO:Describe AND/OR
-
-			//名前の記述
-			fill(100, 100, 100);
-			textAlign(CENTER);
-			text(g.name, g.x, g.y + 2);
-
 		}
 	}
 
@@ -127,34 +95,12 @@ public class PAppletMain extends PApplet {
 		}
 	}
 
-	void drawME() {
-		//TODO:Metrics
-	}
-
 	public void mousePressed() {
 		//タブで記述内容切り替え
-		if (selectedTab == SelectedTab.GGEDIT) {
-			mousePressOnGGEDIT();
-		} else if (selectedTab == SelectedTab.UCEDIT) {
+		if (selectedTab == SelectedTab.UCEDIT) {
 			mousePressOnUCEDIT();
 		} else if (selectedTab == SelectedTab.PFEDIT) {
 			mousePressOnPFEDIT();
-		} else if (selectedTab == SelectedTab.METRICS) {
-			mousePressOnMETRICS();
-		}
-	}
-
-	void mousePressOnGGEDIT() {
-		final int goalMergin = 40;
-
-		//ドメイン選択の一時解除
-		selectedGoalId = -1;
-		for (Goal g : fgm.goals) {
-			//マウスクリック範囲にドメインがあれば、それを選択
-			if (g.x - goalMergin < mouseX && mouseX < g.x + goalMergin &&
-					g.y - goalMergin < mouseY && mouseY < g.y + goalMergin) {
-				selectedGoalId = g.id;
-			}
 		}
 	}
 
@@ -174,11 +120,6 @@ public class PAppletMain extends PApplet {
 				selectedDomainId = d.id;
 			}
 		}
-		sToolEditor.reload();
-	}
-
-	void mousePressOnMETRICS() {
-
 	}
 
 	public void mouseDragged() {
@@ -195,12 +136,7 @@ public class PAppletMain extends PApplet {
 	}
 
 	void mouseDragGG() {
-		if (mouseButton == LEFT) {
-			if (selectedGoalId != -1) {
-				Goal g = fgm.getGoal(selectedGoalId);
-				if (g != null) fgm.editGoal(selectedGoalId, g.name, g.childrenType, mouseX, mouseY);
-			}
-		}
+
 	}
 
 	void mouseDragUC() {
