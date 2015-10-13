@@ -1,3 +1,5 @@
+import Models.Goal;
+
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -7,6 +9,9 @@ import java.awt.*;
  * Created by 66 on 2015/10/03.
  */
 public class SToolEditor extends JFrame {
+
+	//融合ゴールモデル
+	FGModel fgm;
 
 	//バージョン指定
 	VERSION version;
@@ -71,6 +76,10 @@ public class SToolEditor extends JFrame {
 	 * コンストラクタがほぼほぼView要素を頑張って書くスタイル
 	 */
 	SToolEditor(){
+		//FGModel
+		fgm = new FGModel();
+		//FGModelテスト
+		fgm.addGoal("testgoal1_root",-1, Goal.ChildrenType.AND,100,100);
 
 		//////////////////////////////下部分共通パネル//////////////////////////////
 		JPanel sharedEndPanel = new JPanel();
@@ -226,7 +235,6 @@ public class SToolEditor extends JFrame {
 		pfPanel.add(pfGraph,BorderLayout.CENTER);
 
 
-
 		/////////////////////////////仕上げ///////////////////////////////////////
 		//TabbedPaneに挿入
 		tabbedpane.addTab("GG", ggPanel);
@@ -237,11 +245,8 @@ public class SToolEditor extends JFrame {
 		getContentPane().add(sharedEndPanel, BorderLayout.PAGE_END);
 	}
 
-	//テストで使ってます
-	static boolean test=true;
 	private void diffBrowseButtonPressed() {
-		ggEditChangeEditMode(test);
-		test = !test;
+		//TODO:DiffBrowser作成（Priorityは低め）
 	}
 
 	private void viewmodeReducedRadioButtonPressed() {
@@ -270,6 +275,13 @@ public class SToolEditor extends JFrame {
 
 	private void ggEditAddButtonPressed() {
 		//TODO:FGModel諸々に変更をかける処理（Addボタン押下）
+		String name = ggEditNameField.getText();
+		int goalId = -1;//ggEditParentComboBox.getItemCount();//を、どうにかこうにかIDに変換する
+		if(ggEditRefineTypeAnd.isSelected())
+			fgm.addGoal(name, goalId, Goal.ChildrenType.AND, ggGraph.width/2, ggGraph.height/2);
+		else
+			fgm.addGoal(name, goalId, Goal.ChildrenType.OR, ggGraph.width/2, ggGraph.height/2);
+		redraw_graphs();
 	}
 
 	private void ggEditRemoveButtonPressed() {
