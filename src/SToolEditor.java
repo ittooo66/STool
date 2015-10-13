@@ -111,7 +111,7 @@ public class SToolEditor extends JFrame {
 		sharedEndPanel.add(viewMode);
 		//差分ブラウザを開く
 		JButton diffBrouseButton = new JButton("Open Diff Browser");
-		diffBrouseButton.addActionListener(e -> diffBrouseButtonPressed());
+		diffBrouseButton.addActionListener(e -> diffBrowseButtonPressed());
 		sharedEndPanel.add(diffBrouseButton);
 
 		//////////////////////////////こっから個別部分///////////////////////////////////////////////
@@ -239,7 +239,7 @@ public class SToolEditor extends JFrame {
 
 	//テストで使ってます
 	static boolean test=true;
-	private void diffBrouseButtonPressed() {
+	private void diffBrowseButtonPressed() {
 		ggEditChangeEditMode(test);
 		test = !test;
 	}
