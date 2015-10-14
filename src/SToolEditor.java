@@ -305,6 +305,15 @@ public class SToolEditor extends JFrame {
 		ggEditRefineType.setVisible(goalSelected);
 	}
 
+	public void reloadGgEditParentComboBox(){
+		ggEditParentComboBoxIdList.clear();
+		ggEditParentComboBox.removeAllItems();
+		for(Goal g : fgm.goals){
+			ggEditParentComboBox.addItem(g.name);
+			ggEditParentComboBoxIdList.add(g.id);
+		}
+	}
+
 	/**
 	 * Processing部をまとめてRedraw
 	 */
