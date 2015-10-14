@@ -78,7 +78,7 @@ public class CreateFGModel {
 				temp.y = 0;
 				domains.add(temp);
 			}
-			fg.domains = domains;
+			fg.setDomains(domains);
 
 			iter  = jsonObj.keys();
 			int usecaseId = 1;
@@ -152,7 +152,7 @@ public class CreateFGModel {
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
 		}
-		fg.usecases =usecases;
+		fg.setUsecases(usecases);
 		return fg;
 	}
 	//ドメイン名,uc名からidを返す、ない場合は-1を返す

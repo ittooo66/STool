@@ -35,7 +35,7 @@ public class PFGraph extends PApplet {
 
 
 		//各ドメインを描画
-		for (Domain d : sToolEditor.fgm.domains) {
+		for (Domain d : sToolEditor.fgm.getDomains()) {
 			noStroke();
 			fill(252, 252, 252);
 			rect(d.x - 20 - d.name.length() * (float) 3.5, d.y - 20, 40 + d.name.length() * 7, 40);
@@ -87,7 +87,7 @@ public class PFGraph extends PApplet {
 
 		//ドメイン選択の一時解除
 		selectedDomainId = -1;
-		for (Domain d : sToolEditor.fgm.domains) {
+		for (Domain d : sToolEditor.fgm.getDomains()) {
 			//マウスクリック範囲にドメインがあれば、それを選択
 			if (d.x - domainMergin < mouseX && mouseX < d.x + domainMergin &&
 					d.y - domainMergin < mouseY && mouseY < d.y + domainMergin) {

@@ -19,9 +19,10 @@ import java.util.List;
  *
  */
 public class FGModel {
-	public List<Goal> goals;
-	public List<Usecase> usecases;
-	public List<Domain> domains;
+	private List<Goal> goals;
+	private List<Usecase> usecases;
+	private List<Domain> domains;
+
 
 	public FGModel() {
 		goals = Collections.synchronizedList(new ArrayList<Goal>());
@@ -42,6 +43,10 @@ public class FGModel {
 			if (g.id == id) return g;
 		}
 		return null;
+	}
+
+	public List<Goal> getGoals(){
+		return goals;
 	}
 
 	public void addGoal(String name, int parent_id, Goal.ChildrenType parent_children_type, int x, int y) {
@@ -109,7 +114,9 @@ public class FGModel {
 		}
 	}
 
-
+	public List<Domain> getDomains(){
+		return domains;
+	}
 
 	public Domain getDomain(int id) {
 		for (Domain d : domains) {
@@ -155,7 +162,13 @@ public class FGModel {
 		}
 	}
 
+	public void setDomains(List<Domain> domains){
+		this.domains = domains;
+	}
 
+	public void setUsecases(List<Usecase> usecases){
+		this.usecases = usecases;
+	}
 
 	public Usecase getUsecase(int id) {
 		for (Usecase u : usecases) {
