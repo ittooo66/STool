@@ -162,6 +162,7 @@ public class SToolEditor extends JFrame {
 
 		//parent指定ComboBox周り
 		ggEditParentComboBox = new JComboBox();
+		ggEditParentComboBox.setPreferredSize(new Dimension(160, 20));
 		JPanel ggEditParentComboBoxBorder = new JPanel();
 		ggEditParentComboBoxBorder.add(ggEditParentComboBox);
 		ggEditParentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(),"Parent"));
