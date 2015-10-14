@@ -17,6 +17,15 @@ public class GGGraph extends PApplet{
 		this.sToolEditor=sToolEditor;
 	}
 
+	public void setup(){
+		size(1024,768);
+		noLoop();
+
+		//Font設定。
+		PFont font = createFont("メイリオ ボールド",15,true);
+		textFont(font);
+	}
+
 	public void draw(){
 		background(32,32,32);
 		stroke(166,178,195);
@@ -53,14 +62,7 @@ public class GGGraph extends PApplet{
 		}
 	}
 
-	public void setup(){
-		size(1024,768);
-		noLoop();
 
-		//Font設定。
-		PFont font = createFont("メイリオ ボールド",15,true);
-		textFont(font);
-	}
 
 	public void mousePressed(){
 		final int goalMergin = 40;
