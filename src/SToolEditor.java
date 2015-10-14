@@ -188,6 +188,7 @@ public class SToolEditor extends JFrame {
 		ggEditRefineType.add(ggEditRefineTypeOr);
 		ggEditRefineType.setBorder(new TitledBorder(new EtchedBorder(), "RefineType"));
 		ggEditRefineType.setBounds(5,220,193,60);
+		ggEditRefineType.setVisible(false);
 		ggEditPanel.add(ggEditRefineType);
 
 		//enable<>disable周り
@@ -204,6 +205,7 @@ public class SToolEditor extends JFrame {
 		ggEditNecessity.add(ggEditNecessityIsDisable);
 		ggEditNecessity.setBorder(new TitledBorder(new EtchedBorder(), "Necessity"));
 		ggEditNecessity.setBounds(5, 290, 193,60);
+		ggEditNecessity.setVisible(false);
 		ggEditPanel.add(ggEditNecessity);
 
 		//ggEditエディタパネル追加
@@ -299,6 +301,8 @@ public class SToolEditor extends JFrame {
 		ggEditAdd.setVisible(!goalSelected);
 		ggEditRemove.setVisible(goalSelected);
 		ggEditEdit.setVisible(goalSelected);
+		ggEditNecessity.setVisible(goalSelected);
+		ggEditRefineType.setVisible(goalSelected);
 	}
 
 	/**
