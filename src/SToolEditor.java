@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by 66 on 2015/10/03.
