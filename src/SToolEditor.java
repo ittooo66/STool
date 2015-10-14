@@ -162,7 +162,6 @@ public class SToolEditor extends JFrame {
 
 		//parent指定ComboBox周り
 		ggEditParentComboBox = new JComboBox();
-		//TODO:ComboBox初期化
 		JPanel ggEditParentComboBoxBorder = new JPanel();
 		ggEditParentComboBoxBorder.add(ggEditParentComboBox);
 		ggEditParentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(),"Parent"));
@@ -288,7 +287,7 @@ public class SToolEditor extends JFrame {
 
 	/**
 	 * EditMode変更
-	 * @param goalSelected : Processing側でゴール選択時にTrueになる
+	 * @param goalSelected : Processing側でゴール選択時 = true
 	 */
 	public void ggEditChangeEditMode(boolean goalSelected){
 		ggEditAdd.setVisible(!goalSelected);
@@ -297,7 +296,7 @@ public class SToolEditor extends JFrame {
 	}
 
 	/**
-	 * ProcessingをまとめてRedraw
+	 * Processing部をまとめてRedraw
 	 */
 	private void redraw_graphs() {
 		ggGraph.redraw();
