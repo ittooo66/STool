@@ -38,6 +38,7 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
+
 	//ビュー指定
 	VIEWMODE viewmode;
 	enum VIEWMODE{
@@ -83,6 +84,7 @@ public class SToolEditor extends JFrame {
 		fgm = new FGModel();
 		//FGModelテスト
 		fgm.addGoal("root",-1, Goal.ChildrenType.AND,100,100);
+
 
 		//////////////////////////////下部分共通パネル//////////////////////////////
 		JPanel sharedEndPanel = new JPanel();
@@ -336,7 +338,7 @@ public class SToolEditor extends JFrame {
 			ggEditParentComboBoxIdList.add(g.id);
 		}
 
-		//gggraph.selectedGoalIdに応じたエディタ画面に更新
+		//GGGraph.selectedGoalIdに応じたエディタ画面に更新
 		if(ggGraph.selectedGoalId != -1){
 			ggEditAdd.setVisible(false);
 			ggEditRemove.setVisible(true);
@@ -344,7 +346,11 @@ public class SToolEditor extends JFrame {
 			ggEditNecessity.setVisible(true);
 			ggEditRefineType.setVisible(true);
 			Goal g = fgm.getGoalById(ggGraph.selectedGoalId);
+
+			//Text更新
 			ggEditNameField.setText(g.name);
+
+			//RefineType更新
 			if(g.childrenType == Goal.ChildrenType.AND){
 				ggEditRefineTypeAnd.setSelected(true);
 			}else if(g.childrenType == Goal.ChildrenType.OR){
@@ -352,7 +358,9 @@ public class SToolEditor extends JFrame {
 			}else if(g.childrenType == Goal.ChildrenType.LEAF){
 				ggEditRefineTypeLeaf.setSelected(true);
 			}
-			//TODO:このへんもうちょっといろいろ更新いるはず
+
+			//TODO:Necessity更新
+
 		}else{
 			ggEditAdd.setVisible(true);
 			ggEditRemove.setVisible(false);

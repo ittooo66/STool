@@ -34,7 +34,7 @@ public class GGGraph extends PApplet{
 		text("Version:"+sToolEditor.version.toString()+", Mode:"+sToolEditor.viewmode.toString()+", Resolution:"+width+","+height+"(for debugging)",10,20);
 		noFill();
 
-		//TODO:Describe AND/OR
+		//TODO:AND/OR記述
 
 		//枝を描画
 		strokeWeight(1);
