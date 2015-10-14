@@ -35,7 +35,12 @@ public class GGGraph extends PApplet{
 		noFill();
 
 		//TODO:Describe AND/OR
-		//TODO:Describe Relations
+
+		//枝を描画
+		strokeWeight(1);
+		for(Goal g: sToolEditor.fgm.getGoals()){
+			if(g.id != 0) line(g.x,g.y,sToolEditor.fgm.getGoalById(g.parentId).x,sToolEditor.fgm.getGoalById(g.parentId).y);
+		}
 
 		//各ゴールを描画
 		for (Goal g : sToolEditor.fgm.getGoals()) {
