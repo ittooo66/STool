@@ -172,6 +172,7 @@ public class SToolEditor extends JFrame {
 		ggEditParentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(),"Parent"));
 		ggEditParentComboBoxBorder.setBounds(5,120,193,60);
 		ggEditPanel.add(ggEditParentComboBoxBorder);
+		ggEditParentComboBoxIdList = new ArrayList();
 
 		//refineType周り
 		ggEditRefineTypeAnd =new JRadioButton("AND");
