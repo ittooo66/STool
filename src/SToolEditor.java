@@ -248,6 +248,8 @@ public class SToolEditor extends JFrame {
 		//中身のつまったパネルを追加
 		getContentPane().add(tabbedpane, BorderLayout.CENTER);
 		getContentPane().add(sharedEndPanel, BorderLayout.PAGE_END);
+
+		redraw();
 	}
 
 	private void diffBrowseButtonPressed() {
@@ -256,37 +258,58 @@ public class SToolEditor extends JFrame {
 
 	private void viewmodeReducedRadioButtonPressed() {
 		viewmode =VIEWMODE.REDUCED;
-		redraw_graphs();
+		redraw();
 	}
 
 	private void viewmodeAllRadioButtonPressed() {
 		viewmode = VIEWMODE.ALL;
-		redraw_graphs();
+		redraw();
 	}
 
 	private void versionAsIsRadioButtonPressed() {
 		version = VERSION.ASIS;
-		redraw_graphs();
+		redraw();
 	}
 
 	private void versionToBeRadioButtonPressed() {
 		version = VERSION.TOBE;
-		redraw_graphs();
+		redraw();
 	}
 
 	private void ggEditEditButtonPressed() {
-		//TODO:FGModelに変更をかける処理（Editボタン押下）
+		//Goal名前取得
+		String name = ggEditNameField.getText();
+		//変更中のGoalID取得
+		Goal prevGoal = fgm.getGoalById(ggGraph.selectedGoalId);
+		//ChildrenType取得
+		Goal.ChildrenType ct = ggEditRefineTypeAnd.isSelected() ? Goal.ChildrenType.AND : Goal.ChildrenType.OR;
+		//parentId取得
+		int parentId = ggEditParentComboBoxIdList.get(ggEditParentComboBox.getSelectedIndex());
+
+		//fgm編集（x,yはそのまま）
+		fgm.editGoal(prevGoal.id, name, ct,parentId);
+
+		redraw();
 	}
 
 	private void ggEditAddButtonPressed() {
-		//TODO:FGModel諸々に変更をかける処理（Addボタン押下）
+		//TODO:きたない
+
 		String name = ggEditNameField.getText();
-		int goalId = -1;//ggEditParentComboBox.getItemCount();//を、どうにかこうにかIDに変換する
-		if(ggEditRefineTypeAnd.isSelected())
-			fgm.addGoal(name, goalId, Goal.ChildrenType.AND, ggGraph.width/2, ggGraph.height/2);
+
+		if(name.equals(""))
+			return;
 		else
-			fgm.addGoal(name, goalId, Goal.ChildrenType.OR, ggGraph.width/2, ggGraph.height/2);
-		redraw_graphs();
+			ggEditNameField.setText("");
+
+		int parentGoalId = ggEditParentComboBoxIdList.get(ggEditParentComboBox.getSelectedIndex());
+
+		if(ggEditRefineTypeAnd.isSelected())
+			fgm.addGoal(name, parentGoalId, Goal.ChildrenType.AND, ggGraph.width/2, ggGraph.height/2);
+		else
+			fgm.addGoal(name, parentGoalId, Goal.ChildrenType.OR, ggGraph.width/2, ggGraph.height/2);
+
+		redraw();
 	}
 
 	private void ggEditRemoveButtonPressed() {
@@ -294,33 +317,44 @@ public class SToolEditor extends JFrame {
 	}
 
 	/**
-	 * EditMode変更
-	 * @param goalSelected : Processing側でゴール選択時 = true
+	 * 各種コンポーネントをまとめて更新
 	 */
-	public void ggEditChangeEditMode(boolean goalSelected){
-		ggEditAdd.setVisible(!goalSelected);
-		ggEditRemove.setVisible(goalSelected);
-		ggEditEdit.setVisible(goalSelected);
-		ggEditNecessity.setVisible(goalSelected);
-		ggEditRefineType.setVisible(goalSelected);
-	}
+	public void redraw() {
+		//ProcessingをRedraw
+		ggGraph.redraw();
+		pfGraph.redraw();
+		ucGraph.redraw();
 
-	public void reloadGgEditParentComboBox(){
+		//ComboBox(goalGraph)をRedraw
 		ggEditParentComboBoxIdList.clear();
 		ggEditParentComboBox.removeAllItems();
 		for(Goal g : fgm.goals){
 			ggEditParentComboBox.addItem(g.name);
 			ggEditParentComboBoxIdList.add(g.id);
 		}
-	}
 
-	/**
-	 * Processing部をまとめてRedraw
-	 */
-	private void redraw_graphs() {
-		ggGraph.redraw();
-		pfGraph.redraw();
-		ucGraph.redraw();
+		//gggraph.selectedGoalIdに応じたエディタ画面に更新
+		if(ggGraph.selectedGoalId != -1){
+			ggEditAdd.setVisible(false);
+			ggEditRemove.setVisible(true);
+			ggEditEdit.setVisible(true);
+			ggEditNecessity.setVisible(true);
+			ggEditRefineType.setVisible(true);
+			Goal g = fgm.getGoalById(ggGraph.selectedGoalId);
+			ggEditNameField.setText(g.name);
+			if(g.childrenType == Goal.ChildrenType.AND){
+				ggEditRefineTypeAnd.setSelected(true);
+			}else{
+				ggEditRefineTypeAnd.setSelected(false);
+			}
+			//TODO:このへんもうちょっといろいろ更新いるはず
+		}else{
+			ggEditAdd.setVisible(true);
+			ggEditRemove.setVisible(false);
+			ggEditEdit.setVisible(false);
+			ggEditNecessity.setVisible(false);
+			ggEditRefineType.setVisible(false);
+		}
 	}
 
 	public static void main(String[] args){
