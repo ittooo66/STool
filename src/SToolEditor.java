@@ -64,8 +64,10 @@ public class SToolEditor extends JFrame {
 	private JButton ggEditAdd,ggEditEdit,ggEditRemove;
 	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr, ggEditNecessityIsEnable, ggEditNecessityIsDisable;
 	private JTextField ggEditNameField;
-	private JComboBox ggEditParentComboBox;
 	private JPanel ggEditRefineType,ggEditNecessity;
+	private JComboBox ggEditParentComboBox;
+	private List<Integer> ggEditParentComboBoxIdList;
+
 
 	//PApplet部分(こいつらも一応Privateな)
 	private GGGraph ggGraph;
