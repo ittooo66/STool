@@ -31,10 +31,10 @@ public class GGGraph extends PApplet{
 		stroke(166,178,195);
 		fill(166,178,195);
 		textAlign(LEFT);
-		text("Version:"+sToolEditor.version.toString()+", Mode:"+sToolEditor.viewmode.toString()+", Resolution:"+width+","+height+"(for debugging)",10,20);
+		text("Version:"+sToolEditor.getVersion().toString()+", Mode:"+sToolEditor.getViewmode().toString()+", Resolution:"+width+","+height+"(for debugging)",10,20);
 		noFill();
 
-		//TODO:AND/OR記述
+		//TODO:AND記述
 
 		//枝を描画
 		strokeWeight(1);

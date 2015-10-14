@@ -16,7 +16,7 @@ public class SToolEditor extends JFrame {
 	FGModel fgm;
 
 	//バージョン指定
-	VERSION version;
+	private VERSION version;
 	enum VERSION{
 		ASIS,TOBE;
 		public static VERSION parse(String str) {
@@ -38,9 +38,12 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
+	public VERSION getVersion(){
+		return version;
+	}
 
 	//ビュー指定
-	VIEWMODE viewmode;
+	private VIEWMODE viewmode;
 	enum VIEWMODE{
 		ALL,REDUCED;
 		public static VIEWMODE parse(String str) {
@@ -62,11 +65,15 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
+	public VIEWMODE getViewmode(){
+		return viewmode;
+	}
 
 
 	//GGEditorコンポーネント群(一応Privateな)
 	private JButton ggEditAdd,ggEditEdit,ggEditRemove;
-	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr,ggEditRefineTypeLeaf, ggEditNecessityIsEnable, ggEditNecessityIsDisable;
+	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr,ggEditRefineTypeLeaf;
+	private JRadioButton ggEditNecessityIsEnable, ggEditNecessityIsDisable;
 	private JTextField ggEditNameField;
 	private JPanel ggEditRefineType,ggEditNecessity;
 	private JComboBox ggEditParentComboBox;
