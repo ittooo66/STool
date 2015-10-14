@@ -110,8 +110,17 @@ public class FGModel {
 	 */
 	public boolean removeGoal(int id) {
 		for (int i = 0; i < goals.size(); i++) {
-			if (goals.get(i).id == id) {
+			Goal removedGoalCandidate = goals.get(i);
+			if (removedGoalCandidate.id == id) {
+				//根ゴールは削除不能
+				if(removedGoalCandidate.id==0) return false;
+
+				//ゴール削除（get(i),remove(i)でまわしてることに注意）
 				goals.remove(i);
+				//取り残された子供の処理
+				for(Goal g : goals){
+					if(g.parentId == removedGoalCandidate.id)g.parentId=removedGoalCandidate.parentId;
+				}
 				return true;
 			}
 		}
