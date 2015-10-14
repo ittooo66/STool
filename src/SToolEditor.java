@@ -323,13 +323,6 @@ public class SToolEditor extends JFrame {
 		ucGraph.redraw();
 	}
 
-	/**
-	 * Processing側の変更があった時に呼ぶこととする。
-	 */
-	public void reload() {
-
-	}
-
 	public static void main(String[] args){
 		SToolEditor ste = new SToolEditor();
 		ste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
