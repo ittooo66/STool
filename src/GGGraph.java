@@ -44,7 +44,9 @@ public class GGGraph extends PApplet{
 
 		//各ゴールを描画
 		for (Goal g : sToolEditor.fgm.getGoals()) {
+
 			//ゴールわっか描画
+			fill(32,32,32);
 			if (g.id == selectedGoalId) {
 				//選択されているゴールなら強調描画
 				stroke(196, 121, 52);
@@ -62,8 +64,6 @@ public class GGGraph extends PApplet{
 			fill(166,178,195);
 			textAlign(CENTER,CENTER);
 			text(g.name, g.x, g.y-2);
-			fill(32,32,32);
-
 		}
 	}
 
