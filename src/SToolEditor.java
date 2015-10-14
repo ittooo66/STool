@@ -303,28 +303,37 @@ public class SToolEditor extends JFrame {
 		redraw();
 	}
 
+	/**
+	 * ゴールを追加する
+	 * @return 追加できた＝TRUE
+	 */
 	private void ggEditAddButtonPressed() {
-		//TODO:きたない
-
-		String name = ggEditNameField.getText();
-
-		if(name.equals(""))
-			return;
-		else
-			ggEditNameField.setText("");
-
+		//親ゴールID取得
 		int parentGoalId = ggEditParentComboBoxIdList.get(ggEditParentComboBox.getSelectedIndex());
 
-		if(ggEditRefineTypeAnd.isSelected())
-			fgm.addGoal(name, parentGoalId, Goal.ChildrenType.AND, ggGraph.width/2, ggGraph.height/2);
-		else
-			fgm.addGoal(name, parentGoalId, Goal.ChildrenType.OR, ggGraph.width/2, ggGraph.height/2);
+		//名前取得
+		String name = ggEditNameField.getText();
+
+		//名前欄にちゃんと中身があるか
+		if(name.equals("")) {
+			JOptionPane.showMessageDialog(this, "なまえをいれてください", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}else
+			ggEditNameField.setText("");
+
+		//追加
+		fgm.addGoal(name, parentGoalId, Goal.ChildrenType.LEAF, ggGraph.width/2, ggGraph.height/2);
 
 		redraw();
 	}
 
 	private void ggEditRemoveButtonPressed() {
+		//選択中のゴールを削除
 		fgm.removeGoal(ggGraph.selectedGoalId);
+
+		//GoalIdを外す
+		ggGraph.selectedGoalId = -1;
+
 		redraw();
 	}
 
@@ -337,44 +346,48 @@ public class SToolEditor extends JFrame {
 		pfGraph.redraw();
 		ucGraph.redraw();
 
-		//ComboBox(goalGraph)をRedraw
-		ggEditParentComboBoxIdList.clear();
-		ggEditParentComboBox.removeAllItems();
-		for(Goal g : fgm.getGoals()){
-			ggEditParentComboBox.addItem(g.name);
-			ggEditParentComboBoxIdList.add(g.id);
-		}
-
 		//GGGraph.selectedGoalIdに応じたエディタ画面に更新
 		if(ggGraph.selectedGoalId != -1){
-			ggEditAdd.setVisible(false);
-			ggEditRemove.setVisible(true);
-			ggEditEdit.setVisible(true);
-			ggEditNecessity.setVisible(true);
-			ggEditRefineType.setVisible(true);
-			Goal g = fgm.getGoalById(ggGraph.selectedGoalId);
+
+			//選択中のゴールを取得
+			Goal selectedGoal = fgm.getGoalById(ggGraph.selectedGoalId);
 
 			//Text更新
-			ggEditNameField.setText(g.name);
+			ggEditNameField.setText(selectedGoal.name);
 
 			//RefineType更新
-			if(g.childrenType == Goal.ChildrenType.AND){
+			if(selectedGoal.childrenType == Goal.ChildrenType.AND){
 				ggEditRefineTypeAnd.setSelected(true);
-			}else if(g.childrenType == Goal.ChildrenType.OR){
+			}else if(selectedGoal.childrenType == Goal.ChildrenType.OR){
 				ggEditRefineTypeOr.setSelected(true);
-			}else if(g.childrenType == Goal.ChildrenType.LEAF){
+			}else if(selectedGoal.childrenType == Goal.ChildrenType.LEAF){
 				ggEditRefineTypeLeaf.setSelected(true);
 			}
 
-			//TODO:Necessity更新
+			//ComboBox更新
+			ggEditParentComboBoxIdList.clear();
+			ggEditParentComboBox.removeAllItems();
+			for(Goal g : fgm.getGoals()){
+				//ComboBox詰め替え
+				ggEditParentComboBox.addItem(g.name);
+				ggEditParentComboBoxIdList.add(g.id);
+			}
+			for(int id:ggEditParentComboBoxIdList){
+				if(selectedGoal.parentId == id){
+					//ComboBox選択
+					ggEditParentComboBox.setSelectedIndex(ggEditParentComboBoxIdList.indexOf(id));
+				}
+			}
 
-		}else{
-			ggEditAdd.setVisible(true);
-			ggEditRemove.setVisible(false);
-			ggEditEdit.setVisible(false);
-			ggEditNecessity.setVisible(false);
-			ggEditRefineType.setVisible(false);
+			//TODO:Necessity更新
 		}
+
+		//GGEditor各種コンポーネント:表示・非表示切り替え
+		ggEditAdd.setVisible(ggGraph.selectedGoalId == -1);
+		ggEditRemove.setVisible(ggGraph.selectedGoalId != -1);
+		ggEditEdit.setVisible(ggGraph.selectedGoalId != -1);
+		ggEditNecessity.setVisible(ggGraph.selectedGoalId != -1);
+		ggEditRefineType.setVisible(ggGraph.selectedGoalId != -1 );
 	}
 
 	public static void main(String[] args){
