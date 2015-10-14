@@ -1,62 +1,67 @@
 import Models.Goal;
 import processing.core.PApplet;
-
-import java.util.ArrayList;
-import java.util.List;
+import processing.core.PFont;
 
 /**
  * ゴールグラフエディタタブで出力するProcessing部分
  */
 public class GGGraph extends PApplet{
 
+	//選択中のゴールID（-1なら非選択）
 	int selectedGoalId = -1;
 
 	//本体
 	SToolEditor sToolEditor;
 
-	//ゴール選択中か否か
-	boolean isGoalSelected;
-
 	public GGGraph(SToolEditor sToolEditor){
 		this.sToolEditor=sToolEditor;
 	}
 
-	public void draw(){
-		background(0);
-		stroke(200,200,200);
-		noFill();
-		text("Version:"+sToolEditor.version.toString()+", Mode:"+sToolEditor.viewmode.toString()+", Resolution:"+width+","+height,10,20);
 
-		/*
+	public void draw(){
+		background(32,32,32);
+		stroke(166,178,195);
+		fill(166,178,195);
+		textAlign(LEFT);
+		text("Version:"+sToolEditor.version.toString()+", Mode:"+sToolEditor.viewmode.toString()+", Resolution:"+width+","+height,10,20);
+		noFill();
+
 		//各ゴールを描画
 		for (Goal g : sToolEditor.fgm.goals) {
-			noStroke();
-			fill(252, 252, 252);
-			ellipse(g.x - g.name.length() * (float) 3.5 + 20, g.y, 40 + g.name.length() * 7, 40);
 
-			if (g.id == selectedGoalId)
-				//選択されたドメインは赤
-				stroke(255, 0, 0);
-			else
-				stroke(128, 128, 128);
-
-			ellipse(g.x - g.name.length() * (float) 3.5 + 20, g.y, 40 + g.name.length() * 7, 40);
-
-			// AND/OR記述
 			//TODO:Describe AND/OR
+			//TODO:Describe Relations
+
+			//ゴールわっか描画
+			if (g.id == selectedGoalId) {
+				//選択されているゴールなら強調描画
+				stroke(196, 121, 52);
+				strokeWeight(3);
+			}else if (g.isEnable){
+				stroke(166,178,195);
+				strokeWeight(2);
+			}else{
+				stroke(116,128,145);
+				strokeWeight(1);
+			}
+			ellipse(g.x, g.y, textWidth(g.name)+40, 40);
 
 			//名前の記述
-			fill(100, 100, 100);
-			textAlign(CENTER);
-			text(g.name, g.x, g.y + 2);
+			fill(166,178,195);
+			textAlign(CENTER,CENTER);
+			text(g.name, g.x, g.y-2);
+			fill(32,32,32);
 
-		}*/
-
+		}
 	}
 
 	public  void setup(){
 		size(1024,768);
 		noLoop();
+
+		//Font設定。
+		PFont font = createFont("メイリオ ボールド",15,true);
+		textFont(font);
 	}
 
 	public void mousePressed(){
@@ -71,6 +76,10 @@ public class GGGraph extends PApplet{
 				selectedGoalId = g.id;
 			}
 		}
+		if(selectedGoalId == -1)
+			sToolEditor.ggEditChangeEditMode(false);
+		else
+			sToolEditor.ggEditChangeEditMode(true);
 		redraw();
 	}
 
