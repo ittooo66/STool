@@ -17,12 +17,12 @@ public class Goal {
 
 	/**
 	 * 子のタイプ（子のゴール分解のタイプ）
-	 * NONE:子がいない（葉ゴール）
+	 * LEAF:葉ゴール（子なし）
 	 * AND:下でAND分解をしている、または子ゴール１個
 	 * OR:下でOR分解をしている、または子ゴール１個
 	 */
 	public enum ChildrenType {
-		NONE {
+		LEAF {
 			@Override
 			public ChildrenType prev() {
 				return OR;
@@ -30,7 +30,7 @@ public class Goal {
 		}, AND, OR {
 			@Override
 			public ChildrenType next() {
-				return NONE;
+				return LEAF;
 			}
 		};
 
@@ -48,8 +48,10 @@ public class Goal {
 					return AND;
 				case "OR":
 					return OR;
+				case "LEAF":
+					return LEAF;
 			}
-			return NONE;
+			return null;
 		}
 
 		public static String toString(ChildrenType ct){
@@ -58,8 +60,10 @@ public class Goal {
 					return "AND";
 				case OR:
 					return "OR";
+				case LEAF:
+					return "LEAF";
 			}
-			return "NONE";
+			return null;
 		}
 
 	}

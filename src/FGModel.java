@@ -73,7 +73,7 @@ public class FGModel {
 			}
 		}
 		//子にはリーフ設定を付与
-		g.childrenType = Goal.ChildrenType.NONE;
+		g.childrenType = Goal.ChildrenType.LEAF;
 		g.x = x;
 		g.y = y;
 		//追加

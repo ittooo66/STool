@@ -65,7 +65,7 @@ public class SToolEditor extends JFrame {
 
 	//GGEditorコンポーネント群(一応Privateな)
 	private JButton ggEditAdd,ggEditEdit,ggEditRemove;
-	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr, ggEditNecessityIsEnable, ggEditNecessityIsDisable;
+	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr,ggEditRefineTypeLeaf, ggEditNecessityIsEnable, ggEditNecessityIsDisable;
 	private JTextField ggEditNameField;
 	private JPanel ggEditRefineType,ggEditNecessity;
 	private JComboBox ggEditParentComboBox;
@@ -177,14 +177,17 @@ public class SToolEditor extends JFrame {
 		ggEditRefineTypeAnd =new JRadioButton("AND");
 		ggEditRefineTypeAnd.setSelected(true);
 		ggEditRefineTypeOr =new JRadioButton("OR");
+		ggEditRefineTypeLeaf = new JRadioButton("LEAF");
 		//refineTypeButtonGroup作成
 		ButtonGroup ggEditRefineTypeButtonGroup = new ButtonGroup();
 		ggEditRefineTypeButtonGroup.add(ggEditRefineTypeAnd);
 		ggEditRefineTypeButtonGroup.add(ggEditRefineTypeOr);
+		ggEditRefineTypeButtonGroup.add(ggEditRefineTypeLeaf);
 		//viewmode_グループのラベル（パネル）作成
 		ggEditRefineType = new JPanel();
 		ggEditRefineType.add(ggEditRefineTypeAnd);
 		ggEditRefineType.add(ggEditRefineTypeOr);
+		ggEditRefineType.add(ggEditRefineTypeLeaf);
 		ggEditRefineType.setBorder(new TitledBorder(new EtchedBorder(), "RefineType"));
 		ggEditRefineType.setBounds(5,220,193,60);
 		ggEditRefineType.setVisible(false);
@@ -344,8 +347,10 @@ public class SToolEditor extends JFrame {
 			ggEditNameField.setText(g.name);
 			if(g.childrenType == Goal.ChildrenType.AND){
 				ggEditRefineTypeAnd.setSelected(true);
-			}else{
-				ggEditRefineTypeAnd.setSelected(false);
+			}else if(g.childrenType == Goal.ChildrenType.OR){
+				ggEditRefineTypeOr.setSelected(true);
+			}else if(g.childrenType == Goal.ChildrenType.LEAF){
+				ggEditRefineTypeLeaf.setSelected(true);
 			}
 			//TODO:このへんもうちょっといろいろ更新いるはず
 		}else{
