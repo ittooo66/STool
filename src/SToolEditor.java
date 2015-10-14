@@ -62,6 +62,7 @@ public class SToolEditor extends JFrame {
 		}
 	}
 
+
 	//GGEditorコンポーネント群(一応Privateな)
 	private JButton ggEditAdd,ggEditEdit,ggEditRemove;
 	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr, ggEditNecessityIsEnable, ggEditNecessityIsDisable;
@@ -69,8 +70,6 @@ public class SToolEditor extends JFrame {
 	private JPanel ggEditRefineType,ggEditNecessity;
 	private JComboBox ggEditParentComboBox;
 	private List<Integer> ggEditParentComboBoxIdList;
-
-
 	//PApplet部分(こいつらも一応Privateな)
 	private GGGraph ggGraph;
 	private PFGraph pfGraph;
@@ -83,7 +82,7 @@ public class SToolEditor extends JFrame {
 		//FGModel
 		fgm = new FGModel();
 		//FGModelテスト
-		fgm.addGoal("testgoal1_root",-1, Goal.ChildrenType.AND,100,100);
+		fgm.addGoal("root",-1, Goal.ChildrenType.AND,100,100);
 
 		//////////////////////////////下部分共通パネル//////////////////////////////
 		JPanel sharedEndPanel = new JPanel();
@@ -313,7 +312,8 @@ public class SToolEditor extends JFrame {
 	}
 
 	private void ggEditRemoveButtonPressed() {
-		//TODO:FGModel諸々に変更をかける処理（Removeボタン押下）
+		fgm.removeGoal(ggGraph.selectedGoalId);
+		redraw();
 	}
 
 	/**
@@ -328,7 +328,7 @@ public class SToolEditor extends JFrame {
 		//ComboBox(goalGraph)をRedraw
 		ggEditParentComboBoxIdList.clear();
 		ggEditParentComboBox.removeAllItems();
-		for(Goal g : fgm.goals){
+		for(Goal g : fgm.getGoals()){
 			ggEditParentComboBox.addItem(g.name);
 			ggEditParentComboBoxIdList.add(g.id);
 		}
