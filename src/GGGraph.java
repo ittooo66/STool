@@ -69,7 +69,7 @@ public class GGGraph extends PApplet{
 
 		//ドメイン選択の一時解除
 		selectedGoalId = -1;
-		for (Goal g : sToolEditor.fgm.goals) {
+		for (Goal g : sToolEditor.fgm.getGoals()) {
 			//マウスクリック範囲にドメインがあれば、それを選択
 			if (g.x - goalMergin < mouseX && mouseX < g.x + goalMergin &&
 					g.y - goalMergin < mouseY && mouseY < g.y + goalMergin) {
