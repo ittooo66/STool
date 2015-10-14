@@ -17,12 +17,16 @@ import java.util.List;
  *
  * loadXML()とsaveXML()でXML入出力を行える
  *
+ * モデルのおやくそく（根ゴールは必ず１個、消去不可）とかそういうやつはだいたいここで管理すること
+ *
  */
 public class FGModel {
 	private List<Goal> goals;
 	private List<Usecase> usecases;
 	private List<Domain> domains;
 
+	//enable,disableのセット
+	private List<List<Boolean>> enableGoalSet;
 
 	public FGModel() {
 		goals = Collections.synchronizedList(new ArrayList<Goal>());
@@ -38,7 +42,7 @@ public class FGModel {
 		JAXB.marshal(this, file);
 	}
 
-	public Goal getGoal(int id) {
+	public Goal getGoalById(int id) {
 		for (Goal g : goals) {
 			if (g.id == id) return g;
 		}
@@ -76,11 +80,23 @@ public class FGModel {
 		goals.add(g);
 	}
 
-	public void editGoal(int id, String name, Goal.ChildrenType ct, int x, int y) {
+
+	public void editGoal(int id, String name, Goal.ChildrenType ct,int parentId) {
 		for (Goal g : goals) {
 			if (g.id == id) {
 				g.name = name;
 				g.childrenType = ct;
+				g.parentId = parentId;
+			}
+		}
+	}
+
+	public void editGoal(int id, String name, Goal.ChildrenType ct,int parentId, int x, int y) {
+		for (Goal g : goals) {
+			if (g.id == id) {
+				g.name = name;
+				g.childrenType = ct;
+				g.parentId =parentId;
 				g.x = x;
 				g.y = y;
 			}
@@ -88,30 +104,18 @@ public class FGModel {
 	}
 
 	/**
-	 * ゴールを無効化（非選択）する。
-	 * @param id
+	 * ゴールを消去する
+	 * @param id　消去するゴールID
+	 * @return 消去できたか、否か
 	 */
-	public void disableGoal(int id) {
-		for (Goal g : goals) {
-			if (g.id == id) g.isEnable = false;
-		}
-	}
-
-	/**
-	 * ゴールを有効化（選択）する。
-	 * @param id
-	 */
-	public void enableGoal(int id) {
-		for (Goal g : goals) {
-			if (g.id == id) g.isEnable = true;
-		}
-	}
-
-	public void removeGoal(int id) {
+	public boolean removeGoal(int id) {
 		for (int i = 0; i < goals.size(); i++) {
-			if (goals.get(i).id == id)
+			if (goals.get(i).id == id) {
 				goals.remove(i);
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public List<Domain> getDomains(){
@@ -178,14 +182,17 @@ public class FGModel {
 	}
 
 	public void addUsecase() {
+		//TODO
 		return;
 	}
 
 	public void editUsecase() {
+		//TODO
 		return;
 	}
 
 	public void removeUsecase(int id) {
+		//TODO
 		return;
 	}
 

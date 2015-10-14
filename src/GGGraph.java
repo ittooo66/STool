@@ -8,30 +8,28 @@ import processing.core.PFont;
 public class GGGraph extends PApplet{
 
 	//選択中のゴールID（-1なら非選択）
-	int selectedGoalId = -1;
+	public int selectedGoalId = -1;
 
 	//本体
-	SToolEditor sToolEditor;
+	private SToolEditor sToolEditor;
 
 	public GGGraph(SToolEditor sToolEditor){
 		this.sToolEditor=sToolEditor;
 	}
-
 
 	public void draw(){
 		background(32,32,32);
 		stroke(166,178,195);
 		fill(166,178,195);
 		textAlign(LEFT);
-		text("Version:"+sToolEditor.version.toString()+", Mode:"+sToolEditor.viewmode.toString()+", Resolution:"+width+","+height,10,20);
+		text("Version:"+sToolEditor.version.toString()+", Mode:"+sToolEditor.viewmode.toString()+", Resolution:"+width+","+height+"(for debugging)",10,20);
 		noFill();
 
+		//TODO:Describe AND/OR
+		//TODO:Describe Relations
+
 		//各ゴールを描画
-		for (Goal g : sToolEditor.fgm.goals) {
-
-			//TODO:Describe AND/OR
-			//TODO:Describe Relations
-
+		for (Goal g : sToolEditor.fgm.getGoals()) {
 			//ゴールわっか描画
 			if (g.id == selectedGoalId) {
 				//選択されているゴールなら強調描画
@@ -55,7 +53,7 @@ public class GGGraph extends PApplet{
 		}
 	}
 
-	public  void setup(){
+	public void setup(){
 		size(1024,768);
 		noLoop();
 
@@ -76,20 +74,17 @@ public class GGGraph extends PApplet{
 				selectedGoalId = g.id;
 			}
 		}
-		if(selectedGoalId == -1)
-			sToolEditor.ggEditChangeEditMode(false);
-		else
-			sToolEditor.ggEditChangeEditMode(true);
-		redraw();
+
+		sToolEditor.redraw();
 	}
 
 	public void mouseDragged(){
 		if (mouseButton == LEFT) {
 			if (selectedGoalId != -1) {
-				Goal g = sToolEditor.fgm.getGoal(selectedGoalId);
-				if (g != null) sToolEditor.fgm.editGoal(selectedGoalId, g.name, g.childrenType, mouseX, mouseY);
+				Goal g = sToolEditor.fgm.getGoalById(selectedGoalId);
+				if (g != null) sToolEditor.fgm.editGoal(selectedGoalId, g.name, g.childrenType,g.parentId, mouseX, mouseY);
 			}
 		}
-		redraw();
+		sToolEditor.redraw();
 	}
 }
