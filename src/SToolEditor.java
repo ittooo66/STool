@@ -228,7 +228,7 @@ public class SToolEditor extends JFrame {
 		ggEditPanel.setPreferredSize(new Dimension(200,0));
 		//TODO:ここに各種コンポーネント追加メソッドを記入
 		pfPanel.add(pfeditPanel,BorderLayout.LINE_END);
-		pfGraph = new PFGraph();
+		pfGraph = new PFGraph(this);
 		pfGraph.init();
 		pfPanel.add(pfGraph,BorderLayout.CENTER);
 
