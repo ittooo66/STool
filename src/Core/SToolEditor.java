@@ -20,8 +20,10 @@ public class SToolEditor extends JFrame {
 
 	//バージョン指定
 	private VERSION version;
-	public enum VERSION{
-		ASIS,TOBE;
+
+	public enum VERSION {
+		ASIS, TOBE;
+
 		public static VERSION parse(String str) {
 			switch (str) {
 				case "ASIS":
@@ -31,6 +33,7 @@ public class SToolEditor extends JFrame {
 			}
 			return null;
 		}
+
 		public static String toString(VERSION v) {
 			switch (v) {
 				case ASIS:
@@ -41,14 +44,17 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
-	public VERSION getVersion(){
+
+	public VERSION getVersion() {
 		return version;
 	}
 
 	//ビュー指定
 	private VIEWMODE viewmode;
-	public enum VIEWMODE{
-		ALL,REDUCED;
+
+	public enum VIEWMODE {
+		ALL, REDUCED;
+
 		public static VIEWMODE parse(String str) {
 			switch (str) {
 				case "ALL":
@@ -58,6 +64,7 @@ public class SToolEditor extends JFrame {
 			}
 			return null;
 		}
+
 		public static String toString(VIEWMODE v) {
 			switch (v) {
 				case ALL:
@@ -68,17 +75,18 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
-	public VIEWMODE getViewmode(){
+
+	public VIEWMODE getViewmode() {
 		return viewmode;
 	}
 
 
 	//GGEditorコンポーネント群(一応Privateな)
-	private JButton ggEditAdd,ggEditEdit,ggEditRemove;
-	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr,ggEditRefineTypeLeaf;
+	private JButton ggEditAdd, ggEditEdit, ggEditRemove;
+	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr, ggEditRefineTypeLeaf;
 	private JRadioButton ggEditNecessityIsEnable, ggEditNecessityIsDisable;
 	private JTextField ggEditNameField;
-	private JPanel ggEditRefineType,ggEditNecessity;
+	private JPanel ggEditRefineType, ggEditNecessity;
 	private JComboBox ggEditParentComboBox;
 	private List<Integer> ggEditParentComboBoxIdList;
 	//PApplet部分(こいつらも一応Privateな)
@@ -89,22 +97,22 @@ public class SToolEditor extends JFrame {
 	/**
 	 * コンストラクタがほぼほぼView要素を頑張って書くスタイル
 	 */
-	SToolEditor(){
+	SToolEditor() {
 		//FGModel
 		fgm = new FGModel();
 		//FGModelテスト
-		fgm.addGoal("root",-1, Goal.ChildrenType.AND,100,100);
+		fgm.addGoal("root", -1, 100, 100);
 
 
 		//////////////////////////////下部分共通パネル//////////////////////////////
 		JPanel sharedEndPanel = new JPanel();
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//version_RadioButton作成
-		JRadioButton asIsVer=new JRadioButton("As-Is");
+		JRadioButton asIsVer = new JRadioButton("As-Is");
 		asIsVer.setSelected(true);
-		version= VERSION.ASIS;
+		version = VERSION.ASIS;
 		asIsVer.addActionListener(e -> versionAsIsRadioButtonPressed());
-		JRadioButton toBeVer=new JRadioButton("To-Be");
+		JRadioButton toBeVer = new JRadioButton("To-Be");
 		toBeVer.addActionListener(e -> versionToBeRadioButtonPressed());
 		//version_ButtonGroup作成
 		ButtonGroup versionGroup = new ButtonGroup();
@@ -117,11 +125,11 @@ public class SToolEditor extends JFrame {
 		version.setBorder(new TitledBorder(new EtchedBorder(), "version"));
 		sharedEndPanel.add(version);
 		//viewmode_RadioButton作成
-		JRadioButton viewAll =new JRadioButton("All");
+		JRadioButton viewAll = new JRadioButton("All");
 		viewAll.addActionListener(e -> viewmodeAllRadioButtonPressed());
 		viewAll.setSelected(true);
-		viewmode= VIEWMODE.ALL;
-		JRadioButton viewReduced =new JRadioButton("Reduced");
+		viewmode = VIEWMODE.ALL;
+		JRadioButton viewReduced = new JRadioButton("Reduced");
 		viewReduced.addActionListener(e -> viewmodeReducedRadioButtonPressed());
 		//viewmode_ButtonGroup作成
 		ButtonGroup viewModeGroup = new ButtonGroup();
@@ -146,29 +154,29 @@ public class SToolEditor extends JFrame {
 		JPanel ggPanel = new JPanel();
 		ggPanel.setLayout(new BorderLayout());
 		JPanel ggEditPanel = new JPanel();
-		ggEditPanel.setLayout(null);							//pixel直打ちさせる
-		ggEditPanel.setPreferredSize(new Dimension(200,0));		//幅200で固定
+		ggEditPanel.setLayout(null);                            //pixel直打ちさせる
+		ggEditPanel.setPreferredSize(new Dimension(200, 0));        //幅200で固定
 
 		//RemoveButton
 		ggEditRemove = new JButton("Remove");
-		ggEditRemove.addActionListener(e -> ggEditRemoveButtonPressed()	);
-		ggEditRemove.setBounds(105,5,90,30);
+		ggEditRemove.addActionListener(e -> ggEditRemoveButtonPressed());
+		ggEditRemove.setBounds(105, 5, 90, 30);
 		ggEditRemove.setVisible(false);
 		ggEditPanel.add(ggEditRemove);
 		//AddButton
 		ggEditAdd = new JButton("Add");
 		ggEditAdd.addActionListener(e -> ggEditAddButtonPressed());
-		ggEditAdd.setBounds(105,400,90,30);
+		ggEditAdd.setBounds(105, 400, 90, 30);
 		ggEditPanel.add(ggEditAdd);
 		//EditButton
 		ggEditEdit = new JButton("Edit");
-		ggEditEdit.addActionListener(e -> ggEditEditButtonPressed()	);
-		ggEditEdit.setBounds(105,400,90,30);
+		ggEditEdit.addActionListener(e -> ggEditEditButtonPressed());
+		ggEditEdit.setBounds(105, 400, 90, 30);
 		ggEditEdit.setVisible(false);
 		ggEditPanel.add(ggEditEdit);
 
 		//NameTextArea周り
-		ggEditNameField=new JTextField(14);
+		ggEditNameField = new JTextField(14);
 		JPanel ggEditNameFieldBorder = new JPanel();
 		ggEditNameFieldBorder.add(ggEditNameField);
 		ggEditNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
@@ -180,15 +188,15 @@ public class SToolEditor extends JFrame {
 		ggEditParentComboBox.setPreferredSize(new Dimension(160, 20));
 		JPanel ggEditParentComboBoxBorder = new JPanel();
 		ggEditParentComboBoxBorder.add(ggEditParentComboBox);
-		ggEditParentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(),"Parent"));
-		ggEditParentComboBoxBorder.setBounds(5,120,193,60);
+		ggEditParentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent"));
+		ggEditParentComboBoxBorder.setBounds(5, 120, 193, 60);
 		ggEditPanel.add(ggEditParentComboBoxBorder);
 		ggEditParentComboBoxIdList = new ArrayList();
 
 		//refineType周り
-		ggEditRefineTypeAnd =new JRadioButton("AND");
+		ggEditRefineTypeAnd = new JRadioButton("AND");
 		ggEditRefineTypeAnd.setSelected(true);
-		ggEditRefineTypeOr =new JRadioButton("OR");
+		ggEditRefineTypeOr = new JRadioButton("OR");
 		ggEditRefineTypeLeaf = new JRadioButton("LEAF");
 		//refineTypeButtonGroup作成
 		ButtonGroup ggEditRefineTypeButtonGroup = new ButtonGroup();
@@ -201,14 +209,14 @@ public class SToolEditor extends JFrame {
 		ggEditRefineType.add(ggEditRefineTypeOr);
 		ggEditRefineType.add(ggEditRefineTypeLeaf);
 		ggEditRefineType.setBorder(new TitledBorder(new EtchedBorder(), "RefineType"));
-		ggEditRefineType.setBounds(5,220,193,60);
+		ggEditRefineType.setBounds(5, 220, 193, 60);
 		ggEditRefineType.setVisible(false);
 		ggEditPanel.add(ggEditRefineType);
 
 		//enable<>disable周り
-		ggEditNecessityIsEnable =new JRadioButton("Enable");
+		ggEditNecessityIsEnable = new JRadioButton("Enable");
 		ggEditNecessityIsEnable.setSelected(true);
-		ggEditNecessityIsDisable =new JRadioButton("Disable");
+		ggEditNecessityIsDisable = new JRadioButton("Disable");
 		//refineTypeButtonGroup作成
 		ButtonGroup ggEditNecessityButtonGroup = new ButtonGroup();
 		ggEditNecessityButtonGroup.add(ggEditNecessityIsEnable);
@@ -218,40 +226,40 @@ public class SToolEditor extends JFrame {
 		ggEditNecessity.add(ggEditNecessityIsEnable);
 		ggEditNecessity.add(ggEditNecessityIsDisable);
 		ggEditNecessity.setBorder(new TitledBorder(new EtchedBorder(), "Necessity"));
-		ggEditNecessity.setBounds(5, 290, 193,60);
+		ggEditNecessity.setBounds(5, 290, 193, 60);
 		ggEditNecessity.setVisible(false);
 		ggEditPanel.add(ggEditNecessity);
 
 		//ggEditエディタパネル追加
-		ggPanel.add(ggEditPanel,BorderLayout.LINE_END);
+		ggPanel.add(ggEditPanel, BorderLayout.LINE_END);
 		//ggEditのProcessing周り
 		ggGraph = new GGGraph(this);
 		ggGraph.init();
-		ggPanel.add(ggGraph,BorderLayout.CENTER);
+		ggPanel.add(ggGraph, BorderLayout.CENTER);
 
 		//////////////////////////////UCTab部分作成//////////////////////////////
 		JPanel ucPanel = new JPanel();
 		ucPanel.setLayout(new BorderLayout());
-		JPanel uceditPanel= new JPanel();
+		JPanel uceditPanel = new JPanel();
 		uceditPanel.setLayout(null);
-		ggEditPanel.setPreferredSize(new Dimension(200,0));
+		ggEditPanel.setPreferredSize(new Dimension(200, 0));
 		//TODO:ここに各種コンポーネント追加メソッドを記入
-		ucPanel.add(uceditPanel,BorderLayout.LINE_END);
+		ucPanel.add(uceditPanel, BorderLayout.LINE_END);
 		ucGraph = new UCGraph();
 		ucGraph.init();
-		ucPanel.add(ucGraph,BorderLayout.CENTER);
+		ucPanel.add(ucGraph, BorderLayout.CENTER);
 
 		//////////////////////////////PFTab部分作成//////////////////////////////
 		JPanel pfPanel = new JPanel();
 		pfPanel.setLayout(new BorderLayout());
-		JPanel pfeditPanel= new JPanel();
+		JPanel pfeditPanel = new JPanel();
 		pfeditPanel.setLayout(null);
-		ggEditPanel.setPreferredSize(new Dimension(200,0));
+		ggEditPanel.setPreferredSize(new Dimension(200, 0));
 		//TODO:ここに各種コンポーネント追加メソッドを記入
-		pfPanel.add(pfeditPanel,BorderLayout.LINE_END);
+		pfPanel.add(pfeditPanel, BorderLayout.LINE_END);
 		pfGraph = new PFGraph(this);
 		pfGraph.init();
-		pfPanel.add(pfGraph,BorderLayout.CENTER);
+		pfPanel.add(pfGraph, BorderLayout.CENTER);
 
 
 		/////////////////////////////仕上げ///////////////////////////////////////
@@ -291,23 +299,23 @@ public class SToolEditor extends JFrame {
 	}
 
 	private void ggEditEditButtonPressed() {
-		//Goal名前取得
+		//各種コンポーネントからパラメータ取得
 		String name = ggEditNameField.getText();
-		//変更中のGoalID取得
 		Goal prevGoal = fgm.getGoalById(ggGraph.selectedGoalId);
-		//ChildrenType取得
 		Goal.ChildrenType ct = ggEditRefineTypeAnd.isSelected() ? Goal.ChildrenType.AND : Goal.ChildrenType.OR;
-		//parentId取得
 		int parentId = ggEditParentComboBoxIdList.get(ggEditParentComboBox.getSelectedIndex());
 
-		//fgm編集（x,yはそのまま）
-		fgm.editGoal(prevGoal.id, name, ct,parentId);
+		//fgm編集
+		if (!fgm.editGoal(prevGoal.id, name, ct, parentId)) {
+			JOptionPane.showMessageDialog(this, "モデルを編集できませんでした", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 
 		redraw();
 	}
 
 	/**
 	 * ゴールを追加する
+	 *
 	 * @return 追加できた＝TRUE
 	 */
 	private void ggEditAddButtonPressed() {
@@ -318,14 +326,14 @@ public class SToolEditor extends JFrame {
 		String name = ggEditNameField.getText();
 
 		//名前欄にちゃんと中身があるか
-		if(name.equals("")) {
+		if (name.equals("")) {
 			JOptionPane.showMessageDialog(this, "なまえをいれてください", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		}else
+		} else
 			ggEditNameField.setText("");
 
 		//追加
-		fgm.addGoal(name, parentGoalId, Goal.ChildrenType.LEAF, ggGraph.width/2, ggGraph.height/2);
+		fgm.addGoal(name, parentGoalId, ggGraph.width / 2, ggGraph.height / 2);
 
 		redraw();
 	}
@@ -354,8 +362,8 @@ public class SToolEditor extends JFrame {
 		ggEditParentComboBox.removeAllItems();
 		ggEditParentComboBox.addItem("TOP");
 		ggEditParentComboBoxIdList.add(-1);
-		for(Goal g : fgm.getGoals()){
-			if(g.id != ggGraph.selectedGoalId) {
+		for (Goal g : fgm.getGoals()) {
+			if (g.id != ggGraph.selectedGoalId) {
 				//ComboBox詰め替え
 				ggEditParentComboBox.addItem(g.name);
 				ggEditParentComboBoxIdList.add(g.id);
@@ -363,7 +371,7 @@ public class SToolEditor extends JFrame {
 		}
 
 		//GGEdit:GGGraph.selectedGoalIdに応じたエディタ画面に更新
-		if(ggGraph.selectedGoalId != -1){
+		if (ggGraph.selectedGoalId != -1) {
 
 			//選択中のゴールを取得
 			Goal selectedGoal = fgm.getGoalById(ggGraph.selectedGoalId);
@@ -372,17 +380,17 @@ public class SToolEditor extends JFrame {
 			ggEditNameField.setText(selectedGoal.name);
 
 			//RefineType更新
-			if(selectedGoal.childrenType == Goal.ChildrenType.AND){
+			if (selectedGoal.childrenType == Goal.ChildrenType.AND) {
 				ggEditRefineTypeAnd.setSelected(true);
-			}else if(selectedGoal.childrenType == Goal.ChildrenType.OR){
+			} else if (selectedGoal.childrenType == Goal.ChildrenType.OR) {
 				ggEditRefineTypeOr.setSelected(true);
-			}else if(selectedGoal.childrenType == Goal.ChildrenType.LEAF){
+			} else if (selectedGoal.childrenType == Goal.ChildrenType.LEAF) {
 				ggEditRefineTypeLeaf.setSelected(true);
 			}
 
 			//ComboBox選択
-			for(int id:ggEditParentComboBoxIdList){
-				if(selectedGoal.parentId == id){
+			for (int id : ggEditParentComboBoxIdList) {
+				if (selectedGoal.parentId == id) {
 					ggEditParentComboBox.setSelectedIndex(ggEditParentComboBoxIdList.indexOf(id));
 				}
 			}
@@ -395,10 +403,10 @@ public class SToolEditor extends JFrame {
 		ggEditRemove.setVisible(ggGraph.selectedGoalId != -1);
 		ggEditEdit.setVisible(ggGraph.selectedGoalId != -1);
 		ggEditNecessity.setVisible(ggGraph.selectedGoalId != -1);
-		ggEditRefineType.setVisible(ggGraph.selectedGoalId != -1 );
+		ggEditRefineType.setVisible(ggGraph.selectedGoalId != -1);
 	}
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		SToolEditor ste = new SToolEditor();
 		ste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ste.setBounds(10, 10, 800, 600);
