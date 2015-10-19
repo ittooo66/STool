@@ -184,7 +184,7 @@ public class GGGraph extends PApplet{
 		if (mouseButton == LEFT && selectedGoalId != -1) {
 			Goal g = sToolEditor.fgm.getGoalById(selectedGoalId);
 			if (g != null && 0<mouseX && mouseX<width && 0<mouseY && mouseY<height)
-				sToolEditor.fgm.editGoal(selectedGoalId, g.name, g.childrenType, g.parentId, mouseX, mouseY);
+				sToolEditor.fgm.editGoal(selectedGoalId, mouseX, mouseY);
 		}
 		sToolEditor.redraw();
 	}
