@@ -67,10 +67,15 @@ public class GGGraph extends PApplet{
 					if (childGoal.parentId == parentGoal.id) {
 
 						//子ゴールの角度（0~2PIで４->３->２->１象限の順にまわる）
-						float childR = PI / 2 + atan((float) (childGoal.y - parentGoal.y) / (float) (childGoal.x - parentGoal.x));
-						System.out.println(childR);
+						float childR = (PI/2) + atan((float) (childGoal.y - parentGoal.y) / (float) (childGoal.x - parentGoal.x));
 						//第２、３象限のとき、atan()の都合上修正噛ます
-						if (childGoal.x < parentGoal.x) childR += PI;
+						if (childGoal.x < parentGoal.x)childR += PI;
+						if (childR < PI/2){
+							childR += 3*PI/2;
+						}else{
+							childR -= PI/2;
+						}
+						System.out.println(childR);
 
 						//1st Goalのとき、とりあえずtemp にいれちゃう
 						if (countOfChildGoals == 0) {
