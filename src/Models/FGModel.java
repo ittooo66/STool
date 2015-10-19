@@ -47,11 +47,11 @@ public class FGModel {
 		return null;
 	}
 
-	public List<Goal> getGoals(){
+	public List<Goal> getGoals() {
 		return goals;
 	}
 
-	public void addGoal(String name, int parent_id, Goal.ChildrenType parent_children_type, int x, int y) {
+	public void addGoal(String name, int parent_id, int x, int y) {
 		//新ID生成
 		int id = 0;
 		for (Goal g : goals) {
@@ -66,8 +66,8 @@ public class FGModel {
 		g.parentId = parent_id;
 		//トップでなければ、親のchildrentypeを変更
 		for (Goal gl : goals) {
-			if (gl.id == parent_id) {
-				gl.childrenType = parent_children_type;
+			if (gl.id == parent_id && gl.childrenType == Goal.ChildrenType.LEAF) {
+				gl.childrenType = Goal.ChildrenType.OR;
 			}
 		}
 		//子にはリーフ設定を付与
@@ -78,23 +78,45 @@ public class FGModel {
 		goals.add(g);
 	}
 
-
-	public void editGoal(int id, String name, Goal.ChildrenType ct,int parentId) {
-		for (Goal g : goals) {
-			if (g.id == id) {
-				g.name = name;
-				g.childrenType = ct;
-				g.parentId = parentId;
+	/**
+	 * ゴールを編集する
+	 *
+	 * @param id
+	 * @param name
+	 * @param childrenType
+	 * @param parentId     編集できたらtrue,できないならFalse
+	 */
+	public boolean editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId) {
+		//編集対象のゴール取得
+		Goal goal = null;
+		for(Goal g:goals){
+			if(g.id == id){
+				goal=g;
+				break;
 			}
 		}
+
+		//更新
+		if (goal == null) return false;
+		goal.name = name;
+		goal.childrenType = childrenType;
+		goal.parentId = parentId;
+		return true;
+
 	}
 
-	public void editGoal(int id, String name, Goal.ChildrenType ct,int parentId, int x, int y) {
+		/**
+		 * ゴールを編集（更新）する
+		 *
+		 * @param id 編集するゴールID
+		 * @param x  X座標
+		 * @param y  Y座標
+		 *           完全にエディタの座標更新用
+		 */
+
+	public void editGoal(int id, int x, int y) {
 		for (Goal g : goals) {
 			if (g.id == id) {
-				g.name = name;
-				g.childrenType = ct;
-				g.parentId =parentId;
 				g.x = x;
 				g.y = y;
 			}
@@ -103,7 +125,8 @@ public class FGModel {
 
 	/**
 	 * ゴールを消去する
-	 * @param id　消去するゴールID
+	 *
+	 * @param id 　消去するゴールID
 	 * @return 消去できたか、否か
 	 */
 	public boolean removeGoal(int id) {
@@ -111,13 +134,13 @@ public class FGModel {
 			Goal removedGoalCandidate = goals.get(i);
 			if (removedGoalCandidate.id == id) {
 				//根ゴールは削除不能
-				if(removedGoalCandidate.id==0) return false;
+				if (removedGoalCandidate.id == 0) return false;
 
 				//ゴール削除（get(i),remove(i)でまわしてることに注意）
 				goals.remove(i);
 				//取り残された子供の処理
-				for(Goal g : goals){
-					if(g.parentId == removedGoalCandidate.id)g.parentId=removedGoalCandidate.parentId;
+				for (Goal g : goals) {
+					if (g.parentId == removedGoalCandidate.id) g.parentId = removedGoalCandidate.parentId;
 				}
 				return true;
 			}
@@ -125,7 +148,7 @@ public class FGModel {
 		return false;
 	}
 
-	public List<Domain> getDomains(){
+	public List<Domain> getDomains() {
 		return domains;
 	}
 
@@ -173,11 +196,11 @@ public class FGModel {
 		}
 	}
 
-	public void setDomains(List<Domain> domains){
+	public void setDomains(List<Domain> domains) {
 		this.domains = domains;
 	}
 
-	public void setUsecases(List<Usecase> usecases){
+	public void setUsecases(List<Usecase> usecases) {
 		this.usecases = usecases;
 	}
 
