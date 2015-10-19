@@ -1,10 +1,13 @@
-import Models.Goal;
+package Core;
+
+import Models.*;
+import Processing.*;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,11 +16,11 @@ import java.util.List;
 public class SToolEditor extends JFrame {
 
 	//融合ゴールモデル
-	FGModel fgm;
+	public FGModel fgm;
 
 	//バージョン指定
 	private VERSION version;
-	enum VERSION{
+	public enum VERSION{
 		ASIS,TOBE;
 		public static VERSION parse(String str) {
 			switch (str) {
@@ -44,7 +47,7 @@ public class SToolEditor extends JFrame {
 
 	//ビュー指定
 	private VIEWMODE viewmode;
-	enum VIEWMODE{
+	public enum VIEWMODE{
 		ALL,REDUCED;
 		public static VIEWMODE parse(String str) {
 			switch (str) {
@@ -99,7 +102,7 @@ public class SToolEditor extends JFrame {
 		//version_RadioButton作成
 		JRadioButton asIsVer=new JRadioButton("As-Is");
 		asIsVer.setSelected(true);
-		version=VERSION.ASIS;
+		version= VERSION.ASIS;
 		asIsVer.addActionListener(e -> versionAsIsRadioButtonPressed());
 		JRadioButton toBeVer=new JRadioButton("To-Be");
 		toBeVer.addActionListener(e -> versionToBeRadioButtonPressed());
@@ -117,7 +120,7 @@ public class SToolEditor extends JFrame {
 		JRadioButton viewAll =new JRadioButton("All");
 		viewAll.addActionListener(e -> viewmodeAllRadioButtonPressed());
 		viewAll.setSelected(true);
-		viewmode=VIEWMODE.ALL;
+		viewmode= VIEWMODE.ALL;
 		JRadioButton viewReduced =new JRadioButton("Reduced");
 		viewReduced.addActionListener(e -> viewmodeReducedRadioButtonPressed());
 		//viewmode_ButtonGroup作成
@@ -268,7 +271,7 @@ public class SToolEditor extends JFrame {
 	}
 
 	private void viewmodeReducedRadioButtonPressed() {
-		viewmode =VIEWMODE.REDUCED;
+		viewmode = VIEWMODE.REDUCED;
 		redraw();
 	}
 

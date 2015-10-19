@@ -11,11 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Models.Domain;
+import Models.*;
 import Models.Domain.DomainType;
-import Models.Step;
 import Models.Step.StepType;
-import Models.Usecase;
 /*
  * 
  *@author Kazuaki hirasawa

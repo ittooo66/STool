@@ -1,6 +1,4 @@
-import Models.Domain;
-import Models.Goal;
-import Models.Usecase;
+package Models;
 
 import javax.xml.bind.JAXB;
 import java.io.File;

@@ -1,9 +1,9 @@
-import Models.Domain;
+package Processing;
+
+import Models.*;
+import Core.*;
 import processing.core.PApplet;
 import processing.core.PFont;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * プロブレムフレームエディタタブで出力するProcessingコンポーネント

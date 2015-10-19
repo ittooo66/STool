@@ -1,4 +1,7 @@
-import Models.Goal;
+package Processing;
+
+import Models.*;
+import Core.*;
 import processing.core.PApplet;
 import processing.core.PFont;
 
