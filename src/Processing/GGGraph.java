@@ -96,7 +96,7 @@ public class GGGraph extends PApplet{
 				//x,y座標系
 				float xC=((textWidth(childGoal.name)+40)/2)*cos(childR);
 				float yC=(40/2)*sin(childR);
-				float xP=((textWidth(childGoal.name)+40)/2)*cos(parentR);
+				float xP=((textWidth(parentGoal.name)+40)/2)*cos(parentR);
 				float yP=(40/2)*sin(parentR);
 
 				line(xP+parentGoal.x, yP+parentGoal.y, xC+childGoal.x, yC+childGoal.y);
