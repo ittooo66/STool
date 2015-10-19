@@ -96,6 +96,16 @@ public class FGModel {
 			}
 		}
 
+		//モデル整合性チェック
+
+		//親ゴールとして自己参照はだめ
+		if(id==parentId)return false;
+
+		if(childrenType == Goal.ChildrenType.LEAF) {
+			//LEAF設定は子ゴールのみに許される
+			for (Goal g : goals) if (g.parentId == id) return false;
+		}
+
 		//更新
 		if (goal == null) return false;
 		goal.name = name;
