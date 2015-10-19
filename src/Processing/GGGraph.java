@@ -16,60 +16,117 @@ public class GGGraph extends PApplet{
 	//本体
 	private SToolEditor sToolEditor;
 
+	//カラーパレット
+	private final int COLOR_BACKGROUND =color(32,32,32);
+	private final int COLOR_LINES =color(166,178,195);
+	private final int COLOR_SELECTED = color(196,121,51);
+	private final int COLOR_ACCENT = color(116,128,145);
+
 	public GGGraph(SToolEditor sToolEditor){
 		this.sToolEditor=sToolEditor;
 	}
 
 	public void setup(){
+		//とりあえず適当な解像度で初期化
 		size(1024,768);
+		//CPU節約
 		noLoop();
-
 		//Font設定。
 		PFont font = createFont("メイリオ ボールド",15,true);
 		textFont(font);
 	}
 
 	public void draw(){
-		background(32,32,32);
-		stroke(166,178,195);
-		fill(166,178,195);
+		//背景描画
+		background(COLOR_BACKGROUND);
+
+		//デバッグ用
+		fill(COLOR_LINES);
 		textAlign(LEFT);
 		text("Version:"+sToolEditor.getVersion().toString()+", Mode:"+sToolEditor.getViewmode().toString()+", Resolution:"+width+","+height+"(for debugging)",10,20);
+
+		//枝周り記述の下準備
+		stroke(COLOR_LINES);
+		strokeWeight(1);
 		noFill();
 
 		//TODO:AND記述
+		//AND記述対象のゴール捜索
+		for(Goal parentGoal: sToolEditor.fgm.getGoals()) {
+			if (parentGoal.childrenType.equals(Goal.ChildrenType.AND)) {
+
+				//ゴール下のマージン
+				final int mergin = 40;
+				//子ゴールカウント
+				int countOfChildGoals = 0;
+				//開始角度・終了角度を用意
+				float rootR = 0, distR = PI*2;
+
+				//AND記述対象の子ゴール捜索
+				for (Goal childGoal : sToolEditor.fgm.getGoals()) {
+					if (childGoal.parentId == parentGoal.id) {
+
+						//子ゴールの角度（0~2PIで４->３->２->１象限の順にまわる）
+						float childR = PI / 2 + atan((float) (childGoal.y - parentGoal.y) / (float) (childGoal.x - parentGoal.x));
+						System.out.println(childR);
+						//第２、３象限のとき、atan()の都合上修正噛ます
+						if (childGoal.x < parentGoal.x) childR += PI;
+
+						//1st Goalのとき、とりあえずtemp にいれちゃう
+						if (countOfChildGoals == 0) {
+							rootR=childR;
+							distR=childR;
+						} else if(rootR > childR){//それ以外
+							rootR=childR;
+						}else if(distR < childR){
+							distR=childR;
+						}
+						countOfChildGoals++;
+					}
+
+
+					//ゴールカウントが２以上で線引き
+					if (countOfChildGoals > 1) {
+						text(rootR + "," + distR, 10, 100);
+						arc(parentGoal.x, parentGoal.y, textWidth(parentGoal.name) + 40 + 60, 40 + 50, rootR, distR);
+					}
+				}
+			}
+		}
+
 
 		//枝を描画
-		strokeWeight(1);
-		for(Goal g: sToolEditor.fgm.getGoals()){
-			if(g.id != 0) line(g.x,g.y,sToolEditor.fgm.getGoalById(g.parentId).x,sToolEditor.fgm.getGoalById(g.parentId).y);
+		for (Goal g : sToolEditor.fgm.getGoals()) {
+			if (g.parentId != -1)
+				line(g.x, g.y, sToolEditor.fgm.getGoalById(g.parentId).x, sToolEditor.fgm.getGoalById(g.parentId).y);
 		}
 
 		//各ゴールを描画
+			textAlign(CENTER, CENTER);
 		for (Goal g : sToolEditor.fgm.getGoals()) {
+			//背景と同色で塗りつぶし（背面の枝塗りつぶしのため）
+			fill(COLOR_BACKGROUND);
 
-			//ゴールわっか描画
-			fill(32,32,32);
+			//ゴールの優先度に応じた配色設定
 			if (g.id == selectedGoalId) {
-				//選択されているゴールなら強調描画
-				stroke(196, 121, 52);
+				stroke(COLOR_SELECTED);
 				strokeWeight(3);
-			}else if (g.isEnable){
-				stroke(166,178,195);
+			} else if (g.isEnable) {
+				stroke(COLOR_LINES);
 				strokeWeight(2);
-			}else{
-				stroke(116,128,145);
+			} else {
+				stroke(COLOR_ACCENT);
 				strokeWeight(1);
 			}
-			ellipse(g.x, g.y, textWidth(g.name)+40, 40);
+
+			//わっか記述
+			ellipse(g.x, g.y, textWidth(g.name) + 40, 40);
 
 			//名前の記述
-			fill(166,178,195);
-			textAlign(CENTER,CENTER);
-			text(g.name, g.x, g.y-2);
+			fill(COLOR_LINES);
+			text(g.name, g.x, g.y - 2);
 		}
 	}
-
 
 
 	public void mousePressed(){
