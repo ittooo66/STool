@@ -349,7 +349,20 @@ public class SToolEditor extends JFrame {
 		pfGraph.redraw();
 		ucGraph.redraw();
 
-		//GGGraph.selectedGoalIdに応じたエディタ画面に更新
+		//GGEdit:ComboBox更新
+		ggEditParentComboBoxIdList.clear();
+		ggEditParentComboBox.removeAllItems();
+		ggEditParentComboBox.addItem("TOP");
+		ggEditParentComboBoxIdList.add(-1);
+		for(Goal g : fgm.getGoals()){
+			if(g.id != ggGraph.selectedGoalId) {
+				//ComboBox詰め替え
+				ggEditParentComboBox.addItem(g.name);
+				ggEditParentComboBoxIdList.add(g.id);
+			}
+		}
+
+		//GGEdit:GGGraph.selectedGoalIdに応じたエディタ画面に更新
 		if(ggGraph.selectedGoalId != -1){
 
 			//選択中のゴールを取得
@@ -367,17 +380,9 @@ public class SToolEditor extends JFrame {
 				ggEditRefineTypeLeaf.setSelected(true);
 			}
 
-			//ComboBox更新
-			ggEditParentComboBoxIdList.clear();
-			ggEditParentComboBox.removeAllItems();
-			for(Goal g : fgm.getGoals()){
-				//ComboBox詰め替え
-				ggEditParentComboBox.addItem(g.name);
-				ggEditParentComboBoxIdList.add(g.id);
-			}
+			//ComboBox選択
 			for(int id:ggEditParentComboBoxIdList){
 				if(selectedGoal.parentId == id){
-					//ComboBox選択
 					ggEditParentComboBox.setSelectedIndex(ggEditParentComboBoxIdList.indexOf(id));
 				}
 			}
