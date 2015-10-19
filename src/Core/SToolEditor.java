@@ -302,7 +302,7 @@ public class SToolEditor extends JFrame {
 		//各種コンポーネントからパラメータ取得
 		String name = ggEditNameField.getText();
 		Goal prevGoal = fgm.getGoalById(ggGraph.selectedGoalId);
-		Goal.ChildrenType ct = ggEditRefineTypeAnd.isSelected() ? Goal.ChildrenType.AND : Goal.ChildrenType.OR;
+		Goal.ChildrenType ct = ggEditRefineTypeAnd.isSelected() ? Goal.ChildrenType.AND : ggEditRefineTypeOr.isSelected() ? Goal.ChildrenType.OR : Goal.ChildrenType.LEAF;
 		int parentId = ggEditParentComboBoxIdList.get(ggEditParentComboBox.getSelectedIndex());
 
 		//fgm編集
