@@ -12,9 +12,9 @@ import java.util.List;
  * List<Usecase> usecases
  * List<Domain> domains
  * からなる融合ゴールモデル
- *
+ * <p>
  * loadXML()とsaveXML()でXML入出力を行える
- *
+ * <p>
  * モデルのおやくそく（根ゴールは必ず１個、消去不可）とかそういうやつはだいたいここで管理すること
  *
  */
@@ -23,6 +23,7 @@ public class FGModel {
 	private List<Usecase> usecases;
 	private List<Domain> domains;
 
+	//TODO:AS-IS,TO-BEスライスをいい感じにつくる
 	//enable,disableのセット
 	private List<List<Boolean>> enableGoalSet;
 
@@ -40,6 +41,12 @@ public class FGModel {
 		JAXB.marshal(this, file);
 	}
 
+	/**
+	 * IDを用いてゴールを取得
+	 *
+	 * @param id
+	 * @return Goal
+	 */
 	public Goal getGoalById(int id) {
 		for (Goal g : goals) {
 			if (g.id == id) return g;
@@ -47,10 +54,23 @@ public class FGModel {
 		return null;
 	}
 
+	/**
+	 * ゴールをまとめて取得
+	 *
+	 * @return
+	 */
 	public List<Goal> getGoals() {
 		return goals;
 	}
 
+	/**
+	 * 新規ゴールの追加
+	 *
+	 * @param name      なまえ
+	 * @param parent_id 親のID
+	 * @param x         座標
+	 * @param y         座標
+	 */
 	public void addGoal(String name, int parent_id, int x, int y) {
 		//新ID生成
 		int id = 0;
@@ -115,16 +135,15 @@ public class FGModel {
 
 	}
 
-		/**
-		 * ゴールを編集（更新）する
-		 *
-		 * @param id 編集するゴールID
-		 * @param x  X座標
-		 * @param y  Y座標
-		 *           完全にエディタの座標更新用
-		 */
-
-	public void editGoal(int id, int x, int y) {
+	/**
+	 * ゴールを編集（更新）する
+	 *
+	 * @param id 編集するゴールID
+	 * @param x  X座標
+	 * @param y  Y座標
+	 *           完全にエディタの座標更新用
+	 */
+	public void moveGoal(int id, int x, int y) {
 		for (Goal g : goals) {
 			if (g.id == id) {
 				g.x = x;
@@ -158,6 +177,11 @@ public class FGModel {
 		return false;
 	}
 
+	/**
+	 * ドメインをまとめて取得
+	 *
+	 * @return
+	 */
 	public List<Domain> getDomains() {
 		return domains;
 	}
@@ -169,6 +193,14 @@ public class FGModel {
 		return null;
 	}
 
+	/**
+	 * ドメイン追加
+	 *
+	 * @param name 名前
+	 * @param dt   ドメインタイプ
+	 * @param x    座標
+	 * @param y    座標
+	 */
 	public void addDomain(String name, Domain.DomainType dt, int x, int y) {
 		//新ID生成
 		int id = 0;
