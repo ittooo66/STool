@@ -316,7 +316,7 @@ public class SToolEditor extends JFrame {
 		pfEditDomainType.add(pfEditDomainTypeSystem);
 		pfEditDomainType.add(pfEditDomainTypeDesigned);
 		pfEditDomainType.setBorder(new TitledBorder(new EtchedBorder(), "DomainType"));
-		pfEditDomainType.setBounds(5, 250, 193, 60);
+		pfEditDomainType.setBounds(5, 200, 193, 150);
 		pfEditDomainType.setVisible(false);
 		pfEditPanel.add(pfEditDomainType);
 
