@@ -89,6 +89,13 @@ public class SToolEditor extends JFrame {
 	private JPanel ggEditRefineType, ggEditNecessity;
 	private JComboBox ggEditParentComboBox;
 	private List<Integer> ggEditParentComboBoxIdList;
+
+	//PFEditorコンポーネント群(一応Privateな)
+	private JButton pfEditRemove,pfEditAdd,pfEditEdit;
+	private JTextArea pfEditNameArea;
+	private JRadioButton pfEditDomainTypeNone,pfEditDomainTypeBiddable,pfEditDomainTypeCausal,pfEditDomainTypeLexical,pfEditDomainTypeSystem,pfEditDomainTypeDesigned;
+	private JPanel pfEditDomainType;
+
 	//PApplet部分(こいつらも一応Privateな)
 	private GGGraph ggGraph;
 	private PFGraph pfGraph;
@@ -184,8 +191,6 @@ public class SToolEditor extends JFrame {
 		ggEditNameFieldBorder.setBounds(5, 50, 193, 120);
 		ggEditPanel.add(ggEditNameFieldBorder);
 
-
-
 		//parent指定ComboBox周り
 		ggEditParentComboBox = new JComboBox();
 		ggEditParentComboBox.setPreferredSize(new Dimension(160, 20));
@@ -255,15 +260,70 @@ public class SToolEditor extends JFrame {
 		//////////////////////////////PFTab部分作成//////////////////////////////
 		JPanel pfPanel = new JPanel();
 		pfPanel.setLayout(new BorderLayout());
-		JPanel pfeditPanel = new JPanel();
-		pfeditPanel.setLayout(null);
-		ggEditPanel.setPreferredSize(new Dimension(200, 0));
-		//TODO:ここに各種コンポーネント追加メソッドを記入
-		pfPanel.add(pfeditPanel, BorderLayout.LINE_END);
+		JPanel pfEditPanel = new JPanel();
+		pfEditPanel.setLayout(null);
+		pfEditPanel.setPreferredSize(new Dimension(200, 0));
+
+		//RemoveButton
+		pfEditRemove = new JButton("Remove");
+		pfEditRemove.addActionListener(e -> pfEditRemoveButtonPressed());
+		pfEditRemove.setBounds(105, 5, 90, 30);
+		pfEditRemove.setVisible(false);
+		pfEditPanel.add(pfEditRemove);
+		//AddButton
+		pfEditAdd = new JButton("Add");
+		pfEditAdd.addActionListener(e -> pfEditAddButtonPressed());
+		pfEditAdd.setBounds(105, 400, 90, 30);
+		pfEditPanel.add(pfEditAdd);
+		//EditButton
+		pfEditEdit = new JButton("Edit");
+		pfEditEdit.addActionListener(e -> pfEditEditButtonPressed());
+		pfEditEdit.setBounds(105, 400, 90, 30);
+		pfEditEdit.setVisible(false);
+		pfEditPanel.add(pfEditEdit);
+
+		//NameTextArea周り
+		pfEditNameArea = new JTextArea(5,15);
+		JScrollPane pfScroll = new JScrollPane(pfEditNameArea);
+		JPanel pfEditNameFieldBorder = new JPanel();
+		pfEditNameFieldBorder.add(pfScroll);
+		pfEditNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
+		pfEditNameFieldBorder.setBounds(5, 50, 193, 120);
+		pfEditPanel.add(pfEditNameFieldBorder);
+
+		//DomainType周り
+		pfEditDomainTypeNone = new JRadioButton("NONE");
+		pfEditDomainTypeNone.setSelected(true);
+		pfEditDomainTypeBiddable = new JRadioButton("BIDDABLE");
+		pfEditDomainTypeCausal = new JRadioButton("CAUSAL");
+		pfEditDomainTypeLexical = new JRadioButton("LEXICAL");
+		pfEditDomainTypeSystem = new JRadioButton("SYSTEM");
+		pfEditDomainTypeDesigned = new JRadioButton("DESIGNED");
+		//DomainTypeButtonGroup作成
+		ButtonGroup pfEditDomainTypeButtonGroup = new ButtonGroup();
+		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeNone);
+		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeBiddable);
+		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeCausal);
+		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeLexical);
+		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeSystem);
+		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeDesigned);
+		//DomainTyoeグループのラベル（パネル）作成
+		pfEditDomainType = new JPanel();
+		pfEditDomainType.add(pfEditDomainTypeNone);
+		pfEditDomainType.add(pfEditDomainTypeBiddable);
+		pfEditDomainType.add(pfEditDomainTypeCausal);
+		pfEditDomainType.add(pfEditDomainTypeLexical);
+		pfEditDomainType.add(pfEditDomainTypeSystem);
+		pfEditDomainType.add(pfEditDomainTypeDesigned);
+		pfEditDomainType.setBorder(new TitledBorder(new EtchedBorder(), "DomainType"));
+		pfEditDomainType.setBounds(5, 250, 193, 60);
+		pfEditDomainType.setVisible(false);
+		pfEditPanel.add(pfEditDomainType);
+
+		pfPanel.add(pfEditPanel, BorderLayout.LINE_END);
 		pfGraph = new PFGraph(this);
 		pfGraph.init();
 		pfPanel.add(pfGraph, BorderLayout.CENTER);
-
 
 		/////////////////////////////仕上げ///////////////////////////////////////
 		//TabbedPaneに挿入
@@ -275,6 +335,18 @@ public class SToolEditor extends JFrame {
 		getContentPane().add(sharedEndPanel, BorderLayout.PAGE_END);
 
 		redraw();
+	}
+
+	private void pfEditAddButtonPressed() {
+		
+	}
+
+	private void pfEditEditButtonPressed() {
+
+	}
+
+	private void pfEditRemoveButtonPressed() {
+
 	}
 
 	private void diffBrowseButtonPressed() {
