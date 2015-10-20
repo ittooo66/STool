@@ -337,31 +337,6 @@ public class SToolEditor extends JFrame {
 		redraw();
 	}
 
-	private void pfEditAddButtonPressed() {
-		//名前取得
-		String name = pfEditNameArea.getText();
-
-		//名前欄にちゃんと中身があるか
-		if (name.equals("")) {
-			JOptionPane.showMessageDialog(this, "なまえをいれてください", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		} else {
-			pfEditNameArea.setText("");
-		}
-
-		//追加
-		fgm.addDomain(name, Domain.DomainType.NONE, pfGraph.width / 2, pfGraph.height / 2);
-		redraw();
-	}
-
-	private void pfEditEditButtonPressed() {
-
-	}
-
-	private void pfEditRemoveButtonPressed() {
-
-	}
-
 	private void diffBrowseButtonPressed() {
 		//TODO:DiffBrowser作成（Priorityは低め）
 	}
@@ -384,6 +359,33 @@ public class SToolEditor extends JFrame {
 	private void versionToBeRadioButtonPressed() {
 		version = VERSION.TOBE;
 		redraw();
+	}
+
+	private void pfEditAddButtonPressed() {
+		//名前取得
+		String name = pfEditNameArea.getText();
+
+		//名前欄にちゃんと中身があるか
+		if (name.equals("")) {
+			JOptionPane.showMessageDialog(this, "なまえをいれてください", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		} else {
+			pfEditNameArea.setText("");
+		}
+
+		//追加
+		fgm.addDomain(name, Domain.DomainType.NONE, pfGraph.width / 2, pfGraph.height / 2);
+		redraw();
+	}
+
+	private void pfEditEditButtonPressed() {
+
+
+		redraw();
+	}
+
+	private void pfEditRemoveButtonPressed() {
+
 	}
 
 	private void ggEditEditButtonPressed() {
