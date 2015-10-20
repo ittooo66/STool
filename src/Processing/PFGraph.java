@@ -35,13 +35,14 @@ public class PFGraph extends PApplet {
 		textFont(font);
 	}
 
-	public void draw(){
+	public void draw() {
 
-		background(0);
-		stroke(200,200,200);
+		background(COLOR_BACKGROUND);
+		stroke(COLOR_LINES);
 
-		text("W:"+width+",H:"+height+" on PF",mouseX,mouseY);
+		text("W:" + width + ",H:" + height + " on PF", mouseX, mouseY);
 
+		//TODO:各リレーションを描画
 
 		//各ドメインを描画
 		for (Domain d : sToolEditor.fgm.getDomains()) {
@@ -85,7 +86,6 @@ public class PFGraph extends PApplet {
 			textAlign(CENTER);
 			text(d.name, d.x, d.y + 2);
 		}
-
 
 	}
 
