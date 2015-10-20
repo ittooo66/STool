@@ -14,6 +14,9 @@ public class GGGraph extends PApplet {
 	//選択中のゴールID（-1なら非選択）
 	public int selectedGoalId = -1;
 
+	//TODO:PRO MODE
+	//public boolean isProMode;
+
 	//本体
 	private SToolEditor sToolEditor;
 
@@ -92,26 +95,47 @@ public class GGGraph extends PApplet {
 				float childR = getRadian(childGoal, parentGoal);
 				float parentR = getRadian(parentGoal, childGoal);
 
-				//x,y座標系
+				//ゴール楕円上のx,y座標（親x,yと子x,y）
 				float xC = ((textWidth(childGoal.name) + 40) / 2) * cos(childR);
 				float yC = (40 / 2) * sin(childR);
 				float xP = ((textWidth(parentGoal.name) + 40) / 2) * cos(parentR);
 				float yP = (40 / 2) * sin(parentR);
 
-				line(xP + parentGoal.x, yP + parentGoal.y, xC + childGoal.x, yC + childGoal.y);
+				if (match(childGoal.name, "\n") == null) {//子ゴールの名前が一行
 
-				if (match(childGoal.name, "\n") == null) {
-					//子ゴールが一行
+					//線引き
+					line(xP + parentGoal.x, yP + parentGoal.y, xC + childGoal.x, yC + childGoal.y);
+
+					//矢印代わりのellipse
 					ellipse(xC + childGoal.x, yC + childGoal.y, 10, 10);
-				} else {
-					//子ゴールが二行以上
-					String[] texts =splitTokens(childGoal.name,"\n");
+				} else {//子ゴールの名前が二行以上
+					String[] texts = splitTokens(childGoal.name, "\n");
 
-					float x=0,y=0;
+					//ゴール縁のx,y座標を計算
+					float w = textWidth(childGoal.name) + 40;
+					float h = texts.length * 16 + 20;
+					float x = 0, y = 0;
 
+					if (-(h / w) < tan(childR) && tan(childR) < (h / w)) {
+						x = w / 2;
+						y = (w / 2) * tan(childR);
+						if (PI / 2 < childR && childR < 3 * PI / 2) {
+							x = -x;
+							y = -y;
+						}
+					} else {
+						x = -(h / 2) * tan(PI / 2 - childR);
+						y = -h/2;
+						if (0 < childR && childR < PI) {
+							x=-x;
+							y=-y;
+						}
+					}
+					//線引き
+					line(xP + parentGoal.x, yP + parentGoal.y, x + childGoal.x, y + childGoal.y);
 
-					//TODO:境界にEllipseねじこみ
-					ellipse(childGoal.x-x, childGoal.y-y,10, 10);
+					//矢印代わりのellipse
+					ellipse(childGoal.x + x, childGoal.y + y, 10, 10);
 				}
 
 			}
