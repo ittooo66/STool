@@ -486,8 +486,11 @@ public class SToolEditor extends JFrame {
 			//TODO:Necessity更新
 		}
 
-		//TODO:PFEditor各種コンポーネント：表示・非表示切り替え
-
+		//PFEditor各種コンポーネント：表示・非表示切り替え
+		pfEditAdd.setVisible(pfGraph.selectedDomainId == -1);
+		pfEditRemove.setVisible(pfGraph.selectedDomainId != -1);
+		pfEditEdit.setVisible(pfGraph.selectedDomainId != -1);
+		pfEditDomainType.setVisible(pfGraph.selectedDomainId != -1);
 
 		//GGEditor各種コンポーネント:表示・非表示切り替え
 		ggEditAdd.setVisible(ggGraph.selectedGoalId == -1);
