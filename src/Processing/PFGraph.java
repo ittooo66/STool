@@ -9,12 +9,20 @@ import processing.core.PFont;
  * プロブレムフレームエディタタブで出力するProcessingコンポーネント
  */
 public class PFGraph extends PApplet {
+
+	//選択中のドメインID
 	int selectedDomainId = -1;
 
+	//本体
 	SToolEditor sToolEditor;
 
-	public PFGraph(SToolEditor sToolEditor){
-		this.sToolEditor=sToolEditor;
+	//カラーパレット
+	private final int COLOR_BACKGROUND = color(28, 28, 28);
+	private final int COLOR_LINES = color(123, 144, 210);
+	private final int COLOR_SELECTED = color(226, 148, 59);
+
+	public PFGraph(SToolEditor sToolEditor) {
+		this.sToolEditor = sToolEditor;
 	}
 
 	public  void setup(){
