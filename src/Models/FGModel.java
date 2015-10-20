@@ -108,9 +108,9 @@ public class FGModel {
 	public boolean editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId) {
 		//編集対象のゴール取得
 		Goal goal = null;
-		for(Goal g:goals){
-			if(g.id == id){
-				goal=g;
+		for (Goal g : goals) {
+			if (g.id == id) {
+				goal = g;
 				break;
 			}
 		}
@@ -118,9 +118,9 @@ public class FGModel {
 		//モデル整合性チェック
 
 		//親ゴールとして自己参照はだめ
-		if(id==parentId)return false;
+		if (id == parentId) return false;
 
-		if(childrenType == Goal.ChildrenType.LEAF) {
+		if (childrenType == Goal.ChildrenType.LEAF) {
 			//LEAF設定は子ゴールのみに許される
 			for (Goal g : goals) if (g.parentId == id) return false;
 		}
@@ -147,6 +147,7 @@ public class FGModel {
 			if (g.id == id) {
 				g.x = x;
 				g.y = y;
+				return;
 			}
 		}
 	}
@@ -161,8 +162,7 @@ public class FGModel {
 		for (int i = 0; i < goals.size(); i++) {
 			Goal removedGoalCandidate = goals.get(i);
 			if (removedGoalCandidate.id == id) {
-				//根ゴールは削除不能
-				if (removedGoalCandidate.id == 0) return false;
+				Goal goal = goals.get(i);
 
 				//ゴール削除（get(i),remove(i)でまわしてることに注意）
 				goals.remove(i);
@@ -187,7 +187,7 @@ public class FGModel {
 		return domains;
 	}
 
-	public Domain getDomain(int id) {
+	public Domain getDomainById(int id) {
 		for (Domain d : domains) {
 			if (d.id == id) return d;
 		}
@@ -221,13 +221,21 @@ public class FGModel {
 		domains.add(d);
 	}
 
-	public void editDomain(int id, String name, Domain.DomainType dt, int x, int y) {
+	public void editDomain(int id, String name, Domain.DomainType dt) {
 		for (Domain d : domains) {
 			if (d.id == id) {
 				d.domainType = dt;
 				d.name = name;
+			}
+		}
+	}
+
+	public void moveDomain(int id, int x, int y) {
+		for (Domain d : domains) {
+			if (d.id == id) {
 				d.x = x;
 				d.y = y;
+				return;
 			}
 		}
 	}
