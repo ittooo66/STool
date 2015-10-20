@@ -379,7 +379,20 @@ public class SToolEditor extends JFrame {
 	}
 
 	private void pfEditEditButtonPressed() {
+		//各種コンポーネントからパラメータ取得
+		String name = pfEditNameArea.getText();
+		int id = pfGraph.selectedDomainId;
+		Domain.DomainType dt = pfEditDomainTypeBiddable.isSelected() ?
+				Domain.DomainType.BIDDABLE : pfEditDomainTypeCausal.isSelected() ?
+				Domain.DomainType.CAUSAL : pfEditDomainTypeDesigned.isSelected() ?
+				Domain.DomainType.DESIGNED : pfEditDomainTypeLexical.isSelected() ?
+				Domain.DomainType.LEXICAL : pfEditDomainTypeSystem.isSelected() ?
+				Domain.DomainType.SYSTEM : Domain.DomainType.NONE;
 
+		//fgm編集
+		if (!fgm.editDomain(id, name, dt)) {
+			JOptionPane.showMessageDialog(this, "モデルを編集できませんでした", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 
 		redraw();
 	}
