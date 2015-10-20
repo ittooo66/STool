@@ -39,7 +39,7 @@ public class GGGraph extends PApplet {
 		//背景描画
 		background(COLOR_BACKGROUND);
 
-		//枝周り記述の下準備
+		//記述の下準備
 		stroke(COLOR_LINES);
 		strokeWeight(2);
 		noFill();
@@ -71,12 +71,11 @@ public class GGGraph extends PApplet {
 						}
 						countOfChildGoals++;
 					}
+				}
 
-					//ゴールカウントが２以上で線引き
-					if (countOfChildGoals > 1) {
-						//arcずれは円形arcで一旦対処
-						arc(parentGoal.x, parentGoal.y, textWidth(parentGoal.name) + 40 + 30, 40 + 30, rootR, distR);
-					}
+				//ゴールカウントが２以上で線引き
+				if (countOfChildGoals > 1) {
+					arc(parentGoal.x, parentGoal.y, textWidth(parentGoal.name) + 40 + 30, 40 + 30, rootR, distR);
 				}
 			}
 		}
@@ -99,7 +98,20 @@ public class GGGraph extends PApplet {
 				float yP = (40 / 2) * sin(parentR);
 
 				line(xP + parentGoal.x, yP + parentGoal.y, xC + childGoal.x, yC + childGoal.y);
-				ellipse(xC + childGoal.x, yC + childGoal.y, 10, 10);
+
+				if (match(childGoal.name, "\n") == null) {
+					//子ゴールが一行
+					ellipse(xC + childGoal.x, yC + childGoal.y, 10, 10);
+				} else {
+					//子ゴールが二行以上
+					String[] texts =splitTokens(childGoal.name,"\n");
+
+					//
+
+
+					ellipse(childGoal.x-(textWidth(childGoal.name)+20)*cos(childR), childGoal.y-( texts.length * 8 - 10),10, 10);
+				}
+
 			}
 		}
 
@@ -107,31 +119,36 @@ public class GGGraph extends PApplet {
 		textAlign(CENTER, CENTER);
 		for (Goal g : sToolEditor.fgm.getGoals()) {
 
-			fill(COLOR_BACKGROUND);
-			stroke(COLOR_LINES);
+			//fill変更(リーフか否か)
+			fill(g.childrenType.equals(Goal.ChildrenType.LEAF) ? COLOR_LINES : COLOR_BACKGROUND);
+			//stroke変更(選択中か否か)
+			stroke(g.id == selectedGoalId ? COLOR_SELECTED : COLOR_LINES);
 
-			//ゴールの優先度に応じた配色設定
-			if (g.id == selectedGoalId) {
-				stroke(COLOR_SELECTED);
-				strokeWeight(3);
+			//ゴール名が１行の場合
+			if (match(g.name, "\n") == null) {
+				//わっか記述
+				ellipse(g.x, g.y, textWidth(g.name) + 40, 40);
+
+				//fill変更(選択中か否か、リーフか否か)
+				fill(g.id == selectedGoalId ? COLOR_SELECTED : g.childrenType.equals(Goal.ChildrenType.LEAF) ? COLOR_BACKGROUND : COLOR_LINES);
+
+				//名前の記述
+				text(g.name, g.x, g.y - 2);
+			} else {//名前が二行以上のとき
+				//テキストをSplit
+				String[] texts = splitTokens(g.name, "\n");
+
+				//枠記述
+				rect(g.x - (textWidth(g.name) + 40) / 2, g.y - texts.length * 8 - 10, textWidth(g.name) + 40, texts.length * 16 + 20, 8);
+
+				//fill変更(選択中か否か、リーフか否か)
+				fill(g.id == selectedGoalId ? COLOR_SELECTED : g.childrenType.equals(Goal.ChildrenType.LEAF) ? COLOR_BACKGROUND : COLOR_LINES);
+
+				//名前の記述
+				for (int i = 0; i < texts.length; i++) {
+					text(texts[i], g.x, (g.y - 2) - texts.length * 8 + 10 + i * 16);
+				}
 			}
-
-			//葉っぱかどうかで変わる配色設定
-			if (g.childrenType.equals(Goal.ChildrenType.LEAF)) fill(COLOR_LINES);
-
-			//わっか記述
-			ellipse(g.x, g.y, textWidth(g.name) + 40, 40);
-
-			fill(COLOR_LINES);
-
-			//葉っぱかどうかで変わる配色設定
-			if (g.childrenType.equals(Goal.ChildrenType.LEAF)) fill(COLOR_BACKGROUND);
-
-			//選択ゴール時
-			if (g.id == selectedGoalId) fill(COLOR_SELECTED);
-
-			//名前の記述
-			text(g.name, g.x, g.y - 2);
 		}
 
 	}
@@ -162,18 +179,17 @@ public class GGGraph extends PApplet {
 	}
 
 	public void mousePressed() {
-		final int goalMergin = 40;
+		final int goalClickMergin = 40;
 
 		//ドメイン選択の一時解除
 		selectedGoalId = -1;
 		for (Goal g : sToolEditor.fgm.getGoals()) {
 			//マウスクリック範囲にドメインがあれば、それを選択
-			if (g.x - goalMergin < mouseX && mouseX < g.x + goalMergin &&
-					g.y - goalMergin < mouseY && mouseY < g.y + goalMergin) {
+			if (g.x - goalClickMergin < mouseX && mouseX < g.x + goalClickMergin &&
+					g.y - goalClickMergin < mouseY && mouseY < g.y + goalClickMergin) {
 				selectedGoalId = g.id;
 			}
 		}
-
 		sToolEditor.redraw();
 	}
 
