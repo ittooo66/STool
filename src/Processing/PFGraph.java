@@ -46,16 +46,17 @@ public class PFGraph extends PApplet {
 		//TODO:各イベントを描画
 
 		//各ドメインを描画
+		textAlign(CENTER, CENTER);
 		for (Domain d : sToolEditor.fgm.getDomains()) {
 
-			//fill変更(リーフか否か)
+			//fill変更
 			fill(COLOR_BACKGROUND);
 			//stroke変更(選択中か否か)
 			stroke(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-
 			//ドメイン枠描画
 			rect(d.x - 10 - textWidth(d.name) / 2, d.y - 20, 20 + textWidth(d.name), 40);
 
+			//TODO:Domaintype記述ガタガタを修正
 			// domaintype記述（左端のやつ）
 			if (d.domainType == Domain.DomainType.DESIGNED) {
 				line(d.x - 20 - d.name.length() * (float) 3.5 + 5, d.y - 20, d.x - 20 - d.name.length() * (float) 3.5 + 5, d.y + 20);
@@ -64,29 +65,23 @@ public class PFGraph extends PApplet {
 				line(d.x - 20 - d.name.length() * (float) 3.5 + 10, d.y - 20, d.x - 20 - d.name.length() * (float) 3.5 + 10, d.y + 20);
 			} else if (d.domainType == Domain.DomainType.BIDDABLE) {
 				rect(d.x - 20 - d.name.length() * (float) 3.5, d.y + 6, 20, 14);
-				fill(100, 100, 100);
-				textAlign(CENTER);
+				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
 				text("B", d.x - 20 - d.name.length() * (float) 3.5 + 8, d.y + 18);
 			} else if (d.domainType == Domain.DomainType.CAUSAL) {
 				rect(d.x - 20 - d.name.length() * (float) 3.5, d.y + 6, 20, 14);
-				fill(100, 100, 100);
-				textAlign(CENTER);
+				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
 				text("C", d.x - 20 - d.name.length() * (float) 3.5 + 8, d.y + 18);
 			} else if (d.domainType == Domain.DomainType.LEXICAL) {
 				rect(d.x - 20 - d.name.length() * (float) 3.5, d.y + 6, 20, 14);
-				fill(100, 100, 100);
-				textAlign(CENTER);
+				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
 				text("X", d.x - 20 - d.name.length() * (float) 3.5 + 8, d.y + 18);
 			}
 
 			//名前の記述
 			fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-			textAlign(CENTER, CENTER);
 			text(d.name, d.x, d.y - 2);
 		}
-
 	}
-
 
 	public void mousePressed() {
 		final int domainClickMergin = 40;
