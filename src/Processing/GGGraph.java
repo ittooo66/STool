@@ -5,6 +5,7 @@ import Core.*;
 import processing.core.PApplet;
 import processing.core.PFont;
 
+
 /**
  * ゴールグラフエディタタブで出力するProcessing部分
  */
@@ -108,6 +109,7 @@ public class GGGraph extends PApplet {
 
 					float x=0,y=0;
 
+
 					//TODO:境界にEllipseねじこみ
 					ellipse(childGoal.x-x, childGoal.y-y,10, 10);
 				}
@@ -150,7 +152,6 @@ public class GGGraph extends PApplet {
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -167,15 +168,15 @@ public class GGGraph extends PApplet {
 	 */
 	private float getRadian(Goal root, Goal dist) {
 		//枝の刺さる角度
-		float alpha = (PI / 2) + atan((float) (dist.y - root.y) / (float) (dist.x - root.x));
+		float radian = (PI / 2) + atan((float) (dist.y - root.y) / (float) (dist.x - root.x));
 		//第２、３象限のとき、atan()の都合上修正噛ます
-		if (root.x > dist.x) alpha += PI;
-		if (alpha < PI / 2) {
-			alpha += 3 * PI / 2;
+		if (root.x > dist.x) radian += PI;
+		if (radian < PI / 2) {
+			radian += 3 * PI / 2;
 		} else {
-			alpha -= PI / 2;
+			radian -= PI / 2;
 		}
-		return alpha;
+		return radian;
 	}
 
 	public void mousePressed() {
