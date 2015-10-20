@@ -11,7 +11,7 @@ import processing.core.PFont;
 public class PFGraph extends PApplet {
 
 	//選択中のドメインID
-	int selectedDomainId = -1;
+	public int selectedDomainId = -1;
 
 	//本体
 	SToolEditor sToolEditor;
