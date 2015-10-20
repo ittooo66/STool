@@ -39,24 +39,22 @@ public class PFGraph extends PApplet {
 
 		background(COLOR_BACKGROUND);
 		stroke(COLOR_LINES);
-
-		text("W:" + width + ",H:" + height + " on PF", mouseX, mouseY);
+		strokeWeight(2);
 
 		//TODO:各リレーションを描画
 
+		//TODO:各イベントを描画
+
 		//各ドメインを描画
 		for (Domain d : sToolEditor.fgm.getDomains()) {
-			noStroke();
-			fill(252, 252, 252);
-			rect(d.x - 20 - d.name.length() * (float) 3.5, d.y - 20, 40 + d.name.length() * 7, 40);
 
-			if (d.id == selectedDomainId)
-				//選択されたドメインは赤
-				stroke(255, 0, 0);
-			else
-				stroke(128, 128, 128);
+			//fill変更(リーフか否か)
+			fill(COLOR_BACKGROUND);
+			//stroke変更(選択中か否か)
+			stroke(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
 
-			rect(d.x - 20 - d.name.length() * (float) 3.5, d.y - 20, 40 + d.name.length() * 7, 40);
+			//ドメイン枠描画
+			rect(d.x - 10 - textWidth(d.name) / 2, d.y - 20, 20 + textWidth(d.name), 40);
 
 			// domaintype記述（左端のやつ）
 			if (d.domainType == Domain.DomainType.DESIGNED) {
@@ -82,9 +80,9 @@ public class PFGraph extends PApplet {
 			}
 
 			//名前の記述
-			fill(100, 100, 100);
-			textAlign(CENTER);
-			text(d.name, d.x, d.y + 2);
+			fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
+			textAlign(CENTER, CENTER);
+			text(d.name, d.x, d.y - 2);
 		}
 
 	}
