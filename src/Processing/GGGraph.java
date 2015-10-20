@@ -91,10 +91,9 @@ public class GGGraph extends PApplet {
 				//親ゴール取得
 				Goal parentGoal = sToolEditor.fgm.getGoalById(childGoal.parentId);
 
-				//ゴールの方角
+				//（子||親）から見た（親||子）ゴールの方角
 				float childR = getRadian(childGoal, parentGoal);
 				float parentR = getRadian(parentGoal, childGoal);
-
 				//ゴール楕円上のx,y座標（親x,yと子x,y）
 				float xC = ((textWidth(childGoal.name) + 40) / 2) * cos(childR);
 				float yC = (40 / 2) * sin(childR);
@@ -102,19 +101,16 @@ public class GGGraph extends PApplet {
 				float yP = (40 / 2) * sin(parentR);
 
 				if (match(childGoal.name, "\n") == null) {//子ゴールの名前が一行
-
-					//線引き
-					line(xP + parentGoal.x, yP + parentGoal.y, xC + childGoal.x, yC + childGoal.y);
-
-					//矢印代わりのellipse
-					ellipse(xC + childGoal.x, yC + childGoal.y, 10, 10);
+					//枝引き
+					line(parentGoal.x + xP, parentGoal.y + yP, childGoal.x + xC, childGoal.y + yC);
+					ellipse(childGoal.x + xC, childGoal.y + yC, 10, 10);
 				} else {//子ゴールの名前が二行以上
 					String[] texts = splitTokens(childGoal.name, "\n");
 
-					//ゴール縁のx,y座標を計算
-					float w = textWidth(childGoal.name) + 40;
-					float h = texts.length * 16 + 20;
-					float x = 0, y = 0;
+					//ゴール中心（child.x,child.y）から、ゴール縁のx,y座標を計算
+					float x, y;
+					float w = textWidth(childGoal.name) + 40;//ゴールの幅
+					float h = texts.length * 16 + 20;//ゴールの高さ
 
 					if (-(h / w) < tan(childR) && tan(childR) < (h / w)) {
 						x = w / 2;
@@ -125,19 +121,17 @@ public class GGGraph extends PApplet {
 						}
 					} else {
 						x = -(h / 2) * tan(PI / 2 - childR);
-						y = -h/2;
+						y = -h / 2;
 						if (0 < childR && childR < PI) {
-							x=-x;
-							y=-y;
+							x = -x;
+							y = -y;
 						}
 					}
-					//線引き
-					line(xP + parentGoal.x, yP + parentGoal.y, x + childGoal.x, y + childGoal.y);
 
-					//矢印代わりのellipse
+					//枝引き
+					line(xP + parentGoal.x, yP + parentGoal.y, x + childGoal.x, y + childGoal.y);
 					ellipse(childGoal.x + x, childGoal.y + y, 10, 10);
 				}
-
 			}
 		}
 
@@ -160,7 +154,7 @@ public class GGGraph extends PApplet {
 
 				//名前の記述
 				text(g.name, g.x, g.y - 2);
-			} else {//名前が二行以上のとき
+			} else {//ゴール名が二行以上のとき
 				//テキストをSplit
 				String[] texts = splitTokens(g.name, "\n");
 
@@ -222,7 +216,7 @@ public class GGGraph extends PApplet {
 		if (mouseButton == LEFT && selectedGoalId != -1) {
 			Goal g = sToolEditor.fgm.getGoalById(selectedGoalId);
 			if (g != null && 0 < mouseX && mouseX < width && 0 < mouseY && mouseY < height)
-				sToolEditor.fgm.editGoal(selectedGoalId, mouseX, mouseY);
+				sToolEditor.fgm.moveGoal(selectedGoalId, mouseX, mouseY);
 		}
 		sToolEditor.redraw();
 	}
