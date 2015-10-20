@@ -17,10 +17,9 @@ public class GGGraph extends PApplet{
 	private SToolEditor sToolEditor;
 
 	//カラーパレット
-	private final int COLOR_BACKGROUND =color(32,32,32);
-	private final int COLOR_LINES =color(166,178,195);
-	private final int COLOR_SELECTED = color(196,121,51);
-	private final int COLOR_ACCENT = color(116,128,145);
+	private final int COLOR_BACKGROUND =color(28,28,28);
+	private final int COLOR_LINES =color(123,144,210);
+	private final int COLOR_SELECTED = color(226,148,59);
 
 	public GGGraph(SToolEditor sToolEditor){
 		this.sToolEditor=sToolEditor;
@@ -42,7 +41,7 @@ public class GGGraph extends PApplet{
 
 		//枝周り記述の下準備
 		stroke(COLOR_LINES);
-		strokeWeight(1);
+		strokeWeight(2);
 		noFill();
 
 		//AND記述対象のゴール捜索
@@ -115,12 +114,6 @@ public class GGGraph extends PApplet{
 			if (g.id == selectedGoalId) {
 				stroke(COLOR_SELECTED);
 				strokeWeight(3);
-			} else if (g.isEnable) {
-				stroke(COLOR_LINES);
-				strokeWeight(2);
-			} else {
-				stroke(COLOR_ACCENT);
-				strokeWeight(1);
 			}
 
 			//葉っぱかどうかで変わる配色設定
@@ -133,6 +126,9 @@ public class GGGraph extends PApplet{
 
 			//葉っぱかどうかで変わる配色設定
 			if(g.childrenType.equals(Goal.ChildrenType.LEAF)) fill(COLOR_BACKGROUND);
+
+			//選択ゴール時
+			if(g.id ==selectedGoalId)fill(COLOR_SELECTED);
 
 			//名前の記述
 			text(g.name, g.x, g.y - 2);
