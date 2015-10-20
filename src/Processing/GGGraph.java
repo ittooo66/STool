@@ -44,7 +44,7 @@ public class GGGraph extends PApplet {
 		strokeWeight(2);
 		noFill();
 
-		//AND記述対象のゴール捜索
+		//ANDArc描画
 		for (Goal parentGoal : sToolEditor.fgm.getGoals()) {
 			if (parentGoal.childrenType.equals(Goal.ChildrenType.AND)) {
 
@@ -106,10 +106,10 @@ public class GGGraph extends PApplet {
 					//子ゴールが二行以上
 					String[] texts =splitTokens(childGoal.name,"\n");
 
-					//
+					float x=0,y=0;
 
-
-					ellipse(childGoal.x-(textWidth(childGoal.name)+20)*cos(childR), childGoal.y-( texts.length * 8 - 10),10, 10);
+					//TODO:境界にEllipseねじこみ
+					ellipse(childGoal.x-x, childGoal.y-y,10, 10);
 				}
 
 			}
