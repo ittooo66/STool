@@ -16,7 +16,6 @@ import java.util.List;
  * loadXML()とsaveXML()でXML入出力を行える
  * <p>
  * モデルのおやくそく（根ゴールは必ず１個、消去不可）とかそういうやつはだいたいここで管理すること
- *
  */
 public class FGModel {
 	private List<Goal> goals;
@@ -171,6 +170,8 @@ public class FGModel {
 				for (Goal g : goals) {
 					if (g.parentId == removedGoalCandidate.id) g.parentId = removedGoalCandidate.parentId;
 				}
+				//TODO:親が子なしになったのであれば親を子にする
+
 				return true;
 			}
 		}
@@ -238,6 +239,12 @@ public class FGModel {
 		}
 	}
 
+	/**
+	 * CreateFGModelで
+	 *
+	 * @param domains
+	 */
+	@Deprecated
 	public void setDomains(List<Domain> domains) {
 		this.domains = domains;
 	}
