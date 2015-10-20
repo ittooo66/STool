@@ -221,13 +221,15 @@ public class FGModel {
 		domains.add(d);
 	}
 
-	public void editDomain(int id, String name, Domain.DomainType dt) {
+	public boolean editDomain(int id, String name, Domain.DomainType dt) {
 		for (Domain d : domains) {
 			if (d.id == id) {
 				d.domainType = dt;
 				d.name = name;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public void moveDomain(int id, int x, int y) {
