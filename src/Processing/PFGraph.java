@@ -81,30 +81,27 @@ public class PFGraph extends PApplet {
 	}
 
 
-
-	public void mousePressed(){
-		final int domainMergin = 40;
+	public void mousePressed() {
+		final int domainClickMergin = 40;
 
 		//ドメイン選択の一時解除
 		selectedDomainId = -1;
 		for (Domain d : sToolEditor.fgm.getDomains()) {
 			//マウスクリック範囲にドメインがあれば、それを選択
-			if (d.x - domainMergin < mouseX && mouseX < d.x + domainMergin &&
-					d.y - domainMergin < mouseY && mouseY < d.y + domainMergin) {
+			if (d.x - domainClickMergin < mouseX && mouseX < d.x + domainClickMergin &&
+					d.y - domainClickMergin < mouseY && mouseY < d.y + domainClickMergin) {
 				selectedDomainId = d.id;
 			}
 		}
-		redraw();
+		sToolEditor.redraw();
 	}
 
-	public void mouseDragged(){
-		if (mouseButton == LEFT) {
-			if (selectedDomainId != -1) {
-				Domain d = sToolEditor.fgm.getDomain(selectedDomainId);
-				if (d != null) sToolEditor.fgm.editDomain(selectedDomainId, d.name, d.domainType, mouseX, mouseY);
-			}
+	public void mouseDragged() {
+		if (mouseButton == LEFT && selectedDomainId != -1) {
+			Domain d = sToolEditor.fgm.getDomainById(selectedDomainId);
+			if (d != null && 0 < mouseX && mouseX < width && 0 < mouseY && mouseY < height)
+				sToolEditor.fgm.moveDomain(selectedDomainId, mouseX, mouseY);
 		}
-		redraw();
+		sToolEditor.redraw();
 	}
-
 }
