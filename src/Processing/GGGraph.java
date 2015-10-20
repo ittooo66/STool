@@ -188,7 +188,7 @@ public class GGGraph extends PApplet {
 	 * 南：PI/2
 	 * 西：PI
 	 * 北：3*PI/2
-	 * となる
+	 * となる。arc()記述用のラジアンに対応している
 	 */
 	private float getRadian(Goal root, Goal dist) {
 		//枝の刺さる角度
