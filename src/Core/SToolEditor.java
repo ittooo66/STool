@@ -91,9 +91,9 @@ public class SToolEditor extends JFrame {
 	private List<Integer> ggEditParentComboBoxIdList;
 
 	//PFEditorコンポーネント群(一応Privateな)
-	private JButton pfEditRemove,pfEditAdd,pfEditEdit;
+	private JButton pfEditRemove, pfEditAdd, pfEditEdit;
 	private JTextArea pfEditNameArea;
-	private JRadioButton pfEditDomainTypeNone,pfEditDomainTypeBiddable,pfEditDomainTypeCausal,pfEditDomainTypeLexical,pfEditDomainTypeSystem,pfEditDomainTypeDesigned;
+	private JRadioButton pfEditDomainTypeNone, pfEditDomainTypeBiddable, pfEditDomainTypeCausal, pfEditDomainTypeLexical, pfEditDomainTypeSystem, pfEditDomainTypeDesigned;
 	private JPanel pfEditDomainType;
 
 	//PApplet部分(こいつらも一応Privateな)
@@ -183,7 +183,7 @@ public class SToolEditor extends JFrame {
 		ggEditPanel.add(ggEditEdit);
 
 		//NameTextArea周り
-		ggEditNameArea = new JTextArea(5,15);
+		ggEditNameArea = new JTextArea(5, 15);
 		JScrollPane scroll = new JScrollPane(ggEditNameArea);
 		JPanel ggEditNameFieldBorder = new JPanel();
 		ggEditNameFieldBorder.add(scroll);
@@ -283,7 +283,7 @@ public class SToolEditor extends JFrame {
 		pfEditPanel.add(pfEditEdit);
 
 		//NameTextArea周り
-		pfEditNameArea = new JTextArea(5,15);
+		pfEditNameArea = new JTextArea(5, 15);
 		JScrollPane pfScroll = new JScrollPane(pfEditNameArea);
 		JPanel pfEditNameFieldBorder = new JPanel();
 		pfEditNameFieldBorder.add(pfScroll);
@@ -350,7 +350,7 @@ public class SToolEditor extends JFrame {
 		}
 
 		//追加
-		fgm.addDomain(name, Domain.DomainType.NONE,pfGraph.width/2,pfGraph.height/2);
+		fgm.addDomain(name, Domain.DomainType.NONE, pfGraph.width / 2, pfGraph.height / 2);
 		redraw();
 	}
 
@@ -485,6 +485,9 @@ public class SToolEditor extends JFrame {
 
 			//TODO:Necessity更新
 		}
+
+		//TODO:PFEditor各種コンポーネント：表示・非表示切り替え
+
 
 		//GGEditor各種コンポーネント:表示・非表示切り替え
 		ggEditAdd.setVisible(ggGraph.selectedGoalId == -1);
