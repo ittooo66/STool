@@ -398,7 +398,7 @@ public class SToolEditor extends JFrame {
 	}
 
 	private void pfEditRemoveButtonPressed() {
-
+		//TODO:pfEditor:RemoveButton押下内容追加
 	}
 
 	private void ggEditEditButtonPressed() {
