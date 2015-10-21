@@ -473,6 +473,30 @@ public class SToolEditor extends JFrame {
 			}
 		}
 
+		//PFEdit:PFGraph.selectedDomainIdに応じたエディタ画面に更新
+		if (pfGraph.selectedDomainId != -1){
+			//選択中のドメインを取得
+			Domain selectedDomain = fgm.getDomainById(pfGraph.selectedDomainId);
+
+			//Text更新
+			pfEditNameArea.setText(selectedDomain.name);
+
+			//DomainType更新
+			if(selectedDomain.domainType == Domain.DomainType.NONE){
+				pfEditDomainTypeNone.setSelected(true);
+			}else if (selectedDomain.domainType == Domain.DomainType.BIDDABLE){
+				pfEditDomainTypeBiddable.setSelected(true);
+			}else if( selectedDomain.domainType == Domain.DomainType.CAUSAL){
+				pfEditDomainTypeCausal.setSelected(true);
+			}else if(selectedDomain.domainType == Domain.DomainType.DESIGNED){
+				pfEditDomainTypeDesigned.setSelected(true);
+			}else if(selectedDomain.domainType == Domain.DomainType.SYSTEM){
+				pfEditDomainTypeSystem.setSelected(true);
+			}else if(selectedDomain.domainType == Domain.DomainType.LEXICAL){
+				pfEditDomainTypeLexical.setSelected(true);
+			}
+		}
+
 		//GGEdit:GGGraph.selectedGoalIdに応じたエディタ画面に更新
 		if (ggGraph.selectedGoalId != -1) {
 
@@ -501,18 +525,18 @@ public class SToolEditor extends JFrame {
 			//TODO:Necessity更新
 		}
 
-		//PFEditor各種コンポーネント：表示・非表示切り替え
-		pfEditAdd.setVisible(pfGraph.selectedDomainId == -1);
-		pfEditRemove.setVisible(pfGraph.selectedDomainId != -1);
-		pfEditEdit.setVisible(pfGraph.selectedDomainId != -1);
-		pfEditDomainType.setVisible(pfGraph.selectedDomainId != -1);
-
 		//GGEditor各種コンポーネント:表示・非表示切り替え
 		ggEditAdd.setVisible(ggGraph.selectedGoalId == -1);
 		ggEditRemove.setVisible(ggGraph.selectedGoalId != -1);
 		ggEditEdit.setVisible(ggGraph.selectedGoalId != -1);
 		ggEditNecessity.setVisible(ggGraph.selectedGoalId != -1);
 		ggEditRefineType.setVisible(ggGraph.selectedGoalId != -1);
+
+		//PFEditor各種コンポーネント：表示・非表示切り替え
+		pfEditAdd.setVisible(pfGraph.selectedDomainId == -1);
+		pfEditRemove.setVisible(pfGraph.selectedDomainId != -1);
+		pfEditEdit.setVisible(pfGraph.selectedDomainId != -1);
+		pfEditDomainType.setVisible(pfGraph.selectedDomainId != -1);
 	}
 
 	public static void main(String[] args) {
