@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import Models.*;
 import Models.Domain.DomainType;
 import Models.Step.StepType;
+
 /*
  * 
  *@author Kazuaki hirasawa
@@ -26,12 +27,12 @@ public class CreateFGModel {
 		FGModel fg = new FGModel();
 		InputStream input;
 		int dmainId = 1;
-		HashMap<String , Integer> usecaseName2Id = new HashMap<String, Integer>();
+		HashMap<String, Integer> usecaseName2Id = new HashMap<String, Integer>();
 		ArrayList<Usecase> usecases = new ArrayList<Usecase>();
 		ArrayList<Domain> domains = new ArrayList<Domain>();
 		ArrayList<String> domainNames = new ArrayList<String>();
 		Domain temp;
-		try{
+		try {
 			input = new FileInputStream("res/UsecaseParse.json");//生成したjsonファイルのパス
 			int size = input.available();
 			byte[] buffer = new byte[size];
@@ -45,27 +46,27 @@ public class CreateFGModel {
 			 * 
 			 */
 
-			Iterator iter  = jsonObj.keys();
-			while(iter.hasNext()){
+			Iterator iter = jsonObj.keys();
+			while (iter.hasNext()) {
 				String key = (String) iter.next();
-				JSONArray JssonArr =  jsonObj.getJSONArray(key);
-				for(int i = 0 ; i<JssonArr.length() ; i++){
+				JSONArray JssonArr = jsonObj.getJSONArray(key);
+				for (int i = 0; i < JssonArr.length(); i++) {
 					JSONObject stepJson = (JSONObject) JssonArr.get(i);
 					//includeでない文のsub obj targetをDomainに追加
-					if (!stepJson.getString("type").equals("INCLUDE") && !domainNames.contains(stepJson.getString("sub"))){
+					if (!stepJson.getString("type").equals("INCLUDE") && !domainNames.contains(stepJson.getString("sub"))) {
 						domainNames.add(stepJson.getString("sub"));
 					}
-					if (!stepJson.getString("type").equals("INCLUDE") && !domainNames.contains(stepJson.getString("obj"))){
+					if (!stepJson.getString("type").equals("INCLUDE") && !domainNames.contains(stepJson.getString("obj"))) {
 						domainNames.add(stepJson.getString("obj"));
 					}
-					if (!stepJson.getString("type").equals("INCLUDE") && !domainNames.contains(stepJson.getString("target"))){
+					if (!stepJson.getString("type").equals("INCLUDE") && !domainNames.contains(stepJson.getString("target"))) {
 						domainNames.add(stepJson.getString("target"));
 					}
 				}
 
 			}
-			for(String d : domainNames){
-				if (d.length()==0){
+			for (String d : domainNames) {
+				if (d.length() == 0) {
 					continue;
 				}
 				temp = new Domain();
@@ -78,40 +79,33 @@ public class CreateFGModel {
 			}
 			fg.setDomains(domains);
 
-			iter  = jsonObj.keys();
+			iter = jsonObj.keys();
 			int usecaseId = 1;
-			while(iter.hasNext()){
+			while (iter.hasNext()) {
 				String key = (String) iter.next();
-				usecaseName2Id.put(key, usecaseId ++);     //ユースケース名とユースケースidをヒモづける
+				usecaseName2Id.put(key, usecaseId++);     //ユースケース名とユースケースidをヒモづける
 
 			}
 
 
-
-
-
-
-
-
-
 /**************************************************************************************************/
 			iter = jsonObj.keys();  //各ユースケース名を所得
-			while(iter.hasNext()){ //各ユースエースを見るためのループ
+			while (iter.hasNext()) { //各ユースエースを見るためのループ
 				String key = (String) iter.next();
 				Usecase uc = new Usecase();
 				ArrayList<Step> steps = new ArrayList<Step>();
 				uc.name = key;
 				uc.id = usecaseName2Id.get(key);
 				uc.parentLeafGoalId = -1;
-				JSONArray JssonArr =  jsonObj.getJSONArray(key);
-				for(int i = 0 ; i<JssonArr.length() ; i++){  //各ユースケース名中の各ステップのjsonObjを読む
+				JSONArray JssonArr = jsonObj.getJSONArray(key);
+				for (int i = 0; i < JssonArr.length(); i++) {  //各ユースケース名中の各ステップのjsonObjを読む
 					JSONObject stepJson = (JSONObject) JssonArr.get(i);
 					Step step = new Step();
 					step.subjectDomainId = DomainName2Id(domains, stepJson.getString("sub"));
 					stepJson.get("target");
-					if (stepJson.get("target").equals("")){
+					if (stepJson.get("target").equals("")) {
 						step.objectDomainId = DomainName2Id(domains, stepJson.getString("obj"));
-					}else{
+					} else {
 						step.objectDomainId = DomainName2Id(domains, stepJson.getString("target"));
 					}
 					step.id = stepJson.getInt("step_id");
@@ -147,29 +141,32 @@ public class CreateFGModel {
 				}
 				usecases.add(uc);
 			}
-		}catch(FileNotFoundException e){
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		fg.setUsecases(usecases);
 		return fg;
 	}
+
 	//ドメイン名,uc名からidを返す、ない場合は-1を返す
-	public static int DomainName2Id(ArrayList<Domain> domains, String name){
-		for (Domain d : domains){
-			if (d.name.equals(name)){
+	public static int DomainName2Id(ArrayList<Domain> domains, String name) {
+		for (Domain d : domains) {
+			if (d.name.equals(name)) {
 				return d.id;
 			}
 		}
 		return -1;
 	}
-	public static int UsecaseName2Id(ArrayList<Usecase> usecases,String name){
-		for (Usecase uc : usecases){
-			if (uc.name.equals(name)){
+
+	public static int UsecaseName2Id(ArrayList<Usecase> usecases, String name) {
+		for (Usecase uc : usecases) {
+			if (uc.name.equals(name)) {
 				return uc.id;
 			}
 		}
 		return -1;
 	}
+
 	public static ArrayList<String> distinct(ArrayList<String> slist) {
 		return new ArrayList<String>(new LinkedHashSet<String>(slist));
 	}

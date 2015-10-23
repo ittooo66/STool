@@ -9,15 +9,15 @@ public class Step {
 
 	/**
 	 * ステップタイプ（ALT_INDEX,EXCEP_INDEX,GOTO,INCLUDE,ACTION）
-	 *
+	 * <p>
 	 * ALT_INDEX,EXCEP_INDEX:代替・例外系列の頭出し
-	 * 	>sourceStepId:起点となる主系列のステップID
+	 * >sourceStepId:起点となる主系列のステップID
 	 * GOTO:他系列に飛ばす
-	 * 	>gotoStepId:飛ぶ先のステップ
+	 * >gotoStepId:飛ぶ先のステップ
 	 * INCLUDE:他ユースケースに飛ばす
-	 * 	>includeUsecaseId:起動するユースケースのID
+	 * >includeUsecaseId:起動するユースケースのID
 	 * ACTION:何らかの動作を行うステップ
-	 * 	>subjectDomainId,objectDomainId,Event:
+	 * >subjectDomainId,objectDomainId,Event:
 	 */
 	public enum StepType {
 		ACTION {
@@ -57,6 +57,7 @@ public class Step {
 			}
 			return null;
 		}
+
 		//StepTypeをStringに
 		public static String toString(StepType st) {
 			switch (st) {

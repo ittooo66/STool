@@ -474,7 +474,7 @@ public class SToolEditor extends JFrame {
 		}
 
 		//PFEdit:PFGraph.selectedDomainIdに応じたエディタ画面に更新
-		if (pfGraph.selectedDomainId != -1){
+		if (pfGraph.selectedDomainId != -1) {
 			//選択中のドメインを取得
 			Domain selectedDomain = fgm.getDomainById(pfGraph.selectedDomainId);
 
@@ -482,17 +482,17 @@ public class SToolEditor extends JFrame {
 			pfEditNameArea.setText(selectedDomain.name);
 
 			//DomainType更新
-			if(selectedDomain.domainType == Domain.DomainType.NONE){
+			if (selectedDomain.domainType == Domain.DomainType.NONE) {
 				pfEditDomainTypeNone.setSelected(true);
-			}else if (selectedDomain.domainType == Domain.DomainType.BIDDABLE){
+			} else if (selectedDomain.domainType == Domain.DomainType.BIDDABLE) {
 				pfEditDomainTypeBiddable.setSelected(true);
-			}else if( selectedDomain.domainType == Domain.DomainType.CAUSAL){
+			} else if (selectedDomain.domainType == Domain.DomainType.CAUSAL) {
 				pfEditDomainTypeCausal.setSelected(true);
-			}else if(selectedDomain.domainType == Domain.DomainType.DESIGNED){
+			} else if (selectedDomain.domainType == Domain.DomainType.DESIGNED) {
 				pfEditDomainTypeDesigned.setSelected(true);
-			}else if(selectedDomain.domainType == Domain.DomainType.SYSTEM){
+			} else if (selectedDomain.domainType == Domain.DomainType.SYSTEM) {
 				pfEditDomainTypeSystem.setSelected(true);
-			}else if(selectedDomain.domainType == Domain.DomainType.LEXICAL){
+			} else if (selectedDomain.domainType == Domain.DomainType.LEXICAL) {
 				pfEditDomainTypeLexical.setSelected(true);
 			}
 		}

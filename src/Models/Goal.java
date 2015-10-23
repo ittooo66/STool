@@ -42,8 +42,8 @@ public class Goal {
 			return values()[ordinal() - 1];
 		}
 
-		public static ChildrenType parse(String str){
-			switch (str){
+		public static ChildrenType parse(String str) {
+			switch (str) {
 				case "AND":
 					return AND;
 				case "OR":
@@ -54,8 +54,8 @@ public class Goal {
 			return null;
 		}
 
-		public static String toString(ChildrenType ct){
-			switch (ct){
+		public static String toString(ChildrenType ct) {
+			switch (ct) {
 				case AND:
 					return "AND";
 				case OR:
