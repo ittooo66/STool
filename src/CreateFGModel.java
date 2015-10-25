@@ -16,9 +16,9 @@ import Models.Domain.DomainType;
 import Models.Step.StepType;
 
 /*
- * 
+ *
  *@author Kazuaki hirasawa
- *@version  2015-09-12 
+ *@version  2015-09-12
  *添付のpythonスクリプトによって生成されるjsonファイルを読んでいます
  */
 public class CreateFGModel {
@@ -43,7 +43,7 @@ public class CreateFGModel {
 			JSONObject jsonObj = new JSONObject(json);
 			/*
 			 * TODO Domainに値を入れる所を作る
-			 * 
+			 *
 			 */
 
 			Iterator iter = jsonObj.keys();
