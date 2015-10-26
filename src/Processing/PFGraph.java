@@ -48,37 +48,47 @@ public class PFGraph extends PApplet {
 		//各ドメインを描画
 		textAlign(CENTER, CENTER);
 		for (Domain d : sToolEditor.fgm.getDomains()) {
+			//幅と高さを取得
+			float dW = textWidth(d.name) + 30;
+			float dH = 40;
 
 			//fill変更
 			fill(COLOR_BACKGROUND);
 			//stroke変更(選択中か否か)
 			stroke(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
 			//ドメイン枠描画
-			rect(d.x - 10 - textWidth(d.name) / 2, d.y - 20, 20 + textWidth(d.name), 40);
+			rect(d.x - dW / 2, d.y - dH / 2, dW, dH);
 
-			//TODO:Domaintype記述ガタガタを修正
 			// domaintype記述（左端のやつ）
 			if (d.domainType == Domain.DomainType.DESIGNED) {
-				line(d.x - 20 - d.name.length() * (float) 3.5 + 5, d.y - 20, d.x - 20 - d.name.length() * (float) 3.5 + 5, d.y + 20);
+				line(d.x - dW / 2 + 5, d.y - dH / 2, d.x - dW / 2 + 5, d.y + dH / 2);
 			} else if (d.domainType == Domain.DomainType.SYSTEM) {
-				line(d.x - 20 - d.name.length() * (float) 3.5 + 5, d.y - 20, d.x - 20 - d.name.length() * (float) 3.5 + 5, d.y + 20);
-				line(d.x - 20 - d.name.length() * (float) 3.5 + 10, d.y - 20, d.x - 20 - d.name.length() * (float) 3.5 + 10, d.y + 20);
+				line(d.x - dW / 2 + 5, d.y - dH / 2, d.x - dW / 2 + 5, d.y + dH / 2);
+				line(d.x - dW / 2 + 10, d.y - dH / 2, d.x - dW / 2 + 10, d.y + dH / 2);
 			} else if (d.domainType == Domain.DomainType.BIDDABLE) {
-				rect(d.x - 20 - d.name.length() * (float) 3.5, d.y + 6, 20, 14);
+				rect(d.x - dW / 2, d.y + 6, 14, 14);
 				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-				text("B", d.x - 20 - d.name.length() * (float) 3.5 + 8, d.y + 18);
+				textAlign(LEFT, BOTTOM);
+				textSize(10);
+				text("B", d.x - dW / 2 + 3, d.y + dH/2 + 2);
 			} else if (d.domainType == Domain.DomainType.CAUSAL) {
-				rect(d.x - 20 - d.name.length() * (float) 3.5, d.y + 6, 20, 14);
+				rect(d.x - dW / 2, d.y + 6, 14, 14);
 				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-				text("C", d.x - 20 - d.name.length() * (float) 3.5 + 8, d.y + 18);
+				textAlign(LEFT, BOTTOM);
+				textSize(10);
+				text("C", d.x - dW / 2 + 3, d.y + dH/2 + 2);
 			} else if (d.domainType == Domain.DomainType.LEXICAL) {
-				rect(d.x - 20 - d.name.length() * (float) 3.5, d.y + 6, 20, 14);
+				rect(d.x - dW / 2, d.y + 6, 14, 14);
 				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-				text("X", d.x - 20 - d.name.length() * (float) 3.5 + 8, d.y + 18);
+				textAlign(LEFT, BOTTOM);
+				textSize(10);
+				text("X", d.x - dW / 2 + 3, d.y + dH/2 + 2);
 			}
 
 			//名前の記述
 			fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
+			textAlign(CENTER, CENTER);
+			textSize(15);
 			text(d.name, d.x, d.y - 2);
 		}
 	}
