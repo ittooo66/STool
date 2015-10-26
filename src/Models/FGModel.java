@@ -221,6 +221,13 @@ public class FGModel {
 		domains.add(d);
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param name
+	 * @param dt
+	 * @return
+	 */
 	public boolean editDomain(int id, String name, Domain.DomainType dt) {
 		for (Domain d : domains) {
 			if (d.id == id) {
@@ -232,6 +239,12 @@ public class FGModel {
 		return false;
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param x
+	 * @param y
+	 */
 	public void moveDomain(int id, int x, int y) {
 		for (Domain d : domains) {
 			if (d.id == id) {
