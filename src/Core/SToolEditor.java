@@ -398,7 +398,13 @@ public class SToolEditor extends JFrame {
 	}
 
 	private void pfEditRemoveButtonPressed() {
-		//TODO:pfEditor:RemoveButton押下内容追加
+		//選択中のドメインを削除
+		fgm.removeDomain(pfGraph.selectedDomainId);
+
+		//GoalIdを外す
+		pfGraph.selectedDomainId = -1;
+
+		redraw();
 	}
 
 	private void ggEditEditButtonPressed() {
