@@ -255,7 +255,7 @@ public class SToolEditor extends JFrame {
 
 
 		ucPanel.add(ucEditPanel, BorderLayout.LINE_END);
-		ucGraph = new UCGraph();
+		ucGraph = new UCGraph(this);
 		ucGraph.init();
 		ucPanel.add(ucGraph, BorderLayout.CENTER);
 
