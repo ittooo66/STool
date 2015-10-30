@@ -41,9 +41,9 @@ public class PFGraph extends PApplet {
 		stroke(COLOR_LINES);
 		strokeWeight(2);
 
-		//TODO:各リレーションを描画
+		//TODO:各リレーションを描画(UseCase描画の後)
 
-		//TODO:各イベントを描画
+		//TODO:各イベントを描画(UseCase描画の後)
 
 		//各ドメインを描画
 		textAlign(CENTER, CENTER);
