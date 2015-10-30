@@ -265,20 +265,6 @@ public class FGModel {
 		}
 	}
 
-	/**
-	 * CreateFGModelで
-	 *
-	 * @param domains
-	 */
-	@Deprecated
-	public void setDomains(List<Domain> domains) {
-		this.domains = domains;
-	}
-
-	public void setUsecases(List<Usecase> usecases) {
-		this.usecases = usecases;
-	}
-
 	public Usecase getUsecaseById(int id) {
 		for (Usecase u : usecases) {
 			if (u.id == id) return u;
@@ -316,6 +302,23 @@ public class FGModel {
 	public void removeUsecase(int id) {
 		//TODO
 		return;
+	}
+
+
+
+	/**
+	 * CreateFGModelで
+	 *
+	 * @param domains
+	 */
+	@Deprecated
+	public void setDomains(List<Domain> domains) {
+		this.domains = domains;
+	}
+
+	@Deprecated
+	public void setUsecases(List<Usecase> usecases) {
+		this.usecases = usecases;
 	}
 
 }
