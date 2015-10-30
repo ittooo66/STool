@@ -279,11 +279,15 @@ public class FGModel {
 		this.usecases = usecases;
 	}
 
-	public Usecase getUsecase(int id) {
+	public Usecase getUsecaseById(int id) {
 		for (Usecase u : usecases) {
 			if (u.id == id) return u;
 		}
 		return null;
+	}
+
+	public List<Usecase> getUsecases(){
+		return usecases;
 	}
 
 	public void addUsecase(String name, int parentGoalId) {
