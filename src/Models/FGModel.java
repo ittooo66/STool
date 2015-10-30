@@ -95,6 +95,9 @@ public class FGModel {
 		g.y = y;
 		//追加
 		goals.add(g);
+
+		//1:1対応のUsecaseを合わせて追加
+		addUsecase("auto generated UC:to accomplish "+name, id);
 	}
 
 	/**
@@ -283,9 +286,22 @@ public class FGModel {
 		return null;
 	}
 
-	public void addUsecase() {
-		//TODO
-		return;
+	public void addUsecase(String name, int parentGoalId) {
+		//新ID生成
+		int id = 0;
+		for (Usecase u : usecases) {
+			if (u.id >= id) {
+				id = u.id + 1;
+			}
+		}
+		//インスタンス作成
+		Usecase u = new Usecase();
+		u.id = id;
+		u.name = name;
+		u.parentLeafGoalId = parentGoalId;
+
+		//追加
+		usecases.add(u);
 	}
 
 	public void editUsecase() {
