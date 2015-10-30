@@ -20,7 +20,6 @@ public class SToolEditor extends JFrame {
 
 	//バージョン指定
 	private VERSION version;
-
 	public enum VERSION {
 		ASIS, TOBE;
 
@@ -44,14 +43,12 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
-
 	public VERSION getVersion() {
 		return version;
 	}
 
 	//ビュー指定
 	private VIEWMODE viewmode;
-
 	public enum VIEWMODE {
 		ALL, REDUCED;
 
@@ -75,13 +72,11 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
-
 	public VIEWMODE getViewmode() {
 		return viewmode;
 	}
 
-
-	//GGEditorコンポーネント群(一応Privateな)
+	//GGEditorコンポーネント
 	private JButton ggEditAdd, ggEditEdit, ggEditRemove;
 	private JRadioButton ggEditRefineTypeAnd, ggEditRefineTypeOr, ggEditRefineTypeLeaf;
 	private JRadioButton ggEditNecessityIsEnable, ggEditNecessityIsDisable;
@@ -90,13 +85,18 @@ public class SToolEditor extends JFrame {
 	private JComboBox ggEditParentComboBox;
 	private List<Integer> ggEditParentComboBoxIdList;
 
-	//PFEditorコンポーネント群(一応Privateな)
+	//PFEditorコンポーネント
 	private JButton pfEditRemove, pfEditAdd, pfEditEdit;
 	private JTextArea pfEditNameArea;
 	private JRadioButton pfEditDomainTypeNone, pfEditDomainTypeBiddable, pfEditDomainTypeCausal, pfEditDomainTypeLexical, pfEditDomainTypeSystem, pfEditDomainTypeDesigned;
 	private JPanel pfEditDomainType;
 
-	//PApplet部分(こいつらも一応Privateな)
+	//UCEditorコンポーネント
+	private JButton ucEditRemove, ucEditAdd, ucEditEdit;
+	private JTextArea ucEditUsecaseName;
+	private JComboBox ucEditGoalComboBox;
+
+	//PApplet部分
 	private GGGraph ggGraph;
 	private PFGraph pfGraph;
 	private UCGraph ucGraph;
@@ -248,11 +248,13 @@ public class SToolEditor extends JFrame {
 		//////////////////////////////UCTab部分作成//////////////////////////////
 		JPanel ucPanel = new JPanel();
 		ucPanel.setLayout(new BorderLayout());
-		JPanel uceditPanel = new JPanel();
-		uceditPanel.setLayout(null);
+		JPanel ucEditPanel = new JPanel();
+		ucEditPanel.setLayout(null);
 		ggEditPanel.setPreferredSize(new Dimension(200, 0));
 		//TODO:ここに各種コンポーネント追加メソッドを記入
-		ucPanel.add(uceditPanel, BorderLayout.LINE_END);
+
+
+		ucPanel.add(ucEditPanel, BorderLayout.LINE_END);
 		ucGraph = new UCGraph();
 		ucGraph.init();
 		ucPanel.add(ucGraph, BorderLayout.CENTER);
@@ -422,11 +424,6 @@ public class SToolEditor extends JFrame {
 		redraw();
 	}
 
-	/**
-	 * ゴールを追加する
-	 *
-	 * @return 追加できた＝TRUE
-	 */
 	private void ggEditAddButtonPressed() {
 		//親ゴールID取得
 		int parentGoalId = ggEditParentComboBoxIdList.get(ggEditParentComboBox.getSelectedIndex());
