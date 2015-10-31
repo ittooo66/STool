@@ -1,9 +1,11 @@
 package Processing;
 
 import Core.SToolEditor;
+import Models.Usecase;
 import processing.core.*;
-import processing.data.*;
 import processing.event.*;
+
+import java.util.List;
 
 /**
  * Created by 66 on 2015/10/11.
@@ -28,18 +30,10 @@ public class UCGraph extends PApplet {
 	private final int COLOR_LINES = color(123, 144, 210);
 	private final int COLOR_SELECTED = color(226, 148, 59);
 
-	//枠のマージン値
-	private final int MERGIN = 20;
-
-	//現在のカラム幅を返す
-	private int column_width() {
-		return (width - 4 * MERGIN) / 3;
-	}
-
-	//現在のALT,EXCカラム高さを返す
-	private int alt_exc_column_height() {
-		return (height - 5 * MERGIN) / 2;
-	}
+	//各種描画値（finalじゃないやつは画面サイズで可変）
+	private final int MERGIN = 30;
+	private int COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
+	private int ALT_EXC_HEIGHT = (height - 5 * MERGIN) / 2;
 
 	public UCGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
@@ -53,14 +47,22 @@ public class UCGraph extends PApplet {
 		//Font設定。
 		PFont font = createFont("メイリオ ボールド", 15, true);
 		textFont(font);
+
+		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
+		ALT_EXC_HEIGHT = (height - 5 * MERGIN) / 2;
 	}
 
 	public void draw() {
 		background(COLOR_BACKGROUND);
-		noFill();
+		fill(COLOR_LINES);
 		stroke(COLOR_LINES);
+		noFill();
 		strokeWeight(2);
-		text("width:" + width + ",height:" + height +
+		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
+		ALT_EXC_HEIGHT = (height - 5 * MERGIN) / 2;
+
+		//Debug用
+		text("w:" + width + ",h:" + height +
 				", selectedUsecaseId:" + selectedUsecaseId +
 				", selectedFlowId:" + selectedFlowId +
 				", selectedStepId:" + selectedStepId +
@@ -69,32 +71,58 @@ public class UCGraph extends PApplet {
 				", firstExcFlowIndex" + firstExcFlowIndex +
 				", firstStepIndex" + firstStepIndex, 10, 15);
 
-		//Usecase枠線
-		rect(MERGIN, MERGIN, column_width(), height - 2 * MERGIN);
-		//Flow枠線:MAIN
-		rect(2 * MERGIN + column_width(), MERGIN, column_width(), MERGIN);
-		//Flow枠線:Exc,Alt
-		int alt_exc_height = (height - 5 * MERGIN) / 2;
-		rect(2 * MERGIN + column_width(), 3 * MERGIN, column_width(), alt_exc_height);
-		rect(2 * MERGIN + column_width(), 4 * MERGIN + alt_exc_height, column_width(), alt_exc_height);
-		//Step枠線
-		rect(3 * MERGIN + 2 * column_width(), MERGIN, column_width(), height - 2 * MERGIN);
 
-		//追加・削除ボタン（仮置き）
-		//Usecase
-		ellipse(3 * MERGIN / 2, 3 * MERGIN / 2, MERGIN, MERGIN);
-		ellipse(5 * MERGIN / 2, 3 * MERGIN / 2, MERGIN, MERGIN);
-		//Flow:Alt
-		ellipse(5 * MERGIN / 2 + column_width(), 7 * MERGIN / 2, MERGIN, MERGIN);
-		ellipse(7 * MERGIN / 2 + column_width(), 7 * MERGIN / 2, MERGIN, MERGIN);
-		//Flow:Exc
-		ellipse(5 * MERGIN / 2 + column_width(), 9 * MERGIN / 2 + alt_exc_height, MERGIN, MERGIN);
-		ellipse(7 * MERGIN / 2 + column_width(), 9 * MERGIN / 2 + alt_exc_height, MERGIN, MERGIN);
-		//Step
-		ellipse(7 * MERGIN / 2 + 2 * column_width(), 3 * MERGIN / 2, MERGIN, MERGIN);
-		ellipse(9 * MERGIN / 2 + 2 * column_width(), 3 * MERGIN / 2, MERGIN, MERGIN);
-		
-		//TODO:内容記述（Usecase）
+		//Usecase枠線
+		rect(MERGIN, MERGIN, COLUMN_WIDTH, height - 2 * MERGIN);
+		//Flow枠線:MAIN
+		rect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
+		//Flow枠線:Exc,Alt
+		rect(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT);
+		rect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT);
+		//Step枠線
+		rect(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, height - 2 * MERGIN);
+
+		//Usecase枠コンポーネント記述
+		textAlign(CENTER, CENTER);
+		stroke((MERGIN < mouseX && mouseX < 2 * MERGIN && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		ellipse(3 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
+		text("↑", MERGIN, MERGIN, MERGIN, MERGIN);
+		stroke((2 * MERGIN < mouseX && mouseX < 3 * MERGIN && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		ellipse(5 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
+		text("↓", 2 * MERGIN, MERGIN, MERGIN, MERGIN);
+
+		//AltFlow:追加・削除ボタン
+		stroke((2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 3 * MERGIN + COLUMN_WIDTH && 3 * MERGIN < mouseY && mouseY < 4 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		ellipse(5 * MERGIN / 2 + COLUMN_WIDTH, 7 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
+		text("＋", 2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN);
+		stroke((3 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 4 * MERGIN + COLUMN_WIDTH && 3 * MERGIN < mouseY && mouseY < 4 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		ellipse(7 * MERGIN / 2 + COLUMN_WIDTH, 7 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
+		text("－", 3 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN);
+
+		//ExcFlow:追加・削除ボタン
+		stroke((2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 3 * MERGIN + COLUMN_WIDTH && 4 * MERGIN + ALT_EXC_HEIGHT < mouseY && mouseY < 5 * MERGIN + ALT_EXC_HEIGHT) ? COLOR_SELECTED : COLOR_LINES);
+		ellipse(5 * MERGIN / 2 + COLUMN_WIDTH, 9 * MERGIN / 2 + ALT_EXC_HEIGHT, MERGIN - 4, MERGIN - 4);
+		text("＋", 2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN);
+		stroke((3 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 4 * MERGIN + COLUMN_WIDTH && 4 * MERGIN + ALT_EXC_HEIGHT < mouseY && mouseY < 5 * MERGIN + ALT_EXC_HEIGHT) ? COLOR_SELECTED : COLOR_LINES);
+		ellipse(7 * MERGIN / 2 + COLUMN_WIDTH, 9 * MERGIN / 2 + ALT_EXC_HEIGHT, MERGIN - 4, MERGIN - 4);
+		text("－", 3 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN);
+
+		//Step:追加・削除ボタン
+		stroke((3 * MERGIN + 2 * COLUMN_WIDTH < mouseX && mouseX < 4 * MERGIN + 2 * COLUMN_WIDTH && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		ellipse(7 * MERGIN / 2 + 2 * COLUMN_WIDTH, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
+		text("＋", 3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN);
+		stroke((4 * MERGIN + 2 * COLUMN_WIDTH < mouseX && mouseX < 5 * MERGIN + 2 * COLUMN_WIDTH && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		ellipse(9 * MERGIN / 2 + 2 * COLUMN_WIDTH, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
+		text("－", 4 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN);
+
+		//Usecase部分記述
+		textAlign(LEFT, CENTER);
+		stroke(COLOR_LINES);
+		for (int i = 0, j = firstUsecaseIndex; j < sToolEditor.fgm.getUsecases().size(); j++, i++) {
+			rect(MERGIN, 2 * MERGIN + i * MERGIN, COLUMN_WIDTH, MERGIN);
+			text(sToolEditor.fgm.getUsecases().get(i).name, MERGIN, 2 * MERGIN + i * MERGIN, COLUMN_WIDTH, MERGIN);
+		}
+
 		//TODO:内容記述（Flow）
 		//TODO:内容記述（Step）
 	}
@@ -105,26 +133,65 @@ public class UCGraph extends PApplet {
 		sToolEditor.redraw();
 	}
 
+
+	//内部コンポーネント押下時の処理：Usecaseカラム、UpButton
+	private void usecaseUpButtonPressed(){
+
+	}
+	//内部コンポーネント押下時の処理：Usecaseカラム、DownButton
+	private void usecaseDownButtonPressed(){
+
+	}
+	//内部コンポーネント押下時の処理：AltFlowカラム、AddButton
+	private void altFlowAddButtonPressed(){
+
+	}
+	//内部コンポーネント押下時の処理：AltFlowカラム、RemoveButton
+	private void altFlowRemoveButtonPressed(){
+
+	}
+	//内部コンポーネント押下時の処理：ExcFlowカラム、AddButton
+	private void excFlowAddButtonPressed(){
+
+	}
+	//内部コンポーネント押下時の処理：ExcFlowカラム、RemoveButton
+	private void excFlowRemoveButtonPressed(){
+
+	}
+	//内部コンポーネント押下時の処理：Stepカラム、AddButton
+	private void stepAddButtonPressed(){
+
+	}
+	//内部コンポーネント押下時の処理：Stepカラム、RemoveButton
+	private void stepRemoveButtonPressed(){
+
+	}
+
+
 	public void mouseWheel(MouseEvent event) {
 		//カウント取得
-		float e = event.getCount();
+		int e = event.getCount();
 
-		if (MERGIN < mouseX && mouseX < MERGIN + column_width() && 2 * MERGIN < mouseY && mouseY < height - MERGIN) {
+		if (MERGIN < mouseX && mouseX < MERGIN + COLUMN_WIDTH && 2 * MERGIN < mouseY && mouseY < height - MERGIN) {
 			//Usecase部分のスクロールの場合
-			firstUsecaseIndex += e;
-		} else if (2 * MERGIN + column_width() < mouseX && mouseX < 2 * MERGIN + 2 * column_width()) {
+			firstUsecaseIndex = (firstUsecaseIndex + e < 0) ? 0 : (firstUsecaseIndex + e >= sToolEditor.fgm.getUsecases().size()) ? firstUsecaseIndex : firstUsecaseIndex + e;
+		} else if (2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 2 * MERGIN + 2 * COLUMN_WIDTH) {
 			//Flow部分のスクロールの場合
-			if (4 * MERGIN < mouseY && mouseY < 4 * MERGIN + alt_exc_column_height()) {
+			if (4 * MERGIN < mouseY && mouseY < 4 * MERGIN + ALT_EXC_HEIGHT) {
 				//ALT_Flow
-				firstAltFlowIndex += e;
-			} else if (6 * MERGIN + alt_exc_column_height() < mouseY && mouseY < height - MERGIN) {
+				firstAltFlowIndex = (firstAltFlowIndex + e < 0) ? 0 : firstAltFlowIndex + e;
+			} else if (6 * MERGIN + ALT_EXC_HEIGHT < mouseY && mouseY < height - MERGIN) {
 				//EXC_Flow
-				firstExcFlowIndex += e;
+				firstExcFlowIndex = (firstExcFlowIndex + e < 0) ? 0 : firstExcFlowIndex + e;
 			}
-		} else if (3 * MERGIN + 2 * column_width() < mouseX && mouseX < width - MERGIN && 2 * MERGIN < mouseY && mouseY < height - MERGIN) {
+		} else if (3 * MERGIN + 2 * COLUMN_WIDTH < mouseX && mouseX < width - MERGIN && 2 * MERGIN < mouseY && mouseY < height - MERGIN) {
 			//Step部分のスクロールの場合
-			firstStepIndex += e;
+			firstStepIndex = (firstStepIndex + e < 0) ? 0 : firstStepIndex + e;
 		}
 		sToolEditor.redraw();
+	}
+
+	public void mouseMoved() {
+		redraw();
 	}
 }
