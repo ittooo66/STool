@@ -58,6 +58,7 @@ public class UCGraph extends PApplet {
 		stroke(COLOR_LINES);
 		noFill();
 		strokeWeight(2);
+
 		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
 		ALT_EXC_HEIGHT = (height - 5 * MERGIN) / 2;
 
@@ -71,6 +72,7 @@ public class UCGraph extends PApplet {
 				", firstExcFlowIndex" + firstExcFlowIndex +
 				", firstStepIndex" + firstStepIndex, 10, 15);
 
+		textAlign(CENTER, CENTER);
 
 		//Usecase枠線
 		rect(MERGIN, MERGIN, COLUMN_WIDTH, height - 2 * MERGIN);
@@ -83,7 +85,6 @@ public class UCGraph extends PApplet {
 		rect(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, height - 2 * MERGIN);
 
 		//Usecase枠コンポーネント記述
-		textAlign(CENTER, CENTER);
 		stroke((MERGIN < mouseX && mouseX < 2 * MERGIN && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(3 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
 		text("↑", MERGIN, MERGIN, MERGIN, MERGIN);
@@ -120,7 +121,7 @@ public class UCGraph extends PApplet {
 		stroke(COLOR_LINES);
 		for (int i = 0, j = firstUsecaseIndex; j < sToolEditor.fgm.getUsecases().size(); j++, i++) {
 			rect(MERGIN, 2 * MERGIN + i * MERGIN, COLUMN_WIDTH, MERGIN);
-			text(sToolEditor.fgm.getUsecases().get(i).name, MERGIN, 2 * MERGIN + i * MERGIN, COLUMN_WIDTH, MERGIN);
+			text(sToolEditor.fgm.getUsecases().get(j).name, MERGIN, 2 * MERGIN + i * MERGIN, COLUMN_WIDTH, MERGIN);
 		}
 
 		//TODO:内容記述（Flow）
