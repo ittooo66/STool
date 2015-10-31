@@ -45,6 +45,16 @@ public class UCGraph extends PApplet {
 		this.sToolEditor = sToolEditor;
 	}
 
+	public void setup() {
+		//とりあえず適当な解像度で初期化
+		size(1024, 768);
+		//CPU節約
+		noLoop();
+		//Font設定。
+		PFont font = createFont("メイリオ ボールド", 15, true);
+		textFont(font);
+	}
+
 	public void draw() {
 		background(COLOR_BACKGROUND);
 		noFill();
@@ -89,10 +99,6 @@ public class UCGraph extends PApplet {
 		//TODO:内容記述（Step）
 	}
 
-	public void setup() {
-		size(1024, 768);
-		noLoop();
-	}
 
 	public void mousePressed() {
 
