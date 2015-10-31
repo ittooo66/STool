@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//TODO:モデル規則に従うadd,edit,remove(,move)を行うようにすること
+//TODO:上記のメソッドをBoolean値を返す形式にすること（true:編集できた,false:できない）
+
 /**
  * FGModel
  * List<Goal> goals
@@ -294,12 +297,39 @@ public class FGModel {
 		usecases.add(u);
 	}
 
-	public void editUsecase() {
-		//TODO
-		return;
+	public boolean editUsecase(int id, Usecase uc) {
+		//編集対象のゴール取得
+		Usecase usecase = null;
+		for (Usecase u : usecases) {
+			if (u.id == id) {
+				usecase = u;
+				break;
+			}
+		}
+
+		//モデル整合性チェック
+
+		//TODO:Jump命令の妥当性検討とかそういうやつ
+
+		//更新
+		if (usecase == null) return false;
+		usecase.flow = uc.flow;
+		usecase.name = uc.name;
+		return true;
 	}
 
-
+	/**
+	 * ユースケースを移動（リスト内で）
+	 */
+	public void moveUsecase(int id,int index){
+		for(int i=0 ;i<usecases.size();i++){
+			if(usecases.get(i).id == id){
+				Usecase u = usecases.get(i);
+				usecases.remove(i);
+				usecases.set(index,u);
+			}
+		}
+	}
 
 	public void removeUsecase(int id) {
 		for (int i = 0; i < domains.size(); i++) {
