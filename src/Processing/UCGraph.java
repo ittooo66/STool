@@ -32,8 +32,11 @@ public class UCGraph extends PApplet {
 
 	//各種描画値（finalじゃないやつは画面サイズで可変）
 	private final int MERGIN = 30;
-	private int COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
-	private int ALT_EXC_HEIGHT = (height - 5 * MERGIN) / 2;
+	private int COLUMN_WIDTH;
+	private int ALT_EXC_HEIGHT;
+
+	//現在表示中のUsecaseIdが上から順に詰まったリスト
+	private List<Integer> onDisplayUsecaseIdList;
 
 	public UCGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
@@ -127,6 +130,7 @@ public class UCGraph extends PApplet {
 		//TODO:内容記述（Flow）
 		//TODO:内容記述（Step）
 	}
+
 
 	private boolean mouseIsInRect(int x, int y, int w, int h) {
 		if (x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h) {
