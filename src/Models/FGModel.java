@@ -299,12 +299,14 @@ public class FGModel {
 		return;
 	}
 
+
+
 	public void removeUsecase(int id) {
-		//TODO
-		return;
+		for (int i = 0; i < domains.size(); i++) {
+			if (domains.get(i).id == id)
+				domains.remove(i);
+		}
 	}
-
-
 
 	/**
 	 * CreateFGModelで
