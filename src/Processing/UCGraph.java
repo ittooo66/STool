@@ -84,35 +84,35 @@ public class UCGraph extends PApplet {
 		//Step枠線
 		rect(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, height - 2 * MERGIN);
 
-		//Usecase枠コンポーネント記述
-		stroke((MERGIN < mouseX && mouseX < 2 * MERGIN && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		//Usecase枠コンポーネント(上下ボタン)記述
+		stroke(mouseIsInRect(MERGIN, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(3 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
 		text("↑", MERGIN, MERGIN, MERGIN, MERGIN);
-		stroke((2 * MERGIN < mouseX && mouseX < 3 * MERGIN && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		stroke(mouseIsInRect(2 * MERGIN, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(5 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
 		text("↓", 2 * MERGIN, MERGIN, MERGIN, MERGIN);
 
 		//AltFlow:追加・削除ボタン
-		stroke((2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 3 * MERGIN + COLUMN_WIDTH && 3 * MERGIN < mouseY && mouseY < 4 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		stroke(mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(5 * MERGIN / 2 + COLUMN_WIDTH, 7 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
 		text("＋", 2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN);
-		stroke((3 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 4 * MERGIN + COLUMN_WIDTH && 3 * MERGIN < mouseY && mouseY < 4 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		stroke(mouseIsInRect(3 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(7 * MERGIN / 2 + COLUMN_WIDTH, 7 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
 		text("－", 3 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN);
 
 		//ExcFlow:追加・削除ボタン
-		stroke((2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 3 * MERGIN + COLUMN_WIDTH && 4 * MERGIN + ALT_EXC_HEIGHT < mouseY && mouseY < 5 * MERGIN + ALT_EXC_HEIGHT) ? COLOR_SELECTED : COLOR_LINES);
+		stroke(mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(5 * MERGIN / 2 + COLUMN_WIDTH, 9 * MERGIN / 2 + ALT_EXC_HEIGHT, MERGIN - 4, MERGIN - 4);
 		text("＋", 2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN);
-		stroke((3 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 4 * MERGIN + COLUMN_WIDTH && 4 * MERGIN + ALT_EXC_HEIGHT < mouseY && mouseY < 5 * MERGIN + ALT_EXC_HEIGHT) ? COLOR_SELECTED : COLOR_LINES);
+		stroke(mouseIsInRect(3 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(7 * MERGIN / 2 + COLUMN_WIDTH, 9 * MERGIN / 2 + ALT_EXC_HEIGHT, MERGIN - 4, MERGIN - 4);
 		text("－", 3 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN);
 
 		//Step:追加・削除ボタン
-		stroke((3 * MERGIN + 2 * COLUMN_WIDTH < mouseX && mouseX < 4 * MERGIN + 2 * COLUMN_WIDTH && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		stroke(mouseIsInRect(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(7 * MERGIN / 2 + 2 * COLUMN_WIDTH, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
 		text("＋", 3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN);
-		stroke((4 * MERGIN + 2 * COLUMN_WIDTH < mouseX && mouseX < 5 * MERGIN + 2 * COLUMN_WIDTH && MERGIN < mouseY && mouseY < 2 * MERGIN) ? COLOR_SELECTED : COLOR_LINES);
+		stroke(mouseIsInRect(4 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(9 * MERGIN / 2 + 2 * COLUMN_WIDTH, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
 		text("－", 4 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN);
 
@@ -128,43 +128,59 @@ public class UCGraph extends PApplet {
 		//TODO:内容記述（Step）
 	}
 
+	private boolean mouseIsInRect(int x, int y, int w, int h) {
+		if (x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	public void mousePressed() {
+
 
 		sToolEditor.redraw();
 	}
 
 
 	//内部コンポーネント押下時の処理：Usecaseカラム、UpButton
-	private void usecaseUpButtonPressed(){
+	private void usecaseUpButtonPressed() {
 
 	}
+
 	//内部コンポーネント押下時の処理：Usecaseカラム、DownButton
-	private void usecaseDownButtonPressed(){
+	private void usecaseDownButtonPressed() {
 
 	}
+
 	//内部コンポーネント押下時の処理：AltFlowカラム、AddButton
-	private void altFlowAddButtonPressed(){
+	private void altFlowAddButtonPressed() {
 
 	}
+
 	//内部コンポーネント押下時の処理：AltFlowカラム、RemoveButton
-	private void altFlowRemoveButtonPressed(){
+	private void altFlowRemoveButtonPressed() {
 
 	}
+
 	//内部コンポーネント押下時の処理：ExcFlowカラム、AddButton
-	private void excFlowAddButtonPressed(){
+	private void excFlowAddButtonPressed() {
 
 	}
+
 	//内部コンポーネント押下時の処理：ExcFlowカラム、RemoveButton
-	private void excFlowRemoveButtonPressed(){
+	private void excFlowRemoveButtonPressed() {
 
 	}
+
 	//内部コンポーネント押下時の処理：Stepカラム、AddButton
-	private void stepAddButtonPressed(){
+	private void stepAddButtonPressed() {
 
 	}
+
 	//内部コンポーネント押下時の処理：Stepカラム、RemoveButton
-	private void stepRemoveButtonPressed(){
+	private void stepRemoveButtonPressed() {
 
 	}
 
