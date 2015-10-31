@@ -87,14 +87,6 @@ public class UCGraph extends PApplet {
 		//Step枠線
 		rect(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, height - 2 * MERGIN);
 
-		//Usecase枠コンポーネント(上下ボタン)記述
-		stroke(mouseIsInRect(MERGIN, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(3 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
-		text("↑", MERGIN, MERGIN, MERGIN, MERGIN);
-		stroke(mouseIsInRect(2 * MERGIN, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(5 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
-		text("↓", 2 * MERGIN, MERGIN, MERGIN, MERGIN);
-
 		//AltFlow:追加・削除ボタン
 		stroke(mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
 		ellipse(5 * MERGIN / 2 + COLUMN_WIDTH, 7 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
