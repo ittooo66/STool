@@ -339,7 +339,7 @@ public class FGModel {
 	}
 
 	/**
-	 * CreateFGModelで
+	 * CreateFGModelで使用中、モデル整合性を担保できないのであとで消すこと
 	 *
 	 * @param domains
 	 */
