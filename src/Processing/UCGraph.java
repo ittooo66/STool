@@ -80,16 +80,6 @@ public class UCGraph extends PApplet {
 		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
 		ALT_EXC_HEIGHT = (height - 7 * MERGIN) / 2;
 
-		//Debug用
-		text("w:" + width + ",h:" + height +
-				", selectedUsecaseId:" + selectedUsecaseId +
-				", selectedFlowId:" + selectedFlowId +
-				", selectedStepId:" + selectedStepId +
-				", firstUsecaseIndex" + firstUsecaseIndex +
-				", firstAltFlowIndex" + firstAltFlowIndex +
-				", firstExcFlowIndex" + firstExcFlowIndex +
-				", firstStepIndex" + firstStepIndex, 10, 15);
-
 		textAlign(CENTER, CENTER);
 
 		//ButtonSetFrame記述
@@ -102,32 +92,17 @@ public class UCGraph extends PApplet {
 		stepBSF.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
 		stepBSF.draw();
 
-		//Usecase部分記述
-		textAlign(LEFT, CENTER);
 		stroke(COLOR_LINES);
-		for (int i = 0, j = firstUsecaseIndex; j < sToolEditor.fgm.getUsecases().size(); j++, i++) {
-			rect(MERGIN, 2 * MERGIN + i * MERGIN, COLUMN_WIDTH, MERGIN);
-			text(sToolEditor.fgm.getUsecases().get(j).name, MERGIN, 2 * MERGIN + i * MERGIN, COLUMN_WIDTH, MERGIN);
-		}
 
-		//TODO:内容記述（Flow）
-		//TODO:内容記述（Step）
-	}
-
-	public void mousePressed() {
-		if (usecaseBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			System.out.println("use:" + usecaseBSF.getButtonIdOnMouse(mouseX, mouseY));
-		} else if (altFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			System.out.println("alt:" + altFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
-		} else if (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			System.out.println("exc:" + excFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
-		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			System.out.println("ste:" + stepBSF.getButtonIdOnMouse(mouseX, mouseY));
-		} else if (2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 2 * MERGIN + 2 * COLUMN_WIDTH && MERGIN < mouseY && mouseY < 2 * MERGIN) {
-			System.out.println("main:");
-		}
-
-		sToolEditor.redraw();
+		//ListBox記述
+		usecaseLB.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
+		usecaseLB.draw();
+		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
+		altFlowLB.draw();
+		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
+		excFlowLB.draw();
+		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
+		stepLB.draw();
 	}
 
 
