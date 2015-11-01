@@ -206,7 +206,6 @@ public class UCGraph extends PApplet {
 
 		public void scroll(int e) {
 			scrollIndex = (scrollIndex + e > 0) ? (scrollIndex + e < contents.size()) ? scrollIndex + e : scrollIndex : 0;
-			System.out.println("scroll:" + e);
 		}
 
 		/**
