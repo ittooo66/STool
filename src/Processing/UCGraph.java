@@ -1,10 +1,10 @@
 package Processing;
 
 import Core.SToolEditor;
-import Models.Usecase;
 import processing.core.*;
 import processing.event.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,6 +15,10 @@ public class UCGraph extends PApplet {
 	public int selectedUsecaseId = -1;
 	public int selectedFlowId = -1;
 	public int selectedStepId = -1;
+
+	//ButtonSetFrameとListBox
+	private ButtonSetFrame usecaseBSF, altFlowBSF, excFlowBSF, stepBSF;
+	private ListBox usecaseLB, altFlowLB, excFlowLB, stepLB;
 
 	//リスト内の最初に記述される各種Index
 	private int firstUsecaseIndex = 0;
@@ -35,9 +39,6 @@ public class UCGraph extends PApplet {
 	private int COLUMN_WIDTH;
 	private int ALT_EXC_HEIGHT;
 
-	//現在表示中のUsecaseIdが上から順に詰まったリスト
-	private List<Integer> onDisplayUsecaseIdList;
-
 	public UCGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
 	}
@@ -52,7 +53,21 @@ public class UCGraph extends PApplet {
 		textFont(font);
 
 		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
-		ALT_EXC_HEIGHT = (height - 5 * MERGIN) / 2;
+		ALT_EXC_HEIGHT = (height - 7 * MERGIN) / 2;
+
+		//ButtonSetFrameをSetup
+		usecaseBSF = new ButtonSetFrame(MERGIN, MERGIN, COLUMN_WIDTH, MERGIN, "Usecase");
+		usecaseBSF.addButton("↑");
+		usecaseBSF.addButton("↓");
+		altFlowBSF = new ButtonSetFrame(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, COLUMN_WIDTH, MERGIN, "AltFlow");
+		altFlowBSF.addButton("＋");
+		altFlowBSF.addButton("－");
+		excFlowBSF = new ButtonSetFrame(2 * MERGIN + COLUMN_WIDTH, 5 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, MERGIN, "ExcFlow");
+		excFlowBSF.addButton("＋");
+		excFlowBSF.addButton("－");
+		stepBSF = new ButtonSetFrame(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN, "Step");
+		stepBSF.addButton("＋");
+		stepBSF.addButton("－");
 	}
 
 	public void draw() {
@@ -63,7 +78,7 @@ public class UCGraph extends PApplet {
 		strokeWeight(2);
 
 		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
-		ALT_EXC_HEIGHT = (height - 5 * MERGIN) / 2;
+		ALT_EXC_HEIGHT = (height - 7 * MERGIN) / 2;
 
 		//Debug用
 		text("w:" + width + ",h:" + height +
@@ -77,47 +92,15 @@ public class UCGraph extends PApplet {
 
 		textAlign(CENTER, CENTER);
 
-		//Usecase枠線
-		rect(MERGIN, MERGIN, COLUMN_WIDTH, height - 2 * MERGIN);
-		//Flow枠線:MAIN
-		rect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
-		//Flow枠線:Exc,Alt
-		rect(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT);
-		rect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT);
-		//Step枠線
-		rect(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, height - 2 * MERGIN);
-
-		//Usecase枠コンポーネント(上下ボタン)記述
-		stroke(mouseIsInRect(MERGIN, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(3 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
-		text("↑", MERGIN, MERGIN, MERGIN, MERGIN);
-		stroke(mouseIsInRect(2 * MERGIN, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(5 * MERGIN / 2, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
-		text("↓", 2 * MERGIN, MERGIN, MERGIN, MERGIN);
-
-		//AltFlow:追加・削除ボタン
-		stroke(mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(5 * MERGIN / 2 + COLUMN_WIDTH, 7 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
-		text("＋", 2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN);
-		stroke(mouseIsInRect(3 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(7 * MERGIN / 2 + COLUMN_WIDTH, 7 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
-		text("－", 3 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, MERGIN, MERGIN);
-
-		//ExcFlow:追加・削除ボタン
-		stroke(mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(5 * MERGIN / 2 + COLUMN_WIDTH, 9 * MERGIN / 2 + ALT_EXC_HEIGHT, MERGIN - 4, MERGIN - 4);
-		text("＋", 2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN);
-		stroke(mouseIsInRect(3 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(7 * MERGIN / 2 + COLUMN_WIDTH, 9 * MERGIN / 2 + ALT_EXC_HEIGHT, MERGIN - 4, MERGIN - 4);
-		text("－", 3 * MERGIN + COLUMN_WIDTH, 4 * MERGIN + ALT_EXC_HEIGHT, MERGIN, MERGIN);
-
-		//Step:追加・削除ボタン
-		stroke(mouseIsInRect(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(7 * MERGIN / 2 + 2 * COLUMN_WIDTH, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
-		text("＋", 3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN);
-		stroke(mouseIsInRect(4 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN) ? COLOR_SELECTED : COLOR_LINES);
-		ellipse(9 * MERGIN / 2 + 2 * COLUMN_WIDTH, 3 * MERGIN / 2, MERGIN - 4, MERGIN - 4);
-		text("－", 4 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, MERGIN, MERGIN);
+		//ButtonSetFrame記述
+		usecaseBSF.adjust(MERGIN, MERGIN, COLUMN_WIDTH, MERGIN);
+		usecaseBSF.draw();
+		altFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, COLUMN_WIDTH, MERGIN);
+		altFlowBSF.draw();
+		excFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 5 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, MERGIN);
+		excFlowBSF.draw();
+		stepBSF.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
+		stepBSF.draw();
 
 		//Usecase部分記述
 		textAlign(LEFT, CENTER);
@@ -131,22 +114,107 @@ public class UCGraph extends PApplet {
 		//TODO:内容記述（Step）
 	}
 
-
-	private boolean mouseIsInRect(int x, int y, int w, int h) {
-		if (x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-
 	public void mousePressed() {
-
+		if (usecaseBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			System.out.println("use:" + usecaseBSF.getButtonIdOnMouse(mouseX, mouseY));
+		} else if (altFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			System.out.println("alt:" + altFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
+		} else if (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			System.out.println("exc:" + excFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
+		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			System.out.println("ste:" + stepBSF.getButtonIdOnMouse(mouseX, mouseY));
+		} else if (2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 2 * MERGIN + 2 * COLUMN_WIDTH && MERGIN < mouseY && mouseY < 2 * MERGIN) {
+			System.out.println("main:");
+		}
 
 		sToolEditor.redraw();
 	}
 
+
+	class ButtonSetFrame {
+		int x, y, w, h;
+		String title;
+		List<String> buttonList;
+
+		public ButtonSetFrame(int x, int y, int w, int h, String title) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.title = title;
+			buttonList = new ArrayList<>();
+		}
+
+		public void addButton(String buttonLabel) {
+			buttonList.add(buttonLabel);
+		}
+
+		/**
+		 * ProcessingのWindowサイズ変更に対応するように調整
+		 *
+		 * @param x
+		 * @param y
+		 * @param w
+		 * @param h
+		 */
+		public void adjust(int x, int y, int w, int h) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+		}
+
+		/**
+		 * こいつをクリック、クリックされたボタン番号を返す。
+		 *
+		 * @return ボタン番号、クリックがずれてるなら -1
+		 */
+		public int getButtonIdOnMouse(int mouseX, int mouseY) {
+			for (int i = 0; i < buttonList.size(); i++) {
+				if (x + i * h < mouseX && mouseX < x + i * h + h && y < mouseY && mouseY < y + h) {
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		/**
+		 * 描画
+		 */
+		public void draw() {
+			textAlign(RIGHT);
+			text(title, x, y, w, h);
+			for (int i = 0; i < buttonList.size(); i++) {
+				stroke((getButtonIdOnMouse(mouseX, mouseY) == i) ? COLOR_SELECTED : COLOR_LINES);
+				ellipse(x + i * h + h / 2, y + h / 2, h - 4, h - 4);
+				textAlign(CENTER, CENTER);
+				text(buttonList.get(i), x + i * h, y, h, h);
+			}
+		}
+
+	}
+
+
+	//表示するListのクラス
+	class ListBox {
+		int x, y, w, h;
+		int dh;
+
+		public ListBox(int x, int y, int w, int h, int dh) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.dh = dh;
+		}
+
+		public void draw() {
+
+			//枠線
+			rect(x, y, w, h);
+
+		}
+	}
 
 	//内部コンポーネント押下時の処理：Usecaseカラム、UpButton
 	private void usecaseUpButtonPressed() {
