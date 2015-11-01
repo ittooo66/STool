@@ -1,6 +1,7 @@
 package Processing;
 
 import Core.SToolEditor;
+import Models.Usecase;
 import processing.core.*;
 import processing.event.*;
 
@@ -11,6 +12,8 @@ import java.util.List;
  * Created by 66 on 2015/10/11.
  */
 public class UCGraph extends PApplet {
+
+	public int selectedUsecaseId = -1;
 
 	//ButtonSetFrameとListBox
 	private ButtonSetFrame usecaseBSF, altFlowBSF, excFlowBSF, stepBSF;
@@ -42,22 +45,25 @@ public class UCGraph extends PApplet {
 		PFont font = createFont("メイリオ ボールド", 15, true);
 		textFont(font);
 
-		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
-		ALT_EXC_HEIGHT = (height - 7 * MERGIN) / 2;
-
 		//ButtonSetFrameをSetup
-		usecaseBSF = new ButtonSetFrame(MERGIN, MERGIN, COLUMN_WIDTH, MERGIN, "Usecase");
+		usecaseBSF = new ButtonSetFrame("Usecase");
 		usecaseBSF.addButton("↑");
 		usecaseBSF.addButton("↓");
-		altFlowBSF = new ButtonSetFrame(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, COLUMN_WIDTH, MERGIN, "AltFlow");
+		altFlowBSF = new ButtonSetFrame("AltFlow");
 		altFlowBSF.addButton("＋");
 		altFlowBSF.addButton("－");
-		excFlowBSF = new ButtonSetFrame(2 * MERGIN + COLUMN_WIDTH, 5 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, MERGIN, "ExcFlow");
+		excFlowBSF = new ButtonSetFrame("ExcFlow");
 		excFlowBSF.addButton("＋");
 		excFlowBSF.addButton("－");
-		stepBSF = new ButtonSetFrame(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN, "Step");
+		stepBSF = new ButtonSetFrame("Step");
 		stepBSF.addButton("＋");
 		stepBSF.addButton("－");
+
+		//ListBoxをSetup
+		usecaseLB = new ListBox();
+		altFlowLB = new ListBox();
+		excFlowLB = new ListBox();
+		stepLB = new ListBox();
 	}
 
 	public void draw() {
@@ -82,30 +88,38 @@ public class UCGraph extends PApplet {
 		stepBSF.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
 		stepBSF.draw();
 
-		stroke(COLOR_LINES);
-
+		//TODO:ASIS,TOBE,ALL,REDUCEDを考慮した詰め込みにする
+		//usecaseLB中身詰め込み
+		List<ListBoxContent> lbc = new ArrayList<ListBoxContent>();
+		List<Usecase> usecases = sToolEditor.fgm.getUsecases();
+		for (Usecase uc : usecases) lbc.add(new ListBoxContent(uc.id, uc.name));
+		usecaseLB.setContents(lbc);
 		//ListBox記述
 		usecaseLB.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
 		usecaseLB.draw();
+
+		//TODO:altFlowLB中身詰め込み
 		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
 		altFlowLB.draw();
+
+		//TODO:excFlowLB中身詰め込み
 		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
 		excFlowLB.draw();
+
+		//TODO:stepLB中身詰め込み
 		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
 		stepLB.draw();
 	}
 
-
+	/**
+	 * 表示するButtonクラス
+	 */
 	class ButtonSetFrame {
-		int x, y, w, h;
-		String title;
-		List<String> buttonList;
+		private int x, y, w, h;
+		private String title;
+		private List<String> buttonList;
 
-		public ButtonSetFrame(int x, int y, int w, int h, String title) {
-			this.x = x;
-			this.y = y;
-			this.w = w;
-			this.h = h;
+		public ButtonSetFrame(String title) {
 			this.title = title;
 			buttonList = new ArrayList<>();
 		}
@@ -115,7 +129,7 @@ public class UCGraph extends PApplet {
 		}
 
 		/**
-		 * ProcessingのWindowサイズ変更に対応するように調整
+		 * ProcessingのWindowサイズ変更に対応するように各種値を調整
 		 *
 		 * @param x
 		 * @param y
@@ -159,13 +173,52 @@ public class UCGraph extends PApplet {
 
 	}
 
-
-	//表示するListのクラス
+	/**
+	 * 表示するListクラス
+	 */
 	class ListBox {
-		int x, y, w, h;
-		int dh;
+		//dh:１カラムの幅
+		private int x, y, w, h, dh;
+		//現在スクロールされている量
+		private int scrollIndex;
+		//コンテンツ
+		private List<ListBoxContent> contents;
 
-		public ListBox(int x, int y, int w, int h, int dh) {
+		public ListBox() {
+			contents = new ArrayList<>();
+		}
+
+		/**
+		 * コンテンツ更新
+		 *
+		 * @param contents
+		 */
+		public void setContents(List<ListBoxContent> contents) {
+			this.contents = contents;
+		}
+
+		public ListBoxContent getContentOnMouse(int mouseX, int mouseY) {
+			for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
+				if (mouseIsInRect(x, y + i * dh, w, dh)) return contents.get(j);
+			}
+			return null;
+		}
+
+		public void scroll(int e) {
+			scrollIndex = (scrollIndex + e > 0) ? (scrollIndex + e < contents.size()) ? scrollIndex + e : scrollIndex : 0;
+			System.out.println("scroll:" + e);
+		}
+
+		/**
+		 * ProcessingのWindowサイズ変更に伴う各種値を調整
+		 *
+		 * @param x
+		 * @param y
+		 * @param w
+		 * @param h
+		 * @param dh
+		 */
+		public void adjust(int x, int y, int w, int h, int dh) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
@@ -174,74 +227,89 @@ public class UCGraph extends PApplet {
 		}
 
 		public void draw() {
+			fill(COLOR_LINES);
+			noFill();
+			stroke(COLOR_LINES);
+
+			for (int i = 0, j = scrollIndex; j < contents.size() && i * dh < h; i++, j++) {
+				rect(x, y + i * dh, w, dh);
+				text(contents.get(j).name, x, y + i * dh, w, dh);
+			}
+			for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
+				if (selectedUsecaseId == contents.get(j).id) {
+					stroke(COLOR_SELECTED);
+					rect(x, y + i * dh, w, dh);
+					fill(COLOR_SELECTED);
+					text(contents.get(j).name, x, y + i * dh, w, dh);
+				}
+			}
+
+			//はみ出し部分を塗りつぶし
+			fill(COLOR_BACKGROUND);
+			stroke(COLOR_BACKGROUND);
+			rect(x-2,y+h,w+4,dh);
 
 			//枠線
+			stroke(COLOR_LINES);
+			noFill();
 			rect(x, y, w, h);
-
 		}
 	}
 
-	//内部コンポーネント押下時の処理：Usecaseカラム、UpButton
-	private void usecaseUpButtonPressed() {
+	/**
+	 * ListBoxに詰めるコンテンツ
+	 */
+	class ListBoxContent {
+		public int id;
+		public String name;
 
+		public ListBoxContent(int id, String name) {
+			this.id = id;
+			this.name = name;
+		}
 	}
 
-	//内部コンポーネント押下時の処理：Usecaseカラム、DownButton
-	private void usecaseDownButtonPressed() {
-
+	private boolean mouseIsInRect(int x, int y, int w, int h) {
+		return (x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h) ? true : false;
 	}
 
-	//内部コンポーネント押下時の処理：AltFlowカラム、AddButton
-	private void altFlowAddButtonPressed() {
-
+	public void mousePressed() {
+		if (usecaseBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			System.out.println("use:" + usecaseBSF.getButtonIdOnMouse(mouseX, mouseY));
+		} else if (altFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			System.out.println("alt:" + altFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
+		} else if (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			System.out.println("exc:" + excFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
+		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			System.out.println("ste:" + stepBSF.getButtonIdOnMouse(mouseX, mouseY));
+		} else if (2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 2 * MERGIN + 2 * COLUMN_WIDTH && MERGIN < mouseY && mouseY < 2 * MERGIN) {
+			System.out.println("main:");
+		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
+			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
+		} else if (altFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
+			System.out.println("altFlowLB:" + altFlowLB.getContentOnMouse(mouseX, mouseY));
+		} else if (excFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
+			System.out.println("excFlowLB:" + excFlowLB.getContentOnMouse(mouseX, mouseY));
+		} else if (stepLB.getContentOnMouse(mouseX, mouseY) != null) {
+			System.out.println("stepLB:" + stepLB.getContentOnMouse(mouseX, mouseY));
+		}
+		sToolEditor.redraw();
 	}
-
-	//内部コンポーネント押下時の処理：AltFlowカラム、RemoveButton
-	private void altFlowRemoveButtonPressed() {
-
-	}
-
-	//内部コンポーネント押下時の処理：ExcFlowカラム、AddButton
-	private void excFlowAddButtonPressed() {
-
-	}
-
-	//内部コンポーネント押下時の処理：ExcFlowカラム、RemoveButton
-	private void excFlowRemoveButtonPressed() {
-
-	}
-
-	//内部コンポーネント押下時の処理：Stepカラム、AddButton
-	private void stepAddButtonPressed() {
-
-	}
-
-	//内部コンポーネント押下時の処理：Stepカラム、RemoveButton
-	private void stepRemoveButtonPressed() {
-
-	}
-
 
 	public void mouseWheel(MouseEvent event) {
 		//カウント取得
-		int e = event.getCount();
+		int e = event.getCount() > 0 ? 1 : -1;
 
-		if (MERGIN < mouseX && mouseX < MERGIN + COLUMN_WIDTH && 2 * MERGIN < mouseY && mouseY < height - MERGIN) {
-			//Usecase部分のスクロールの場合
-			firstUsecaseIndex = (firstUsecaseIndex + e < 0) ? 0 : (firstUsecaseIndex + e >= sToolEditor.fgm.getUsecases().size()) ? firstUsecaseIndex : firstUsecaseIndex + e;
-		} else if (2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 2 * MERGIN + 2 * COLUMN_WIDTH) {
-			//Flow部分のスクロールの場合
-			if (4 * MERGIN < mouseY && mouseY < 4 * MERGIN + ALT_EXC_HEIGHT) {
-				//ALT_Flow
-				firstAltFlowIndex = (firstAltFlowIndex + e < 0) ? 0 : firstAltFlowIndex + e;
-			} else if (6 * MERGIN + ALT_EXC_HEIGHT < mouseY && mouseY < height - MERGIN) {
-				//EXC_Flow
-				firstExcFlowIndex = (firstExcFlowIndex + e < 0) ? 0 : firstExcFlowIndex + e;
-			}
-		} else if (3 * MERGIN + 2 * COLUMN_WIDTH < mouseX && mouseX < width - MERGIN && 2 * MERGIN < mouseY && mouseY < height - MERGIN) {
-			//Step部分のスクロールの場合
-			firstStepIndex = (firstStepIndex + e < 0) ? 0 : firstStepIndex + e;
+		if (mouseIsInRect(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN)) {
+			usecaseLB.scroll(e);
+		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT)) {
+			altFlowLB.scroll(e);
+		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT)) {
+			excFlowLB.scroll(e);
+		} else if (mouseIsInRect(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN)) {
+			stepLB.scroll(e);
 		}
+
 		sToolEditor.redraw();
 	}
 
