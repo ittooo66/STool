@@ -11,20 +11,10 @@ import java.util.List;
  * Created by 66 on 2015/10/11.
  */
 public class UCGraph extends PApplet {
-	//選択中のUsecaseID（-1なら非選択）
-	public int selectedUsecaseId = -1;
-	public int selectedFlowId = -1;
-	public int selectedStepId = -1;
 
 	//ButtonSetFrameとListBox
 	private ButtonSetFrame usecaseBSF, altFlowBSF, excFlowBSF, stepBSF;
 	private ListBox usecaseLB, altFlowLB, excFlowLB, stepLB;
-
-	//リスト内の最初に記述される各種Index
-	private int firstUsecaseIndex = 0;
-	private int firstAltFlowIndex = 0;
-	private int firstExcFlowIndex = 0;
-	private int firstStepIndex = 0;
 
 	//本体
 	private SToolEditor sToolEditor;
