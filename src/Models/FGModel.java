@@ -333,6 +333,7 @@ public class FGModel {
 	}
 
 	public void removeUsecase(int id) {
+		//TODO:removeGoalと連携して同時消しの形にする
 		for (int i = 0; i < domains.size(); i++) {
 			if (domains.get(i).id == id)
 				domains.remove(i);
