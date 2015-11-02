@@ -103,9 +103,8 @@ public class UCGraph extends PApplet {
 		List<Usecase> usecases = sToolEditor.fgm.getUsecases();
 		for (Usecase uc : usecases) lbc.add(new ListBoxContent(uc.id, uc.name));
 		usecaseLB.setContents(lbc);
-		//ListBox記述
-		usecaseLB.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
-		usecaseLB.draw(selectedUsecaseId);
+		usecaseLB.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN, selectedUsecaseId);
+		usecaseLB.draw();
 
 		//Usecase取得
 		Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
@@ -126,8 +125,8 @@ public class UCGraph extends PApplet {
 			lbc.add(new ListBoxContent(i, altFlowList.get(i).get(0).condition));
 		}
 		altFlowLB.setContents(lbc);
-		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
-		altFlowLB.draw(selectedFlowType == 1 ? selectedFlowIndex : -1);
+		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 1 ? selectedFlowId : -1);
+		altFlowLB.draw();
 
 		//excFlow中身詰め込み+draw()
 		lbc = new ArrayList<>();
@@ -136,12 +135,12 @@ public class UCGraph extends PApplet {
 			lbc.add(new ListBoxContent(i, excFlowList.get(i).get(0).condition));
 		}
 		excFlowLB.setContents(lbc);
-		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
-		excFlowLB.draw(selectedFlowType == 2 ? selectedFlowIndex : -1);
+		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 2 ? selectedFlowId : -1);
+		excFlowLB.draw();
 
 		//TODO:stepLB中身詰め込み
-		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
-		stepLB.draw(selectedStepId);
+		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN, selectedStepId);
+		stepLB.draw();
 	}
 
 	/**
@@ -214,6 +213,7 @@ public class UCGraph extends PApplet {
 		private int x, y, w, h, dh;
 		//現在スクロールされている量
 		private int scrollIndex;
+		private int selectedId;
 		//コンテンツ
 		private List<ListBoxContent> contents;
 
@@ -250,15 +250,16 @@ public class UCGraph extends PApplet {
 		 * @param h  こいつの描画高さ
 		 * @param dh リスト１項目あたりの高さ
 		 */
-		public void adjust(int x, int y, int w, int h, int dh) {
+		public void adjust(int x, int y, int w, int h, int dh, int selectedId) {
 			this.x = x;
 			this.y = y;
 			this.w = w;
 			this.h = h;
 			this.dh = dh;
+			this.selectedId = selectedId;
 		}
 
-		public void draw(int selectedId) {
+		public void draw() {
 			fill(COLOR_LINES);
 			noFill();
 			stroke(COLOR_LINES);
