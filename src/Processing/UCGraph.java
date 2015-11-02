@@ -12,7 +12,7 @@ import java.util.List;
  * Created by 66 on 2015/10/11.
  */
 public class UCGraph extends PApplet {
-
+	//選択中のUsecaseId
 	public int selectedUsecaseId = -1;
 
 	//ButtonSetFrameとListBox
@@ -90,7 +90,7 @@ public class UCGraph extends PApplet {
 
 		//TODO:ASIS,TOBE,ALL,REDUCEDを考慮した詰め込みにする
 		//usecaseLB中身詰め込み
-		List<ListBoxContent> lbc = new ArrayList<ListBoxContent>();
+		List<ListBoxContent> lbc = new ArrayList<>();
 		List<Usecase> usecases = sToolEditor.fgm.getUsecases();
 		for (Usecase uc : usecases) lbc.add(new ListBoxContent(uc.id, uc.name));
 		usecaseLB.setContents(lbc);
@@ -288,7 +288,7 @@ public class UCGraph extends PApplet {
 			System.out.println("exc:" + excFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
 		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
 			System.out.println("ste:" + stepBSF.getButtonIdOnMouse(mouseX, mouseY));
-		} else if (2 * MERGIN + COLUMN_WIDTH < mouseX && mouseX < 2 * MERGIN + 2 * COLUMN_WIDTH && MERGIN < mouseY && mouseY < 2 * MERGIN) {
+		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN)) {
 			System.out.println("main:");
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
 			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
