@@ -260,8 +260,14 @@ public class UCGraph extends PApplet {
 			return null;
 		}
 
+		/**
+		 * BOX項目をスクロール
+		 *
+		 * @param e +1:scrollDown,-1:scrollUp,0:reset
+		 */
 		public void scroll(int e) {
 			scrollIndex = (scrollIndex + e > 0) ? (scrollIndex + e < contents.size()) ? scrollIndex + e : scrollIndex : 0;
+			if (e == 0) scrollIndex = 0;
 		}
 
 		/**
