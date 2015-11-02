@@ -2,6 +2,7 @@ package Models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Usecase {
 
@@ -94,11 +95,27 @@ public class Usecase {
 	}
 
 	public void removeAlternativeFlow(int index) {
-		//TODO:実装
+		List<Step> mainFlow = getMainFlow();
+		List<List<Step>> altFlowList = getAlternativeFlowList();
+		List<List<Step>> excFlowList = getExceptionalFlowList();
+		List<Step> newFlow = mainFlow.stream().collect(Collectors.toList());
+		for (int i = 0; i < altFlowList.size(); i++) {
+			if (index != i) newFlow.addAll(altFlowList.get(i).stream().collect(Collectors.toList()));
+		}
+		for (List<Step> sList : excFlowList) newFlow.addAll(sList.stream().collect(Collectors.toList()));
+		flow = newFlow;
 	}
 
 	public void removeExceptionalFlow(int index) {
-		//TODO:実装
+		List<Step> mainFlow = getMainFlow();
+		List<List<Step>> altFlowList = getAlternativeFlowList();
+		List<List<Step>> excFlowList = getExceptionalFlowList();
+		List<Step> newFlow = mainFlow.stream().collect(Collectors.toList());
+		for (List<Step> sList : altFlowList) newFlow.addAll(sList.stream().collect(Collectors.toList()));
+		for (int i = 0; i < excFlowList.size(); i++) {
+			if (index != i) newFlow.addAll(excFlowList.get(i).stream().collect(Collectors.toList()));
+		}
+		flow = newFlow;
 	}
 
 	public void addAlternativeFlow(String condition) {
