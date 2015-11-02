@@ -19,12 +19,18 @@ public class Usecase {
 	 */
 	public List<Step> flow;
 
-	public Usecase(String name) {
+	public Usecase(int id, String name, int parentLeafGoalId) {
+		this.id = id;
 		this.name = name;
+		this.parentLeafGoalId = parentLeafGoalId;
 		flow = new ArrayList<>();
 	}
 
-	//FlowからMainFlowを抽出
+	/**
+	 * FlowからMainFlowを抽出
+	 *
+	 * @return 主系列
+	 */
 	public List<Step> getMainFlow() {
 		List<Step> mainFlow = new ArrayList<>();
 		for (int i = 0; i < flow.size(); i++) {
@@ -37,7 +43,11 @@ public class Usecase {
 		return mainFlow;
 	}
 
-	//FlowからExceptionalFlowのリストを抽出
+	/**
+	 * FlowからExceptionalFlowのリストを抽出
+	 *
+	 * @return 例外系列リスト
+	 */
 	public List<List<Step>> getExceptionalFlowList() {
 		List<List<Step>> exceptionalFlowList = new ArrayList<>();
 		for (int i = 0; i < flow.size(); i++) {
@@ -56,7 +66,11 @@ public class Usecase {
 		return exceptionalFlowList;
 	}
 
-	// /FlowからAlternativeFlowのリストを抽出
+	/**
+	 * FlowからAlternativeFlowのリストを抽出
+	 *
+	 * @return 代替系列
+	 */
 	public List<List<Step>> getAlternativeFlowList() {
 		List<List<Step>> alternativeFlowList = new ArrayList<>();
 		for (int i = 0; i < flow.size(); i++) {

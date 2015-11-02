@@ -286,10 +286,7 @@ public class FGModel {
 			}
 		}
 		//インスタンス作成
-		Usecase u = new Usecase();
-		u.id = id;
-		u.name = name;
-		u.parentLeafGoalId = parentGoalId;
+		Usecase u = new Usecase(id, name, parentGoalId);
 
 		//追加
 		usecases.add(u);
