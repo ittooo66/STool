@@ -353,7 +353,15 @@ public class UCGraph extends PApplet {
 				uc.addAlternativeFlow("代替：" + uc.getAlternativeFlowList().size());
 				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
 			} else if (id == 1 && selectedUsecaseId != -1) {
-				//TODO:Flow削除
+				//altFlow削除
+				if (selectedFlowType == 1 && selectedFlowId != -1) {
+					Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
+					uc.removeAlternativeFlow(selectedFlowId);
+					selectedFlowId = -1;
+					selectedStepId = -1;
+					selectedFlowType = -1;
+					sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
+				}
 			}
 		} else if (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
 			int id = excFlowBSF.getButtonIdOnMouse(mouseX, mouseY);
@@ -363,7 +371,15 @@ public class UCGraph extends PApplet {
 				uc.addExceptionalFlow("例外：" + uc.getExceptionalFlowList().size());
 				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
 			} else if (id == 1 && selectedUsecaseId != -1) {
-				//TODO:Flow削除
+				//excFlow削除
+				if (selectedFlowType == 2 && selectedFlowId != -1) {
+					Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
+					uc.removeExceptionalFlow(selectedFlowId);
+					selectedFlowId = -1;
+					selectedStepId = -1;
+					selectedFlowType = -1;
+					sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
+				}
 			}
 		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
 			//TODO:stepButton押下時処理
