@@ -350,7 +350,7 @@ public class UCGraph extends PApplet {
 			if (id == 0 && selectedUsecaseId != -1) {
 				//altFlow追加
 				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-				uc.addAlternativeFlow("代替：");
+				uc.addAlternativeFlow("代替：" + uc.getAlternativeFlowList().size());
 				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
 			} else if (id == 1 && selectedUsecaseId != -1) {
 				//TODO:Flow削除
@@ -360,7 +360,7 @@ public class UCGraph extends PApplet {
 			if (id == 0 && selectedUsecaseId != -1) {
 				//excFlow追加
 				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-				uc.addExceptionalFlow("例外：");
+				uc.addExceptionalFlow("例外：" + uc.getExceptionalFlowList().size());
 				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
 			} else if (id == 1 && selectedUsecaseId != -1) {
 				//TODO:Flow削除
