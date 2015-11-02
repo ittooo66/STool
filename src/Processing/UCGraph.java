@@ -341,7 +341,7 @@ public class UCGraph extends PApplet {
 			System.out.println("ste:" + stepBSF.getButtonIdOnMouse(mouseX, mouseY));
 		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN)) {
 			//mainFlow押下時処理
-			selectedFlowType = 0;
+			if (selectedUsecaseId != -1) selectedFlowType = 0;
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//UsecaseLB押下時処理
 			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
