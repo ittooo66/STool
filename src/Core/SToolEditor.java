@@ -20,6 +20,7 @@ public class SToolEditor extends JFrame {
 
 	//バージョン指定
 	private VERSION version;
+
 	public enum VERSION {
 		ASIS, TOBE;
 
@@ -43,12 +44,14 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
+
 	public VERSION getVersion() {
 		return version;
 	}
 
 	//ビュー指定
 	private VIEWMODE viewmode;
+
 	public enum VIEWMODE {
 		ALL, REDUCED;
 
@@ -72,6 +75,7 @@ public class SToolEditor extends JFrame {
 			return null;
 		}
 	}
+
 	public VIEWMODE getViewmode() {
 		return viewmode;
 	}
