@@ -345,7 +345,6 @@ public class UCGraph extends PApplet {
 		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN)) {
 			//mainFlow押下時処理
 			selectedFlowType = 0;
-			System.out.println("main:");
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//UsecaseLB押下時処理
 			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
