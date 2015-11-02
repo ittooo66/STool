@@ -1,5 +1,6 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Usecase {
@@ -26,14 +27,16 @@ public class Usecase {
 
 	//FlowからExceptionalFlowのリストを抽出
 	public List<List<Step>> getExceptionalFlowList() {
+		List<List<Step>> exceptionalFlowList = new ArrayList<>();
 		//TODO
-		return null;
+		return exceptionalFlowList;
 	}
 
 	// /FlowからAlternativeFlowのリストを抽出
 	public List<List<Step>> getAlternativeFlowList() {
+		List<List<Step>> alternativeFlowList = new ArrayList<>();
 		//TODO
-		return null;
+		return alternativeFlowList;
 	}
 
 }
