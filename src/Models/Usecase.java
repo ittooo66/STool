@@ -93,6 +93,14 @@ public class Usecase {
 		return alternativeFlowList;
 	}
 
+	public void removeAlternativeFlow(int index) {
+		//TODO:実装
+	}
+
+	public void removeExceptionalFlow(int index) {
+		//TODO:実装
+	}
+
 	public void addAlternativeFlow(String condition) {
 		Step s = new Step();
 		s.stepType = Step.StepType.ALT_INDEX;
