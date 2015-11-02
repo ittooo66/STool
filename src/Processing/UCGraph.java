@@ -14,6 +14,12 @@ import java.util.List;
 public class UCGraph extends PApplet {
 	//選択中のUsecaseId
 	public int selectedUsecaseId = -1;
+	//選択中のStepId
+	public int selectedStepId = -1;
+	//選択中のFlowTypeとIndex
+	public int flowType = -1;//-1:未選択,0:main,1:alt,2:Exc
+	public int flowIndex = -1;//-1:未選択
+
 
 	//ButtonSetFrameとListBox
 	private ButtonSetFrame usecaseBSF, altFlowBSF, excFlowBSF, stepBSF;
