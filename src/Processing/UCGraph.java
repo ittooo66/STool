@@ -1,6 +1,7 @@
 package Processing;
 
 import Core.SToolEditor;
+import Models.Step;
 import Models.Usecase;
 import processing.core.*;
 import processing.event.*;
@@ -17,8 +18,14 @@ public class UCGraph extends PApplet {
 	//選択中のStepId
 	public int selectedStepId = -1;
 	//選択中のFlowTypeとIndex
-	public int flowType = -1;//-1:未選択,0:main,1:alt,2:Exc
-	public int flowIndex = -1;//-1:未選択
+	/**
+	 * -1:未選択,0:main,1:alt,2:Exc
+	 */
+	public int selectedFlowType = -1;
+	/**
+	 * -1:未選択
+	 */
+	public int selectedFlowIndex = -1;
 
 
 	//ButtonSetFrameとListBox
@@ -104,11 +111,28 @@ public class UCGraph extends PApplet {
 		usecaseLB.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
 		usecaseLB.draw();
 
-		//TODO:altFlowLB中身詰め込み
+		//Usecase取得
+		Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
+		List<List<Step>> altFlowList = new ArrayList<>();
+		List<List<Step>> excFlowList = new ArrayList<>();
+
+		//altFlow中身詰め込み
+		lbc = new ArrayList<>();
+		if (uc != null) altFlowList = uc.getAlternativeFlowList();
+		for (int i = 0; i < altFlowList.size(); i++) {
+			lbc.add(new ListBoxContent(i, altFlowList.get(i).get(0).condition));
+		}
+		altFlowLB.setContents(lbc);
 		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
 		altFlowLB.draw();
 
-		//TODO:excFlowLB中身詰め込み
+		//excFlow中身詰め込み
+		lbc = new ArrayList<>();
+		if (uc != null) excFlowList = uc.getExceptionalFlowList();
+		for (int i = 0; i < excFlowList.size(); i++) {
+			lbc.add(new ListBoxContent(i, excFlowList.get(i).get(0).condition));
+		}
+		excFlowLB.setContents(lbc);
 		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
 		excFlowLB.draw();
 
@@ -289,21 +313,46 @@ public class UCGraph extends PApplet {
 				sToolEditor.fgm.moveUsecase(selectedUsecaseId, 1);
 			}
 		} else if (altFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			System.out.println("alt:" + altFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
+			int id = altFlowBSF.getButtonIdOnMouse(mouseX, mouseY);
+			if (id == 0 && selectedUsecaseId != -1) {
+				//altFlow追加
+				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
+				uc.addAlternativeFlow("null condition");
+				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
+			} else if (id == 1 && selectedUsecaseId != -1) {
+				//TODO:Flow削除
+			}
 		} else if (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			System.out.println("exc:" + excFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
+			int id = excFlowBSF.getButtonIdOnMouse(mouseX, mouseY);
+			if (id == 0 && selectedUsecaseId != -1) {
+				//excFlow追加
+				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
+				uc.addExceptionalFlow("null condition");
+				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
+			} else if (id == 1 && selectedUsecaseId != -1) {
+				//TODO:Flow削除
+			}
 		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+			//TODO:stepButton押下時処理
 			System.out.println("ste:" + stepBSF.getButtonIdOnMouse(mouseX, mouseY));
 		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN)) {
+			//mainFlow押下時処理
+			selectedFlowType = 0;
 			System.out.println("main:");
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
+			//UsecaseLB押下時処理
 			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
 		} else if (altFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
-			System.out.println("altFlowLB:" + altFlowLB.getContentOnMouse(mouseX, mouseY));
+			//altFlowLB押下時処理
+			selectedFlowType = 1;
+			selectedFlowIndex = altFlowLB.getContentOnMouse(mouseX, mouseY).id;
 		} else if (excFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
-			System.out.println("excFlowLB:" + excFlowLB.getContentOnMouse(mouseX, mouseY));
+			//excFlowLB押下時処理
+			selectedFlowType = 2;
+			selectedFlowIndex = excFlowLB.getContentOnMouse(mouseX, mouseY).id;
 		} else if (stepLB.getContentOnMouse(mouseX, mouseY) != null) {
-			System.out.println("stepLB:" + stepLB.getContentOnMouse(mouseX, mouseY));
+			//stepLB押下時処理
+			selectedStepId = stepLB.getContentOnMouse(mouseX, mouseY).id;
 		}
 		sToolEditor.redraw();
 	}
