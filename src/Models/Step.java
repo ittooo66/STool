@@ -8,9 +8,9 @@ public class Step {
 	public StepType stepType;
 
 	/**
-	 * ステップタイプ（ALT_INDEX,EXCEP_INDEX,GOTO,INCLUDE,ACTION）
+	 * ステップタイプ（ALT_INDEX,EXC_INDEX,GOTO,INCLUDE,ACTION）
 	 * <p>
-	 * ALT_INDEX,EXCEP_INDEX:代替・例外系列の頭出し
+	 * ALT_INDEX,EXC_INDEX:代替・例外系列の頭出し
 	 * >sourceStepId:起点となる主系列のステップID
 	 * >condition:遷移する理由
 	 * GOTO:他系列に飛ばす
