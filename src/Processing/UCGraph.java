@@ -109,7 +109,7 @@ public class UCGraph extends PApplet {
 		usecaseLB.setContents(lbc);
 		//ListBox記述
 		usecaseLB.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
-		usecaseLB.draw();
+		usecaseLB.draw(selectedUsecaseId);
 
 		//Usecase取得
 		Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
@@ -131,7 +131,7 @@ public class UCGraph extends PApplet {
 		}
 		altFlowLB.setContents(lbc);
 		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
-		altFlowLB.draw();
+		altFlowLB.draw(selectedFlowType == 1 ? selectedFlowIndex : -1);
 
 		//excFlow中身詰め込み
 		lbc = new ArrayList<>();
@@ -141,11 +141,11 @@ public class UCGraph extends PApplet {
 		}
 		excFlowLB.setContents(lbc);
 		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
-		excFlowLB.draw();
+		excFlowLB.draw(selectedFlowType == 2 ? selectedFlowIndex : -1);
 
 		//TODO:stepLB中身詰め込み
 		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN);
-		stepLB.draw();
+		stepLB.draw(selectedStepId);
 	}
 
 	/**
@@ -262,7 +262,7 @@ public class UCGraph extends PApplet {
 			this.dh = dh;
 		}
 
-		public void draw() {
+		public void draw(int selectedId) {
 			fill(COLOR_LINES);
 			noFill();
 			stroke(COLOR_LINES);
@@ -272,7 +272,7 @@ public class UCGraph extends PApplet {
 				text(contents.get(j).name, x, y + i * dh, w, dh);
 			}
 			for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
-				if (selectedUsecaseId == contents.get(j).id) {
+				if (selectedId == contents.get(j).id) {
 					stroke(COLOR_SELECTED);
 					rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
 					fill(COLOR_SELECTED);
