@@ -100,7 +100,7 @@ public class FGModel {
 		goals.add(g);
 
 		//1:1対応のUsecaseを合わせて追加
-		addUsecase("auto generated UC:to accomplish "+name, id);
+		addUsecase("auto generated UC:to accomplish " + name, id);
 	}
 
 	/**
@@ -228,7 +228,6 @@ public class FGModel {
 	}
 
 	/**
-	 *
 	 * @param id
 	 * @param name
 	 * @param dt
@@ -246,7 +245,6 @@ public class FGModel {
 	}
 
 	/**
-	 *
 	 * @param id
 	 * @param x
 	 * @param y
@@ -275,7 +273,7 @@ public class FGModel {
 		return null;
 	}
 
-	public List<Usecase> getUsecases(){
+	public List<Usecase> getUsecases() {
 		return usecases;
 	}
 
