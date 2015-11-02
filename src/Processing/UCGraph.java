@@ -378,15 +378,27 @@ public class UCGraph extends PApplet {
 			if (selectedUsecaseId != -1) selectedFlowType = 0;
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//UsecaseLB押下時処理
-			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
+			if (usecaseLB.getContentOnMouse(mouseX, mouseY).id != selectedUsecaseId) {
+				selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
+				selectedFlowType = -1;
+				selectedStepId = -1;
+				altFlowLB.scroll(0);
+				excFlowLB.scroll(0);
+			}
 		} else if (altFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//altFlowLB押下時処理
-			selectedFlowType = 1;
-			selectedFlowId = altFlowLB.getContentOnMouse(mouseX, mouseY).id;
+			if (selectedFlowType != 1 || altFlowLB.getContentOnMouse(mouseX, mouseY).id != selectedFlowId) {
+				selectedFlowType = 1;
+				selectedFlowId = altFlowLB.getContentOnMouse(mouseX, mouseY).id;
+				selectedStepId = -1;
+			}
 		} else if (excFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//excFlowLB押下時処理
-			selectedFlowType = 2;
-			selectedFlowId = excFlowLB.getContentOnMouse(mouseX, mouseY).id;
+			if (selectedFlowType != 2 || excFlowLB.getContentOnMouse(mouseX, mouseY).id != selectedFlowId) {
+				selectedFlowType = 2;
+				selectedFlowId = excFlowLB.getContentOnMouse(mouseX, mouseY).id;
+				selectedStepId = -1;
+			}
 		} else if (stepLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//stepLB押下時処理
 			selectedStepId = stepLB.getContentOnMouse(mouseX, mouseY).id;
