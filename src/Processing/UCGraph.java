@@ -138,7 +138,30 @@ public class UCGraph extends PApplet {
 		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 2 ? selectedFlowId : -1);
 		excFlowLB.draw();
 
-		//TODO:stepLB中身詰め込み
+		//stepLB中身詰め込み+draw()
+		lbc = new ArrayList<>();
+		if (uc != null) {
+			switch (selectedFlowType) {
+				case 0:
+					for (Step s : uc.getMainFlow()) {
+						//TODO:ちゃんとした名前を表示できるように
+					}
+					break;
+				case 1:
+					for (Step s : uc.getAlternativeFlowList().get(selectedFlowId)) {
+						//TODO:ちゃんとした名前を表示できるように
+						lbc.add(new ListBoxContent(s.id, "null"));
+					}
+					break;
+				case 2:
+					for (Step s : uc.getAlternativeFlowList().get(selectedFlowId)) {
+						//TODO:ちゃんとした名前を表示できるように
+						lbc.add(new ListBoxContent(s.id, "null"));
+					}
+					break;
+			}
+		}
+		stepLB.setContents(lbc);
 		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN, selectedStepId);
 		stepLB.draw();
 	}
@@ -338,8 +361,13 @@ public class UCGraph extends PApplet {
 			}
 		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
 			//TODO:stepButton押下時処理
-			System.out.println("ste:" + stepBSF.getButtonIdOnMouse(mouseX, mouseY));
-		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN)) {
+			int id = stepBSF.getButtonIdOnMouse(mouseX, mouseY);
+			if (id == 0 && selectedUsecaseId != -1 && selectedFlowType != -1) {
+				//TODO:step追加
+			} else if (id == 1 && selectedUsecaseId != -1) {
+				//TODO:step削除
+			}
+		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY)) {
 			//mainFlow押下時処理
 			if (selectedUsecaseId != -1) selectedFlowType = 0;
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
