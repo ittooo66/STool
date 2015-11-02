@@ -11,21 +11,17 @@ import java.util.List;
 
 /**
  * Created by 66 on 2015/10/11.
+ * UsecaseEditorのProcessing部分のクラス
  */
 public class UCGraph extends PApplet {
-	//選択中のUsecaseId
+	//選択中のUsecaseId,StepId,FlowType,FlowIndex
 	public int selectedUsecaseId = -1;
-	//選択中のStepId
 	public int selectedStepId = -1;
-	//選択中のFlowTypeとIndex
 	/**
 	 * -1:未選択,0:main,1:alt,2:Exc
 	 */
 	public int selectedFlowType = -1;
-	/**
-	 * -1:未選択
-	 */
-	public int selectedFlowIndex = -1;
+	public int selectedFlowId = -1;
 
 
 	//ButtonSetFrameとListBox
@@ -102,7 +98,7 @@ public class UCGraph extends PApplet {
 		stepBSF.draw();
 
 		//TODO:ASIS,TOBE,ALL,REDUCEDを考慮した詰め込みにする
-		//usecaseLB中身詰め込み
+		//usecaseLB中身詰め込み+draw()
 		List<ListBoxContent> lbc = new ArrayList<>();
 		List<Usecase> usecases = sToolEditor.fgm.getUsecases();
 		for (Usecase uc : usecases) lbc.add(new ListBoxContent(uc.id, uc.name));
@@ -121,9 +117,9 @@ public class UCGraph extends PApplet {
 		fill(selectedFlowType == 0 ? COLOR_SELECTED : COLOR_LINES);
 		noFill();
 		rect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
-		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
+		text("主系列", 2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
 
-		//altFlow中身詰め込み
+		//altFlow中身詰め込み+draw()
 		lbc = new ArrayList<>();
 		if (uc != null) altFlowList = uc.getAlternativeFlowList();
 		for (int i = 0; i < altFlowList.size(); i++) {
@@ -133,7 +129,7 @@ public class UCGraph extends PApplet {
 		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN);
 		altFlowLB.draw(selectedFlowType == 1 ? selectedFlowIndex : -1);
 
-		//excFlow中身詰め込み
+		//excFlow中身詰め込み+draw()
 		lbc = new ArrayList<>();
 		if (uc != null) excFlowList = uc.getExceptionalFlowList();
 		for (int i = 0; i < excFlowList.size(); i++) {
@@ -168,10 +164,10 @@ public class UCGraph extends PApplet {
 		/**
 		 * ProcessingのWindowサイズ変更に対応するように各種値を調整
 		 *
-		 * @param x
-		 * @param y
-		 * @param w
-		 * @param h
+		 * @param x Processing上のX座標位置
+		 * @param y Processing上のY座標位置
+		 * @param w こいつの描画幅
+		 * @param h こいつの描画高さ
 		 */
 		public void adjust(int x, int y, int w, int h) {
 			this.x = x;
@@ -228,7 +224,7 @@ public class UCGraph extends PApplet {
 		/**
 		 * コンテンツ更新
 		 *
-		 * @param contents
+		 * @param contents ListBoxの表示内容
 		 */
 		public void setContents(List<ListBoxContent> contents) {
 			this.contents = contents;
@@ -248,11 +244,11 @@ public class UCGraph extends PApplet {
 		/**
 		 * ProcessingのWindowサイズ変更に伴う各種値を調整
 		 *
-		 * @param x
-		 * @param y
-		 * @param w
-		 * @param h
-		 * @param dh
+		 * @param x  Processing上のX座標位置
+		 * @param y  Processing上のY座標位置
+		 * @param w  こいつの描画幅
+		 * @param h  こいつの描画高さ
+		 * @param dh リスト１項目あたりの高さ
 		 */
 		public void adjust(int x, int y, int w, int h, int dh) {
 			this.x = x;
@@ -324,7 +320,7 @@ public class UCGraph extends PApplet {
 			if (id == 0 && selectedUsecaseId != -1) {
 				//altFlow追加
 				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-				uc.addAlternativeFlow("null condition");
+				uc.addAlternativeFlow("代替：");
 				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
 			} else if (id == 1 && selectedUsecaseId != -1) {
 				//TODO:Flow削除
@@ -334,7 +330,7 @@ public class UCGraph extends PApplet {
 			if (id == 0 && selectedUsecaseId != -1) {
 				//excFlow追加
 				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-				uc.addExceptionalFlow("null condition");
+				uc.addExceptionalFlow("例外：");
 				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
 			} else if (id == 1 && selectedUsecaseId != -1) {
 				//TODO:Flow削除
