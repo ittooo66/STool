@@ -12,6 +12,7 @@ public class Step {
 	 * <p>
 	 * ALT_INDEX,EXCEP_INDEX:代替・例外系列の頭出し
 	 * >sourceStepId:起点となる主系列のステップID
+	 * >condition:遷移する理由
 	 * GOTO:他系列に飛ばす
 	 * >gotoStepId:飛ぶ先のステップ
 	 * INCLUDE:他ユースケースに飛ばす
