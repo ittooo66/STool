@@ -232,7 +232,7 @@ public class UCGraph extends PApplet {
 
 		public ListBoxContent getContentOnMouse(int mouseX, int mouseY) {
 			for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
-				if (mouseIsInRect(x, y + i * dh, w, dh)) return contents.get(j);
+				if (mouseIsInRect(x, y + i * dh, w, dh, mouseX, mouseY)) return contents.get(j);
 			}
 			return null;
 		}
@@ -302,8 +302,8 @@ public class UCGraph extends PApplet {
 		}
 	}
 
-	private boolean mouseIsInRect(int x, int y, int w, int h) {
-		return (x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h) ? true : false;
+	private static boolean mouseIsInRect(int x, int y, int w, int h, int mouseX, int mouseY) {
+		return (x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h);
 	}
 
 	public void mousePressed() {
@@ -364,13 +364,13 @@ public class UCGraph extends PApplet {
 		//カウント取得
 		int e = event.getCount() > 0 ? 1 : -1;
 
-		if (mouseIsInRect(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN)) {
+		if (mouseIsInRect(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
 			usecaseLB.scroll(e);
-		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT)) {
+		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
 			altFlowLB.scroll(e);
-		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT)) {
+		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
 			excFlowLB.scroll(e);
-		} else if (mouseIsInRect(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN)) {
+		} else if (mouseIsInRect(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
 			stepLB.scroll(e);
 		}
 
