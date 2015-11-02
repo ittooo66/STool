@@ -274,7 +274,14 @@ public class UCGraph extends PApplet {
 
 	public void mousePressed() {
 		if (usecaseBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			System.out.println("use:" + usecaseBSF.getButtonIdOnMouse(mouseX, mouseY));
+			int id = usecaseBSF.getButtonIdOnMouse(mouseX, mouseY);
+			if (id == 0) {
+				//Usecase移動（上向き）
+				sToolEditor.fgm.moveUsecase(selectedUsecaseId, -1);
+			} else if (id == 1) {
+				//Usecase移動（下向き）
+				sToolEditor.fgm.moveUsecase(selectedUsecaseId, 1);
+			}
 		} else if (altFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
 			System.out.println("alt:" + altFlowBSF.getButtonIdOnMouse(mouseX, mouseY));
 		} else if (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {

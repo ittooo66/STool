@@ -319,14 +319,27 @@ public class FGModel {
 	}
 
 	/**
-	 * ユースケースを移動（リスト内で）
+	 * ユースケースのリストを編集（Move）
+	 *
+	 * @param id        　操作対象のUsecaseId
+	 * @param direction 移動方向（+1 or -1）
 	 */
-	public void moveUsecase(int id,int index){
-		for(int i=0 ;i<usecases.size();i++){
-			if(usecases.get(i).id == id){
-				Usecase u = usecases.get(i);
-				usecases.remove(i);
-				usecases.set(index,u);
+	public void moveUsecase(int id, int direction) {
+		for (int i = 0; i < usecases.size(); i++) {
+			if (usecases.get(i).id == id) {
+				Usecase suc = usecases.get(i);
+				if (direction == 1 && i != usecases.size() - 1) {
+					Usecase duc = usecases.get(i + 1);
+					usecases.set(i, duc);
+					usecases.set(i + 1, suc);
+					return;
+				} else if (direction == -1 && i != 0) {
+					Usecase duc = usecases.get(i - 1);
+					usecases.set(i, duc);
+					usecases.set(i - 1, suc);
+					return;
+				}
+
 			}
 		}
 	}
