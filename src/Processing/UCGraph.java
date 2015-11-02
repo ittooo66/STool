@@ -231,13 +231,13 @@ public class UCGraph extends PApplet {
 			stroke(COLOR_LINES);
 
 			for (int i = 0, j = scrollIndex; j < contents.size() && i * dh < h; i++, j++) {
-				rect(x, y + i * dh, w, dh);
+				rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
 				text(contents.get(j).name, x, y + i * dh, w, dh);
 			}
 			for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
 				if (selectedUsecaseId == contents.get(j).id) {
 					stroke(COLOR_SELECTED);
-					rect(x, y + i * dh, w, dh);
+					rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
 					fill(COLOR_SELECTED);
 					text(contents.get(j).name, x, y + i * dh, w, dh);
 				}
@@ -246,7 +246,7 @@ public class UCGraph extends PApplet {
 			//はみ出し部分を塗りつぶし
 			fill(COLOR_BACKGROUND);
 			stroke(COLOR_BACKGROUND);
-			rect(x-2,y+h,w+4,dh);
+			rect(x - 2, y + h, w + 4, dh);
 
 			//枠線
 			stroke(COLOR_LINES);
