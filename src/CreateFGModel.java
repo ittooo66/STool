@@ -134,7 +134,7 @@ public class CreateFGModel {
 							break;
 					}
 					steps.add(step);
-					uc.flow = steps;
+					uc.setFlow(steps);
 				}
 				usecases.add(uc);
 			}

@@ -17,7 +17,7 @@ public class Usecase {
 	 * Flowにステップ列をまとめて入れる。
 	 * 代替系列どうすんの、とかについてはStep.javaのほう参照
 	 */
-	public List<Step> flow;
+	private List<Step> flow;
 
 	public Usecase(int id, String name, int parentLeafGoalId) {
 		this.id = id;
@@ -53,11 +53,13 @@ public class Usecase {
 		for (int i = 0; i < flow.size(); i++) {
 			if (flow.get(i).stepType == Step.StepType.EXC_INDEX) {
 				List<Step> exceptionalFlow = new ArrayList<>();
-				for (int j = 0; j < flow.size(); j++) {
+				for (int j = 0; i + j < flow.size(); j++) {
 					exceptionalFlow.add(flow.get(i + j));
-					if (flow.get(i + j + 1).stepType == Step.StepType.EXC_INDEX ||
-							(flow.get(i + j + 1).stepType == Step.StepType.ALT_INDEX)) {
-						break;
+					if (i + j + 1 < flow.size()) {
+						Step s = flow.get(i + j + 1);
+						if (s.stepType == Step.StepType.EXC_INDEX || s.stepType == Step.StepType.ALT_INDEX) {
+							break;
+						}
 					}
 				}
 				exceptionalFlowList.add(exceptionalFlow);
@@ -76,11 +78,13 @@ public class Usecase {
 		for (int i = 0; i < flow.size(); i++) {
 			if (flow.get(i).stepType == Step.StepType.ALT_INDEX) {
 				List<Step> alternativeFlow = new ArrayList<>();
-				for (int j = 0; j < flow.size(); j++) {
+				for (int j = 0; i + j < flow.size(); j++) {
 					alternativeFlow.add(flow.get(i + j));
-					if (flow.get(i + j + 1).stepType == Step.StepType.EXC_INDEX ||
-							(flow.get(i + j + 1).stepType == Step.StepType.ALT_INDEX)) {
-						break;
+					if (i + j + 1 < flow.size()) {
+						Step s = flow.get(i + j + 1);
+						if (s.stepType == Step.StepType.EXC_INDEX || s.stepType == Step.StepType.ALT_INDEX) {
+							break;
+						}
 					}
 				}
 				alternativeFlowList.add(alternativeFlow);
@@ -89,4 +93,28 @@ public class Usecase {
 		return alternativeFlowList;
 	}
 
+	public void addAlternativeFlow(String condition) {
+		Step s = new Step();
+		s.stepType = Step.StepType.ALT_INDEX;
+		s.condition = condition;
+		s.sourceStepId = -1;
+		flow.add(s);
+	}
+
+	public void addExceptionalFlow(String condition) {
+		Step s = new Step();
+		s.stepType = Step.StepType.EXC_INDEX;
+		s.condition = condition;
+		s.sourceStepId = -1;
+		flow.add(s);
+	}
+
+	public List<Step> getFlow() {
+		return flow;
+	}
+
+	@Deprecated
+	public void setFlow(List<Step> steps) {
+		flow = steps;
+	}
 }
