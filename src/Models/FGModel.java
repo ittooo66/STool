@@ -292,25 +292,18 @@ public class FGModel {
 		usecases.add(u);
 	}
 
-	public boolean editUsecase(int id, Usecase uc) {
-		//編集対象のゴール取得
-		Usecase usecase = null;
-		for (Usecase u : usecases) {
-			if (u.id == id) {
-				usecase = u;
-				break;
+	public boolean editUsecase(int id, Usecase usecase) {
+		for (int i = 0; i < usecases.size(); i++) {
+			if (usecases.get(i).id == id) {
+				//TODO:モデル整合性チェック
+				//TODO:Jump命令の妥当性検討とかそういうやつ
+				//TODO:妥当でなければreturn false;
+
+				usecases.set(i, usecase);
+				return true;
 			}
 		}
-
-		//モデル整合性チェック
-
-		//TODO:Jump命令の妥当性検討とかそういうやつ
-
-		//更新
-		if (usecase == null) return false;
-		usecase.flow = uc.flow;
-		usecase.name = uc.name;
-		return true;
+		return false;
 	}
 
 	/**
