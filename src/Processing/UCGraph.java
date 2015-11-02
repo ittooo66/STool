@@ -116,6 +116,13 @@ public class UCGraph extends PApplet {
 		List<List<Step>> altFlowList = new ArrayList<>();
 		List<List<Step>> excFlowList = new ArrayList<>();
 
+		//mainFlow記述
+		stroke(selectedFlowType == 0 ? COLOR_SELECTED : COLOR_LINES);
+		fill(selectedFlowType == 0 ? COLOR_SELECTED : COLOR_LINES);
+		noFill();
+		rect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
+		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
+
 		//altFlow中身詰め込み
 		lbc = new ArrayList<>();
 		if (uc != null) altFlowList = uc.getAlternativeFlowList();
