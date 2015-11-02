@@ -154,7 +154,7 @@ public class UCGraph extends PApplet {
 					}
 					break;
 				case 2:
-					for (Step s : uc.getAlternativeFlowList().get(selectedFlowId)) {
+					for (Step s : uc.getExceptionalFlowList().get(selectedFlowId)) {
 						//TODO:ちゃんとした名前を表示できるように
 						lbc.add(new ListBoxContent(s.id, "null"));
 					}
