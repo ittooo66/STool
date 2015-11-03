@@ -199,13 +199,18 @@ public class GGEditPanel extends JPanel {
 	}
 
 	private void removeButtonPressed() {
-		//選択中のゴールを削除
-		ste.fgm.removeGoal(ggg.selectedGoalId);
+		int option = JOptionPane.showConfirmDialog(this, "このゴールに関連するユースケースも削除されます。実行しますか？",
+				"確認", JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE);
+		if (option == JOptionPane.YES_OPTION) {
+			//選択中のゴールを削除
+			ste.fgm.removeGoal(ggg.selectedGoalId);
 
-		//GoalIdを外す
-		ggg.selectedGoalId = -1;
+			//GoalIdを外す
+			ggg.selectedGoalId = -1;
 
-		ste.redraw();
+			ste.redraw();
+		}
 	}
 
 }
