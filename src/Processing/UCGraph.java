@@ -1,6 +1,6 @@
 package Processing;
 
-import Core.SToolEditor;
+import Swing.SToolEditor;
 import Models.Step;
 import Models.Usecase;
 import processing.core.*;
