@@ -116,6 +116,7 @@ public class SToolEditor extends JFrame {
 		//ucEditのProcessingまわり
 		ucGraph = new UCGraph(this);
 		ucGraph.init();
+		//ucEdit右のEditor部分
 		ucEditPanel = new UCEditPanel(this, ucGraph);
 		//パネルに追加
 		ucPanel.add(ucEditPanel, BorderLayout.LINE_END);
