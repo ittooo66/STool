@@ -100,7 +100,7 @@ public class FGModel {
 		goals.add(g);
 
 		//1:1対応のUsecaseを合わせて追加
-		addUsecase("自動生成：" + name+"を達成", id);
+		addUsecase("自動生成：" + name + "を達成", id);
 	}
 
 	/**
@@ -168,13 +168,16 @@ public class FGModel {
 		for (int i = 0; i < goals.size(); i++) {
 			Goal removedGoalCandidate = goals.get(i);
 			if (removedGoalCandidate.id == id) {
-				Goal goal = goals.get(i);
 
 				//ゴール削除（get(i),remove(i)でまわしてることに注意）
 				goals.remove(i);
 				//取り残された子供の処理
 				for (Goal g : goals) {
-					if (g.parentId == removedGoalCandidate.id) g.parentId = removedGoalCandidate.parentId;
+					if (g.parentId == id) g.parentId = removedGoalCandidate.parentId;
+				}
+				//関連Usecaseも削除
+				for (int j = 0; j < usecases.size(); j++) {
+					if (usecases.get(j).parentLeafGoalId == id) usecases.remove(j);
 				}
 				//TODO:親が子なしになったのであれば親を子にする
 
@@ -333,10 +336,11 @@ public class FGModel {
 	}
 
 	public void removeUsecase(int id) {
-		//TODO:removeGoalと連携して同時消しの形にする
-		for (int i = 0; i < domains.size(); i++) {
-			if (domains.get(i).id == id)
-				domains.remove(i);
+		for (Usecase u : usecases) {
+			if (u.id == id) {
+				removeGoal(u.parentLeafGoalId);
+				return;
+			}
 		}
 	}
 
