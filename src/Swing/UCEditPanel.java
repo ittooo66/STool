@@ -1,22 +1,26 @@
 package Swing;
 
+import Models.Goal;
 import Processing.UCGraph;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 /**
  * Created by 66 on 2015/11/03.
- * UseCaseEditorÇÃâEïîï™
+ * UseCaseEditor„ÅÆÂè≥ÈÉ®ÂàÜ
  */
 public class UCEditPanel extends JPanel {
 	private final UCGraph ucg;
 	private final SToolEditor ste;
 
-	//UCEditorÉRÉìÉ|Å[ÉlÉìÉg
-	private JButton ucEditRemove, ucEditEdit;
-	private JTextArea ucEditUsecaseName;
-	private JComboBox ucEditGoalComboBox;
+	//UCEditor„Ç≥„É≥„Éù„Éº„Éç„É≥„Éà
+	private JButton jump, edit;
+	private JTextArea nameArea;
+	private JPanel nameFieldBorder, parentNameLabelBorder;
+	private JLabel parentGoalNameLabel;
 
 	public UCEditPanel(SToolEditor ste, UCGraph ucg) {
 		this.ste = ste;
@@ -24,11 +28,61 @@ public class UCEditPanel extends JPanel {
 
 		this.setLayout(null);
 		this.setPreferredSize(new Dimension(200, 0));
-		//TODO:Ç±Ç±Ç…äeéÌÉRÉìÉ|Å[ÉlÉìÉgí«â¡ÉÅÉ\ÉbÉhÇãLì¸
+
+		//JumpButton
+		jump = new JButton("Jump to Parent Goal");
+		jump.addActionListener(e -> jumpButtonPressed());
+		jump.setBounds(55, 110, 140, 30);
+		this.add(jump);
+		//EditButton
+		edit = new JButton("Edit");
+		edit.addActionListener(e -> editButtonPressed());
+		edit.setBounds(105, 400, 90, 30);
+		edit.setVisible(false);
+		this.add(edit);
+
+		//NameTextAreaÂë®„Çä
+		nameArea = new JTextArea(5, 15);
+		JScrollPane scrollPane = new JScrollPane(nameArea);
+		nameFieldBorder = new JPanel();
+		nameFieldBorder.add(scrollPane);
+		nameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
+		nameFieldBorder.setBounds(5, 180, 193, 120);
+		this.add(nameFieldBorder);
+
+		//parentGoalLabel
+		parentGoalNameLabel = new JLabel("null");
+		parentGoalNameLabel.setPreferredSize(new Dimension(160, 20));
+		parentNameLabelBorder = new JPanel();
+		parentNameLabelBorder.add(parentGoalNameLabel);
+		parentNameLabelBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
+		parentNameLabelBorder.setBounds(5, 50, 193, 60);
+		this.add(parentNameLabelBorder);
 
 	}
 
+	private void editButtonPressed() {
+
+	}
+
+	private void jumpButtonPressed() {
+		ste.jumpToGGTab(ste.fgm.getUsecaseById(ucg.selectedUsecaseId).parentLeafGoalId);
+	}
+
 	public void redraw() {
+
+		//Ë¶™„Ç¥„Éº„É´„ÅÆÂêçÂâç„ÇíË°®Á§∫
+		Goal g = ste.fgm.getGoalById(ucg.selectedUsecaseId);
+		if (g != null) {
+			parentGoalNameLabel.setText(g.name);
+		}
+
+
+		//Editor„Ç≥„É≥„Éù„Éº„Éç„É≥„ÉàÂèØË¶ñÊÄßÂ§âÊõ¥
+		nameFieldBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
+		parentNameLabelBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
+		jump.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
+		edit.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
 
 	}
 }
