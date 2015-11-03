@@ -144,19 +144,38 @@ public class UCGraph extends PApplet {
 			switch (selectedFlowType) {
 				case 0:
 					for (Step s : uc.getMainFlow()) {
+						if (s.stepType == Step.StepType.ACTION) {
+							lbc.add(new ListBoxContent(s.id, "action"));
+						} else if (s.stepType == Step.StepType.INCLUDE) {
+							lbc.add(new ListBoxContent(s.id, "include"));
+						} else if (s.stepType == Step.StepType.GOTO) {
+							lbc.add(new ListBoxContent(s.id, "goto"));
+						}
 						//TODO:ちゃんとした名前を表示できるように
 					}
 					break;
 				case 1:
 					for (Step s : uc.getAlternativeFlowList().get(selectedFlowId)) {
 						//TODO:ちゃんとした名前を表示できるように
-						lbc.add(new ListBoxContent(s.id, "null"));
+						if (s.stepType == Step.StepType.ACTION) {
+							lbc.add(new ListBoxContent(s.id, "action"));
+						} else if (s.stepType == Step.StepType.INCLUDE) {
+							lbc.add(new ListBoxContent(s.id, "include"));
+						} else if (s.stepType == Step.StepType.GOTO) {
+							lbc.add(new ListBoxContent(s.id, "goto"));
+						}
 					}
 					break;
 				case 2:
 					for (Step s : uc.getExceptionalFlowList().get(selectedFlowId)) {
 						//TODO:ちゃんとした名前を表示できるように
-						lbc.add(new ListBoxContent(s.id, "null"));
+						if (s.stepType == Step.StepType.ACTION) {
+							lbc.add(new ListBoxContent(s.id, "action"));
+						} else if (s.stepType == Step.StepType.INCLUDE) {
+							lbc.add(new ListBoxContent(s.id, "include"));
+						} else if (s.stepType == Step.StepType.GOTO) {
+							lbc.add(new ListBoxContent(s.id, "goto"));
+						}
 					}
 					break;
 			}
