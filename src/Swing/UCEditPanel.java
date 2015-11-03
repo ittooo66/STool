@@ -1,6 +1,7 @@
 package Swing;
 
 import Models.Goal;
+import Models.Usecase;
 import Processing.UCGraph;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ public class UCEditPanel extends JPanel {
 		//JumpButton
 		jump = new JButton("Jump to Parent Goal");
 		jump.addActionListener(e -> jumpButtonPressed());
-		jump.setBounds(55, 110, 140, 30);
+		jump.setBounds(45, 110, 150, 30);
 		this.add(jump);
 		//EditButton
 		edit = new JButton("Edit");
@@ -73,19 +74,31 @@ public class UCEditPanel extends JPanel {
 	}
 
 	public void redraw() {
+		try {
+			int id = ucg.selectedUsecaseId;
+			if (id != -1) {
+				//Usecase名前詰め込んで描画
+				nameArea.setText(ste.fgm.getUsecaseById(id).name);
 
-		//親ゴールの名前を表示
-		Goal g = ste.fgm.getGoalById(ucg.selectedUsecaseId);
-		if (g != null) {
-			parentGoalNameLabel.setText(g.name);
+				//親ゴールの名前を表示
+				Goal g = ste.fgm.getGoalById(ucg.selectedUsecaseId);
+				if (g != null) {
+					parentGoalNameLabel.setText(g.name);
+				}
+			}
+
+			//Editorコンポーネント可視性変更
+			nameFieldBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
+			parentNameLabelBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
+			jump.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
+			edit.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
+		} catch (NullPointerException e) {
+			//Usecase削除時のNullPointerException対策
+			ucg.selectedUsecaseId = -1;
+			ucg.selectedFlowId = -1;
+			ucg.selectedFlowType = -1;
+			ucg.selectedStepId = -1;
+			System.out.println("UCEditPanel:redraw()  ガッ");
 		}
-
-
-		//Editorコンポーネント可視性変更
-		nameFieldBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
-		parentNameLabelBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
-		jump.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
-		edit.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
-
 	}
 }
