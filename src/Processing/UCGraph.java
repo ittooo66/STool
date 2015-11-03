@@ -415,11 +415,11 @@ public class UCGraph extends PApplet {
 			//UsecaseLB押下時処理
 			if (usecaseLB.getContentOnMouse(mouseX, mouseY).id != selectedUsecaseId) {
 				selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
-				selectedFlowType = -1;
-				selectedStepId = -1;
-				altFlowLB.scroll(0);
-				excFlowLB.scroll(0);
 			}
+			selectedFlowType = -1;
+			selectedStepId = -1;
+			altFlowLB.scroll(0);
+			excFlowLB.scroll(0);
 		} else if (altFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//altFlowLB押下時処理
 			if (selectedFlowType != 1 || altFlowLB.getContentOnMouse(mouseX, mouseY).id != selectedFlowId) {
