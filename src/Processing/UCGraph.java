@@ -350,6 +350,17 @@ public class UCGraph extends PApplet {
 		}
 	}
 
+	/**
+	 * マウスが矩形内にいるかどうか
+	 *
+	 * @param x      X座標
+	 * @param y      Y座標
+	 * @param w      幅
+	 * @param h      高さ
+	 * @param mouseX マウスX座標
+	 * @param mouseY マウスY座標
+	 * @return
+	 */
 	private static boolean mouseIsInRect(int x, int y, int w, int h, int mouseX, int mouseY) {
 		return (x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h);
 	}
