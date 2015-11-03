@@ -101,11 +101,8 @@ public class SToolEditor extends JFrame {
 		JButton diffBrouseButton = new JButton("Open Diff Browser");
 		diffBrouseButton.addActionListener(e -> diffBrowseButtonPressed());
 		sharedEndPanel.add(diffBrouseButton);
-
-
 		//////////////////////////////GGTab部分作成///////////////////////////////
-		JPanel ggPanel = new JPanel();
-		ggPanel.setLayout(new BorderLayout());
+		JPanel ggPanel = new JPanel(new BorderLayout());
 		//ggTabのProcessing周り
 		ggGraph = new GGGraph(this);
 		ggGraph.init();
@@ -115,8 +112,7 @@ public class SToolEditor extends JFrame {
 		ggPanel.add(ggEditPanel, BorderLayout.LINE_END);
 		ggPanel.add(ggGraph, BorderLayout.CENTER);
 		//////////////////////////////UCTab部分作成//////////////////////////////
-		JPanel ucPanel = new JPanel();
-		ucPanel.setLayout(new BorderLayout());
+		JPanel ucPanel = new JPanel(new BorderLayout());
 		//ucEditのProcessingまわり
 		ucGraph = new UCGraph(this);
 		ucGraph.init();
@@ -125,13 +121,13 @@ public class SToolEditor extends JFrame {
 		ucPanel.add(ucEditPanel, BorderLayout.LINE_END);
 		ucPanel.add(ucGraph, BorderLayout.CENTER);
 		//////////////////////////////PFTab部分作成//////////////////////////////
-		JPanel pfPanel = new JPanel();
-		pfPanel.setLayout(new BorderLayout());
+		JPanel pfPanel = new JPanel(new BorderLayout());
 		//pfEditのProcessingまわり
 		pfGraph = new PFGraph(this);
 		pfGraph.init();
 		//pfEdit右のEditor部分
 		pfEditPanel = new PFEditPanel(this, pfGraph);
+		//パネルに追加
 		pfPanel.add(pfEditPanel, BorderLayout.LINE_END);
 		pfPanel.add(pfGraph, BorderLayout.CENTER);
 		/////////////////////////////仕上げ///////////////////////////////////////
@@ -145,6 +141,7 @@ public class SToolEditor extends JFrame {
 		getContentPane().add(tabbedpane, BorderLayout.CENTER);
 		getContentPane().add(sharedEndPanel, BorderLayout.PAGE_END);
 
+		//諸々を描画
 		redraw();
 	}
 
