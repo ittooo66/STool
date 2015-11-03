@@ -88,6 +88,9 @@ public class SToolEditor extends JFrame {
 	private PFGraph pfGraph;
 	private UCGraph ucGraph;
 
+	//Tab
+	JTabbedPane tabbedpane;
+
 	/**
 	 * コンストラクタがほぼほぼView要素を頑張って書くスタイル
 	 */
@@ -173,7 +176,7 @@ public class SToolEditor extends JFrame {
 		pfPanel.add(pfGraph, BorderLayout.CENTER);
 		/////////////////////////////仕上げ///////////////////////////////////////
 		//tabペイン作成
-		JTabbedPane tabbedpane = new JTabbedPane();
+		tabbedpane = new JTabbedPane();
 		//TabbedPaneに挿入
 		tabbedpane.addTab("GG", ggPanel);
 		tabbedpane.addTab("UC", ucPanel);
@@ -230,5 +233,11 @@ public class SToolEditor extends JFrame {
 		ste.setBounds(10, 10, 800, 600);
 		ste.setTitle("SToolEditor");
 		ste.setVisible(true);
+	}
+
+	public void jumpToGGTab(int parentLeafGoalId) {
+		tabbedpane.setSelectedIndex(0);
+		ggGraph.selectedGoalId = parentLeafGoalId;
+		redraw();
 	}
 }
