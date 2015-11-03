@@ -20,27 +20,7 @@ public class SToolEditor extends JFrame {
 	private VERSION version;
 
 	public enum VERSION {
-		ASIS, TOBE;
-
-		public static VERSION parse(String str) {
-			switch (str) {
-				case "ASIS":
-					return VERSION.ASIS;
-				case "TOBE":
-					return VERSION.TOBE;
-			}
-			return null;
-		}
-
-		public static String toString(VERSION v) {
-			switch (v) {
-				case ASIS:
-					return "ASIS";
-				case TOBE:
-					return "TOBE";
-			}
-			return null;
-		}
+		ASIS, TOBE
 	}
 
 	public VERSION getVersion() {
@@ -51,27 +31,7 @@ public class SToolEditor extends JFrame {
 	private VIEWMODE viewmode;
 
 	public enum VIEWMODE {
-		ALL, REDUCED;
-
-		public static VIEWMODE parse(String str) {
-			switch (str) {
-				case "ALL":
-					return VIEWMODE.ALL;
-				case "REDUCED":
-					return VIEWMODE.REDUCED;
-			}
-			return null;
-		}
-
-		public static String toString(VIEWMODE v) {
-			switch (v) {
-				case ALL:
-					return "ALL";
-				case REDUCED:
-					return "REDUCED";
-			}
-			return null;
-		}
+		ALL, REDUCED
 	}
 
 	public VIEWMODE getViewmode() {
