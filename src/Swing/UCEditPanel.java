@@ -62,7 +62,10 @@ public class UCEditPanel extends JPanel {
 	}
 
 	private void editButtonPressed() {
-
+		Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
+		uc.name = nameArea.getText();
+		ste.fgm.editUsecase(ucg.selectedUsecaseId, uc);
+		ste.redraw();
 	}
 
 	private void jumpButtonPressed() {
