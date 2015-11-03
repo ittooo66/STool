@@ -410,13 +410,17 @@ public class UCGraph extends PApplet {
 			}
 		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY)) {
 			//mainFlow押下時処理
-			if (selectedUsecaseId != -1) selectedFlowType = 0;
+			if (selectedUsecaseId != -1) {
+				selectedFlowType = 0;
+				selectedFlowId = 0;
+			}
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//UsecaseLB押下時処理
 			if (usecaseLB.getContentOnMouse(mouseX, mouseY).id != selectedUsecaseId) {
 				selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
 			}
 			selectedFlowType = -1;
+			selectedFlowId = -1;
 			selectedStepId = -1;
 			altFlowLB.scroll(0);
 			excFlowLB.scroll(0);
