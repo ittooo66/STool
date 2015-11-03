@@ -93,10 +93,8 @@ public class PFEditPanel extends JPanel {
 		if (pfg.selectedDomainId != -1) {
 			//選択中のドメインを取得
 			Domain selectedDomain = ste.fgm.getDomainById(pfg.selectedDomainId);
-
 			//Text更新
 			nameArea.setText(selectedDomain.name);
-
 			//DomainType更新
 			if (selectedDomain.domainType == Domain.DomainType.NONE) {
 				domainTypeNone.setSelected(true);
@@ -113,15 +111,12 @@ public class PFEditPanel extends JPanel {
 			}
 		}
 
-
 		//PFEditor各種コンポーネント：表示・非表示切り替え
 		add.setVisible(pfg.selectedDomainId == -1);
 		remove.setVisible(pfg.selectedDomainId != -1);
 		edit.setVisible(pfg.selectedDomainId != -1);
 		domainType.setVisible(pfg.selectedDomainId != -1);
-
 	}
-
 
 	private void addButtonPressed() {
 		//名前取得
