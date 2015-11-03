@@ -18,10 +18,10 @@ public class PFEditPanel extends JPanel {
 	private final PFGraph pfg;
 
 	//PFEditorコンポーネント
-	private JButton pfEditRemove, pfEditAdd, pfEditEdit;
-	private JTextArea pfEditNameArea;
-	private JRadioButton pfEditDomainTypeNone, pfEditDomainTypeBiddable, pfEditDomainTypeCausal, pfEditDomainTypeLexical, pfEditDomainTypeSystem, pfEditDomainTypeDesigned;
-	private JPanel pfEditDomainType;
+	private JButton remove, add, edit;
+	private JTextArea nameArea;
+	private JRadioButton domainTypeNone, domainTypeBiddable, domainTypeCausal, domainTypeLexical, domainTypeSystem, domainTypeDesigned;
+	private JPanel domainType;
 
 	public PFEditPanel(SToolEditor ste, PFGraph pfg) {
 		this.ste = ste;
@@ -31,26 +31,26 @@ public class PFEditPanel extends JPanel {
 		this.setPreferredSize(new Dimension(200, 0));
 
 		//RemoveButton
-		pfEditRemove = new JButton("Remove");
-		pfEditRemove.addActionListener(e -> pfEditRemoveButtonPressed());
-		pfEditRemove.setBounds(105, 5, 90, 30);
-		pfEditRemove.setVisible(false);
-		this.add(pfEditRemove);
+		remove = new JButton("Remove");
+		remove.addActionListener(e -> removeButtonPressed());
+		remove.setBounds(105, 5, 90, 30);
+		remove.setVisible(false);
+		this.add(remove);
 		//AddButton
-		pfEditAdd = new JButton("Add");
-		pfEditAdd.addActionListener(e -> pfEditAddButtonPressed());
-		pfEditAdd.setBounds(105, 400, 90, 30);
-		this.add(pfEditAdd);
+		add = new JButton("Add");
+		add.addActionListener(e -> addButtonPressed());
+		add.setBounds(105, 400, 90, 30);
+		this.add(add);
 		//EditButton
-		pfEditEdit = new JButton("Edit");
-		pfEditEdit.addActionListener(e -> pfEditEditButtonPressed());
-		pfEditEdit.setBounds(105, 400, 90, 30);
-		pfEditEdit.setVisible(false);
-		this.add(pfEditEdit);
+		edit = new JButton("Edit");
+		edit.addActionListener(e -> editButtonPressed());
+		edit.setBounds(105, 400, 90, 30);
+		edit.setVisible(false);
+		this.add(edit);
 
 		//NameTextArea周り
-		pfEditNameArea = new JTextArea(5, 15);
-		JScrollPane pfScroll = new JScrollPane(pfEditNameArea);
+		nameArea = new JTextArea(5, 15);
+		JScrollPane pfScroll = new JScrollPane(nameArea);
 		JPanel pfEditNameFieldBorder = new JPanel();
 		pfEditNameFieldBorder.add(pfScroll);
 		pfEditNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
@@ -58,33 +58,33 @@ public class PFEditPanel extends JPanel {
 		this.add(pfEditNameFieldBorder);
 
 		//DomainType周り
-		pfEditDomainTypeNone = new JRadioButton("NONE");
-		pfEditDomainTypeNone.setSelected(true);
-		pfEditDomainTypeBiddable = new JRadioButton("BIDDABLE");
-		pfEditDomainTypeCausal = new JRadioButton("CAUSAL");
-		pfEditDomainTypeLexical = new JRadioButton("LEXICAL");
-		pfEditDomainTypeSystem = new JRadioButton("SYSTEM");
-		pfEditDomainTypeDesigned = new JRadioButton("DESIGNED");
+		domainTypeNone = new JRadioButton("NONE");
+		domainTypeNone.setSelected(true);
+		domainTypeBiddable = new JRadioButton("BIDDABLE");
+		domainTypeCausal = new JRadioButton("CAUSAL");
+		domainTypeLexical = new JRadioButton("LEXICAL");
+		domainTypeSystem = new JRadioButton("SYSTEM");
+		domainTypeDesigned = new JRadioButton("DESIGNED");
 		//DomainTypeButtonGroup作成
-		ButtonGroup pfEditDomainTypeButtonGroup = new ButtonGroup();
-		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeNone);
-		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeBiddable);
-		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeCausal);
-		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeLexical);
-		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeSystem);
-		pfEditDomainTypeButtonGroup.add(pfEditDomainTypeDesigned);
+		ButtonGroup domainTypeButtonGroup = new ButtonGroup();
+		domainTypeButtonGroup.add(domainTypeNone);
+		domainTypeButtonGroup.add(domainTypeBiddable);
+		domainTypeButtonGroup.add(domainTypeCausal);
+		domainTypeButtonGroup.add(domainTypeLexical);
+		domainTypeButtonGroup.add(domainTypeSystem);
+		domainTypeButtonGroup.add(domainTypeDesigned);
 		//DomainTyoeグループのラベル（パネル）作成
-		pfEditDomainType = new JPanel();
-		pfEditDomainType.add(pfEditDomainTypeNone);
-		pfEditDomainType.add(pfEditDomainTypeBiddable);
-		pfEditDomainType.add(pfEditDomainTypeCausal);
-		pfEditDomainType.add(pfEditDomainTypeLexical);
-		pfEditDomainType.add(pfEditDomainTypeSystem);
-		pfEditDomainType.add(pfEditDomainTypeDesigned);
-		pfEditDomainType.setBorder(new TitledBorder(new EtchedBorder(), "DomainType"));
-		pfEditDomainType.setBounds(5, 200, 193, 150);
-		pfEditDomainType.setVisible(false);
-		this.add(pfEditDomainType);
+		domainType = new JPanel();
+		domainType.add(domainTypeNone);
+		domainType.add(domainTypeBiddable);
+		domainType.add(domainTypeCausal);
+		domainType.add(domainTypeLexical);
+		domainType.add(domainTypeSystem);
+		domainType.add(domainTypeDesigned);
+		domainType.setBorder(new TitledBorder(new EtchedBorder(), "DomainType"));
+		domainType.setBounds(5, 200, 193, 150);
+		domainType.setVisible(false);
+		this.add(domainType);
 	}
 
 	public void redraw() {
@@ -95,44 +95,44 @@ public class PFEditPanel extends JPanel {
 			Domain selectedDomain = ste.fgm.getDomainById(pfg.selectedDomainId);
 
 			//Text更新
-			pfEditNameArea.setText(selectedDomain.name);
+			nameArea.setText(selectedDomain.name);
 
 			//DomainType更新
 			if (selectedDomain.domainType == Domain.DomainType.NONE) {
-				pfEditDomainTypeNone.setSelected(true);
+				domainTypeNone.setSelected(true);
 			} else if (selectedDomain.domainType == Domain.DomainType.BIDDABLE) {
-				pfEditDomainTypeBiddable.setSelected(true);
+				domainTypeBiddable.setSelected(true);
 			} else if (selectedDomain.domainType == Domain.DomainType.CAUSAL) {
-				pfEditDomainTypeCausal.setSelected(true);
+				domainTypeCausal.setSelected(true);
 			} else if (selectedDomain.domainType == Domain.DomainType.DESIGNED) {
-				pfEditDomainTypeDesigned.setSelected(true);
+				domainTypeDesigned.setSelected(true);
 			} else if (selectedDomain.domainType == Domain.DomainType.SYSTEM) {
-				pfEditDomainTypeSystem.setSelected(true);
+				domainTypeSystem.setSelected(true);
 			} else if (selectedDomain.domainType == Domain.DomainType.LEXICAL) {
-				pfEditDomainTypeLexical.setSelected(true);
+				domainTypeLexical.setSelected(true);
 			}
 		}
 
 
 		//PFEditor各種コンポーネント：表示・非表示切り替え
-		pfEditAdd.setVisible(pfg.selectedDomainId == -1);
-		pfEditRemove.setVisible(pfg.selectedDomainId != -1);
-		pfEditEdit.setVisible(pfg.selectedDomainId != -1);
-		pfEditDomainType.setVisible(pfg.selectedDomainId != -1);
+		add.setVisible(pfg.selectedDomainId == -1);
+		remove.setVisible(pfg.selectedDomainId != -1);
+		edit.setVisible(pfg.selectedDomainId != -1);
+		domainType.setVisible(pfg.selectedDomainId != -1);
 
 	}
 
 
-	private void pfEditAddButtonPressed() {
+	private void addButtonPressed() {
 		//名前取得
-		String name = pfEditNameArea.getText();
+		String name = nameArea.getText();
 
 		//名前欄にちゃんと中身があるか
 		if (name.equals("")) {
 			JOptionPane.showMessageDialog(this, "なまえをいれてください", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else {
-			pfEditNameArea.setText("");
+			nameArea.setText("");
 		}
 
 		//追加
@@ -140,15 +140,15 @@ public class PFEditPanel extends JPanel {
 		ste.redraw();
 	}
 
-	private void pfEditEditButtonPressed() {
+	private void editButtonPressed() {
 		//各種コンポーネントからパラメータ取得
-		String name = pfEditNameArea.getText();
+		String name = nameArea.getText();
 		int id = pfg.selectedDomainId;
-		Domain.DomainType dt = pfEditDomainTypeBiddable.isSelected() ?
-				Domain.DomainType.BIDDABLE : pfEditDomainTypeCausal.isSelected() ?
-				Domain.DomainType.CAUSAL : pfEditDomainTypeDesigned.isSelected() ?
-				Domain.DomainType.DESIGNED : pfEditDomainTypeLexical.isSelected() ?
-				Domain.DomainType.LEXICAL : pfEditDomainTypeSystem.isSelected() ?
+		Domain.DomainType dt = domainTypeBiddable.isSelected() ?
+				Domain.DomainType.BIDDABLE : domainTypeCausal.isSelected() ?
+				Domain.DomainType.CAUSAL : domainTypeDesigned.isSelected() ?
+				Domain.DomainType.DESIGNED : domainTypeLexical.isSelected() ?
+				Domain.DomainType.LEXICAL : domainTypeSystem.isSelected() ?
 				Domain.DomainType.SYSTEM : Domain.DomainType.NONE;
 
 		//fgm編集
@@ -159,7 +159,7 @@ public class PFEditPanel extends JPanel {
 		ste.redraw();
 	}
 
-	private void pfEditRemoveButtonPressed() {
+	private void removeButtonPressed() {
 		//選択中のドメインを削除
 		ste.fgm.removeDomain(pfg.selectedDomainId);
 

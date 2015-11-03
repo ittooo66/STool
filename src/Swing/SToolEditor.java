@@ -139,9 +139,6 @@ public class SToolEditor extends JFrame {
 		diffBrouseButton.addActionListener(e -> diffBrowseButtonPressed());
 		sharedEndPanel.add(diffBrouseButton);
 
-		//////////////////////////////こっから個別部分///////////////////////////////////////////////
-		//tabペイン作成
-		JTabbedPane tabbedpane = new JTabbedPane();
 
 		//////////////////////////////GGTab部分作成///////////////////////////////
 		JPanel ggPanel = new JPanel();
@@ -175,6 +172,8 @@ public class SToolEditor extends JFrame {
 		pfPanel.add(pfEditPanel, BorderLayout.LINE_END);
 		pfPanel.add(pfGraph, BorderLayout.CENTER);
 		/////////////////////////////仕上げ///////////////////////////////////////
+		//tabペイン作成
+		JTabbedPane tabbedpane = new JTabbedPane();
 		//TabbedPaneに挿入
 		tabbedpane.addTab("GG", ggPanel);
 		tabbedpane.addTab("UC", ucPanel);

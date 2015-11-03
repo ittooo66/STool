@@ -28,7 +28,6 @@ public class GGEditPanel extends JPanel {
 	private JComboBox parentComboBox;
 	private List<Integer> parentComboBoxIdList;
 
-
 	public GGEditPanel(SToolEditor ste, GGGraph ggg) {
 		this.ste = ste;
 		this.ggg = ggg;
@@ -38,18 +37,18 @@ public class GGEditPanel extends JPanel {
 
 		//RemoveButton
 		remove = new JButton("Remove");
-		remove.addActionListener(e -> ggEditRemoveButtonPressed());
+		remove.addActionListener(e -> removeButtonPressed());
 		remove.setBounds(105, 5, 90, 30);
 		remove.setVisible(false);
 		this.add(remove);
 		//AddButton
 		add = new JButton("Add");
-		add.addActionListener(e -> ggEditAddButtonPressed());
+		add.addActionListener(e -> addButtonPressed());
 		add.setBounds(105, 400, 90, 30);
 		this.add(add);
 		//EditButton
 		edit = new JButton("Edit");
-		edit.addActionListener(e -> ggEditEditButtonPressed());
+		edit.addActionListener(e -> editButtonPressed());
 		edit.setBounds(105, 400, 90, 30);
 		edit.setVisible(false);
 		this.add(edit);
@@ -164,7 +163,7 @@ public class GGEditPanel extends JPanel {
 	}
 
 
-	private void ggEditEditButtonPressed() {
+	private void editButtonPressed() {
 		//各種コンポーネントからパラメータ取得
 		String name = nameArea.getText();
 		Goal prevGoal = ste.fgm.getGoalById(ggg.selectedGoalId);
@@ -179,7 +178,7 @@ public class GGEditPanel extends JPanel {
 		ste.redraw();
 	}
 
-	private void ggEditAddButtonPressed() {
+	private void addButtonPressed() {
 		//親ゴールID取得
 		int parentGoalId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
 
@@ -199,7 +198,7 @@ public class GGEditPanel extends JPanel {
 		ste.redraw();
 	}
 
-	private void ggEditRemoveButtonPressed() {
+	private void removeButtonPressed() {
 		//選択中のゴールを削除
 		ste.fgm.removeGoal(ggg.selectedGoalId);
 
