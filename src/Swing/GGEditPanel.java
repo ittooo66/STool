@@ -33,7 +33,7 @@ public class GGEditPanel extends JPanel {
 		this.ggg = ggg;
 
 		this.setLayout(null);                            //pixel直打ちさせる
-		this.setPreferredSize(new Dimension(200, 0));        //幅200で固定
+		this.setPreferredSize(new Dimension(200, 0));    //幅200で固定
 
 		//RemoveButton
 		remove = new JButton("Remove");
