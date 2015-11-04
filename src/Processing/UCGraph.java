@@ -400,11 +400,11 @@ public class UCGraph extends PApplet {
 				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
 				switch (selectedFlowType) {
 					case 0:
-						uc.addStep(0, 0, new Step());
+						uc.addStep(0, 0);
 						break;
 					case 1:
 					case 2:
-						uc.addStep(selectedFlowType, selectedFlowId, new Step());
+						uc.addStep(selectedFlowType, selectedFlowId);
 						break;
 				}
 			} else if (id == 1 && selectedUsecaseId != -1) {
