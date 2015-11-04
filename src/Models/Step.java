@@ -6,7 +6,6 @@ public class Step {
 	//StepのId
 	public int id;
 
-
 	public StepType stepType;
 
 	/**
@@ -21,42 +20,26 @@ public class Step {
 	 * >includeUsecaseId:起動するユースケースのID
 	 * ACTION:何らかの動作を行うステップ
 	 * >subjectDomainId,objectDomainId,Event:
+	 * NOP:空ステップ
 	 */
 	public enum StepType {
-		ACTION {
-			@Override
-			public StepType prev() {
-				return INCLUDE;
-			}
-		},
-		ALT_INDEX, EXC_INDEX, GOTO, INCLUDE {
-			@Override
-			public StepType next() {
-				return ACTION;
-			}
-		};
-
-		public StepType next() {
-			return values()[ordinal() + 1];
-		}
-
-		public StepType prev() {
-			return values()[ordinal() - 1];
-		}
+		ACTION, ALT_INDEX, EXC_INDEX, GOTO, INCLUDE, NOP;
 
 		//StringをStepTypeに
 		public static StepType parse(String str) {
 			switch (str) {
 				case "ALT_INDEX":
-					return StepType.ALT_INDEX;
+					return ALT_INDEX;
 				case "EXC_INDEX":
-					return StepType.EXC_INDEX;
+					return EXC_INDEX;
 				case "GOTO":
-					return StepType.GOTO;
+					return GOTO;
 				case "INCLUDE":
-					return StepType.INCLUDE;
+					return INCLUDE;
 				case "ACTION":
-					return StepType.ACTION;
+					return ACTION;
+				case "NOP":
+					return NOP;
 			}
 			return null;
 		}
@@ -74,6 +57,8 @@ public class Step {
 					return "INCLUDE";
 				case ACTION:
 					return "ACTION";
+				case NOP:
+					return "NOP";
 			}
 			return null;
 		}
@@ -93,6 +78,10 @@ public class Step {
 	public int objectDomainId;
 	//イベント記述
 	public String Event;
+
+	public Step() {
+		stepType = StepType.NOP;
+	}
 
 	/**
 	 * ステップ名（UCEditorに表示）を出す
@@ -125,7 +114,9 @@ public class Step {
 				return "INCLUDE BUG";
 			case ACTION:
 				return fgm.getDomainById(subjectDomainId) + "->" + Event + "->" + fgm.getDomainById(objectDomainId);
+			case NOP:
+				return "NOP";
 		}
-		return "null";
+		return null;
 	}
 }
