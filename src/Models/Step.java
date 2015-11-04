@@ -79,10 +79,6 @@ public class Step {
 	//イベント記述
 	public String Event;
 
-	public Step() {
-		stepType = StepType.NOP;
-	}
-
 	/**
 	 * ステップ名（UCEditorに表示）を出す
 	 *
