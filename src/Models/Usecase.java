@@ -134,7 +134,7 @@ public class Usecase {
 	 * @param condition 遷移条件
 	 */
 	public void addAlternativeFlow(String condition) {
-		Step s = new Step();
+		Step s = getNewStep();
 		s.stepType = Step.StepType.ALT_INDEX;
 		s.condition = condition;
 		s.sourceStepId = -1;
@@ -147,20 +147,14 @@ public class Usecase {
 	 * @param condition 遷移条件
 	 */
 	public void addExceptionalFlow(String condition) {
-		Step s = new Step();
+		Step s = getNewStep();
 		s.stepType = Step.StepType.EXC_INDEX;
 		s.condition = condition;
 		s.sourceStepId = -1;
 		flow.add(s);
 	}
 
-	/**
-	 * Stepを追加
-	 *
-	 * @param flowType  追加先のフローの種類(0:main,1:alt,2:exc)
-	 * @param flowIndex 追加先のフローのindex
-	 */
-	public void addStep(int flowType, int flowIndex) {
+	private Step getNewStep() {
 		//ID生成
 		int id = 0;
 		for (Step s : flow) {
@@ -171,6 +165,17 @@ public class Usecase {
 		Step step = new Step();
 		step.stepType = Step.StepType.NOP;
 		step.id = id;
+		return step;
+	}
+
+	/**
+	 * Stepを追加
+	 *
+	 * @param flowType  追加先のフローの種類(0:main,1:alt,2:exc)
+	 * @param flowIndex 追加先のフローのindex
+	 */
+	public void addStep(int flowType, int flowIndex) {
+		Step step = getNewStep();
 
 		List<Step> mainFlow = getMainFlow();
 		List<List<Step>> altFlowList = getAlternativeFlowList();
