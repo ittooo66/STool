@@ -92,9 +92,27 @@ public class UCEditPanel extends JPanel {
 
 	private void editButtonPressed() {
 		Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
-		uc.name = nameArea.getText();
-		ste.fgm.editUsecase(ucg.selectedUsecaseId, uc);
-		ste.redraw();
+		if (ucg.selectedFlowType == -1) {
+			//Usecase選択時
+
+			uc.name = nameArea.getText();
+			ste.fgm.editUsecase(ucg.selectedUsecaseId, uc);
+			ste.redraw();
+		} else if (ucg.selectedStepId == -1) {
+			//Alt_EXC_Flow選択時
+
+			if (ucg.selectedFlowType == 1) {
+				Step s = uc.getAlternativeFlowList().get(ucg.selectedFlowId).get(0);
+				s.condition = conditionArea.getText();
+				uc.editStep(s.id, s);
+			} else if (ucg.selectedFlowType == 2) {
+				Step s = uc.getExceptionalFlowList().get(ucg.selectedFlowId).get(0);
+				s.condition = conditionArea.getText();
+				uc.editStep(s.id, s);
+			}
+		} else if (ucg.selectedUsecaseId != -1) {
+			//TODO:Step選択時
+		}
 	}
 
 	private void jumpButtonPressed() {
