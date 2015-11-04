@@ -76,12 +76,12 @@ public class UCEditPanel extends JPanel {
 		altExcFlowComboBoxIdList = new ArrayList();
 
 		//Condition
-		conditionArea = new JTextArea(3, 15);
+		conditionArea = new JTextArea(2, 15);
 		scrollPane = new JScrollPane(conditionArea);
 		conditionBorder = new JPanel();
 		conditionBorder.add(scrollPane);
 		conditionBorder.setBorder(new TitledBorder(new EtchedBorder(), "Condition"));
-		conditionBorder.setBounds(5, 210, 193, 120);
+		conditionBorder.setBounds(5, 210, 193, 80);
 		this.add(conditionBorder);
 
 
