@@ -192,8 +192,13 @@ public class Usecase {
 		}
 	}
 
-	public List<Step> getFlow() {
-		return flow;
+	/**
+	 * eventのStepのみを返す
+	 *
+	 * @return ユースケース内のEventStepリスト
+	 */
+	public List<Step> getEventStepList() {
+		return flow.stream().filter(s -> s.stepType == Step.StepType.ACTION).collect(Collectors.toList());
 	}
 
 	@Deprecated
