@@ -8,6 +8,7 @@ import java.util.List;
 
 //TODO:モデル規則に従うadd,edit,remove(,move)を行うようにすること
 //TODO:上記のメソッドをBoolean値を返す形式にすること（true:編集できた,false:できない）
+//TODO:Stringでもいいかも？（Null:編集できた、ErrorMessage:できてない理由）
 
 /**
  * FGModel
