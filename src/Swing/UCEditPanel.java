@@ -140,6 +140,18 @@ public class UCEditPanel extends JPanel {
 				//Usecase名前詰め込んで描画
 				nameArea.setText(ste.fgm.getUsecaseById(id).name);
 
+				//Condition名前詰め込んで描画
+				switch (ucg.selectedFlowType) {
+					case 1:
+						conditionArea.setText(ste.fgm.getUsecaseById(id).getAlternativeFlowList().get(ucg.selectedFlowId).get(0).condition);
+						break;
+					case 2:
+						conditionArea.setText(ste.fgm.getUsecaseById(id).getExceptionalFlowList().get(ucg.selectedFlowId).get(0).condition);
+						break;
+				}
+
+				//TODO:Alt_Flowとかその辺関連のコンポーネント追加処理
+
 				//親ゴールの名前を表示
 				Goal g = ste.fgm.getGoalById(ucg.selectedUsecaseId);
 				if (g != null) {
@@ -148,8 +160,6 @@ public class UCEditPanel extends JPanel {
 
 
 			}
-
-			//TODO:Alt_Flowとかその辺関連のコンポーネント追加処理
 
 
 			//Editorコンポーネント可視性変更
