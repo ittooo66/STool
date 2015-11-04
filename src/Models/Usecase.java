@@ -159,9 +159,19 @@ public class Usecase {
 	 *
 	 * @param flowType  追加先のフローの種類(0:main,1:alt,2:exc)
 	 * @param flowIndex 追加先のフローのindex
-	 * @param step      追加するステップ
 	 */
-	public void addStep(int flowType, int flowIndex, Step step) {
+	public void addStep(int flowType, int flowIndex) {
+		//ID生成
+		int id = 0;
+		for (Step s : flow) {
+			if (s.id >= id) {
+				id = s.id + 1;
+			}
+		}
+		Step step = new Step();
+		step.stepType = Step.StepType.NOP;
+		step.id = id;
+
 		List<Step> mainFlow = getMainFlow();
 		List<List<Step>> altFlowList = getAlternativeFlowList();
 		List<List<Step>> excFlowList = getExceptionalFlowList();
