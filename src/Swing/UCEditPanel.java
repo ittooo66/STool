@@ -102,11 +102,11 @@ public class UCEditPanel extends JPanel {
 			//Alt_EXC_Flow選択時
 
 			if (ucg.selectedFlowType == 1) {
-				Step s = uc.getAlternativeFlowList().get(ucg.selectedFlowId).get(0);
+				Step s = uc.getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0);
 				s.condition = conditionArea.getText();
 				uc.editStep(s.id, s);
 			} else if (ucg.selectedFlowType == 2) {
-				Step s = uc.getExceptionalFlowList().get(ucg.selectedFlowId).get(0);
+				Step s = uc.getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0);
 				s.condition = conditionArea.getText();
 				uc.editStep(s.id, s);
 			}
@@ -143,10 +143,10 @@ public class UCEditPanel extends JPanel {
 				//Condition名前詰め込んで描画
 				switch (ucg.selectedFlowType) {
 					case 1:
-						conditionArea.setText(ste.fgm.getUsecaseById(id).getAlternativeFlowList().get(ucg.selectedFlowId).get(0).condition);
+						conditionArea.setText(ste.fgm.getUsecaseById(id).getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0).condition);
 						break;
 					case 2:
-						conditionArea.setText(ste.fgm.getUsecaseById(id).getExceptionalFlowList().get(ucg.selectedFlowId).get(0).condition);
+						conditionArea.setText(ste.fgm.getUsecaseById(id).getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0).condition);
 						break;
 				}
 
@@ -163,9 +163,9 @@ public class UCEditPanel extends JPanel {
 
 
 			//Editorコンポーネント可視性変更
-			nameFieldBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
-			parentNameLabelBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
-			jump.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowId == -1 && ucg.selectedStepId == -1);
+			nameFieldBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
+			parentNameLabelBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
+			jump.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
 			edit.setVisible(ucg.selectedUsecaseId != -1 && (ucg.selectedFlowType != 0 || ucg.selectedStepId != -1));
 			sourceStepComboBoxBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowType > 0 && ucg.selectedStepId == -1);
 			conditionBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowType > 0 && ucg.selectedStepId == -1);
@@ -173,7 +173,7 @@ public class UCEditPanel extends JPanel {
 		} catch (NullPointerException e) {
 			//Usecase削除時のNullPointerException対策
 			ucg.selectedUsecaseId = -1;
-			ucg.selectedFlowId = -1;
+			ucg.selectedFlowIndex = -1;
 			ucg.selectedFlowType = -1;
 			ucg.selectedStepId = -1;
 			System.out.println("UCEditPanel:redraw() avoid NullPointerException");

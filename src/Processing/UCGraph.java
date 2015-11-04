@@ -21,7 +21,7 @@ public class UCGraph extends PApplet {
 	 * -1:未選択,0:main,1:alt,2:Exc
 	 */
 	public int selectedFlowType = -1;
-	public int selectedFlowId = -1;
+	public int selectedFlowIndex = -1;
 
 
 	//ButtonSetFrameとListBox
@@ -125,7 +125,7 @@ public class UCGraph extends PApplet {
 			lbc.add(new ListBoxContent(i, altFlowList.get(i).get(0).condition));
 		}
 		altFlowLB.setContents(lbc);
-		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 1 ? selectedFlowId : -1);
+		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 1 ? selectedFlowIndex : -1);
 		altFlowLB.draw();
 
 		//excFlow中身詰め込み+draw()
@@ -135,7 +135,7 @@ public class UCGraph extends PApplet {
 			lbc.add(new ListBoxContent(i, excFlowList.get(i).get(0).condition));
 		}
 		excFlowLB.setContents(lbc);
-		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 2 ? selectedFlowId : -1);
+		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 2 ? selectedFlowIndex : -1);
 		excFlowLB.draw();
 
 		//stepLB中身詰め込み+draw()
@@ -149,13 +149,13 @@ public class UCGraph extends PApplet {
 					}
 					break;
 				case 1:
-					for (Step s : uc.getAlternativeFlowList().get(selectedFlowId)) {
+					for (Step s : uc.getAlternativeFlowList().get(selectedFlowIndex)) {
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
 							lbc.add(new ListBoxContent(s.id, s.getStepName(sToolEditor.fgm, uc)));
 					}
 					break;
 				case 2:
-					for (Step s : uc.getExceptionalFlowList().get(selectedFlowId)) {
+					for (Step s : uc.getExceptionalFlowList().get(selectedFlowIndex)) {
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
 							lbc.add(new ListBoxContent(s.id, s.getStepName(sToolEditor.fgm, uc)));
 					}
@@ -366,10 +366,10 @@ public class UCGraph extends PApplet {
 				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
 			} else if (id == 1 && selectedUsecaseId != -1) {
 				//altFlow削除
-				if (selectedFlowType == 1 && selectedFlowId != -1) {
+				if (selectedFlowType == 1 && selectedFlowIndex != -1) {
 					Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-					uc.removeAlternativeFlow(selectedFlowId);
-					selectedFlowId = -1;
+					uc.removeAlternativeFlow(selectedFlowIndex);
+					selectedFlowIndex = -1;
 					selectedStepId = -1;
 					selectedFlowType = -1;
 					sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
@@ -384,10 +384,10 @@ public class UCGraph extends PApplet {
 				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
 			} else if (id == 1 && selectedUsecaseId != -1) {
 				//excFlow削除
-				if (selectedFlowType == 2 && selectedFlowId != -1) {
+				if (selectedFlowType == 2 && selectedFlowIndex != -1) {
 					Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-					uc.removeExceptionalFlow(selectedFlowId);
-					selectedFlowId = -1;
+					uc.removeExceptionalFlow(selectedFlowIndex);
+					selectedFlowIndex = -1;
 					selectedStepId = -1;
 					selectedFlowType = -1;
 					sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
@@ -404,7 +404,7 @@ public class UCGraph extends PApplet {
 						break;
 					case 1:
 					case 2:
-						uc.addStep(selectedFlowType, selectedFlowId);
+						uc.addStep(selectedFlowType, selectedFlowIndex);
 						break;
 				}
 			} else if (id == 1 && selectedUsecaseId != -1) {
@@ -416,25 +416,25 @@ public class UCGraph extends PApplet {
 			//mainFlow押下時処理
 			if (selectedUsecaseId != -1) {
 				selectedFlowType = 0;
-				selectedFlowId = 0;
+				selectedFlowIndex = 0;
 				selectedStepId = -1;
 			}
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//UsecaseLB押下時処理
 			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
 			selectedFlowType = -1;
-			selectedFlowId = -1;
+			selectedFlowIndex = -1;
 			selectedStepId = -1;
 			altFlowLB.scroll(0);
 			excFlowLB.scroll(0);
 		} else if (altFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//altFlowLB押下時処理
-			selectedFlowId = altFlowLB.getContentOnMouse(mouseX, mouseY).id;
+			selectedFlowIndex = altFlowLB.getContentOnMouse(mouseX, mouseY).id;
 			selectedFlowType = 1;
 			selectedStepId = -1;
 		} else if (excFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//excFlowLB押下時処理
-			selectedFlowId = excFlowLB.getContentOnMouse(mouseX, mouseY).id;
+			selectedFlowIndex = excFlowLB.getContentOnMouse(mouseX, mouseY).id;
 			selectedFlowType = 2;
 			selectedStepId = -1;
 		} else if (stepLB.getContentOnMouse(mouseX, mouseY) != null) {
