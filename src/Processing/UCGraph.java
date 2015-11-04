@@ -391,10 +391,19 @@ public class UCGraph extends PApplet {
 				}
 			}
 		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			//TODO:stepButton押下時処理
+			//stepButton押下時処理
 			int id = stepBSF.getButtonIdOnMouse(mouseX, mouseY);
 			if (id == 0 && selectedUsecaseId != -1 && selectedFlowType != -1) {
-				//TODO:step追加
+				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
+				switch (selectedFlowType) {
+					case 0:
+						uc.addStep(0, 0, new Step());
+						break;
+					case 1:
+					case 2:
+						uc.addStep(selectedFlowType, selectedFlowId, new Step());
+						break;
+				}
 			} else if (id == 1 && selectedUsecaseId != -1) {
 				//TODO:step削除
 			}
