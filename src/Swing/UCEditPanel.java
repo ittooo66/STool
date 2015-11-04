@@ -113,6 +113,7 @@ public class UCEditPanel extends JPanel {
 		} else if (ucg.selectedUsecaseId != -1) {
 			//TODO:Step選択時
 		}
+		ste.redraw();
 	}
 
 	private void jumpButtonPressed() {
