@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.List;
+
 public class Step {
 	//StepのId
 	public int id;
@@ -91,4 +93,39 @@ public class Step {
 	public int objectDomainId;
 	//イベント記述
 	public String Event;
+
+	/**
+	 * ステップ名（UCEditorに表示）を出す
+	 *
+	 * @param fgm 本体の融合ゴールモデル
+	 * @param uc  このステップが存在しているUsecase
+	 * @return ステップ名
+	 */
+	public String toString(FGModel fgm, Usecase uc) {
+		switch (stepType) {
+			case ALT_INDEX:
+				return condition;
+			case EXC_INDEX:
+				return condition;
+			case GOTO:
+				List<Step> ls = uc.getMainFlow();
+				for (Step s : ls) {
+					if (s.id == this.gotoStepId) {
+						//自分のステップが存在
+						return "GOTO:" + s.toString(fgm, uc);
+					}
+				}
+				return "GOTO BUG";
+			case INCLUDE:
+				for (Usecase u : fgm.getUsecases()) {
+					if (u.id == includeUsecaseId) {
+						return "UC:" + u.name + "を起動";
+					}
+				}
+				return "INCLUDE BUG";
+			case ACTION:
+				return fgm.getDomainById(subjectDomainId) + "->" + Event + "->" + fgm.getDomainById(objectDomainId);
+		}
+		return "null";
+	}
 }
