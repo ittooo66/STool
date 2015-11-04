@@ -200,4 +200,13 @@ public class Usecase {
 	public void setFlow(List<Step> steps) {
 		flow = steps;
 	}
+
+	public void removeStep(int stepId) {
+		for (int i = 0; i < flow.size(); i++) {
+			if (flow.get(i).id == stepId) {
+				flow.remove(i);
+				return;
+			}
+		}
+	}
 }
