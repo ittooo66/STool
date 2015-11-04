@@ -206,6 +206,16 @@ public class Usecase {
 		flow = steps;
 	}
 
+	public void editStep(int stepId, Step step) {
+		for (int i = 0; i < flow.size(); i++) {
+			if (flow.get(i).id == stepId) {
+				step.id = stepId;
+				System.out.println(flow.get(i).id + ":" + flow.get(i).condition);
+				flow.set(i, step);
+			}
+		}
+	}
+
 	public void removeStep(int stepId) {
 		for (int i = 0; i < flow.size(); i++) {
 			if (flow.get(i).id == stepId) {
