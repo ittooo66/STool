@@ -320,21 +320,21 @@ public class FGModel {
 	public void moveUsecase(int id, int direction) {
 		for (int i = 0; i < usecases.size(); i++) {
 			if (usecases.get(i).id == id) {
-				Usecase suc = usecases.get(i);
 				if (direction == 1 && i != usecases.size() - 1) {
-					Usecase duc = usecases.get(i + 1);
-					usecases.set(i, duc);
-					usecases.set(i + 1, suc);
+					swap(usecases, i, i + 1);
 					return;
 				} else if (direction == -1 && i != 0) {
-					Usecase duc = usecases.get(i - 1);
-					usecases.set(i, duc);
-					usecases.set(i - 1, suc);
+					swap(usecases, i, i - 1);
 					return;
 				}
-
 			}
 		}
+	}
+
+	private static <t> void swap(List<t> list, int index1, int index2) {
+		t tmp = list.get(index1);
+		list.set(index1, list.get(index2));
+		list.set(index2, tmp);
 	}
 
 	public void removeUsecase(int id) {
