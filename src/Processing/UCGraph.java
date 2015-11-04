@@ -67,6 +67,9 @@ public class UCGraph extends PApplet {
 		stepBSF = new ButtonSetFrame("Step");
 		stepBSF.addButton("＋");
 		stepBSF.addButton("－");
+		stepBSF.addButton("↑");
+		stepBSF.addButton("↓");
+
 
 		//ListBoxをSetup
 		usecaseLB = new ListBox();
@@ -348,69 +351,62 @@ public class UCGraph extends PApplet {
 	}
 
 	public void mousePressed() {
+		Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
 		if (usecaseBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
 			int id = usecaseBSF.getButtonIdOnMouse(mouseX, mouseY);
-			if (id == 0) {
-				//Usecase移動（上向き）
-				sToolEditor.fgm.moveUsecase(selectedUsecaseId, -1);
-			} else if (id == 1) {
-				//Usecase移動（下向き）
-				sToolEditor.fgm.moveUsecase(selectedUsecaseId, 1);
+			switch (id) {
+				case 0://Usecase移動（上向き）
+					sToolEditor.fgm.moveUsecase(selectedUsecaseId, -1);
+					break;
+				case 1://Usecase移動（下向き）
+					sToolEditor.fgm.moveUsecase(selectedUsecaseId, 1);
+					break;
 			}
-		} else if (altFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+		} else if (altFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1 && uc != null) {
 			int id = altFlowBSF.getButtonIdOnMouse(mouseX, mouseY);
-			if (id == 0 && selectedUsecaseId != -1) {
-				//altFlow追加
-				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-				uc.addAlternativeFlow("代替：" + uc.getAlternativeFlowList().size());
-				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
-			} else if (id == 1 && selectedUsecaseId != -1) {
-				//altFlow削除
-				if (selectedFlowType == 1 && selectedFlowIndex != -1) {
-					Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-					uc.removeAlternativeFlow(selectedFlowIndex);
-					selectedFlowIndex = -1;
-					selectedStepId = -1;
-					selectedFlowType = -1;
-					sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
-				}
+			switch (id) {
+				case 0://altFlow追加
+					uc.addAlternativeFlow("代替：" + uc.getAlternativeFlowList().size());
+					break;
+				case 1://altFlow削除
+					if (selectedFlowType == 1) {
+						uc.removeAlternativeFlow(selectedFlowIndex);
+						selectedFlowIndex = -1;
+						selectedFlowType = -1;
+						selectedStepId = -1;
+					}
+					break;
 			}
-		} else if (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
+		} else if (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY) != -1 && uc != null) {
 			int id = excFlowBSF.getButtonIdOnMouse(mouseX, mouseY);
-			if (id == 0 && selectedUsecaseId != -1) {
-				//excFlow追加
-				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-				uc.addExceptionalFlow("例外：" + uc.getExceptionalFlowList().size());
-				sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
-			} else if (id == 1 && selectedUsecaseId != -1) {
-				//excFlow削除
-				if (selectedFlowType == 2 && selectedFlowIndex != -1) {
-					Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-					uc.removeExceptionalFlow(selectedFlowIndex);
-					selectedFlowIndex = -1;
-					selectedStepId = -1;
-					selectedFlowType = -1;
-					sToolEditor.fgm.editUsecase(selectedUsecaseId, uc);
-				}
+			switch (id) {
+				case 0://excFlow追加
+					uc.addExceptionalFlow("例外：" + uc.getExceptionalFlowList().size());
+					break;
+				case 1://excFlow削除
+					if (selectedFlowType == 2) {
+						uc.removeExceptionalFlow(selectedFlowIndex);
+						selectedFlowIndex = -1;
+						selectedFlowType = -1;
+						selectedStepId = -1;
+					}
+					break;
 			}
-		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1) {
-			//stepButton押下時処理
+		} else if (stepBSF.getButtonIdOnMouse(mouseX, mouseY) != -1 && uc != null) {
 			int id = stepBSF.getButtonIdOnMouse(mouseX, mouseY);
-			if (id == 0 && selectedUsecaseId != -1 && selectedFlowType != -1) {
-				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-				switch (selectedFlowType) {
-					case 0:
-						uc.addStep(0, 0);
-						break;
-					case 1:
-					case 2:
-						uc.addStep(selectedFlowType, selectedFlowIndex);
-						break;
-				}
-			} else if (id == 1 && selectedUsecaseId != -1) {
-				//step削除
-				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
-				uc.removeStep(selectedStepId);
+			switch (id) {
+				case 0://step追加
+					uc.addStep(selectedFlowType, selectedFlowIndex);
+					break;
+				case 1://step削除
+					uc.removeStep(selectedStepId);
+					break;
+				case 2://step上に移動
+					uc.moveStep(selectedStepId, -1);
+					break;
+				case 3://step下に移動
+					uc.moveStep(selectedStepId, 1);
+					break;
 			}
 		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY)) {
 			//mainFlow押下時処理
