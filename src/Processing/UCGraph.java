@@ -408,7 +408,9 @@ public class UCGraph extends PApplet {
 						break;
 				}
 			} else if (id == 1 && selectedUsecaseId != -1) {
-				//TODO:step削除
+				//step削除
+				Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
+				uc.removeStep(selectedStepId);
 			}
 		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY)) {
 			//mainFlow押下時処理
