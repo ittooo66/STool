@@ -57,6 +57,20 @@ public class FGModel {
 		return null;
 	}
 
+	public Domain getDomainById(int id) {
+		for (Domain d : domains) {
+			if (d.id == id) return d;
+		}
+		return null;
+	}
+
+	public Usecase getUsecaseById(int id) {
+		for (Usecase u : usecases) {
+			if (u.id == id) return u;
+		}
+		return null;
+	}
+
 	/**
 	 * ゴールをまとめて取得
 	 *
@@ -64,6 +78,19 @@ public class FGModel {
 	 */
 	public List<Goal> getGoals() {
 		return goals;
+	}
+
+	/**
+	 * ドメインをまとめて取得
+	 *
+	 * @return
+	 */
+	public List<Domain> getDomains() {
+		return domains;
+	}
+
+	public List<Usecase> getUsecases() {
+		return usecases;
 	}
 
 	/**
@@ -105,6 +132,48 @@ public class FGModel {
 	}
 
 	/**
+	 * ドメイン追加
+	 *
+	 * @param name 名前
+	 * @param dt   ドメインタイプ
+	 * @param x    座標
+	 * @param y    座標
+	 */
+	public void addDomain(String name, Domain.DomainType dt, int x, int y) {
+		//新ID生成
+		int id = 0;
+		for (Domain d : domains) {
+			if (d.id >= id) {
+				id = d.id + 1;
+			}
+		}
+		//インスタンス作成
+		Domain d = new Domain();
+		d.id = id;
+		d.name = name;
+		d.domainType = dt;
+		d.x = x;
+		d.y = y;
+		//追加
+		domains.add(d);
+	}
+
+	public void addUsecase(String name, int parentGoalId) {
+		//新ID生成
+		int id = 0;
+		for (Usecase u : usecases) {
+			if (u.id >= id) {
+				id = u.id + 1;
+			}
+		}
+		//インスタンス作成
+		Usecase u = new Usecase(id, name, parentGoalId);
+
+		//追加
+		usecases.add(u);
+	}
+
+	/**
 	 * ゴールを編集する
 	 *
 	 * @param id
@@ -123,6 +192,7 @@ public class FGModel {
 		}
 
 		//モデル整合性チェック
+		if (name.equals("")) return false;
 
 		//親ゴールとして自己参照はだめ
 		if (id == parentId) return false;
@@ -142,6 +212,38 @@ public class FGModel {
 	}
 
 	/**
+	 * @param id
+	 * @param name
+	 * @param dt
+	 * @return
+	 */
+	public boolean editDomain(int id, String name, Domain.DomainType dt) {
+		for (Domain d : domains) {
+			if (d.id == id) {
+				d.domainType = dt;
+				d.name = name;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean editUsecase(int id, Usecase usecase) {
+		for (int i = 0; i < usecases.size(); i++) {
+			if (usecases.get(i).id == id) {
+				//TODO:モデル整合性チェック
+				//TODO:1.ID確認
+				//TODO:2.GOTO,INCLUDE命令の整合性（ALT_EXC系のJump命令先がNullではないか）
+				//TODO:妥当でなければreturn false;
+
+				usecases.set(i, usecase);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * ゴールを編集（更新）する
 	 *
 	 * @param id 編集するゴールID
@@ -157,6 +259,47 @@ public class FGModel {
 				return;
 			}
 		}
+	}
+
+	/**
+	 * @param id
+	 * @param x
+	 * @param y
+	 */
+	public void moveDomain(int id, int x, int y) {
+		for (Domain d : domains) {
+			if (d.id == id) {
+				d.x = x;
+				d.y = y;
+				return;
+			}
+		}
+	}
+
+	/**
+	 * ユースケースのリストを編集（Move）
+	 *
+	 * @param id        　操作対象のUsecaseId
+	 * @param direction 移動方向（+1 or -1）
+	 */
+	public void moveUsecase(int id, int direction) {
+		for (int i = 0; i < usecases.size(); i++) {
+			if (usecases.get(i).id == id) {
+				if (direction == 1 && i != usecases.size() - 1) {
+					swap(usecases, i, i + 1);
+					return;
+				} else if (direction == -1 && i != 0) {
+					swap(usecases, i, i - 1);
+					return;
+				}
+			}
+		}
+	}
+
+	private static <t> void swap(List<t> list, int index1, int index2) {
+		t tmp = list.get(index1);
+		list.set(index1, list.get(index2));
+		list.set(index2, tmp);
 	}
 
 	/**
@@ -188,153 +331,11 @@ public class FGModel {
 		return false;
 	}
 
-	/**
-	 * ドメインをまとめて取得
-	 *
-	 * @return
-	 */
-	public List<Domain> getDomains() {
-		return domains;
-	}
-
-	public Domain getDomainById(int id) {
-		for (Domain d : domains) {
-			if (d.id == id) return d;
-		}
-		return null;
-	}
-
-	/**
-	 * ドメイン追加
-	 *
-	 * @param name 名前
-	 * @param dt   ドメインタイプ
-	 * @param x    座標
-	 * @param y    座標
-	 */
-	public void addDomain(String name, Domain.DomainType dt, int x, int y) {
-		//新ID生成
-		int id = 0;
-		for (Domain d : domains) {
-			if (d.id >= id) {
-				id = d.id + 1;
-			}
-		}
-		//インスタンス作成
-		Domain d = new Domain();
-		d.id = id;
-		d.name = name;
-		d.domainType = dt;
-		d.x = x;
-		d.y = y;
-		//追加
-		domains.add(d);
-	}
-
-	/**
-	 * @param id
-	 * @param name
-	 * @param dt
-	 * @return
-	 */
-	public boolean editDomain(int id, String name, Domain.DomainType dt) {
-		for (Domain d : domains) {
-			if (d.id == id) {
-				d.domainType = dt;
-				d.name = name;
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * @param id
-	 * @param x
-	 * @param y
-	 */
-	public void moveDomain(int id, int x, int y) {
-		for (Domain d : domains) {
-			if (d.id == id) {
-				d.x = x;
-				d.y = y;
-				return;
-			}
-		}
-	}
-
 	public void removeDomain(int id) {
 		for (int i = 0; i < domains.size(); i++) {
 			if (domains.get(i).id == id)
 				domains.remove(i);
 		}
-	}
-
-	public Usecase getUsecaseById(int id) {
-		for (Usecase u : usecases) {
-			if (u.id == id) return u;
-		}
-		return null;
-	}
-
-	public List<Usecase> getUsecases() {
-		return usecases;
-	}
-
-	public void addUsecase(String name, int parentGoalId) {
-		//新ID生成
-		int id = 0;
-		for (Usecase u : usecases) {
-			if (u.id >= id) {
-				id = u.id + 1;
-			}
-		}
-		//インスタンス作成
-		Usecase u = new Usecase(id, name, parentGoalId);
-
-		//追加
-		usecases.add(u);
-	}
-
-	public boolean editUsecase(int id, Usecase usecase) {
-		for (int i = 0; i < usecases.size(); i++) {
-			if (usecases.get(i).id == id) {
-				//TODO:モデル整合性チェック
-				//TODO:1.ID確認
-				//TODO:2.GOTO,INCLUDE命令の整合性（ALT_EXC系のJump命令先がNullではないか）
-				//TODO:妥当でなければreturn false;
-
-				usecases.set(i, usecase);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * ユースケースのリストを編集（Move）
-	 *
-	 * @param id        　操作対象のUsecaseId
-	 * @param direction 移動方向（+1 or -1）
-	 */
-	public void moveUsecase(int id, int direction) {
-		for (int i = 0; i < usecases.size(); i++) {
-			if (usecases.get(i).id == id) {
-				if (direction == 1 && i != usecases.size() - 1) {
-					swap(usecases, i, i + 1);
-					return;
-				} else if (direction == -1 && i != 0) {
-					swap(usecases, i, i - 1);
-					return;
-				}
-			}
-		}
-	}
-
-	private static <t> void swap(List<t> list, int index1, int index2) {
-		t tmp = list.get(index1);
-		list.set(index1, list.get(index2));
-		list.set(index2, tmp);
 	}
 
 	public void removeUsecase(int id) {
