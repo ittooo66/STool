@@ -90,7 +90,7 @@ public class Step {
 	 * @param uc  このステップが存在しているUsecase
 	 * @return ステップ名
 	 */
-	public String toString(FGModel fgm, Usecase uc) {
+	public String getStepName(FGModel fgm, Usecase uc) {
 		switch (stepType) {
 			case ALT_INDEX:
 				return condition;
@@ -101,17 +101,17 @@ public class Step {
 				for (Step s : ls) {
 					if (s.id == this.gotoStepId) {
 						//自分のステップが存在
-						return "GOTO:" + s.toString(fgm, uc);
+						return "GOTO:" + s.getStepName(fgm, uc);
 					}
 				}
-				return "GOTO BUG";
+				return null;
 			case INCLUDE:
 				for (Usecase u : fgm.getUsecases()) {
 					if (u.id == includeUsecaseId) {
 						return "UC:" + u.name + "を起動";
 					}
 				}
-				return "INCLUDE BUG";
+				return null;
 			case ACTION:
 				return fgm.getDomainById(subjectDomainId) + "->" + Event + "->" + fgm.getDomainById(objectDomainId);
 			case NOP:
