@@ -28,7 +28,7 @@ public class Usecase {
 	}
 
 	/**
-	 * FlowからMainFlowを抽出
+	 * MainFlowを抽出
 	 *
 	 * @return 主系列
 	 */
@@ -45,7 +45,7 @@ public class Usecase {
 	}
 
 	/**
-	 * FlowからExceptionalFlowのリストを抽出
+	 * ExceptionalFlowのリストを抽出
 	 *
 	 * @return 例外系列リスト
 	 */
@@ -70,7 +70,7 @@ public class Usecase {
 	}
 
 	/**
-	 * FlowからAlternativeFlowのリストを抽出
+	 * AlternativeFlowのリストを抽出
 	 *
 	 * @return 代替系列
 	 */
@@ -94,6 +94,11 @@ public class Usecase {
 		return alternativeFlowList;
 	}
 
+	/**
+	 * AlternativeFlowを削除
+	 *
+	 * @param index AlternativeFlowListのindex
+	 */
 	public void removeAlternativeFlow(int index) {
 		List<Step> mainFlow = getMainFlow();
 		List<List<Step>> altFlowList = getAlternativeFlowList();
@@ -106,6 +111,11 @@ public class Usecase {
 		flow = newFlow;
 	}
 
+	/**
+	 * ExceptionalFlowを削除
+	 *
+	 * @param index ExceptionalFlowListのindex
+	 */
 	public void removeExceptionalFlow(int index) {
 		List<Step> mainFlow = getMainFlow();
 		List<List<Step>> altFlowList = getAlternativeFlowList();
@@ -118,6 +128,11 @@ public class Usecase {
 		flow = newFlow;
 	}
 
+	/**
+	 * AlternativeFlowを追加
+	 *
+	 * @param condition 遷移条件
+	 */
 	public void addAlternativeFlow(String condition) {
 		Step s = new Step();
 		s.stepType = Step.StepType.ALT_INDEX;
@@ -126,12 +141,45 @@ public class Usecase {
 		flow.add(s);
 	}
 
+	/**
+	 * ExceptionalFlowを追加
+	 *
+	 * @param condition 遷移条件
+	 */
 	public void addExceptionalFlow(String condition) {
 		Step s = new Step();
 		s.stepType = Step.StepType.EXC_INDEX;
 		s.condition = condition;
 		s.sourceStepId = -1;
 		flow.add(s);
+	}
+
+	/**
+	 * Stepを追加
+	 *
+	 * @param flowType  追加先のフローの種類(0:main,1:alt,2:exc)
+	 * @param flowIndex 追加先のフローのindex
+	 * @param step      追加するステップ
+	 */
+	public void addStep(int flowType, int flowIndex, Step step) {
+		List<Step> mainFlow = getMainFlow();
+		List<List<Step>> altFlowList = getAlternativeFlowList();
+		List<List<Step>> excFlowList = getExceptionalFlowList();
+		if (flowType == 0) {
+			mainFlow.add(step);
+		} else if (flowType == 1) {
+			altFlowList.get(flowIndex).add(step);
+		} else if (flowType == 2) {
+			excFlowList.get(flowIndex).add(step);
+		}
+		flow = new ArrayList<>();
+		flow.addAll(mainFlow.stream().collect(Collectors.toList()));
+		for (List<Step> ls : altFlowList) {
+			flow.addAll(ls.stream().collect(Collectors.toList()));
+		}
+		for (List<Step> ls : excFlowList) {
+			flow.addAll(ls.stream().collect(Collectors.toList()));
+		}
 	}
 
 	public List<Step> getFlow() {
