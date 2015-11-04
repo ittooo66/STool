@@ -144,17 +144,20 @@ public class UCGraph extends PApplet {
 			switch (selectedFlowType) {
 				case 0:
 					for (Step s : uc.getMainFlow()) {
-						lbc.add(new ListBoxContent(s.id, s.toString(sToolEditor.fgm)));
+						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
+							lbc.add(new ListBoxContent(s.id, s.getStepName(sToolEditor.fgm, uc)));
 					}
 					break;
 				case 1:
 					for (Step s : uc.getAlternativeFlowList().get(selectedFlowId)) {
-						lbc.add(new ListBoxContent(s.id, s.toString(sToolEditor.fgm)));
+						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
+							lbc.add(new ListBoxContent(s.id, s.getStepName(sToolEditor.fgm, uc)));
 					}
 					break;
 				case 2:
 					for (Step s : uc.getExceptionalFlowList().get(selectedFlowId)) {
-						lbc.add(new ListBoxContent(s.id, s.toString(sToolEditor.fgm)));
+						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
+							lbc.add(new ListBoxContent(s.id, s.getStepName(sToolEditor.fgm, uc)));
 					}
 					break;
 			}
@@ -412,12 +415,11 @@ public class UCGraph extends PApplet {
 			if (selectedUsecaseId != -1) {
 				selectedFlowType = 0;
 				selectedFlowId = 0;
+				selectedStepId = -1;
 			}
 		} else if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//UsecaseLB押下時処理
-			if (usecaseLB.getContentOnMouse(mouseX, mouseY).id != selectedUsecaseId) {
-				selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
-			}
+			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
 			selectedFlowType = -1;
 			selectedFlowId = -1;
 			selectedStepId = -1;
@@ -425,18 +427,14 @@ public class UCGraph extends PApplet {
 			excFlowLB.scroll(0);
 		} else if (altFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//altFlowLB押下時処理
-			if (selectedFlowType != 1 || altFlowLB.getContentOnMouse(mouseX, mouseY).id != selectedFlowId) {
-				selectedFlowType = 1;
-				selectedFlowId = altFlowLB.getContentOnMouse(mouseX, mouseY).id;
-				selectedStepId = -1;
-			}
+			selectedFlowId = altFlowLB.getContentOnMouse(mouseX, mouseY).id;
+			selectedFlowType = 1;
+			selectedStepId = -1;
 		} else if (excFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//excFlowLB押下時処理
-			if (selectedFlowType != 2 || excFlowLB.getContentOnMouse(mouseX, mouseY).id != selectedFlowId) {
-				selectedFlowType = 2;
-				selectedFlowId = excFlowLB.getContentOnMouse(mouseX, mouseY).id;
-				selectedStepId = -1;
-			}
+			selectedFlowId = excFlowLB.getContentOnMouse(mouseX, mouseY).id;
+			selectedFlowType = 2;
+			selectedStepId = -1;
 		} else if (stepLB.getContentOnMouse(mouseX, mouseY) != null) {
 			//stepLB押下時処理
 			selectedStepId = stepLB.getContentOnMouse(mouseX, mouseY).id;
