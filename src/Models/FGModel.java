@@ -299,7 +299,8 @@ public class FGModel {
 		for (int i = 0; i < usecases.size(); i++) {
 			if (usecases.get(i).id == id) {
 				//TODO:モデル整合性チェック
-				//TODO:Jump命令の妥当性検討とかそういうやつ
+				//TODO:1.ID確認
+				//TODO:2.GOTO,INCLUDE命令の整合性（ALT_EXC系のJump命令先がNullではないか）
 				//TODO:妥当でなければreturn false;
 
 				usecases.set(i, usecase);
