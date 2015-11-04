@@ -203,15 +203,6 @@ public class Usecase {
 		for (List<Step> ls : excFlowList) flow.addAll(ls.stream().collect(Collectors.toList()));
 	}
 
-	/**
-	 * eventのStepのみを返す
-	 *
-	 * @return ユースケース内のEventStepリスト
-	 */
-	public List<Step> getEventStepList() {
-		return flow.stream().filter(s -> s.stepType == Step.StepType.ACTION).collect(Collectors.toList());
-	}
-
 	public void editStep(int stepId, Step step) {
 		for (int i = 0; i < flow.size(); i++) {
 			if (flow.get(i).id == stepId) {
@@ -278,6 +269,15 @@ public class Usecase {
 				return;
 			}
 		}
+	}
+
+	/**
+	 * eventのStepのみを返す
+	 *
+	 * @return ユースケース内のEventStepリスト
+	 */
+	public List<Step> getEventStepList() {
+		return flow.stream().filter(s -> s.stepType == Step.StepType.ACTION).collect(Collectors.toList());
 	}
 
 	@Deprecated
