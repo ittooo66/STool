@@ -175,26 +175,32 @@ public class Usecase {
 	 * @param flowIndex 追加先のフローのindex
 	 */
 	public void addStep(int flowType, int flowIndex) {
+		//新Step生成
 		Step step = getNewStep();
 
+		//flowをList群として抽出
 		List<Step> mainFlow = getMainFlow();
 		List<List<Step>> altFlowList = getAlternativeFlowList();
 		List<List<Step>> excFlowList = getExceptionalFlowList();
-		if (flowType == 0) {
-			mainFlow.add(step);
-		} else if (flowType == 1) {
-			altFlowList.get(flowIndex).add(step);
-		} else if (flowType == 2) {
-			excFlowList.get(flowIndex).add(step);
+
+		//適切な場所に新Stepを挿入
+		switch (flowType) {
+			case 0:
+				mainFlow.add(step);
+				break;
+			case 1:
+				altFlowList.get(flowIndex).add(step);
+				break;
+			case 2:
+				excFlowList.get(flowIndex).add(step);
+				break;
 		}
+
+		//flow再構築
 		flow = new ArrayList<>();
 		flow.addAll(mainFlow.stream().collect(Collectors.toList()));
-		for (List<Step> ls : altFlowList) {
-			flow.addAll(ls.stream().collect(Collectors.toList()));
-		}
-		for (List<Step> ls : excFlowList) {
-			flow.addAll(ls.stream().collect(Collectors.toList()));
-		}
+		for (List<Step> ls : altFlowList) flow.addAll(ls.stream().collect(Collectors.toList()));
+		for (List<Step> ls : excFlowList) flow.addAll(ls.stream().collect(Collectors.toList()));
 	}
 
 	/**
@@ -206,17 +212,61 @@ public class Usecase {
 		return flow.stream().filter(s -> s.stepType == Step.StepType.ACTION).collect(Collectors.toList());
 	}
 
-	@Deprecated
-	public void setFlow(List<Step> steps) {
-		flow = steps;
-	}
-
 	public void editStep(int stepId, Step step) {
 		for (int i = 0; i < flow.size(); i++) {
 			if (flow.get(i).id == stepId) {
 				step.id = stepId;
-				System.out.println(flow.get(i).id + ":" + flow.get(i).condition);
 				flow.set(i, step);
+				return;
+			}
+		}
+	}
+
+	/**
+	 * ステップを移動
+	 *
+	 * @param stepId    移動対象のステップ
+	 * @param direction -1:上、+1:下
+	 */
+	public void moveStep(int stepId, int direction) {
+		//flowをList群として抽出
+		List<Step> mainFlow = getMainFlow();
+		List<List<Step>> altFlowList = getAlternativeFlowList();
+		List<List<Step>> excFlowList = getExceptionalFlowList();
+
+		//List内部をMove
+		moveStepList(mainFlow, direction, stepId);
+		for (List<Step> stepList : altFlowList) moveStepList(stepList, direction, stepId);
+		for (List<Step> stepList : excFlowList) moveStepList(stepList, direction, stepId);
+
+		//flow再構築
+		flow = new ArrayList<>();
+		flow.addAll(mainFlow.stream().collect(Collectors.toList()));
+		for (List<Step> ls : altFlowList) flow.addAll(ls.stream().collect(Collectors.toList()));
+		for (List<Step> ls : excFlowList) flow.addAll(ls.stream().collect(Collectors.toList()));
+	}
+
+	/**
+	 * ステップ移動用のprivateメソッド
+	 *
+	 * @param stepList  移動対象のStepList
+	 * @param direction 方向
+	 * @param stepId    移動対象のStepId
+	 */
+	private void moveStepList(List<Step> stepList, int direction, int stepId) {
+		for (int i = 0; i < stepList.size(); i++) {
+			if (stepList.get(i).id == stepId) {
+				if (direction == 1 && i != stepList.size() - 1) {
+					Step tmp = stepList.get(i);
+					stepList.set(i, stepList.get(i + 1));
+					stepList.set(i + 1, tmp);
+					return;
+				} else if (direction == -1 && i != 0) {
+					Step tmp = stepList.get(i);
+					stepList.set(i, stepList.get(i - 1));
+					stepList.set(i - 1, tmp);
+					return;
+				}
 			}
 		}
 	}
@@ -229,4 +279,10 @@ public class Usecase {
 			}
 		}
 	}
+
+	@Deprecated
+	public void setFlow(List<Step> steps) {
+		flow = steps;
+	}
+
 }
