@@ -252,7 +252,9 @@ public class Usecase {
 					stepList.set(i, stepList.get(i + 1));
 					stepList.set(i + 1, tmp);
 					return;
-				} else if (direction == -1 && i != 0) {
+				} else if (direction == -1 && i != 0 &&
+						stepList.get(i - 1).stepType != Step.StepType.EXC_INDEX &&
+						stepList.get(i - 1).stepType != Step.StepType.ALT_INDEX) {
 					Step tmp = stepList.get(i);
 					stepList.set(i, stepList.get(i - 1));
 					stepList.set(i - 1, tmp);
