@@ -188,7 +188,7 @@ public class SToolEditor extends JFrame {
 	public static void main(String[] args) {
 		SToolEditor ste = new SToolEditor();
 		ste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ste.setBounds(10, 10, 800, 600);
+		ste.setBounds(10, 10, 1024, 768);
 		ste.setTitle("SToolEditor");
 		ste.setVisible(true);
 	}
