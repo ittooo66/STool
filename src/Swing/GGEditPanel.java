@@ -34,8 +34,8 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.ste = ste;
 		this.ggg = ggg;
 
-		this.setLayout(null);                            //pixel直打ちさせる
-		this.setPreferredSize(new Dimension(200, 0));    //幅200で固定
+		this.setLayout(null);
+		this.setPreferredSize(new Dimension(200, 0));
 
 		//RemoveButton
 		remove = new JButton("Remove");
