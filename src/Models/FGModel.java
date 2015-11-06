@@ -197,7 +197,7 @@ public class FGModel {
 		return "COULD NOT FIND A DOMAIN THAT HAS ID:" + id;
 	}
 
-	public boolean editUsecase(int id, Usecase usecase) {
+	public String editUsecase(int id, Usecase usecase) {
 		for (int i = 0; i < usecases.size(); i++) {
 			if (usecases.get(i).id == id) {
 				//TODO:モデル整合性チェック
@@ -206,10 +206,10 @@ public class FGModel {
 				//TODO:妥当でなければreturn false;
 
 				usecases.set(i, usecase);
-				return true;
+				return null;
 			}
 		}
-		return false;
+		return "COULD NOT FIND A USECASE THAT HS ID:" + id;
 	}
 
 	public void moveGoal(int id, int x, int y) {
