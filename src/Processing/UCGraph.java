@@ -469,6 +469,7 @@ public class UCGraph extends PApplet {
 		//カウント取得
 		int e = event.getCount() > 0 ? 1 : -1;
 
+		//スクロール箇所の特定・適用
 		if (mouseIsInRect(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
 			usecaseLB.scroll(e);
 		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
@@ -479,7 +480,7 @@ public class UCGraph extends PApplet {
 			stepLB.scroll(e);
 		}
 
-		sToolEditor.redraw();
+		loop();
 	}
 
 	public void mouseMoved() {
