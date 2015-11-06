@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Usecase implements Cloneable{
+public class Usecase implements Cloneable {
 
 	//名前と番号
 	public int id;
@@ -290,7 +290,10 @@ public class Usecase implements Cloneable{
 	@Override
 	public Object clone() {
 		try {
-			return super.clone();
+			Usecase uc = (Usecase) super.clone();
+			List<Step> stepList = flow.stream().map(s -> (Step) s.clone()).collect(Collectors.toList());
+			uc.flow = stepList;
+			return uc;
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
