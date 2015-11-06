@@ -19,8 +19,7 @@ public class GGEditPanel extends JPanel implements ActionListener {
 
 	//GGEditorコンポーネント
 	private JButton add, edit, remove;
-	private JRadioButton refineTypeAnd, refineTypeOr, refineTypeLeaf;
-	private JRadioButton necessityIsEnable, necessityIsDisable;
+	private JRadioButton refineTypeAnd, refineTypeOr, refineTypeLeaf, necessityIsEnable, necessityIsDisable;
 	private JTextArea nameArea;
 	private JPanel ggEditRefineType, necessity;
 	private JComboBox parentComboBox;
