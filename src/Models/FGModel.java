@@ -7,19 +7,13 @@ import java.util.Collections;
 import java.util.List;
 
 //TODO:モデル規則に従うadd,edit,remove(,move)を行うようにすること
-//TODO:上記のメソッドをBoolean値を返す形式にすること（true:編集できた,false:できない）
 //TODO:Stringでもいいかも？（Null:編集できた、ErrorMessage:できてない理由）
 
 /**
- * FGModel
- * List<Goal> goals
- * List<Usecase> usecases
- * List<Domain> domains
- * からなる融合ゴールモデル
- * <p>
- * loadXML()とsaveXML()でXML入出力を行える
- * <p>
- * モデルのおやくそく（根ゴールは必ず１個、消去不可）とかそういうやつはだいたいここで管理すること
+ * FGModel: 融合ゴールモデル、loadXML()とsaveXML()でXML入出力を行える<p>
+ * String add~(),String edit~(),String remove~()の仕様：<p>
+ * ・null値：編集操作成功<p>
+ * ・文字列：エラーメッセージ
  */
 public class FGModel {
 	private List<Goal> goals;
