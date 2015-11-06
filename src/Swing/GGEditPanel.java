@@ -212,7 +212,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		//削除確認
 		if (JOptionPane.showConfirmDialog(this,
 				"このゴールに関連するユースケースも削除されます。実行しますか？",
-				"確認", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) return;
+				"確認", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) return;
 
 		//fgm編集
 		String str = ste.fgm.removeGoal(ggg.selectedGoalId);
