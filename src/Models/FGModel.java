@@ -115,7 +115,9 @@ public class FGModel {
 		return null;
 	}
 
-	public void addDomain(String name, Domain.DomainType dt, int x, int y) {
+	public String addDomain(String name, Domain.DomainType dt, int x, int y) {
+		if (name == null) return "DOMAINNAME MUST BE NON-NULL";
+
 		//新ID生成
 		int id = 0;
 		for (Domain d : domains) {
@@ -132,6 +134,7 @@ public class FGModel {
 		d.y = y;
 		//追加
 		domains.add(d);
+		return null;
 	}
 
 	public void addUsecase(String name, int parentGoalId) {
@@ -180,15 +183,17 @@ public class FGModel {
 
 	}
 
-	public boolean editDomain(int id, String name, Domain.DomainType dt) {
+	public String editDomain(int id, String name, Domain.DomainType dt) {
+		if (name == null) return "DOMAIN NAME MUST BE NON-NULL";
+
 		for (Domain d : domains) {
 			if (d.id == id) {
 				d.domainType = dt;
 				d.name = name;
-				return true;
+				return null;
 			}
 		}
-		return false;
+		return "COULD NOT FIND A DOMAIN THAT HAS ID:" + id;
 	}
 
 	public boolean editUsecase(int id, Usecase usecase) {
@@ -270,20 +275,24 @@ public class FGModel {
 		return "COULD NOT FIND A GOAL THAT HAS ID:" + id;
 	}
 
-	public void removeDomain(int id) {
+	public String removeDomain(int id) {
 		for (int i = 0; i < domains.size(); i++) {
-			if (domains.get(i).id == id)
+			if (domains.get(i).id == id) {
 				domains.remove(i);
+				return null;
+			}
 		}
+		return "COULD NOT FIND A DOMAIN THAT HAS ID:" + id;
 	}
 
-	public void removeUsecase(int id) {
+	public String removeUsecase(int id) {
 		for (Usecase u : usecases) {
 			if (u.id == id) {
 				removeGoal(u.parentLeafGoalId);
-				return;
+				return null;
 			}
 		}
+		return "COULD NOT FIND A DOMAIN THAT HAS ID:" + id;
 	}
 
 	/**
