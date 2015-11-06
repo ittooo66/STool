@@ -165,7 +165,7 @@ public class GGGraph extends PApplet {
 				rect(g.x - (textWidth(g.name) + 40) / 2, g.y - texts.length * 8 - 10, textWidth(g.name) + 40, texts.length * 16 + 20, 8);
 
 				//fill変更(選択中か否か、リーフか否か)
-				fill(g.id == selectedGoalId ? COLOR_SELECTED : g.childrenType.equals(Goal.ChildrenType.LEAF) ? COLOR_BACKGROUND : COLOR_LINES);
+				fill(g.id == selectedGoalId ? COLOR_BACKGROUND : COLOR_LINES);
 
 				//名前の記述
 				for (int i = 0; i < texts.length; i++) {
