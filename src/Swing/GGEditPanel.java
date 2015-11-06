@@ -23,7 +23,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JButton add, remove;
 	private JRadioButton refineTypeAnd, refineTypeOr, refineTypeLeaf, necessityIsEnable, necessityIsDisable;
 	private JTextArea nameArea;
-	private JPanel ggEditRefineType, necessity;
+	private JPanel refineType, necessity, nameAreaBorder, parentComboBoxBorder;
 	private JComboBox parentComboBox;
 	private List<Integer> parentComboBoxIdList;
 
@@ -43,32 +43,32 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		remove.setBounds(105, 5, 90, 30);
 		remove.setVisible(false);
 		this.add(remove);
-		//AddButton
-		add = new JButton("Add");
+		//Add New Goal Button
+		add = new JButton("Add New Goal");
 		add.addActionListener(e -> addButtonPressed());
-		add.setBounds(105, 400, 90, 30);
+		add.setBounds(75, 200, 120, 30);
 		this.add(add);
 
 		//NameTextArea周り
 		nameArea = new JTextArea(5, 15);
 		nameArea.getDocument().addDocumentListener(this);
 		JScrollPane scroll = new JScrollPane(nameArea);
-		JPanel ggEditNameFieldBorder = new JPanel();
-		ggEditNameFieldBorder.add(scroll);
-		ggEditNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
-		ggEditNameFieldBorder.setBounds(5, 50, 193, 120);
-		this.add(ggEditNameFieldBorder);
+		nameAreaBorder = new JPanel();
+		nameAreaBorder.add(scroll);
+		nameAreaBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
+		nameAreaBorder.setBounds(5, 50, 193, 120);
+		this.add(nameAreaBorder);
 
 		//parent指定ComboBox周り
 		parentComboBox = new JComboBox();
 		parentComboBox.setPreferredSize(new Dimension(160, 20));
 		parentComboBox.addActionListener(this);
-		JPanel parentComboBoxBorder = new JPanel();
+		parentComboBoxBorder = new JPanel();
 		parentComboBoxBorder.add(parentComboBox);
-		parentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent"));
+		parentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
 		parentComboBoxBorder.setBounds(5, 180, 193, 60);
 		this.add(parentComboBoxBorder);
-		parentComboBoxIdList = new ArrayList();
+		parentComboBoxIdList = new ArrayList<>();
 
 		//refineType周り
 		refineTypeAnd = new JRadioButton("AND");
@@ -79,19 +79,19 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		refineTypeLeaf = new JRadioButton("LEAF");
 		refineTypeLeaf.addActionListener(this);
 		//refineTypeButtonGroup作成
-		ButtonGroup ggEditRefineTypeButtonGroup = new ButtonGroup();
-		ggEditRefineTypeButtonGroup.add(refineTypeAnd);
-		ggEditRefineTypeButtonGroup.add(refineTypeOr);
-		ggEditRefineTypeButtonGroup.add(refineTypeLeaf);
+		ButtonGroup refineTypeButtonGroup = new ButtonGroup();
+		refineTypeButtonGroup.add(refineTypeAnd);
+		refineTypeButtonGroup.add(refineTypeOr);
+		refineTypeButtonGroup.add(refineTypeLeaf);
 		//RefineTyoeグループのラベル（パネル）作成
-		ggEditRefineType = new JPanel();
-		ggEditRefineType.add(refineTypeAnd);
-		ggEditRefineType.add(refineTypeOr);
-		ggEditRefineType.add(refineTypeLeaf);
-		ggEditRefineType.setBorder(new TitledBorder(new EtchedBorder(), "RefineType"));
-		ggEditRefineType.setBounds(5, 250, 193, 60);
-		ggEditRefineType.setVisible(false);
-		this.add(ggEditRefineType);
+		refineType = new JPanel();
+		refineType.add(refineTypeAnd);
+		refineType.add(refineTypeOr);
+		refineType.add(refineTypeLeaf);
+		refineType.setBorder(new TitledBorder(new EtchedBorder(), "RefineType"));
+		refineType.setBounds(5, 250, 193, 60);
+		refineType.setVisible(false);
+		this.add(refineType);
 
 		//Necessity周り
 		necessityIsEnable = new JRadioButton("Enable");
@@ -163,7 +163,8 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		add.setVisible(ggg.selectedGoalId == -1);
 		remove.setVisible(ggg.selectedGoalId != -1);
 		necessity.setVisible(ggg.selectedGoalId != -1);
-		ggEditRefineType.setVisible(ggg.selectedGoalId != -1);
+		refineType.setVisible(ggg.selectedGoalId != -1);
+		parentComboBoxBorder.setVisible(ggg.selectedGoalId != -1);
 
 		//draw終了
 		isDrawing = false;
@@ -183,26 +184,22 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 
+		//再描画
 		ste.redraw();
 	}
 
 	private void addButtonPressed() {
-		//親ゴールID取得
+		//各種コンポーネントからパラメータ取得
 		int parentGoalId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
-
-		//名前取得
 		String name = nameArea.getText();
 
-		//名前欄にちゃんと中身があるか
-		if (name.equals("")) {
-			JOptionPane.showMessageDialog(this, "なまえをいれてください", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		} else
-			nameArea.setText("");
+		//fgm編集
+		String str = ste.fgm.addGoal(name, parentGoalId, ggg.width / 2, ggg.height / 2);
+		if (str != null) {
+			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
 
-		//追加
-		ste.fgm.addGoal(name, parentGoalId, ggg.width / 2, ggg.height / 2);
-
+		//再描画
 		ste.redraw();
 	}
 
@@ -228,24 +225,18 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		}
 	}
 
-	private void nameAreaUpdate() {
-		if (!isDrawing && ggg.selectedGoalId != -1) {
-			edit();
-		}
-	}
-
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		nameAreaUpdate();
+		actionPerformed(null);
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		nameAreaUpdate();
+		actionPerformed(null);
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		nameAreaUpdate();
+		actionPerformed(null);
 	}
 }
