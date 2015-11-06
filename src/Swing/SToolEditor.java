@@ -185,6 +185,11 @@ public class SToolEditor extends JFrame {
 		ucEditPanel.redraw();
 	}
 
+	public void initTextArea(){
+		ggEditPanel.initTextArea();
+
+	}
+
 	public static void main(String[] args) {
 		SToolEditor ste = new SToolEditor();
 		ste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

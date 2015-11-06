@@ -213,6 +213,10 @@ public class GGGraph extends PApplet {
 				selectedGoalId = g.id;
 			}
 		}
+
+		//フォーカスがなければJTextArea初期化
+		if (selectedGoalId == -1) sToolEditor.initTextArea();
+
 		sToolEditor.redraw();
 	}
 

@@ -249,4 +249,11 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	public void changedUpdate(DocumentEvent e) {
 		actionPerformed(null);
 	}
+
+	//JTextArea初期化
+	public void initTextArea() {
+		isDrawing = true;
+		nameArea.setText("");
+		isDrawing = false;
+	}
 }
