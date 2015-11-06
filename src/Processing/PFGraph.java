@@ -40,7 +40,7 @@ public class PFGraph extends PApplet {
 
 		background(COLOR_BACKGROUND);
 		stroke(COLOR_LINES);
-		strokeWeight(2);
+		strokeWeight(1);
 
 		//TODO:各リレーションを描画(UseCase描画の後)
 

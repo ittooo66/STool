@@ -84,7 +84,7 @@ public class UCGraph extends PApplet {
 		fill(COLOR_LINES);
 		stroke(COLOR_LINES);
 		noFill();
-		strokeWeight(2);
+		strokeWeight(1);
 
 		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
 		ALT_EXC_HEIGHT = (height - 7 * MERGIN) / 2;

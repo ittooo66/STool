@@ -46,7 +46,7 @@ public class GGGraph extends PApplet {
 
 		//記述の下準備
 		stroke(COLOR_LINES);
-		strokeWeight(2);
+		strokeWeight(1);
 		noFill();
 
 		//ANDArc描画
