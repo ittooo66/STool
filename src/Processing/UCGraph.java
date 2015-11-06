@@ -243,7 +243,7 @@ public class UCGraph extends PApplet {
 				}
 				textAlign(CENTER, CENTER);
 				noStroke();
-				text(buttonList.get(i), x + i * h, y, h, h);
+				text(buttonList.get(i), x + i * h + h / 2, y + h / 2 - 2);
 			}
 		}
 
