@@ -116,7 +116,7 @@ public class GGEditPanel extends JPanel implements ActionListener {
 		//GGEdit:ComboBox更新
 		parentComboBoxIdList.clear();
 		parentComboBox.removeAllItems();
-		parentComboBox.addItem("TOP");
+		parentComboBox.addItem("NONE (Top Goal)");
 		parentComboBoxIdList.add(-1);
 		for (Goal g : ste.fgm.getGoals()) {
 			if (g.id != ggg.selectedGoalId) {
