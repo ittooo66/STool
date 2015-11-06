@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //TODO:モデル規則に従うadd,edit,remove(,move)を行うようにすること
 //TODO:Stringでもいいかも？（Null:編集できた、ErrorMessage:できてない理由）
@@ -40,35 +41,35 @@ public class FGModel {
 
 	public Goal getGoalById(int id) {
 		for (Goal g : goals) {
-			if (g.id == id) return g;
+			if (g.id == id) return (Goal) g.clone();
 		}
 		return null;
 	}
 
 	public Domain getDomainById(int id) {
 		for (Domain d : domains) {
-			if (d.id == id) return d;
+			if (d.id == id) return (Domain) d.clone();
 		}
 		return null;
 	}
 
 	public Usecase getUsecaseById(int id) {
 		for (Usecase u : usecases) {
-			if (u.id == id) return u;
+			if (u.id == id) return (Usecase) u.clone();
 		}
 		return null;
 	}
 
 	public List<Goal> getGoals() {
-		return goals;
+		return goals.stream().map(g -> (Goal) g.clone()).collect(Collectors.toList());
 	}
 
 	public List<Domain> getDomains() {
-		return domains;
+		return domains.stream().map(d -> (Domain) d.clone()).collect(Collectors.toList());
 	}
 
 	public List<Usecase> getUsecases() {
-		return usecases;
+		return usecases.stream().map(u -> (Usecase) u.clone()).collect(Collectors.toList());
 	}
 
 	public String addGoal(String name, int parent_id, int x, int y) {

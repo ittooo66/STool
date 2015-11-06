@@ -1,6 +1,6 @@
 package Models;
 
-public class Goal {
+public class Goal implements Cloneable {
 
 	//IDと名前
 	public int id;
@@ -70,4 +70,14 @@ public class Goal {
 
 	//ビューア表示時の位置
 	public int x, y;
+
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

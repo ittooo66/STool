@@ -2,7 +2,7 @@ package Models;
 
 import java.util.List;
 
-public class Step {
+public class Step implements Cloneable{
 	//StepのId
 	public int id;
 
@@ -112,6 +112,16 @@ public class Step {
 				return fgm.getDomainById(subjectDomainId) + "->" + Event + "->" + fgm.getDomainById(objectDomainId);
 			case NOP:
 				return "NOP";
+		}
+		return null;
+	}
+
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

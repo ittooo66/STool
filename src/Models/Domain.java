@@ -1,6 +1,6 @@
 package Models;
 
-public class Domain {
+public class Domain implements Cloneable {
 
 	//IDと名前
 	public int id;
@@ -69,4 +69,14 @@ public class Domain {
 	 * ビューア表示の座標(x,y)
 	 */
 	public int x, y;
+
+	@Override
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
