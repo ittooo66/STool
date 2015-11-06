@@ -151,12 +151,13 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 			ucg.selectedFlowType = -1;
 			ucg.selectedStepId = -1;
 			System.out.println("UCEditPanel:redraw() avoid NullPointerException");
+			redraw();
 		}
 
 		isDrawing = false;
 	}
 
-	private void editButtonPressed() {
+	private void edit() {
 		Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
 		if (ucg.selectedFlowType == -1) {
 			//Usecase選択時
@@ -193,7 +194,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!isDrawing && ucg.selectedUsecaseId != -1) {
-			editButtonPressed();
+			edit();
 		}
 	}
 
