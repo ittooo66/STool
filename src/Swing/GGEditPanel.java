@@ -217,11 +217,12 @@ public class GGEditPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//parentComboBox変更時
 		if (e.getActionCommand().equals("comboBoxChanged")) {
+			//描画中の変更でなければ
 			if (!parentComboBoxDrawing && ggg.selectedGoalId != -1) {
+				//編集する
 				editButtonPressed();
-			} else if (!parentComboBoxDrawing) {
-				//addButtonPressed();
 			}
 		}
 	}
