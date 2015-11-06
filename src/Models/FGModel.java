@@ -294,12 +294,13 @@ public class FGModel {
 	public void moveUsecase(int id, int direction) {
 		for (int i = 0; i < usecases.size(); i++) {
 			if (usecases.get(i).id == id) {
-				if (direction == 1 && i != usecases.size() - 1) {
-					swap(usecases, i, i + 1);
-					return;
-				} else if (direction == -1 && i != 0) {
-					swap(usecases, i, i - 1);
-					return;
+				switch (direction) {
+					case 1:
+						if (i != usecases.size() - 1) swap(usecases, i, i + 1);
+						return;
+					case -1:
+						if (i != 0) swap(usecases, i, i - 1);
+						return;
 				}
 			}
 		}
