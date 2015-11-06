@@ -9,10 +9,6 @@ import processing.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 66 on 2015/10/11.
- * UsecaseEditorのProcessing部分のクラス
- */
 public class UCGraph extends PApplet {
 	//選択中のUsecaseId,StepId,FlowType,FlowIndex
 	public int selectedUsecaseId = -1;
