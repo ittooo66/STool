@@ -189,7 +189,7 @@ public class FGModel {
 	 * @param childrenType
 	 * @param parentId     編集できたらtrue,できないならFalse
 	 */
-	public String editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId) {
+	public String editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId, boolean isEnable) {
 		//編集対象のゴール取得
 		Goal goal = null;
 		for (Goal g : goals) {
@@ -215,6 +215,7 @@ public class FGModel {
 		goal.name = name;
 		goal.childrenType = childrenType;
 		goal.parentId = parentId;
+		goal.isEnable = isEnable;
 		return null;
 
 	}

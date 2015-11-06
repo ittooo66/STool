@@ -23,7 +23,9 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JButton add, remove;
 	private JRadioButton refineTypeAnd, refineTypeOr, refineTypeLeaf, necessityIsEnable, necessityIsDisable;
 	private JTextArea nameArea;
-	private JPanel refineType, necessity, nameAreaBorder, parentComboBoxBorder;
+	private JPanel refineType;
+	private JPanel necessity;
+	private JPanel parentComboBoxBorder;
 	private JComboBox parentComboBox;
 	private List<Integer> parentComboBoxIdList;
 
@@ -53,7 +55,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		nameArea = new JTextArea(5, 15);
 		nameArea.getDocument().addDocumentListener(this);
 		JScrollPane scroll = new JScrollPane(nameArea);
-		nameAreaBorder = new JPanel();
+		JPanel nameAreaBorder = new JPanel();
 		nameAreaBorder.add(scroll);
 		nameAreaBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
 		nameAreaBorder.setBounds(5, 50, 193, 120);
@@ -156,7 +158,12 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 				}
 			}
 
-			//TODO:Necessity更新
+			//Necessity更新
+			if (selectedGoal.isEnable == true) {
+				necessityIsEnable.setSelected(true);
+			} else {
+				necessityIsDisable.setSelected(true);
+			}
 		}
 
 		//GGEditor各種コンポーネント:表示・非表示切り替え
@@ -177,9 +184,10 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		Goal prevGoal = ste.fgm.getGoalById(ggg.selectedGoalId);
 		Goal.ChildrenType ct = refineTypeAnd.isSelected() ? Goal.ChildrenType.AND : refineTypeOr.isSelected() ? Goal.ChildrenType.OR : Goal.ChildrenType.LEAF;
 		int parentId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
+		boolean isEnable = necessityIsEnable.isSelected();
 
 		//fgm編集
-		String str = ste.fgm.editGoal(prevGoal.id, name, ct, parentId);
+		String str = ste.fgm.editGoal(prevGoal.id, name, ct, parentId, isEnable);
 		if (str != null) {
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
