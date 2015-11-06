@@ -23,10 +23,8 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JButton add, remove;
 	private JRadioButton refineTypeAnd, refineTypeOr, refineTypeLeaf, necessityIsEnable, necessityIsDisable;
 	private JTextArea nameArea;
-	private JPanel refineType;
-	private JPanel necessity;
-	private JPanel parentComboBoxBorder;
-	private JComboBox parentComboBox;
+	private JPanel refineType, necessity, parentComboBoxBorder;
+	private JComboBox<String> parentComboBox;
 	private List<Integer> parentComboBoxIdList;
 
 	//Draw中のフラグ
@@ -63,7 +61,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(nameAreaBorder);
 
 		//parent指定ComboBox周り
-		parentComboBox = new JComboBox();
+		parentComboBox = new JComboBox<>();
 		parentComboBox.setPreferredSize(new Dimension(160, 20));
 		parentComboBox.addActionListener(this);
 		parentComboBoxBorder = new JPanel();
@@ -126,13 +124,11 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		parentComboBox.removeAllItems();
 		parentComboBox.addItem("NONE (Top Goal)");
 		parentComboBoxIdList.add(-1);
-		for (Goal g : ste.fgm.getGoals()) {
-			if (g.id != ggg.selectedGoalId) {
-				//ComboBox詰め替え
-				parentComboBox.addItem(g.name);
-				parentComboBoxIdList.add(g.id);
-			}
-		}
+		//ComboBox詰め替え
+		ste.fgm.getGoals().stream().filter(g -> g.id != ggg.selectedGoalId).forEach(g -> {
+			parentComboBox.addItem(g.name);
+			parentComboBoxIdList.add(g.id);
+		});
 
 		//GGEdit:GGGraph.selectedGoalIdに応じたエディタ画面に更新
 		if (ggg.selectedGoalId != -1) {
@@ -156,6 +152,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			for (int id : parentComboBoxIdList) {
 				if (selectedGoal.parentId == id) {
 					parentComboBox.setSelectedIndex(parentComboBoxIdList.indexOf(id));
+					break;
 				}
 			}
 
