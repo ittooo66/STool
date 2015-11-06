@@ -41,13 +41,14 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 
 		//RemoveButton
 		remove = new JButton("Remove");
-		remove.addActionListener(e -> removeButtonPressed());
+		remove.addActionListener(e -> remove());
 		remove.setBounds(105, 5, 90, 30);
 		remove.setVisible(false);
 		this.add(remove);
+
 		//Add New Goal Button
 		add = new JButton("Add New Goal");
-		add.addActionListener(e -> addButtonPressed());
+		add.addActionListener(e -> add());
 		add.setBounds(75, 200, 120, 30);
 		this.add(add);
 
@@ -196,7 +197,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		ste.redraw();
 	}
 
-	private void addButtonPressed() {
+	private void add() {
 		//各種コンポーネントからパラメータ取得
 		int parentGoalId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
 		String name = nameArea.getText();
@@ -211,19 +212,22 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		ste.redraw();
 	}
 
-	private void removeButtonPressed() {
-		int option = JOptionPane.showConfirmDialog(this, "このゴールに関連するユースケースも削除されます。実行しますか？",
-				"確認", JOptionPane.YES_NO_OPTION,
-				JOptionPane.WARNING_MESSAGE);
-		if (option == JOptionPane.YES_OPTION) {
-			//選択中のゴールを削除
-			ste.fgm.removeGoal(ggg.selectedGoalId);
+	private void remove() {
+		//削除確認
+		if (JOptionPane.showConfirmDialog(this,
+				"このゴールに関連するユースケースも削除されます。実行しますか？",
+				"確認", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) return;
 
-			//GoalIdを外す
-			ggg.selectedGoalId = -1;
-
-			ste.redraw();
+		//fgm編集
+		String str = ste.fgm.removeGoal(ggg.selectedGoalId);
+		if (str != null) {
+			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
+
+		//GoalIdを外す
+		ggg.selectedGoalId = -1;
+
+		ste.redraw();
 	}
 
 	@Override
