@@ -33,6 +33,8 @@ public class PFGraph extends PApplet {
 		//Font設定。
 		PFont font = createFont("メイリオ ボールド", 15, true);
 		textFont(font);
+		//Smoothに描画
+		smooth();
 	}
 
 	public void draw() {
