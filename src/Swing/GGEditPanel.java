@@ -227,6 +227,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		//GoalIdを外す
 		ggg.selectedGoalId = -1;
 
+		//再描画
 		ste.redraw();
 	}
 
