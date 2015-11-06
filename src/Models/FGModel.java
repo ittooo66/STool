@@ -38,12 +38,6 @@ public class FGModel {
 		JAXB.marshal(this, file);
 	}
 
-	/**
-	 * IDを用いてゴールを取得
-	 *
-	 * @param id
-	 * @return Goal
-	 */
 	public Goal getGoalById(int id) {
 		for (Goal g : goals) {
 			if (g.id == id) return g;
@@ -65,20 +59,10 @@ public class FGModel {
 		return null;
 	}
 
-	/**
-	 * ゴールをまとめて取得
-	 *
-	 * @return
-	 */
 	public List<Goal> getGoals() {
 		return goals;
 	}
 
-	/**
-	 * ドメインをまとめて取得
-	 *
-	 * @return
-	 */
 	public List<Domain> getDomains() {
 		return domains;
 	}
@@ -87,14 +71,6 @@ public class FGModel {
 		return usecases;
 	}
 
-	/**
-	 * 新規ゴールの追加
-	 *
-	 * @param name      なまえ
-	 * @param parent_id 親のID
-	 * @param x         座標
-	 * @param y         座標
-	 */
 	public String addGoal(String name, int parent_id, int x, int y) {
 		//名前のnull-check
 		if (name == null) {
@@ -139,14 +115,6 @@ public class FGModel {
 		return null;
 	}
 
-	/**
-	 * ドメイン追加
-	 *
-	 * @param name 名前
-	 * @param dt   ドメインタイプ
-	 * @param x    座標
-	 * @param y    座標
-	 */
 	public void addDomain(String name, Domain.DomainType dt, int x, int y) {
 		//新ID生成
 		int id = 0;
@@ -181,14 +149,6 @@ public class FGModel {
 		usecases.add(u);
 	}
 
-	/**
-	 * ゴールを編集する
-	 *
-	 * @param id
-	 * @param name
-	 * @param childrenType
-	 * @param parentId     編集できたらtrue,できないならFalse
-	 */
 	public String editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId, boolean isEnable) {
 		//編集対象のゴール取得
 		Goal goal = null;
@@ -220,12 +180,6 @@ public class FGModel {
 
 	}
 
-	/**
-	 * @param id
-	 * @param name
-	 * @param dt
-	 * @return
-	 */
 	public boolean editDomain(int id, String name, Domain.DomainType dt) {
 		for (Domain d : domains) {
 			if (d.id == id) {
@@ -252,14 +206,6 @@ public class FGModel {
 		return false;
 	}
 
-	/**
-	 * ゴールを編集（更新）する
-	 *
-	 * @param id 編集するゴールID
-	 * @param x  X座標
-	 * @param y  Y座標
-	 *           完全にエディタの座標更新用
-	 */
 	public void moveGoal(int id, int x, int y) {
 		for (Goal g : goals) {
 			if (g.id == id) {
@@ -270,11 +216,6 @@ public class FGModel {
 		}
 	}
 
-	/**
-	 * @param id
-	 * @param x
-	 * @param y
-	 */
 	public void moveDomain(int id, int x, int y) {
 		for (Domain d : domains) {
 			if (d.id == id) {
@@ -285,12 +226,6 @@ public class FGModel {
 		}
 	}
 
-	/**
-	 * ユースケースのリストを編集（Move）
-	 *
-	 * @param id        　操作対象のUsecaseId
-	 * @param direction 移動方向（+1 or -1）
-	 */
 	public void moveUsecase(int id, int direction) {
 		for (int i = 0; i < usecases.size(); i++) {
 			if (usecases.get(i).id == id) {
