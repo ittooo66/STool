@@ -133,24 +133,21 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 	}
 
 	private void add() {
-		//名前取得
+		//各種パラメータ取得
 		String name = nameArea.getText();
 
-		//名前欄にちゃんと中身があるか
-		if (name.equals("")) {
-			JOptionPane.showMessageDialog(this, "なまえをいれてください", "Error", JOptionPane.ERROR_MESSAGE);
-			return;
-		} else {
-			nameArea.setText("");
+		//fgm編集
+		String str = ste.fgm.addDomain(name, Domain.DomainType.NONE, pfg.width / 2, pfg.height / 2);
+		if (str != null) {
+			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 
-		//追加
-		ste.fgm.addDomain(name, Domain.DomainType.NONE, pfg.width / 2, pfg.height / 2);
+		//再描画
 		ste.redraw();
 	}
 
 	private void edit() {
-		//各種コンポーネントからパラメータ取得
+		//各種パラメータ取得
 		String name = nameArea.getText();
 		int id = pfg.selectedDomainId;
 		Domain.DomainType dt = domainTypeBiddable.isSelected() ?
@@ -161,20 +158,26 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 				Domain.DomainType.SYSTEM : Domain.DomainType.NONE;
 
 		//fgm編集
-		if (!ste.fgm.editDomain(id, name, dt)) {
-			JOptionPane.showMessageDialog(this, "モデルを編集できませんでした", "Error", JOptionPane.ERROR_MESSAGE);
+		String str = ste.fgm.editDomain(id, name, dt);
+		if (str != null) {
+			JOptionPane.showMessageDialog(this, str, "Error", JOptionPane.ERROR_MESSAGE);
 		}
 
+		//再描画
 		ste.redraw();
 	}
 
 	private void remove() {
-		//選択中のドメインを削除
-		ste.fgm.removeDomain(pfg.selectedDomainId);
+		//fgm編集
+		String str = ste.fgm.removeDomain(pfg.selectedDomainId);
+		if (str != null) {
+			JOptionPane.showMessageDialog(this, str, "Error", JOptionPane.ERROR_MESSAGE);
+		}
 
-		//GoalIdを外す
+		//DomainIdを外す
 		pfg.selectedDomainId = -1;
 
+		//再描画
 		ste.redraw();
 	}
 
