@@ -311,13 +311,7 @@ public class FGModel {
 		list.set(index2, tmp);
 	}
 
-	/**
-	 * ゴールを消去する
-	 *
-	 * @param id 　消去するゴールID
-	 * @return 消去できたか、否か
-	 */
-	public boolean removeGoal(int id) {
+	public String removeGoal(int id) {
 		for (int i = 0; i < goals.size(); i++) {
 			Goal removedGoalCandidate = goals.get(i);
 			if (removedGoalCandidate.id == id) {
@@ -334,10 +328,10 @@ public class FGModel {
 				}
 				//TODO:親が子なしになったのであれば親を子にする
 
-				return true;
+				return null;
 			}
 		}
-		return false;
+		return "COULD NOT FIND A GOAL THAT HAS ID:" + id;
 	}
 
 	public void removeDomain(int id) {
