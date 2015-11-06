@@ -19,7 +19,6 @@ public class PFGraph extends PApplet {
 	//カラーパレット
 	private final int COLOR_BACKGROUND = color(255, 255, 255);
 	private final int COLOR_LINES = color(51, 51, 51);
-	private final int COLOR_FILL = color(220, 233, 255);
 	private final int COLOR_SELECTED = color(57, 152, 214);
 
 	public PFGraph(SToolEditor sToolEditor) {

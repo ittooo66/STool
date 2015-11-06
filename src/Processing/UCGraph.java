@@ -34,7 +34,6 @@ public class UCGraph extends PApplet {
 	//カラーパレット
 	private final int COLOR_BACKGROUND = color(255, 255, 255);
 	private final int COLOR_LINES = color(51, 51, 51);
-	private final int COLOR_FILL = color(220, 233, 255);
 	private final int COLOR_SELECTED = color(57, 152, 214);
 
 	//各種描画値（finalじゃないやつは画面サイズで可変）
@@ -56,16 +55,16 @@ public class UCGraph extends PApplet {
 		textFont(font);
 
 		//ButtonSetFrameをSetup
-		usecaseBSF = new ButtonSetFrame("Usecase");
+		usecaseBSF = new ButtonSetFrame("Usecases");
 		usecaseBSF.addButton("↑");
 		usecaseBSF.addButton("↓");
-		altFlowBSF = new ButtonSetFrame("AltFlow");
+		altFlowBSF = new ButtonSetFrame("AlternativeFlows");
 		altFlowBSF.addButton("＋");
 		altFlowBSF.addButton("－");
-		excFlowBSF = new ButtonSetFrame("ExcFlow");
+		excFlowBSF = new ButtonSetFrame("ExceptionalFlows");
 		excFlowBSF.addButton("＋");
 		excFlowBSF.addButton("－");
-		stepBSF = new ButtonSetFrame("Step");
+		stepBSF = new ButtonSetFrame("Steps");
 		stepBSF.addButton("＋");
 		stepBSF.addButton("－");
 		stepBSF.addButton("↑");
@@ -87,16 +86,16 @@ public class UCGraph extends PApplet {
 		strokeWeight(1);
 
 		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
-		ALT_EXC_HEIGHT = (height - 7 * MERGIN) / 2;
+		ALT_EXC_HEIGHT = (height - 8 * MERGIN) / 2;
 
 		textAlign(CENTER, CENTER);
 
 		//ButtonSetFrame記述
 		usecaseBSF.adjust(MERGIN, MERGIN, COLUMN_WIDTH, MERGIN);
 		usecaseBSF.draw();
-		altFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 3 * MERGIN, COLUMN_WIDTH, MERGIN);
+		altFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, MERGIN);
 		altFlowBSF.draw();
-		excFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 5 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, MERGIN);
+		excFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, MERGIN);
 		excFlowBSF.draw();
 		stepBSF.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
 		stepBSF.draw();
@@ -116,11 +115,19 @@ public class UCGraph extends PApplet {
 		List<List<Step>> excFlowList = new ArrayList<>();
 
 		//mainFlow記述
-		stroke(selectedFlowType == 0 ? COLOR_SELECTED : COLOR_LINES);
-		fill(selectedFlowType == 0 ? COLOR_SELECTED : COLOR_LINES);
-		noFill();
-		rect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
-		text("主系列", 2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
+		if (selectedFlowType == 0) {
+			noStroke();
+			fill(COLOR_SELECTED);
+			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
+			fill(COLOR_BACKGROUND);
+		} else {
+			stroke(COLOR_LINES);
+			noFill();
+			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
+			fill(COLOR_LINES);
+		}
+		noStroke();
+		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
 
 		//altFlow中身詰め込み+draw()
 		lbc = new ArrayList<>();
@@ -129,7 +136,7 @@ public class UCGraph extends PApplet {
 			lbc.add(new ListBoxContent(i, altFlowList.get(i).get(0).condition));
 		}
 		altFlowLB.setContents(lbc);
-		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 1 ? selectedFlowIndex : -1);
+		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 5 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 1 ? selectedFlowIndex : -1);
 		altFlowLB.draw();
 
 		//excFlow中身詰め込み+draw()
@@ -139,7 +146,7 @@ public class UCGraph extends PApplet {
 			lbc.add(new ListBoxContent(i, excFlowList.get(i).get(0).condition));
 		}
 		excFlowLB.setContents(lbc);
-		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 2 ? selectedFlowIndex : -1);
+		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 7 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 2 ? selectedFlowIndex : -1);
 		excFlowLB.draw();
 
 		//stepLB中身詰め込み+draw()
@@ -299,16 +306,19 @@ public class UCGraph extends PApplet {
 			stroke(COLOR_LINES);
 
 			for (int i = 0, j = scrollIndex; j < contents.size() && i * dh < h; i++, j++) {
-				rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
-				text(contents.get(j).name, x, y + i * dh, w, dh);
-			}
-			for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
 				if (selectedId == contents.get(j).id) {
-					stroke(COLOR_SELECTED);
-					rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
+					noStroke();
 					fill(COLOR_SELECTED);
-					text(contents.get(j).name, x, y + i * dh, w, dh);
+					rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
+					fill(COLOR_BACKGROUND);
+				} else {
+					stroke(COLOR_LINES);
+					noFill();
+					rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
+					fill(COLOR_LINES);
 				}
+				noStroke();
+				text(contents.get(j).name, x, y + i * dh, w, dh);
 			}
 
 			//はみ出し部分を塗りつぶし
@@ -409,7 +419,7 @@ public class UCGraph extends PApplet {
 					uc.moveStep(selectedStepId, 1);
 					break;
 			}
-		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY)) {
+		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY)) {
 			//mainFlow押下時処理
 			if (selectedUsecaseId != -1) {
 				selectedFlowType = 0;

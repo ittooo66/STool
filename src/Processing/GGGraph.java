@@ -22,7 +22,7 @@ public class GGGraph extends PApplet {
 
 	//カラーパレット
 	private final int COLOR_BACKGROUND = color(255, 255, 255);
-	private final int COLOR_LINE = color(51, 51, 51);
+	private final int COLOR_LINES = color(51, 51, 51);
 	private final int COLOR_FILL = color(220, 233, 255);
 	private final int COLOR_SELECTED = color(57, 152, 214);
 
@@ -38,6 +38,7 @@ public class GGGraph extends PApplet {
 		//Font設定。
 		PFont font = createFont("メイリオ ボールド", 15, true);
 		textFont(font);
+		smooth();
 	}
 
 	public void draw() {
@@ -140,10 +141,11 @@ public class GGGraph extends PApplet {
 		textAlign(CENTER, CENTER);
 		for (Goal g : sToolEditor.fgm.getGoals()) {
 
-			//fill変更(リーフか否か)
-			fill(g.childrenType.equals(Goal.ChildrenType.LEAF) ? COLOR_LINES : COLOR_BACKGROUND);
+			//fill変更(リーフか否か,選択中か否か)
+			fill((g.id == selectedGoalId) ? COLOR_SELECTED : (g.childrenType.equals(Goal.ChildrenType.LEAF) ? COLOR_FILL : COLOR_BACKGROUND));
 			//stroke変更(選択中か否か)
-			stroke(g.id == selectedGoalId ? COLOR_SELECTED : COLOR_LINES);
+			if (g.id == selectedGoalId) noStroke();
+			else stroke(COLOR_LINES);
 
 			//ゴール名が１行の場合
 			if (match(g.name, "\n") == null) {
@@ -151,7 +153,7 @@ public class GGGraph extends PApplet {
 				ellipse(g.x, g.y, textWidth(g.name) + 40, 40);
 
 				//fill変更(選択中か否か、リーフか否か)
-				fill(g.id == selectedGoalId ? COLOR_SELECTED : g.childrenType.equals(Goal.ChildrenType.LEAF) ? COLOR_BACKGROUND : COLOR_LINES);
+				fill(g.id == selectedGoalId ? COLOR_BACKGROUND : COLOR_LINES);
 
 				//名前の記述
 				text(g.name, g.x, g.y - 2);
