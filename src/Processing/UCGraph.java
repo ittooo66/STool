@@ -483,6 +483,6 @@ public class UCGraph extends PApplet {
 	}
 
 	public void mouseMoved() {
-		redraw();
+		loop();
 	}
 }

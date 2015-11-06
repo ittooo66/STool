@@ -115,6 +115,6 @@ public class PFGraph extends PApplet {
 			if (d != null && 0 < mouseX && mouseX < width && 0 < mouseY && mouseY < height)
 				sToolEditor.fgm.moveDomain(selectedDomainId, mouseX, mouseY);
 		}
-		sToolEditor.redraw();
+		loop();
 	}
 }
