@@ -181,7 +181,7 @@ public class FGModel {
 	 * @param childrenType
 	 * @param parentId     編集できたらtrue,できないならFalse
 	 */
-	public boolean editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId) {
+	public String editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId) {
 		//編集対象のゴール取得
 		Goal goal = null;
 		for (Goal g : goals) {
@@ -192,22 +192,22 @@ public class FGModel {
 		}
 
 		//モデル整合性チェック
-		if (name.equals("")) return false;
+		if (name.equals(null)) return "GOAL NAME MUST BE NON-NULL !";
 
 		//親ゴールとして自己参照はだめ
-		if (id == parentId) return false;
+		if (id == parentId) return "YOU ARE NOT YOUR PARENT !";
 
 		if (childrenType == Goal.ChildrenType.LEAF) {
 			//LEAF設定は子ゴールのみに許される
-			for (Goal g : goals) if (g.parentId == id) return false;
+			for (Goal g : goals) if (g.parentId == id) return "LEAF GOAL IS ONLY ALLOWED TO A CHILD";
 		}
 
 		//更新
-		if (goal == null) return false;
+		if (goal == null) return "COULD NOT FIND A GOAL THAT HAS ID:" + id;
 		goal.name = name;
 		goal.childrenType = childrenType;
 		goal.parentId = parentId;
-		return true;
+		return null;
 
 	}
 
