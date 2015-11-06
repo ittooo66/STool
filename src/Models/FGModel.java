@@ -95,7 +95,19 @@ public class FGModel {
 	 * @param x         座標
 	 * @param y         座標
 	 */
-	public void addGoal(String name, int parent_id, int x, int y) {
+	public String addGoal(String name, int parent_id, int x, int y) {
+		//名前のnull-check
+		if (name == null) {
+			return "GOAL NAME MUST BE NON-NULL";
+		}
+
+		//ParentIDをバリデート（－1以外）
+		boolean hasParent = false;
+		for (Goal g : goals) if (g.id == parent_id) hasParent = true;
+		if (!hasParent && parent_id != -1) {
+			return "PARENT_ID IS INVALID";
+		}
+
 		//新ID生成
 		int id = 0;
 		for (Goal g : goals) {
@@ -123,6 +135,8 @@ public class FGModel {
 
 		//1:1対応のUsecaseを合わせて追加
 		addUsecase(name + "を達成", id);
+
+		return null;
 	}
 
 	/**
