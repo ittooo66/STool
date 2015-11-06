@@ -228,12 +228,23 @@ public class UCGraph extends PApplet {
 		 * 描画
 		 */
 		public void draw() {
+			fill(COLOR_LINES);
 			textAlign(RIGHT);
 			text(title, x, y, w, h);
 			for (int i = 0; i < buttonList.size(); i++) {
-				stroke((getButtonIdOnMouse(mouseX, mouseY) == i) ? COLOR_SELECTED : COLOR_LINES);
-				ellipse(x + i * h + h / 2, y + h / 2, h - 4, h - 4);
+				if (getButtonIdOnMouse(mouseX, mouseY) == i) {
+					noStroke();
+					fill(COLOR_SELECTED);
+					ellipse(x + i * h + h / 2, y + h / 2, h - 4, h - 4);
+					fill(COLOR_BACKGROUND);
+				} else {
+					stroke(COLOR_LINES);
+					noFill();
+					ellipse(x + i * h + h / 2, y + h / 2, h - 4, h - 4);
+					fill(COLOR_LINES);
+				}
 				textAlign(CENTER, CENTER);
+				noStroke();
 				text(buttonList.get(i), x + i * h, y, h, h);
 			}
 		}
