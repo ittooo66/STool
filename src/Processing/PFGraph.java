@@ -52,45 +52,45 @@ public class PFGraph extends PApplet {
 			float dW = textWidth(d.name) + 30;
 			float dH = 40;
 
-			//fill変更
-			fill(COLOR_BACKGROUND);
-			//stroke変更(選択中か否か)
-			stroke(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-			//ドメイン枠描画
+			//ドメイン描画
+			if (d.id == selectedDomainId) {
+				fill(COLOR_SELECTED);
+				noStroke();
+			} else {
+				fill(COLOR_BACKGROUND);
+				stroke(COLOR_LINES);
+			}
 			rect(d.x - dW / 2, d.y - dH / 2, dW, dH);
 
-			// domaintype記述（左端のやつ）
-			if (d.domainType == Domain.DomainType.DESIGNED) {
-				line(d.x - dW / 2 + 5, d.y - dH / 2, d.x - dW / 2 + 5, d.y + dH / 2);
-			} else if (d.domainType == Domain.DomainType.SYSTEM) {
-				line(d.x - dW / 2 + 5, d.y - dH / 2, d.x - dW / 2 + 5, d.y + dH / 2);
-				line(d.x - dW / 2 + 10, d.y - dH / 2, d.x - dW / 2 + 10, d.y + dH / 2);
-			} else if (d.domainType == Domain.DomainType.BIDDABLE) {
-				rect(d.x - dW / 2, d.y + 6, 14, 14);
-				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-				textAlign(LEFT, BOTTOM);
-				textSize(10);
-				text("B", d.x - dW / 2 + 3, d.y + dH/2 + 2);
-			} else if (d.domainType == Domain.DomainType.CAUSAL) {
-				rect(d.x - dW / 2, d.y + 6, 14, 14);
-				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-				textAlign(LEFT, BOTTOM);
-				textSize(10);
-				text("C", d.x - dW / 2 + 3, d.y + dH/2 + 2);
-			} else if (d.domainType == Domain.DomainType.LEXICAL) {
-				rect(d.x - dW / 2, d.y + 6, 14, 14);
-				fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
-				textAlign(LEFT, BOTTOM);
-				textSize(10);
-				text("X", d.x - dW / 2 + 3, d.y + dH/2 + 2);
+			//DomainType描画
+			stroke(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);
+			switch (d.domainType) {
+				case SYSTEM:
+					line(d.x - dW / 2 + 10, d.y - dH / 2, d.x - dW / 2 + 10, d.y + dH / 2);
+				case DESIGNED:
+					line(d.x - dW / 2 + 5, d.y - dH / 2, d.x - dW / 2 + 5, d.y + dH / 2);
+					break;
+				case NONE:
+					break;
+				default:
+					//BIDDABLE or CAUSAL or LEXICAL
+					noFill();
+					rect(d.x - dW / 2, d.y + 6, 14, 14);
+					textAlign(LEFT, BOTTOM);
+					textSize(10);
+					fill(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);
+					text(d.domainType.toString().charAt(0), d.x - dW / 2 + 3, d.y + dH / 2 + 2);
+					break;
 			}
 
-			//名前の記述
-			fill(d.id == selectedDomainId ? COLOR_SELECTED : COLOR_LINES);
+			//名前描画
+			fill(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);
+			noStroke();
 			textAlign(CENTER, CENTER);
 			textSize(15);
 			text(d.name, d.x, d.y - 2);
 		}
+
 	}
 
 	public void mousePressed() {
