@@ -8,25 +8,28 @@ import Processing.UCGraph;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
-/**
- * Created by 66 on 2015/11/03.
- * UseCaseEditorの右部分
- */
-public class UCEditPanel extends JPanel {
+public class UCEditPanel extends JPanel implements ActionListener, DocumentListener {
 	private final UCGraph ucg;
 	private final SToolEditor ste;
 
 	//UCEditorコンポーネント
-	private JButton jump, edit;
+	private JButton jump;
 	private JTextArea nameArea, conditionArea;
 	private JPanel nameFieldBorder, parentNameLabelBorder, conditionBorder, sourceStepComboBoxBorder;
 	private JLabel parentGoalNameLabel;
 	private JComboBox sourceStepComboBox;
-	private java.util.List<Integer> altExcFlowComboBoxIdList;
+	private List<Integer> altExcFlowComboBoxIdList;
+
+	//Draw中のフラグ
+	private boolean isDrawing;
 
 	public UCEditPanel(SToolEditor ste, UCGraph ucg) {
 		this.ste = ste;
@@ -40,15 +43,10 @@ public class UCEditPanel extends JPanel {
 		jump.addActionListener(e -> jumpButtonPressed());
 		jump.setBounds(45, 110, 150, 30);
 		this.add(jump);
-		//EditButton
-		edit = new JButton("Edit");
-		edit.addActionListener(e -> editButtonPressed());
-		edit.setBounds(105, 400, 90, 30);
-		edit.setVisible(false);
-		this.add(edit);
 
 		//NameTextArea周り
 		nameArea = new JTextArea(5, 15);
+		nameArea.getDocument().addDocumentListener(this);
 		JScrollPane scrollPane = new JScrollPane(nameArea);
 		nameFieldBorder = new JPanel();
 		nameFieldBorder.add(scrollPane);
@@ -68,6 +66,7 @@ public class UCEditPanel extends JPanel {
 		//sourceStepComboBox周り
 		sourceStepComboBox = new JComboBox();
 		sourceStepComboBox.setPreferredSize(new Dimension(160, 20));
+		sourceStepComboBox.addActionListener(this);
 		sourceStepComboBoxBorder = new JPanel();
 		sourceStepComboBoxBorder.add(sourceStepComboBox);
 		sourceStepComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "SourceStep"));
@@ -77,6 +76,7 @@ public class UCEditPanel extends JPanel {
 
 		//Condition
 		conditionArea = new JTextArea(2, 15);
+		conditionArea.getDocument().addDocumentListener(this);
 		scrollPane = new JScrollPane(conditionArea);
 		conditionBorder = new JPanel();
 		conditionBorder.add(scrollPane);
@@ -90,37 +90,9 @@ public class UCEditPanel extends JPanel {
 
 	}
 
-	private void editButtonPressed() {
-		Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
-		if (ucg.selectedFlowType == -1) {
-			//Usecase選択時
-
-			uc.name = nameArea.getText();
-			ste.fgm.editUsecase(ucg.selectedUsecaseId, uc);
-			ste.redraw();
-		} else if (ucg.selectedStepId == -1) {
-			//Alt_EXC_Flow選択時
-
-			if (ucg.selectedFlowType == 1) {
-				Step s = uc.getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0);
-				s.condition = conditionArea.getText();
-				uc.editStep(s.id, s);
-			} else if (ucg.selectedFlowType == 2) {
-				Step s = uc.getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0);
-				s.condition = conditionArea.getText();
-				uc.editStep(s.id, s);
-			}
-		} else if (ucg.selectedUsecaseId != -1) {
-			//TODO:Step選択時
-		}
-		ste.redraw();
-	}
-
-	private void jumpButtonPressed() {
-		ste.jumpToGGTab(ste.fgm.getUsecaseById(ucg.selectedUsecaseId).parentLeafGoalId);
-	}
-
 	public void redraw() {
+		isDrawing = true;
+
 		try {
 			int id = ucg.selectedUsecaseId;
 			if (id != -1) {
@@ -139,16 +111,18 @@ public class UCEditPanel extends JPanel {
 				}
 
 				//Usecase名前詰め込んで描画
-				nameArea.setText(ste.fgm.getUsecaseById(id).name);
+				if (!nameArea.hasFocus()) nameArea.setText(ste.fgm.getUsecaseById(id).name);
 
 				//Condition名前詰め込んで描画
-				switch (ucg.selectedFlowType) {
-					case 1:
-						conditionArea.setText(ste.fgm.getUsecaseById(id).getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0).condition);
-						break;
-					case 2:
-						conditionArea.setText(ste.fgm.getUsecaseById(id).getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0).condition);
-						break;
+				if (!conditionArea.hasFocus()) {
+					switch (ucg.selectedFlowType) {
+						case 1:
+							conditionArea.setText(ste.fgm.getUsecaseById(id).getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0).condition);
+							break;
+						case 2:
+							conditionArea.setText(ste.fgm.getUsecaseById(id).getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0).condition);
+							break;
+					}
 				}
 
 				//TODO:Alt_Flowとかその辺関連のコンポーネント追加処理
@@ -167,7 +141,6 @@ public class UCEditPanel extends JPanel {
 			nameFieldBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
 			parentNameLabelBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
 			jump.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
-			edit.setVisible(ucg.selectedUsecaseId != -1 && (ucg.selectedFlowType != 0 || ucg.selectedStepId != -1));
 			sourceStepComboBoxBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowType > 0 && ucg.selectedStepId == -1);
 			conditionBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowType > 0 && ucg.selectedStepId == -1);
 
@@ -179,5 +152,63 @@ public class UCEditPanel extends JPanel {
 			ucg.selectedStepId = -1;
 			System.out.println("UCEditPanel:redraw() avoid NullPointerException");
 		}
+
+		isDrawing = false;
+	}
+
+	private void editButtonPressed() {
+		Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
+		if (ucg.selectedFlowType == -1) {
+			//Usecase選択時
+			uc.name = nameArea.getText();
+		} else if (ucg.selectedStepId == -1) {
+			Step s = new Step();
+			switch (ucg.selectedFlowType) {
+				case 1:
+					s = uc.getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0);
+					break;
+				case 2:
+					s = uc.getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0);
+			}
+			s.condition = conditionArea.getText();
+			uc.editStep(s.id, s);
+		} else if (ucg.selectedUsecaseId != -1) {
+			//TODO:Step選択時
+		}
+
+		//fgm編集
+		String str = ste.fgm.editUsecase(ucg.selectedUsecaseId, uc);
+		if (str != null) {
+			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
+
+		//再描画
+		ste.redraw();
+	}
+
+	private void jumpButtonPressed() {
+		ste.jumpToGGTab(ste.fgm.getUsecaseById(ucg.selectedUsecaseId).parentLeafGoalId);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (!isDrawing && ucg.selectedUsecaseId != -1) {
+			editButtonPressed();
+		}
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		actionPerformed(null);
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		actionPerformed(null);
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		actionPerformed(null);
 	}
 }
