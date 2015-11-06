@@ -28,8 +28,6 @@ public class PFGraph extends PApplet {
 	public void setup() {
 		//とりあえず適当な解像度で初期化
 		size(1024, 768);
-		//CPU節約
-		noLoop();
 		//Font設定。
 		PFont font = createFont("メイリオ ボールド", 15, true);
 		textFont(font);
@@ -92,7 +90,8 @@ public class PFGraph extends PApplet {
 			textSize(15);
 			text(d.name, d.x, d.y - 2);
 		}
-
+		//CPU節約
+		noLoop();
 	}
 
 	public void mousePressed() {

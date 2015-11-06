@@ -48,8 +48,6 @@ public class UCGraph extends PApplet {
 	public void setup() {
 		//とりあえず適当な解像度で初期化
 		size(1024, 768);
-		//CPU節約
-		noLoop();
 		//Font設定。
 		PFont font = createFont("メイリオ ボールド", 15, true);
 		textFont(font);
@@ -178,6 +176,9 @@ public class UCGraph extends PApplet {
 		stepLB.setContents(lbc);
 		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN, selectedStepId);
 		stepLB.draw();
+
+		//CPU節約
+		noLoop();
 	}
 
 	/**

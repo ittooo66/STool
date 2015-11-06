@@ -175,7 +175,6 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		isDrawing = false;
 	}
 
-
 	private void edit() {
 		//各種コンポーネントからパラメータ取得
 		String name = nameArea.getText();
