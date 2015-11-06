@@ -6,14 +6,12 @@ import Processing.GGGraph;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by 66 on 2015/11/03.
- * GoalGraphEditorの右部分
- */
-public class GGEditPanel extends JPanel {
+public class GGEditPanel extends JPanel implements ActionListener {
 
 	//各種インスタンスへの参照
 	private final SToolEditor ste;
@@ -26,6 +24,7 @@ public class GGEditPanel extends JPanel {
 	private JTextArea nameArea;
 	private JPanel ggEditRefineType, necessity;
 	private JComboBox parentComboBox;
+	private boolean parentComboBoxDrawing;
 	private List<Integer> parentComboBoxIdList;
 
 	public GGEditPanel(SToolEditor ste, GGGraph ggg) {
@@ -65,6 +64,7 @@ public class GGEditPanel extends JPanel {
 		//parent指定ComboBox周り
 		parentComboBox = new JComboBox();
 		parentComboBox.setPreferredSize(new Dimension(160, 20));
+		parentComboBox.addActionListener(this);
 		JPanel parentComboBoxBorder = new JPanel();
 		parentComboBoxBorder.add(parentComboBox);
 		parentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent"));
@@ -112,6 +112,8 @@ public class GGEditPanel extends JPanel {
 	}
 
 	public void redraw() {
+		parentComboBoxDrawing = true;
+
 		//GGEdit:ComboBox更新
 		parentComboBoxIdList.clear();
 		parentComboBox.removeAllItems();
@@ -160,6 +162,7 @@ public class GGEditPanel extends JPanel {
 		necessity.setVisible(ggg.selectedGoalId != -1);
 		ggEditRefineType.setVisible(ggg.selectedGoalId != -1);
 
+		parentComboBoxDrawing = false;
 	}
 
 
@@ -213,4 +216,14 @@ public class GGEditPanel extends JPanel {
 		}
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("comboBoxChanged")) {
+			if (!parentComboBoxDrawing && ggg.selectedGoalId != -1) {
+				editButtonPressed();
+			} else if (!parentComboBoxDrawing) {
+				//addButtonPressed();
+			}
+		}
+	}
 }
