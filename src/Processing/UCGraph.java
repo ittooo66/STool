@@ -461,6 +461,19 @@ public class UCGraph extends PApplet {
 		sToolEditor.redraw();
 	}
 
+	private void deselectFlow() {
+		selectedFlowType = -1;
+		selectedFlowIndex = -1;
+		altFlowLB.scroll(0);
+		excFlowLB.scroll(0);
+		deselectStep();
+	}
+
+	private void deselectStep() {
+		selectedStepId = -1;
+		stepLB.scroll(0);
+	}
+
 	public void mouseWheel(MouseEvent event) {
 		//カウント取得
 		int e = event.getCount() > 0 ? 1 : -1;
