@@ -226,6 +226,6 @@ public class GGGraph extends PApplet {
 			if (g != null && 0 < mouseX && mouseX < width && 0 < mouseY && mouseY < height)
 				sToolEditor.fgm.moveGoal(selectedGoalId, mouseX, mouseY);
 		}
-		sToolEditor.redraw();
+		loop();
 	}
 }
