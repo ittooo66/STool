@@ -66,7 +66,6 @@ public class UCGraph extends PApplet {
 		stepBSF.addButton("↑");
 		stepBSF.addButton("↓");
 
-
 		//ListBoxをSetup
 		usecaseLB = new ListBox();
 		altFlowLB = new ListBox();
