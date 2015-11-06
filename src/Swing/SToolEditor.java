@@ -185,9 +185,9 @@ public class SToolEditor extends JFrame {
 		ucEditPanel.redraw();
 	}
 
-	public void initTextArea(){
+	public void initTextArea() {
 		ggEditPanel.initTextArea();
-
+		pfEditPanel.initTextArea();
 	}
 
 	public static void main(String[] args) {

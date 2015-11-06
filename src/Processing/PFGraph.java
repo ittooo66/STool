@@ -106,6 +106,9 @@ public class PFGraph extends PApplet {
 				selectedDomainId = d.id;
 			}
 		}
+
+		if (selectedDomainId == -1) sToolEditor.initTextArea();
+
 		sToolEditor.redraw();
 	}
 
