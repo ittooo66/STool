@@ -160,7 +160,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			}
 
 			//Necessity更新
-			if (selectedGoal.isEnable == true) {
+			if (selectedGoal.isEnable) {
 				necessityIsEnable.setSelected(true);
 			} else {
 				necessityIsDisable.setSelected(true);
