@@ -37,6 +37,9 @@ public class UCGraph extends PApplet {
 	private int COLUMN_WIDTH;
 	private int ALT_EXC_HEIGHT;
 
+	//draw()の重複呼び出し防止
+	private boolean isDrawing;
+
 	public UCGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
 	}
@@ -74,6 +77,7 @@ public class UCGraph extends PApplet {
 	}
 
 	public void draw() {
+		isDrawing = true;
 		background(COLOR_BACKGROUND);
 		fill(COLOR_LINES);
 		stroke(COLOR_LINES);
@@ -174,6 +178,7 @@ public class UCGraph extends PApplet {
 
 		//CPU節約
 		noLoop();
+		isDrawing = false;
 	}
 
 	/**
@@ -489,10 +494,10 @@ public class UCGraph extends PApplet {
 			stepLB.scroll(e);
 		}
 
-		loop();
+		if (!isDrawing) loop();
 	}
 
 	public void mouseMoved() {
-		loop();
+		if (!isDrawing) loop();
 	}
 }
