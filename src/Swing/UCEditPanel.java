@@ -23,7 +23,8 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	//UCEditorコンポーネント
 	private JButton jump;
 	private JTextArea nameArea, conditionArea;
-	private JPanel nameFieldBorder, parentNameLabelBorder, conditionBorder, sourceStepComboBoxBorder;
+	private JPanel nameFieldBorder, parentNameLabelBorder, conditionBorder, sourceStepComboBoxBorder, stepType;
+	private JRadioButton stepTypeNop, stepTypeAction, stepTypeGoto, stepTypeInclude;
 	private JLabel parentGoalNameLabel;
 	private JComboBox sourceStepComboBox;
 	private List<Integer> altExcFlowComboBoxIdList;
@@ -83,6 +84,33 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		conditionBorder.setBorder(new TitledBorder(new EtchedBorder(), "Condition"));
 		conditionBorder.setBounds(5, 210, 193, 80);
 		this.add(conditionBorder);
+
+		//StepType
+		stepTypeNop = new JRadioButton("NOP");
+		stepTypeNop.setSelected(true);
+		stepTypeNop.addActionListener(this);
+		stepTypeAction = new JRadioButton("EVENT");
+		stepTypeAction.addActionListener(this);
+		stepTypeGoto = new JRadioButton("GOTO");
+		stepTypeGoto.addActionListener(this);
+		stepTypeInclude = new JRadioButton("INCLUDE");
+		stepTypeInclude.addActionListener(this);
+		//stepTypeButtonGroup作成
+		ButtonGroup refineTypeButtonGroup = new ButtonGroup();
+		refineTypeButtonGroup.add(stepTypeNop);
+		refineTypeButtonGroup.add(stepTypeAction);
+		refineTypeButtonGroup.add(stepTypeGoto);
+		refineTypeButtonGroup.add(stepTypeInclude);
+		//StepTyoeグループのラベル（パネル）作成
+		stepType = new JPanel();
+		stepType.add(stepTypeNop);
+		stepType.add(stepTypeAction);
+		stepType.add(stepTypeGoto);
+		stepType.add(stepTypeInclude);
+		stepType.setBorder(new TitledBorder(new EtchedBorder(), "StepType"));
+		stepType.setBounds(5, 50, 193, 90);
+		stepType.setVisible(false);
+		this.add(stepType);
 
 
 		//TODO:もっとコンポーネント追加
