@@ -142,6 +142,8 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 
+		nameArea.setText("");
+
 		//再描画
 		ste.redraw();
 	}

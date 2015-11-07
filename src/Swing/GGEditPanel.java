@@ -140,7 +140,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			if (!nameArea.hasFocus()) nameArea.setText(selectedGoal.name);
 
 			//RefineType更新
-			switch (selectedGoal.childrenType){
+			switch (selectedGoal.childrenType) {
 				case AND:
 					refineTypeAnd.setSelected(true);
 					break;
@@ -207,6 +207,8 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		if (str != null) {
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
+
+		nameArea.setText("");
 
 		//再描画
 		ste.redraw();
