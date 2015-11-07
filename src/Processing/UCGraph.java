@@ -371,33 +371,14 @@ public class UCGraph extends PApplet {
 	}
 
 	public void mousePressed() {
-		if (usecaseLB.getContentOnMouse(mouseX, mouseY) != null) {
-			//UsecaseLB押下時処理
-			selectedUsecaseId = usecaseLB.getContentOnMouse(mouseX, mouseY).id;
-			deselectFlow();
-		} else if (altFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
-			//altFlowLB押下時処理
-			selectedFlowIndex = altFlowLB.getContentOnMouse(mouseX, mouseY).id;
-			selectedFlowType = 1;
-			deselectStep();
-		} else if (excFlowLB.getContentOnMouse(mouseX, mouseY) != null) {
-			//excFlowLB押下時処理
-			selectedFlowIndex = excFlowLB.getContentOnMouse(mouseX, mouseY).id;
-			selectedFlowType = 2;
-			deselectStep();
-		} else if (stepLB.getContentOnMouse(mouseX, mouseY) != null) {
-			//stepLB押下時処理
-			selectedStepId = stepLB.getContentOnMouse(mouseX, mouseY).id;
-		}
+		//マウス押下位置
+		int x = mouseX;
+		int y = mouseY;
 
-		//Usecase:ButtonSetFrame押下判定
-		switch (usecaseBSF.getButtonIdOnMouse(mouseX, mouseY)) {
-			case 0://Usecase移動（上向き）
-				sToolEditor.fgm.moveUsecase(selectedUsecaseId, -1);
-				break;
-			case 1://Usecase移動（下向き）
-				sToolEditor.fgm.moveUsecase(selectedUsecaseId, 1);
-				break;
+		//UsecaseLB押下判定
+		if (usecaseLB.getContentOnMouse(x, y) != null) {
+			selectedUsecaseId = usecaseLB.getContentOnMouse(x, y).id;
+			deselectFlow();
 		}
 
 		//選択中のUsecaseを取得、選択が不当（非選択）なら終了
@@ -405,14 +386,39 @@ public class UCGraph extends PApplet {
 		if (uc == null) return;
 
 		//MainFlow押下時処理
-		if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY)) {
+		if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, x, y)) {
 			selectedFlowType = 0;
 			selectedFlowIndex = 0;
 			deselectStep();
 		}
+		//altFlowLB押下判定
+		if (altFlowLB.getContentOnMouse(x, y) != null) {
+			selectedFlowIndex = altFlowLB.getContentOnMouse(x, y).id;
+			selectedFlowType = 1;
+			deselectStep();
+		}
+		//excFlowLB押下判定
+		if (excFlowLB.getContentOnMouse(x, y) != null) {
+			selectedFlowIndex = excFlowLB.getContentOnMouse(x, y).id;
+			selectedFlowType = 2;
+			deselectStep();
+		}
+		//stepLB押下判定
+		if (stepLB.getContentOnMouse(x, y) != null) {
+			selectedStepId = stepLB.getContentOnMouse(x, y).id;
+		}
 
-		//AltFlow上ボタン押下
-		switch (altFlowBSF.getButtonIdOnMouse(mouseX, mouseY)) {
+		//Usecase:ButtonSetFrame押下判定
+		switch (usecaseBSF.getButtonIdOnMouse(x, y)) {
+			case 0://Usecase移動（上向き）
+				sToolEditor.fgm.moveUsecase(selectedUsecaseId, -1);
+				break;
+			case 1://Usecase移動（下向き）
+				sToolEditor.fgm.moveUsecase(selectedUsecaseId, 1);
+				break;
+		}
+		//AltFlow:ButtonSetFrame押下判定
+		switch (altFlowBSF.getButtonIdOnMouse(x, y)) {
 			case 0://altFlow追加
 				uc.addAlternativeFlow("代替：" + uc.getAlternativeFlowList().size());
 				break;
@@ -422,9 +428,8 @@ public class UCGraph extends PApplet {
 					deselectFlow();
 				}
 		}
-
-		//ExcFlow上ボタン押下
-		switch (excFlowBSF.getButtonIdOnMouse(mouseX, mouseY)) {
+		//ExcFlow:ButtonSetFrame押下判定
+		switch (excFlowBSF.getButtonIdOnMouse(x, y)) {
 			case 0://excFlow追加
 				uc.addExceptionalFlow("例外：" + uc.getExceptionalFlowList().size());
 				break;
@@ -434,9 +439,8 @@ public class UCGraph extends PApplet {
 					deselectFlow();
 				}
 		}
-
-		//Step上ボタン押下
-		switch (stepBSF.getButtonIdOnMouse(mouseX, mouseY)) {
+		//Step:ButtonSetFrame押下判定
+		switch (stepBSF.getButtonIdOnMouse(x, y)) {
 			case 0://step追加
 				uc.addStep(selectedFlowType, selectedFlowIndex);
 				break;
