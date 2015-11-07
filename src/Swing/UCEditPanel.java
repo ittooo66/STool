@@ -101,7 +101,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		refineTypeButtonGroup.add(stepTypeAction);
 		refineTypeButtonGroup.add(stepTypeGoto);
 		refineTypeButtonGroup.add(stepTypeInclude);
-		//StepTyoeグループのラベル（パネル）作成
+		//StepTypeグループのラベル（パネル）作成
 		stepType = new JPanel();
 		stepType.add(stepTypeNop);
 		stepType.add(stepTypeAction);
@@ -122,56 +122,65 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		isDrawing = true;
 
 		try {
-			int id = ucg.selectedUsecaseId;
-			if (id != -1) {
+			Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
+			if (uc == null) return;
 
-				// UCEdit:altExcflowComboBox更新
-				altExcFlowComboBoxIdList.clear();
-				sourceStepComboBox.removeAllItems();
-				for (Usecase u : ste.fgm.getUsecases()) {
-					if (u.id == id) {
-						List<Step> ls = u.getMainFlow();
-						for (Step s : ls) {
-							sourceStepComboBox.addItem(s.getStepName(ste.fgm, u));
-							altExcFlowComboBoxIdList.add(s.id);
-						}
-					}
-				}
-
-				//Usecase名前詰め込んで描画
-				if (!nameArea.hasFocus()) nameArea.setText(ste.fgm.getUsecaseById(id).name);
-
-				//Condition名前詰め込んで描画
-				if (!conditionArea.hasFocus()) {
-					switch (ucg.selectedFlowType) {
-						case 1:
-							conditionArea.setText(ste.fgm.getUsecaseById(id).getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0).condition);
-							break;
-						case 2:
-							conditionArea.setText(ste.fgm.getUsecaseById(id).getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0).condition);
-							break;
-					}
-				}
-
-				//TODO:Alt_Flowとかその辺関連のコンポーネント追加処理
-
-				//親ゴールの名前を表示
-				Goal g = ste.fgm.getGoalById(ucg.selectedUsecaseId);
-				if (g != null) {
-					parentGoalNameLabel.setText(g.name);
-				}
-
-
+			// UCEdit:altExcflowComboBox更新
+			altExcFlowComboBoxIdList.clear();
+			sourceStepComboBox.removeAllItems();
+			List<Step> ls = uc.getMainFlow();
+			for (Step s : ls) {
+				sourceStepComboBox.addItem(s.getStepName(ste.fgm, uc));
+				altExcFlowComboBoxIdList.add(s.id);
 			}
 
+			//Usecase名前詰め込んで描画
+			if (!nameArea.hasFocus()) nameArea.setText(uc.name);
+
+			//Condition名前詰め込んで描画
+			if (!conditionArea.hasFocus()) {
+				switch (ucg.selectedFlowType) {
+					case 1:
+						conditionArea.setText(uc.getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0).condition);
+						break;
+					case 2:
+						conditionArea.setText(uc.getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0).condition);
+						break;
+				}
+			}
+
+			//StepType描画
+			Step step = uc.getStepById(ucg.selectedStepId);
+			if (step != null) {
+				switch (step.stepType) {
+					case NOP:
+						stepTypeNop.setSelected(true);
+						break;
+					case ACTION:
+						stepTypeAction.setSelected(true);
+						break;
+					case INCLUDE:
+						stepTypeInclude.setSelected(true);
+						break;
+					case GOTO:
+						stepTypeGoto.setSelected(true);
+						break;
+				}
+			}
+
+			//TODO:Alt_Flowとかその辺関連のコンポーネント追加処理
+
+			//親ゴールの名前を表示
+			Goal g = ste.fgm.getGoalById(uc.parentLeafGoalId);
+			if (g != null) parentGoalNameLabel.setText(g.name);
 
 			//Editorコンポーネント可視性変更
 			nameFieldBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
 			parentNameLabelBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
 			jump.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1);
-			sourceStepComboBoxBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowType > 0 && ucg.selectedStepId == -1);
-			conditionBorder.setVisible(ucg.selectedUsecaseId != -1 && ucg.selectedFlowType > 0 && ucg.selectedStepId == -1);
-
+			sourceStepComboBoxBorder.setVisible(ucg.selectedFlowType > 0 && ucg.selectedStepId == -1);
+			conditionBorder.setVisible(ucg.selectedFlowType > 0 && ucg.selectedStepId == -1);
+			stepType.setVisible(ucg.selectedStepId != -1);
 		} catch (NullPointerException e) {
 			//Usecase削除時のNullPointerException対策
 			ucg.selectedUsecaseId = -1;
@@ -203,6 +212,11 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 			uc.editStep(s.id, s);
 		} else if (ucg.selectedUsecaseId != -1) {
 			//TODO:Step選択時
+			Step s = uc.getStepById(ucg.selectedStepId);
+			s.stepType = stepTypeGoto.isSelected() ? Step.StepType.GOTO
+					: stepTypeInclude.isSelected() ? Step.StepType.INCLUDE
+					: stepTypeAction.isSelected() ? Step.StepType.ACTION : Step.StepType.NOP;
+			uc.editStep(s.id, s);
 		}
 
 		//fgm編集
