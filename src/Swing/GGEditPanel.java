@@ -10,10 +10,12 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GGEditPanel extends JPanel implements ActionListener, DocumentListener {
+public class GGEditPanel extends JPanel implements ActionListener, DocumentListener, KeyListener {
 
 	//各種インスタンスへの参照
 	private final SToolEditor ste;
@@ -53,6 +55,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		//NameTextArea周り
 		nameArea = new JTextArea(5, 15);
 		nameArea.getDocument().addDocumentListener(this);
+		nameArea.addKeyListener(this);
 		JScrollPane scroll = new JScrollPane(nameArea);
 		JPanel nameAreaBorder = new JPanel();
 		nameAreaBorder.add(scroll);
@@ -260,5 +263,31 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		isDrawing = true;
 		nameArea.setText("");
 		isDrawing = false;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	private boolean shiftKeyPressed;
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+			case KeyEvent.VK_SHIFT:
+				shiftKeyPressed = true;
+				break;
+			case KeyEvent.VK_ENTER:
+				if (shiftKeyPressed) {
+					add();
+					nameArea.setText("");
+				}
+				break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_SHIFT) shiftKeyPressed = false;
 	}
 }

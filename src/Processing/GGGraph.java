@@ -5,6 +5,8 @@ import Swing.*;
 import processing.core.PApplet;
 import processing.core.PFont;
 
+import javax.swing.*;
+
 
 /**
  * ゴールグラフエディタタブで出力するProcessing部分
@@ -204,6 +206,9 @@ public class GGGraph extends PApplet {
 	public void mousePressed() {
 		final int goalClickMergin = 40;
 
+		//変更前のゴールIDを保存
+		int preSelectedGoalId = selectedGoalId;
+
 		//ドメイン選択の一時解除
 		selectedGoalId = -1;
 		for (Goal g : sToolEditor.fgm.getGoals()) {
@@ -214,10 +219,32 @@ public class GGGraph extends PApplet {
 			}
 		}
 
+		//Ctrl押下時のみ、枝張りショートカット実行
+		if (shiftKeyPressed) {
+			Goal preSelectedGoal = sToolEditor.fgm.getGoalById(preSelectedGoalId);
+			if (preSelectedGoal != null && sToolEditor.fgm.getGoalById(selectedGoalId) != null) {
+				preSelectedGoal.parentId = selectedGoalId;
+				String str = sToolEditor.fgm.editGoal(preSelectedGoal.id, preSelectedGoal.name, preSelectedGoal.childrenType, selectedGoalId, preSelectedGoal.isEnable);
+				if (str != null) {
+					JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+
 		//フォーカスがなければJTextArea初期化
 		if (selectedGoalId == -1) sToolEditor.initTextArea();
 
 		sToolEditor.redraw();
+	}
+
+	private boolean shiftKeyPressed;
+
+	public void keyPressed() {
+		if (keyCode == SHIFT) shiftKeyPressed = true;
+	}
+
+	public void keyReleased() {
+		if (keyCode == SHIFT) shiftKeyPressed = false;
 	}
 
 	public void mouseDragged() {
