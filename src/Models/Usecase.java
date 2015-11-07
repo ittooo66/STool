@@ -94,6 +94,13 @@ public class Usecase implements Cloneable {
 		return alternativeFlowList;
 	}
 
+	public Step getStepById(int id) {
+		for (Step s : flow) {
+			if (s.id == id) return (Step) s.clone();
+		}
+		return null;
+	}
+
 	/**
 	 * AlternativeFlowを削除
 	 *
