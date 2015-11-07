@@ -138,7 +138,7 @@ public class FGModel {
 		return null;
 	}
 
-	public void addUsecase(String name, int parentGoalId) {
+	private void addUsecase(String name, int parentGoalId) {
 		//新ID生成
 		int id = 0;
 		for (Usecase u : usecases) {
@@ -281,16 +281,6 @@ public class FGModel {
 		for (int i = 0; i < domains.size(); i++) {
 			if (domains.get(i).id == id) {
 				domains.remove(i);
-				return null;
-			}
-		}
-		return "COULD NOT FIND A DOMAIN THAT HAS ID:" + id;
-	}
-
-	public String removeUsecase(int id) {
-		for (Usecase u : usecases) {
-			if (u.id == id) {
-				removeGoal(u.parentLeafGoalId);
 				return null;
 			}
 		}
