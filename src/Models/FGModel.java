@@ -297,6 +297,11 @@ public class FGModel {
 		this.domains = domains;
 	}
 
+	/**
+	 * CreateFGModelで使用中、モデル整合性を担保できないのであとで消すこと
+	 *
+	 * @param usecases
+	 */
 	@Deprecated
 	public void setUsecases(List<Usecase> usecases) {
 		this.usecases = usecases;
