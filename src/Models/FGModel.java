@@ -162,6 +162,7 @@ public class FGModel {
 				break;
 			}
 		}
+		if (goal == null) return "COULD NOT FIND A GOAL THAT HAS ID:" + id;
 
 		//モデル整合性チェック
 		if (name.equals(null)) return "GOAL NAME MUST BE NON-NULL !";
@@ -175,7 +176,7 @@ public class FGModel {
 		}
 
 		//更新
-		if (goal == null) return "COULD NOT FIND A GOAL THAT HAS ID:" + id;
+		goals.stream().filter(g -> g.id == parentId && g.childrenType == Goal.ChildrenType.LEAF).forEach(g -> g.childrenType = Goal.ChildrenType.OR);
 		goal.name = name;
 		goal.childrenType = childrenType;
 		goal.parentId = parentId;
