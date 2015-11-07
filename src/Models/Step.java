@@ -100,14 +100,14 @@ public class Step implements Cloneable{
 						return "GOTO:" + s.getStepName(fgm, uc);
 					}
 				}
-				return null;
+				return "GOTO:INVALID";
 			case INCLUDE:
 				for (Usecase u : fgm.getUsecases()) {
 					if (u.id == includeUsecaseId) {
 						return "UC:" + u.name + "を起動";
 					}
 				}
-				return null;
+				return "INCLUDE:INVALID";
 			case ACTION:
 				return fgm.getDomainById(subjectDomainId) + "->" + Event + "->" + fgm.getDomainById(objectDomainId);
 			case NOP:
