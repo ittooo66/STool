@@ -36,41 +36,36 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.ste = ste;
 		this.ggg = ggg;
 
-		this.setLayout(null);
-		this.setPreferredSize(new Dimension(200, 0));
+		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		this.setPreferredSize(new Dimension(0,80));
 
 		//RemoveButton
-		remove = new JButton("Remove");
+		remove = new JButton("Remove Goal");
 		remove.addActionListener(e -> remove());
-		remove.setBounds(105, 5, 90, 30);
 		remove.setVisible(false);
 		this.add(remove);
 
 		//Add New Goal Button
 		add = new JButton("Add New Goal");
 		add.addActionListener(e -> add());
-		add.setBounds(75, 200, 120, 30);
 		this.add(add);
 
 		//NameTextArea周り
-		nameArea = new JTextArea(5, 15);
+		nameArea = new JTextArea(2, 15);
 		nameArea.getDocument().addDocumentListener(this);
 		nameArea.addKeyListener(this);
 		JScrollPane scroll = new JScrollPane(nameArea);
 		JPanel nameAreaBorder = new JPanel();
 		nameAreaBorder.add(scroll);
 		nameAreaBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
-		nameAreaBorder.setBounds(5, 50, 193, 120);
 		this.add(nameAreaBorder);
 
 		//parent指定ComboBox周り
 		parentComboBox = new JComboBox<>();
-		parentComboBox.setPreferredSize(new Dimension(160, 20));
 		parentComboBox.addActionListener(this);
 		parentComboBoxBorder = new JPanel();
 		parentComboBoxBorder.add(parentComboBox);
 		parentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
-		parentComboBoxBorder.setBounds(5, 180, 193, 60);
 		this.add(parentComboBoxBorder);
 		parentComboBoxIdList = new ArrayList<>();
 
@@ -93,7 +88,6 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		refineType.add(refineTypeOr);
 		refineType.add(refineTypeLeaf);
 		refineType.setBorder(new TitledBorder(new EtchedBorder(), "RefineType"));
-		refineType.setBounds(5, 250, 193, 60);
 		refineType.setVisible(false);
 		this.add(refineType);
 
@@ -112,7 +106,6 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		necessity.add(necessityIsEnable);
 		necessity.add(necessityIsDisable);
 		necessity.setBorder(new TitledBorder(new EtchedBorder(), "Necessity"));
-		necessity.setBounds(5, 320, 193, 60);
 		necessity.setVisible(false);
 		this.add(necessity);
 

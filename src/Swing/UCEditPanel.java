@@ -33,18 +33,17 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	public UCEditPanel(SToolEditor ste, UCGraph ucg) {
 		this.ste = ste;
 		this.ucg = ucg;
-		this.setLayout(null);
-		this.setPreferredSize(new Dimension(200, 0));
+		this.setLayout(new FlowLayout(FlowLayout.LEFT));
+		this.setPreferredSize(new Dimension(0,80));
 
 		//Usecase選択時のパネル
 		usecaseEditPanel = new JPanel();
-		usecaseEditPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		usecaseEditPanel.setBounds(0, 0, 200, 1080);
+		usecaseEditPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//JumpButton
 		JButton jump = new JButton("Jump to Parent Goal");
 		jump.addActionListener(e -> ste.jumpToGGTab(ste.fgm.getUsecaseById(ucg.selectedUsecaseId).parentLeafGoalId));
 		//NameTextArea
-		nameArea = new JTextArea(5, 14);
+		nameArea = new JTextArea(2, 14);
 		nameArea.getDocument().addDocumentListener(this);
 		JScrollPane scrollPane = new JScrollPane(nameArea);
 		JPanel nameFieldBorder = new JPanel();
@@ -63,8 +62,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 		//Flow（ALTまたはEXC）選択時のパネル
 		flowEditPanel = new JPanel();
-		flowEditPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-		flowEditPanel.setBounds(0, 0, 200, 1080);
+		flowEditPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//Condition
 		conditionArea = new JTextArea(2, 15);
 		conditionArea.getDocument().addDocumentListener(this);
@@ -107,7 +105,6 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		stepTypeBorder.add(stepTypeGoto);
 		stepTypeBorder.add(stepTypeInclude);
 		stepTypeBorder.setBorder(new TitledBorder(new EtchedBorder(), "StepType"));
-		stepTypeBorder.setBounds(5, 50, 193, 90);
 		stepTypeBorder.setVisible(false);
 		this.add(stepTypeBorder);
 
@@ -118,18 +115,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		subjectComboBoxBorder = new JPanel();
 		subjectComboBoxBorder.add(subjectComboBox);
 		subjectComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Subject"));
-		subjectComboBoxBorder.setBounds(5, 150, 193, 60);
 		this.add(subjectComboBoxBorder);
-		//objectComboBox
-		objectComboBox = new JComboBox();
-		objectComboBox.setPreferredSize(new Dimension(160, 20));
-		objectComboBox.addActionListener(this);
-		objectComboBoxBorder = new JPanel();
-		objectComboBoxBorder.add(objectComboBox);
-		objectComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Object"));
-		objectComboBoxBorder.setBounds(5, 320, 193, 60);
-		this.add(objectComboBoxBorder);
-		objectAndSubjectComboBoxIdList = new ArrayList<>();
 		//eventNameArea
 		eventNameArea = new JTextArea(2, 15);
 		eventNameArea.getDocument().addDocumentListener(this);
@@ -137,8 +123,16 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		eventNameFieldBorder = new JPanel();
 		eventNameFieldBorder.add(scrollPane);
 		eventNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Event"));
-		eventNameFieldBorder.setBounds(5, 220, 193, 90);
 		this.add(eventNameFieldBorder);
+		//objectComboBox
+		objectComboBox = new JComboBox();
+		objectComboBox.setPreferredSize(new Dimension(160, 20));
+		objectComboBox.addActionListener(this);
+		objectComboBoxBorder = new JPanel();
+		objectComboBoxBorder.add(objectComboBox);
+		objectComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Object"));
+		this.add(objectComboBoxBorder);
+		objectAndSubjectComboBoxIdList = new ArrayList<>();
 
 		//toComboBox
 		toComboBox = new JComboBox();
@@ -147,7 +141,6 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		toComboBoxBorder = new JPanel();
 		toComboBoxBorder.add(toComboBox);
 		toComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "To"));
-		toComboBoxBorder.setBounds(5, 150, 193, 60);
 		this.add(toComboBoxBorder);
 		toComboBoxIdList = new ArrayList<>();
 

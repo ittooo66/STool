@@ -107,7 +107,7 @@ public class SToolEditor extends JFrame {
 		//ggTab右のEditor部分
 		ggEditPanel = new GGEditPanel(this, ggGraph);
 		//パネルに追加
-		ggPanel.add(ggEditPanel, BorderLayout.LINE_END);
+		ggPanel.add(ggEditPanel, BorderLayout.PAGE_START);
 		ggPanel.add(ggGraph, BorderLayout.CENTER);
 		//////////////////////////////UCTab部分作成//////////////////////////////
 		JPanel ucPanel = new JPanel(new BorderLayout());
@@ -117,7 +117,7 @@ public class SToolEditor extends JFrame {
 		//ucEdit右のEditor部分
 		ucEditPanel = new UCEditPanel(this, ucGraph);
 		//パネルに追加
-		ucPanel.add(ucEditPanel, BorderLayout.LINE_END);
+		ucPanel.add(ucEditPanel, BorderLayout.PAGE_START);
 		ucPanel.add(ucGraph, BorderLayout.CENTER);
 		//////////////////////////////PFTab部分作成//////////////////////////////
 		JPanel pfPanel = new JPanel(new BorderLayout());
@@ -127,7 +127,7 @@ public class SToolEditor extends JFrame {
 		//pfEdit右のEditor部分
 		pfEditPanel = new PFEditPanel(this, pfGraph);
 		//パネルに追加
-		pfPanel.add(pfEditPanel, BorderLayout.LINE_END);
+		pfPanel.add(pfEditPanel, BorderLayout.PAGE_START);
 		pfPanel.add(pfGraph, BorderLayout.CENTER);
 		/////////////////////////////仕上げ///////////////////////////////////////
 		//tabペイン作成
