@@ -303,11 +303,15 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		}
 
 		usecase.editStep(step.id, step);
-		ste.fgm.editUsecase(usecase.id, usecase);
+		String str = ste.fgm.editUsecase(usecase.id, usecase);
+		if (str != null) {
+			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//描画時の変更でなければ(!isDrawing)アクション来てる
 		if (!isDrawing && ucg.selectedUsecaseId != -1) {
 			Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
 			//ucgで選択中のタイプ（UC,Flow,Step）を取得
