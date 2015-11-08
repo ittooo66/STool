@@ -236,6 +236,8 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 						}
 						break;
 				}
+
+				//TODO:GOTO,INCLUDE,OBJECT,SUBJECT各種ComboBoxを選択
 			}
 
 			//Editorコンポーネント可視性変更
