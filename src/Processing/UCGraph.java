@@ -153,12 +153,13 @@ public class UCGraph extends PApplet {
 		//stepLB中身詰め込み+draw()
 		lbc = new ArrayList<>();
 		if (uc != null) {
+			int i = 0;
 			switch (selectedFlowType) {
 				case 0:
 					for (Step s : uc.getMainFlow()) {
+						i++;
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
 							lbc.add(new ListBoxContent(s.id, i + "." + s.getStepName(sToolEditor.fgm, uc)));
-						i++;
 					}
 					break;
 				case 1:
