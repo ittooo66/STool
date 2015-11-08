@@ -223,12 +223,18 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 							toComboBox.addItem(u.name);
 							toComboBoxIdList.add(u.id);
 						}
+
+						//ComboBox選択
+						toComboBoxIdList.stream().filter(id -> id == step.includeUsecaseId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
 						break;
 					case GOTO:
 						for (Step s : uc.getMainFlow()) {
 							toComboBox.addItem(s.getStepName(ste.fgm, uc));
 							toComboBoxIdList.add(s.id);
 						}
+
+						//ComboBox選択
+						toComboBoxIdList.stream().filter(id -> id == step.gotoStepId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
 						break;
 				}
 
@@ -242,7 +248,9 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 					objectComboBox.addItem(d.name);
 				}
 
-				//TODO:GOTO,INCLUDE,OBJECT,SUBJECT各種ComboBoxを選択
+				//Object,SubjectComboBox選択
+				objectAndSubjectComboBoxIdList.stream().filter(id -> id == step.objectDomainId).forEach(id -> objectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
+				objectAndSubjectComboBoxIdList.stream().filter(id -> id == step.subjectDomainId).forEach(id -> subjectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
 			}
 
 			//Editorパネル変更
