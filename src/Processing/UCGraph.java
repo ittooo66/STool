@@ -128,7 +128,7 @@ public class UCGraph extends PApplet {
 			fill(COLOR_LINES);
 		}
 		noStroke();
-		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
+		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH + 7, 2 * MERGIN, COLUMN_WIDTH - 7, MERGIN);
 
 		//altFlow中身詰め込み+draw()
 		lbc = new ArrayList<>();
@@ -159,20 +159,20 @@ public class UCGraph extends PApplet {
 					for (Step s : uc.getMainFlow()) {
 						i++;
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
-							lbc.add(new ListBoxContent(s.id, i + "." + s.getStepName(sToolEditor.fgm, uc)));
+							lbc.add(new ListBoxContent(s.id, i + ". " + s.getStepName(sToolEditor.fgm, uc)));
 					}
 					break;
 				case 1:
 					for (Step s : uc.getAlternativeFlowList().get(selectedFlowIndex)) {
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
-							lbc.add(new ListBoxContent(s.id, i + "." + s.getStepName(sToolEditor.fgm, uc)));
+							lbc.add(new ListBoxContent(s.id, i + ". " + s.getStepName(sToolEditor.fgm, uc)));
 						i++;
 					}
 					break;
 				case 2:
 					for (Step s : uc.getExceptionalFlowList().get(selectedFlowIndex)) {
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
-							lbc.add(new ListBoxContent(s.id, i + "." + s.getStepName(sToolEditor.fgm, uc)));
+							lbc.add(new ListBoxContent(s.id, i + ". " + s.getStepName(sToolEditor.fgm, uc)));
 						i++;
 					}
 					break;
@@ -323,6 +323,7 @@ public class UCGraph extends PApplet {
 		}
 
 		public void draw() {
+			textAlign(LEFT, CENTER);
 			fill(COLOR_LINES);
 			noFill();
 			stroke(COLOR_LINES);
@@ -340,7 +341,7 @@ public class UCGraph extends PApplet {
 					fill(COLOR_LINES);
 				}
 				noStroke();
-				text(contents.get(j).name, x, y + i * dh, w, dh);
+				text(contents.get(j).name, x + 7, y + i * dh, w - 7, dh);
 			}
 
 			//はみ出し部分を塗りつぶし
