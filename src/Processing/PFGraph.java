@@ -46,9 +46,28 @@ public class PFGraph extends PApplet {
 		stroke(COLOR_LINES);
 		strokeWeight(1);
 
-		//TODO:各リレーションを描画(UseCase描画の後)
+		//各リレーションを描画
+		for (Usecase uc : sToolEditor.fgm.getUsecases()) {
+			for (Step s : uc.getAllActionStep()) {
+				Domain obj = sToolEditor.fgm.getDomainById(s.objectDomainId);
+				Domain sbj = sToolEditor.fgm.getDomainById(s.subjectDomainId);
+				if (obj != null && sbj != null) {
+					line(obj.x, obj.y, sbj.x, sbj.y);
+				}
+			}
+		}
 
 		//TODO:各イベントを描画(UseCase描画の後)
+		fill(COLOR_LINES);
+		for (Usecase uc : sToolEditor.fgm.getUsecases()) {
+			for (Step s : uc.getAllActionStep()) {
+				Domain obj = sToolEditor.fgm.getDomainById(s.objectDomainId);
+				Domain sbj = sToolEditor.fgm.getDomainById(s.subjectDomainId);
+				if (obj != null && sbj != null) {
+					text(sbj.name + "! " + s.Event, (obj.x + sbj.x) / 2, (obj.y + sbj.y) / 2);
+				}
+			}
+		}
 
 		//各ドメインを描画
 		textAlign(CENTER, CENTER);
