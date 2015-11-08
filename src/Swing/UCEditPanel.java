@@ -238,9 +238,6 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 				}
 			}
 
-			//TODO:Alt_Flowとかその辺関連のコンポーネント追加処理
-
-
 			//Editorコンポーネント可視性変更
 			usecaseEditPanel.setVisible(usecaseSelected);
 			flowEditPanel.setVisible(flowSelected && ucg.selectedFlowType != 0);
@@ -264,68 +261,84 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		isDrawing = false;
 	}
 
-	private void edit() {
-		//ucgで選択中のタイプ（UC,Flow,Step）を取得
-		boolean usecaseSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1;
-		boolean flowSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowType != -1 && ucg.selectedStepId == -1;
-		boolean stepSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowType != -1 && ucg.selectedStepId != -1;
-		Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
 
-		if (uc == null) {
-			ste.redraw();
-			return;
-		} else if (usecaseSelected) {
-			uc.name = nameArea.getText();
-		} else if (flowSelected) {
-			Step s = new Step();
-			switch (ucg.selectedFlowType) {
-				case 1:
-					s = uc.getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0);
-					break;
-				case 2:
-					s = uc.getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0);
-			}
-			s.condition = conditionArea.getText();
-			uc.editStep(s.id, s);
-		} else if (stepSelected) {
-			Step s = uc.getStepById(ucg.selectedStepId);
-			s.stepType = stepTypeGoto.isSelected() ? Step.StepType.GOTO
-					: stepTypeInclude.isSelected() ? Step.StepType.INCLUDE
-					: stepTypeAction.isSelected() ? Step.StepType.ACTION : Step.StepType.NOP;
-			try {
-				switch (s.stepType) {
-					case GOTO:
-						s.gotoStepId = toComboBoxIdList.get(toComboBox.getSelectedIndex());
-						break;
-					case INCLUDE:
-						s.includeUsecaseId = toComboBoxIdList.get(toComboBox.getSelectedIndex());
-						break;
-					case ACTION:
-						s.objectDomainId = objectAndSubjectComboBoxIdList.get(objectComboBox.getSelectedIndex());
-						s.Event = eventNameArea.getText();
-						s.subjectDomainId = objectAndSubjectComboBoxIdList.get(subjectComboBox.getSelectedIndex());
-						break;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			uc.editStep(s.id, s);
+	private void editUsecase(Usecase usecase) {
+		usecase.name = nameArea.getText();
+		ste.fgm.editUsecase(usecase.id, usecase);
+	}
+
+	private void editAltFlow(Usecase usecase, int flowIndex) {
+		Step s = usecase.getAlternativeFlowList().get(flowIndex).get(0);
+		s.condition = conditionArea.getText();
+		usecase.editStep(s.id, s);
+		ste.fgm.editUsecase(usecase.id, usecase);
+	}
+
+	private void editExcFlow(Usecase usecase, int flowIndex) {
+		Step s = usecase.getExceptionalFlowList().get(flowIndex).get(0);
+		s.condition = conditionArea.getText();
+		usecase.editStep(s.id, s);
+		ste.fgm.editUsecase(usecase.id, usecase);
+	}
+
+	private void editStep(Usecase usecase, Step step) {
+		step.stepType = stepTypeGoto.isSelected() ? Step.StepType.GOTO
+				: stepTypeInclude.isSelected() ? Step.StepType.INCLUDE
+				: stepTypeAction.isSelected() ? Step.StepType.ACTION : Step.StepType.NOP;
+
+		int toComboBoxSelectedIndex = toComboBox.getSelectedIndex();
+		switch (step.stepType) {
+			case GOTO:
+				if (toComboBoxSelectedIndex != -1) step.gotoStepId = toComboBoxIdList.get(toComboBoxSelectedIndex);
+				break;
+			case INCLUDE:
+				if (toComboBoxSelectedIndex != -1)
+					step.includeUsecaseId = toComboBoxIdList.get(toComboBoxSelectedIndex);
+				break;
+			case ACTION:
+				int objectComboBoxSelectedIndex = objectComboBox.getSelectedIndex();
+				int subjectComboBoxSelectedIndex = subjectComboBox.getSelectedIndex();
+				if (objectComboBoxSelectedIndex != -1)
+					step.objectDomainId = objectAndSubjectComboBoxIdList.get(objectComboBoxSelectedIndex);
+				if (subjectComboBoxSelectedIndex != -1)
+					step.subjectDomainId = objectAndSubjectComboBoxIdList.get(subjectComboBoxSelectedIndex);
+				String str = eventNameArea.getText();
+				if (str != null) step.Event = str;
+				break;
 		}
 
-		//fgm編集
-		String str = ste.fgm.editUsecase(ucg.selectedUsecaseId, uc);
-		if (str != null) {
-			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
-		}
-
-		//再描画
-		ste.redraw();
+		usecase.editStep(step.id, step);
+		ste.fgm.editUsecase(usecase.id, usecase);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!isDrawing && ucg.selectedUsecaseId != -1) {
-			edit();
+			Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
+			//ucgで選択中のタイプ（UC,Flow,Step）を取得
+			boolean usecaseSelected = ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1;
+			boolean flowSelected = ucg.selectedFlowType != -1 && ucg.selectedStepId == -1;
+			boolean stepSelected = ucg.selectedFlowType != -1 && ucg.selectedStepId != -1;
+
+			if (uc == null) {
+				//なにもしない
+			} else if (usecaseSelected) {
+				editUsecase(uc);
+			} else if (flowSelected) {
+				switch (ucg.selectedFlowType) {
+					case 1:
+						editAltFlow(uc, ucg.selectedFlowIndex);
+						break;
+					case 2:
+						editExcFlow(uc, ucg.selectedFlowIndex);
+						break;
+				}
+			} else if (stepSelected) {
+				editStep(uc, uc.getStepById(ucg.selectedStepId));
+			}
+
+			//再描画
+			ste.redraw();
 		}
 	}
 
