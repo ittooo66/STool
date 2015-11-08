@@ -2,7 +2,7 @@ package Models;
 
 import java.util.List;
 
-public class Step implements Cloneable{
+public class Step implements Cloneable {
 	//StepのId
 	public int id;
 
@@ -97,7 +97,7 @@ public class Step implements Cloneable{
 				for (Step s : ls) {
 					if (s.id == this.gotoStepId) {
 						//自分のステップが存在
-						return "GOTO:" + s.getStepName(fgm, uc);
+						return "GOTO:" + s.id;
 					}
 				}
 				return "GOTO:INVALID";
