@@ -157,19 +157,22 @@ public class UCGraph extends PApplet {
 				case 0:
 					for (Step s : uc.getMainFlow()) {
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
-							lbc.add(new ListBoxContent(s.id, s.getStepName(sToolEditor.fgm, uc)));
+							lbc.add(new ListBoxContent(s.id, i + "." + s.getStepName(sToolEditor.fgm, uc)));
+						i++;
 					}
 					break;
 				case 1:
 					for (Step s : uc.getAlternativeFlowList().get(selectedFlowIndex)) {
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
-							lbc.add(new ListBoxContent(s.id, s.getStepName(sToolEditor.fgm, uc)));
+							lbc.add(new ListBoxContent(s.id, i + "." + s.getStepName(sToolEditor.fgm, uc)));
+						i++;
 					}
 					break;
 				case 2:
 					for (Step s : uc.getExceptionalFlowList().get(selectedFlowIndex)) {
 						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
-							lbc.add(new ListBoxContent(s.id, s.getStepName(sToolEditor.fgm, uc)));
+							lbc.add(new ListBoxContent(s.id, i + "." + s.getStepName(sToolEditor.fgm, uc)));
+						i++;
 					}
 					break;
 			}
