@@ -28,9 +28,6 @@ public class GGGraph extends PApplet {
 	private final int COLOR_FILL = color(220, 233, 255);
 	private final int COLOR_SELECTED = color(57, 152, 214);
 
-	//drawフラグ
-	private boolean isDrawing;
-
 	public GGGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
 	}
@@ -43,12 +40,20 @@ public class GGGraph extends PApplet {
 		textFont(font);
 		//Smoothに描画
 		smooth();
-		//CPU節約
-		noLoop();
+	}
+
+	//変更フラグ
+	private boolean hasChanges;
+
+	public void redraw() {
+		hasChanges = true;
 	}
 
 	public void draw() {
-		isDrawing = true;
+		//省力draw()
+		if (!hasChanges) return;
+		else hasChanges = false;
+
 		//背景描画
 		background(COLOR_BACKGROUND);
 
@@ -180,11 +185,6 @@ public class GGGraph extends PApplet {
 				}
 			}
 		}
-		isDrawing = false;
-	}
-
-	public void redraw() {
-		if (!isDrawing) super.redraw();
 	}
 
 	/**

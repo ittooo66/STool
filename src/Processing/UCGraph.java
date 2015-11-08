@@ -37,9 +37,6 @@ public class UCGraph extends PApplet {
 	private int COLUMN_WIDTH;
 	private int ALT_EXC_HEIGHT;
 
-	//draw()の重複呼び出し防止
-	private boolean isDrawing;
-
 	public UCGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
 	}
@@ -52,8 +49,6 @@ public class UCGraph extends PApplet {
 		textFont(font);
 		//Smoothに描画
 		smooth();
-		//CPU節約
-		noLoop();
 
 		//ButtonSetFrameをSetup
 		usecaseBSF = new ButtonSetFrame("Usecases");
@@ -76,10 +71,22 @@ public class UCGraph extends PApplet {
 		altFlowLB = new ListBox();
 		excFlowLB = new ListBox();
 		stepLB = new ListBox();
+
+		hasChanges = true;
+	}
+
+	//変更フラグ
+	private boolean hasChanges;
+
+	public void redraw() {
+		hasChanges = true;
 	}
 
 	public void draw() {
-		isDrawing = true;
+		//省力draw()
+		if (!hasChanges) return;
+		else hasChanges = false;
+
 		background(COLOR_BACKGROUND);
 		fill(COLOR_LINES);
 		stroke(COLOR_LINES);
@@ -181,12 +188,6 @@ public class UCGraph extends PApplet {
 		stepLB.setContents(lbc);
 		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN, selectedStepId);
 		stepLB.draw();
-
-		isDrawing = false;
-	}
-
-	public void redraw() {
-		if (!isDrawing) super.redraw();
 	}
 
 	/**

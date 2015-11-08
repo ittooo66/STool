@@ -21,8 +21,6 @@ public class PFGraph extends PApplet {
 	private final int COLOR_LINES = color(51, 51, 51);
 	private final int COLOR_SELECTED = color(57, 152, 214);
 
-	boolean isDrawing;
-
 	public PFGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
 	}
@@ -35,12 +33,21 @@ public class PFGraph extends PApplet {
 		textFont(font);
 		//Smoothに描画
 		smooth();
-		//CPU節約
-		noLoop();
+
+		hasChanges = true;
+	}
+
+	//変更フラグ
+	private boolean hasChanges;
+
+	public void redraw() {
+		hasChanges = true;
 	}
 
 	public void draw() {
-		isDrawing = true;
+		//省力draw()
+		if (!hasChanges) return;
+		else hasChanges = false;
 
 		background(COLOR_BACKGROUND);
 		stroke(COLOR_LINES);
@@ -114,12 +121,6 @@ public class PFGraph extends PApplet {
 			textSize(15);
 			text(d.name, d.x, d.y - 2);
 		}
-
-		isDrawing = false;
-	}
-
-	public void redraw() {
-		if (!isDrawing) super.redraw();
 	}
 
 	public void mousePressed() {
