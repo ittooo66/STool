@@ -281,11 +281,11 @@ public class Usecase implements Cloneable {
 	}
 
 	/**
-	 * eventのStepのみを返す
+	 * ActionStepのみを返す
 	 *
 	 * @return ユースケース内のEventStepリスト
 	 */
-	public List<Step> getEventStepList() {
+	public List<Step> getAllActionStep() {
 		return flow.stream().filter(s -> s.stepType == Step.StepType.ACTION).collect(Collectors.toList());
 	}
 
