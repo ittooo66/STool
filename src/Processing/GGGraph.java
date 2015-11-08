@@ -28,6 +28,9 @@ public class GGGraph extends PApplet {
 	private final int COLOR_FILL = color(220, 233, 255);
 	private final int COLOR_SELECTED = color(57, 152, 214);
 
+	//drawフラグ
+	private boolean isDrawing;
+
 	public GGGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
 	}
@@ -43,6 +46,7 @@ public class GGGraph extends PApplet {
 	}
 
 	public void draw() {
+		isDrawing = true;
 		//背景描画
 		background(COLOR_BACKGROUND);
 
@@ -176,6 +180,7 @@ public class GGGraph extends PApplet {
 		}
 		//CPU節約
 		noLoop();
+		isDrawing = false;
 	}
 
 	/**
@@ -253,6 +258,6 @@ public class GGGraph extends PApplet {
 			if (g != null && 0 < mouseX && mouseX < width && 0 < mouseY && mouseY < height)
 				sToolEditor.fgm.moveGoal(selectedGoalId, mouseX, mouseY);
 		}
-		loop();
+		if (!isDrawing) loop();
 	}
 }
