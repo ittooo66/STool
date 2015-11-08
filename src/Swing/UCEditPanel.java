@@ -251,6 +251,9 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 				//Object,SubjectComboBox選択
 				objectAndSubjectComboBoxIdList.stream().filter(id -> id == step.objectDomainId).forEach(id -> objectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
 				objectAndSubjectComboBoxIdList.stream().filter(id -> id == step.subjectDomainId).forEach(id -> subjectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
+
+				//Text更新
+				if (!eventNameArea.hasFocus()) eventNameArea.setText(step.Event);
 			}
 
 			//Editorパネル変更
