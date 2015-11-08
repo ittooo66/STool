@@ -113,7 +113,7 @@ public class Step implements Cloneable {
 				Domain obj = fgm.getDomainById(objectDomainId);
 				Domain sbj = fgm.getDomainById(subjectDomainId);
 				if (obj != null && sbj != null)
-					return sbj.name + "->" + Event + "->" + obj.name;
+					return sbj.name + "-> " + Event + "-> " + obj.name;
 				else
 					return "NO ACTION";
 			case NOP:
