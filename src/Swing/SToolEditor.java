@@ -175,9 +175,9 @@ public class SToolEditor extends JFrame {
 	 */
 	public void redraw() {
 		//ProcessingをRedraw
-		ggGraph.loop();
-		pfGraph.loop();
-		ucGraph.loop();
+		ggGraph.redraw();
+		pfGraph.redraw();
+		ucGraph.redraw();
 
 		//EditPanelをRedraw
 		ggEditPanel.redraw();

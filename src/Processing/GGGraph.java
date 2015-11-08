@@ -43,6 +43,8 @@ public class GGGraph extends PApplet {
 		textFont(font);
 		//Smoothに描画
 		smooth();
+		//CPU節約
+		noLoop();
 	}
 
 	public void draw() {
@@ -178,9 +180,11 @@ public class GGGraph extends PApplet {
 				}
 			}
 		}
-		//CPU節約
-		noLoop();
 		isDrawing = false;
+	}
+
+	public void redraw() {
+		if (!isDrawing) super.redraw();
 	}
 
 	/**
@@ -258,6 +262,6 @@ public class GGGraph extends PApplet {
 			if (g != null && 0 < mouseX && mouseX < width && 0 < mouseY && mouseY < height)
 				sToolEditor.fgm.moveGoal(selectedGoalId, mouseX, mouseY);
 		}
-		if (!isDrawing) loop();
+		redraw();
 	}
 }
