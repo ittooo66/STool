@@ -71,8 +71,6 @@ public class UCGraph extends PApplet {
 		altFlowLB = new ListBox();
 		excFlowLB = new ListBox();
 		stepLB = new ListBox();
-
-		hasChanges = true;
 	}
 
 	//変更フラグ

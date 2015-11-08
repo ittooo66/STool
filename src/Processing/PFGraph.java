@@ -33,8 +33,6 @@ public class PFGraph extends PApplet {
 		textFont(font);
 		//Smoothに描画
 		smooth();
-
-		hasChanges = true;
 	}
 
 	//変更フラグ
