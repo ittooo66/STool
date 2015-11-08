@@ -1,6 +1,5 @@
 package Swing;
 
-import Models.Goal;
 import Models.Step;
 import Models.Usecase;
 import Processing.UCGraph;
@@ -21,12 +20,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private final SToolEditor ste;
 
 	private JTextArea nameArea, conditionArea, eventNameArea;
-	private JPanel usecaseEditPanel, flowEditPanel;
-	private JPanel eventNameFieldBorder;
-	private JPanel stepType;
-	private JPanel subjectComboBoxBorder;
-	private JPanel objectComboBoxBorder;
-	private JPanel toComboBoxBorder;
+	private JPanel usecaseEditPanel, flowEditPanel, stepTypeBorder, subjectComboBoxBorder, objectComboBoxBorder, eventNameFieldBorder, toComboBoxBorder;
 	private JRadioButton stepTypeNop, stepTypeAction, stepTypeGoto, stepTypeInclude;
 	private JLabel parentGoalNameLabel;
 	private JComboBox sourceStepComboBox, subjectComboBox, objectComboBox, toComboBox;
@@ -106,15 +100,15 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		refineTypeButtonGroup.add(stepTypeGoto);
 		refineTypeButtonGroup.add(stepTypeInclude);
 		//StepTypeグループのラベル（パネル）作成
-		stepType = new JPanel();
-		stepType.add(stepTypeNop);
-		stepType.add(stepTypeAction);
-		stepType.add(stepTypeGoto);
-		stepType.add(stepTypeInclude);
-		stepType.setBorder(new TitledBorder(new EtchedBorder(), "StepType"));
-		stepType.setBounds(5, 50, 193, 90);
-		stepType.setVisible(false);
-		this.add(stepType);
+		stepTypeBorder = new JPanel();
+		stepTypeBorder.add(stepTypeNop);
+		stepTypeBorder.add(stepTypeAction);
+		stepTypeBorder.add(stepTypeGoto);
+		stepTypeBorder.add(stepTypeInclude);
+		stepTypeBorder.setBorder(new TitledBorder(new EtchedBorder(), "StepType"));
+		stepTypeBorder.setBounds(5, 50, 193, 90);
+		stepTypeBorder.setVisible(false);
+		this.add(stepTypeBorder);
 
 		//subjectComboBox
 		subjectComboBox = new JComboBox();
@@ -240,11 +234,10 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 				//TODO:GOTO,INCLUDE,OBJECT,SUBJECT各種ComboBoxを選択
 			}
 
-			//Editorコンポーネント可視性変更
+			//Editorパネル変更
 			usecaseEditPanel.setVisible(usecaseSelected);
 			flowEditPanel.setVisible(flowSelected && ucg.selectedFlowType != 0);
-
-			stepType.setVisible(stepSelected);
+			stepTypeBorder.setVisible(stepSelected);
 			objectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
 			subjectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
 			eventNameFieldBorder.setVisible(stepSelected && stepTypeAction.isSelected());
