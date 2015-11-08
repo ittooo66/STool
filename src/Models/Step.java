@@ -109,11 +109,16 @@ public class Step implements Cloneable {
 				}
 				return "INCLUDE:INVALID";
 			case ACTION:
-				return fgm.getDomainById(subjectDomainId) + "->" + Event + "->" + fgm.getDomainById(objectDomainId);
+				Domain obj = fgm.getDomainById(objectDomainId);
+				Domain sbj = fgm.getDomainById(subjectDomainId);
+				if (obj != null && sbj != null)
+					return sbj.name + "->" + Event + "->" + obj.name;
+				else
+					return "NO ACTION";
 			case NOP:
 				return "NOP";
 		}
-		return null;
+		return "NULL";
 	}
 
 	@Override
