@@ -100,14 +100,14 @@ public class Step implements Cloneable {
 						return "GOTO:" + s.id;
 					}
 				}
-				return "GOTO:INVALID";
+				return "WHERE YOU GOTO ?";
 			case INCLUDE:
 				for (Usecase u : fgm.getUsecases()) {
 					if (u.id == includeUsecaseId) {
 						return "UC:" + u.name + "を起動";
 					}
 				}
-				return "INCLUDE:INVALID";
+				return "INCLUDE NOTHING";
 			case ACTION:
 				Domain obj = fgm.getDomainById(objectDomainId);
 				Domain sbj = fgm.getDomainById(subjectDomainId);
@@ -118,7 +118,7 @@ public class Step implements Cloneable {
 			case NOP:
 				return "NOP";
 		}
-		return "NULL";
+		return "ILLEGAL STEP TYPE";
 	}
 
 	@Override
