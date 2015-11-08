@@ -94,11 +94,12 @@ public class Step implements Cloneable {
 				return condition;
 			case GOTO:
 				List<Step> ls = uc.getMainFlow();
+				int i = 1;
 				for (Step s : ls) {
 					if (s.id == this.gotoStepId) {
-						//自分のステップが存在
-						return "GOTO:" + s.id;
+						return "GOTO:MAIN" + i;
 					}
+					i++;
 				}
 				return "WHERE YOU GOTO ?";
 			case INCLUDE:
