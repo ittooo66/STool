@@ -498,10 +498,10 @@ public class UCGraph extends PApplet {
 			stepLB.scroll(e);
 		}
 
-		if (!isDrawing) loop();
+		redraw();
 	}
 
 	public void mouseMoved() {
-		if (!isDrawing) loop();
+		redraw();
 	}
 }
