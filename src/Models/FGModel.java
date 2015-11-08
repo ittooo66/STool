@@ -207,6 +207,10 @@ public class FGModel {
 				//TODO:2.GOTO,INCLUDE命令の整合性（ALT_EXC系のJump命令先がNullではないか）
 				//TODO:妥当でなければreturn false;
 
+				for (Step s : usecase.getMainFlow()) {
+					if (s.stepType == Step.StepType.GOTO) return "MAIN FLOW CANNOT HAVE A GOTO STEP";
+				}
+
 				usecases.set(i, usecase);
 				return null;
 			}
