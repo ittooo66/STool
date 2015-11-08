@@ -57,8 +57,6 @@ public class SToolEditor extends JFrame {
 	SToolEditor() {
 		//FGModel
 		fgm = new FGModel();
-		//FGModelテスト
-		fgm.addGoal("root", -1, 100, 100);
 
 		//////////////////////////////下部分共通パネル//////////////////////////////
 		JPanel sharedEndPanel = new JPanel();

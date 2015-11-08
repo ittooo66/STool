@@ -111,7 +111,7 @@ public class FGModel {
 		goals.add(g);
 
 		//1:1対応のUsecaseを合わせて追加
-		addUsecase(name + "を達成", id);
+		addUsecase("Achieve:" + name, id);
 
 		return null;
 	}
