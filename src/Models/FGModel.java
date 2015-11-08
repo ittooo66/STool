@@ -148,6 +148,7 @@ public class FGModel {
 		}
 		//インスタンス作成
 		Usecase u = new Usecase(id, name, parentGoalId);
+		u.addStep(0, 0);
 
 		//追加
 		usecases.add(u);
