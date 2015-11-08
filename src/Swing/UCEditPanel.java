@@ -1,5 +1,6 @@
 package Swing;
 
+import Models.Domain;
 import Models.Step;
 import Models.Usecase;
 import Processing.UCGraph;
@@ -229,6 +230,16 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 							toComboBoxIdList.add(s.id);
 						}
 						break;
+				}
+
+				//Sbj,Obj ComboBox中身更新
+				objectAndSubjectComboBoxIdList.clear();
+				objectComboBox.removeAllItems();
+				subjectComboBox.removeAllItems();
+				for (Domain d : ste.fgm.getDomains()) {
+					objectAndSubjectComboBoxIdList.add(d.id);
+					subjectComboBox.addItem(d.name);
+					objectComboBox.addItem(d.name);
 				}
 
 				//TODO:GOTO,INCLUDE,OBJECT,SUBJECT各種ComboBoxを選択
