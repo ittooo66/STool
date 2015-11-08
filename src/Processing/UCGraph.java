@@ -434,7 +434,7 @@ public class UCGraph extends PApplet {
 		//AltFlow:ButtonSetFrame押下判定
 		switch (altFlowBSF.getButtonIdOnMouse(x, y)) {
 			case 0://altFlow追加
-				uc.addAlternativeFlow("代替：" + uc.getAlternativeFlowList().size());
+				uc.addAlternativeFlow("Alternative:" + (uc.getAlternativeFlowList().size() + 1));
 				break;
 			case 1://altFlow削除
 				if (selectedFlowType == 1) {
@@ -445,7 +445,7 @@ public class UCGraph extends PApplet {
 		//ExcFlow:ButtonSetFrame押下判定
 		switch (excFlowBSF.getButtonIdOnMouse(x, y)) {
 			case 0://excFlow追加
-				uc.addExceptionalFlow("例外：" + uc.getExceptionalFlowList().size());
+				uc.addExceptionalFlow("Exception:" + (uc.getExceptionalFlowList().size() + 1));
 				break;
 			case 1://excFlow削除
 				if (selectedFlowType == 2) {
