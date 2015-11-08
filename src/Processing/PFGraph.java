@@ -149,4 +149,8 @@ public class PFGraph extends PApplet {
 		}
 		redraw();
 	}
+
+	public void mouseMoved() {
+		redraw();
+	}
 }

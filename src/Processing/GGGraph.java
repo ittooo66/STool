@@ -264,4 +264,8 @@ public class GGGraph extends PApplet {
 		}
 		redraw();
 	}
+
+	public void mouseMoved() {
+		redraw();
+	}
 }
