@@ -34,17 +34,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.setPreferredSize(new Dimension(0, 80));
-
-		//Remove Button
-		remove = new JButton("Remove Domain");
-		remove.addActionListener(e -> remove());
-		remove.setVisible(false);
-		this.add(remove);
-
-		//Add New Domain Button
-		add = new JButton("Add New Domain");
-		add.addActionListener(e -> add());
-		this.add(add);
+		this.setBorder(new EtchedBorder());
 
 		//NameTextArea周り
 		nameArea = new JTextArea(2, 15);
@@ -53,8 +43,13 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		JScrollPane pfScroll = new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel pfEditNameFieldBorder = new JPanel();
 		pfEditNameFieldBorder.add(pfScroll);
-		pfEditNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
+		pfEditNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Domain Name"));
 		this.add(pfEditNameFieldBorder);
+
+		//Add New Domain Button
+		add = new JButton("Add New Domain");
+		add.addActionListener(e -> add());
+		this.add(add);
 
 		//DomainType周り
 		domainTypeNone = new JRadioButton("NONE");
@@ -89,6 +84,12 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		domainType.setBorder(new TitledBorder(new EtchedBorder(), "DomainType"));
 		domainType.setVisible(false);
 		this.add(domainType);
+
+		//Remove Button
+		remove = new JButton("Remove Domain");
+		remove.addActionListener(e -> remove());
+		remove.setVisible(false);
+		this.add(remove);
 	}
 
 	public void redraw() {

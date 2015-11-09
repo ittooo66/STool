@@ -38,17 +38,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.setPreferredSize(new Dimension(0, 80));
-
-		//RemoveButton
-		remove = new JButton("Remove Goal");
-		remove.addActionListener(e -> remove());
-		remove.setVisible(false);
-		this.add(remove);
-
-		//Add New Goal Button
-		add = new JButton("Add New Goal");
-		add.addActionListener(e -> add());
-		this.add(add);
+		this.setBorder(new EtchedBorder());
 
 		//NameTextArea周り
 		nameArea = new JTextArea(2, 15);
@@ -57,8 +47,13 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		JScrollPane scroll = new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel nameAreaBorder = new JPanel();
 		nameAreaBorder.add(scroll);
-		nameAreaBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
+		nameAreaBorder.setBorder(new TitledBorder(new EtchedBorder(), "Goal Name"));
 		this.add(nameAreaBorder);
+
+		//Add New Goal Button
+		add = new JButton("Add New Goal");
+		add.addActionListener(e -> add());
+		this.add(add);
 
 		//parent指定ComboBox周り
 		parentComboBox = new JComboBox<>();
@@ -109,6 +104,11 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		necessity.setVisible(false);
 		this.add(necessity);
 
+		//RemoveButton
+		remove = new JButton("Remove Goal");
+		remove.addActionListener(e -> remove());
+		remove.setVisible(false);
+		this.add(remove);
 	}
 
 	public void redraw() {
