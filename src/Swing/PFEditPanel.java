@@ -33,7 +33,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.pfg = pfg;
 
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-		this.setPreferredSize(new Dimension(0,80));
+		this.setPreferredSize(new Dimension(0, 80));
 
 		//Remove Button
 		remove = new JButton("Remove Domain");
@@ -50,7 +50,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		nameArea = new JTextArea(2, 15);
 		nameArea.getDocument().addDocumentListener(this);
 		nameArea.addKeyListener(this);
-		JScrollPane pfScroll = new JScrollPane(nameArea);
+		JScrollPane pfScroll = new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel pfEditNameFieldBorder = new JPanel();
 		pfEditNameFieldBorder.add(pfScroll);
 		pfEditNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));

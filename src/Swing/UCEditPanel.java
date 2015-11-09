@@ -34,7 +34,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.ste = ste;
 		this.ucg = ucg;
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-		this.setPreferredSize(new Dimension(0,80));
+		this.setPreferredSize(new Dimension(0, 80));
 
 		//Usecase選択時のパネル
 		usecaseEditPanel = new JPanel();
@@ -45,7 +45,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		//NameTextArea
 		nameArea = new JTextArea(2, 14);
 		nameArea.getDocument().addDocumentListener(this);
-		JScrollPane scrollPane = new JScrollPane(nameArea);
+		JScrollPane scrollPane = new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel nameFieldBorder = new JPanel();
 		nameFieldBorder.add(scrollPane);
 		nameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
@@ -66,7 +66,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		//Condition
 		conditionArea = new JTextArea(2, 15);
 		conditionArea.getDocument().addDocumentListener(this);
-		scrollPane = new JScrollPane(conditionArea);
+		scrollPane = new JScrollPane(conditionArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel conditionBorder = new JPanel();
 		conditionBorder.add(scrollPane);
 		conditionBorder.setBorder(new TitledBorder(new EtchedBorder(), "Condition"));
@@ -119,7 +119,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		//eventNameArea
 		eventNameArea = new JTextArea(2, 15);
 		eventNameArea.getDocument().addDocumentListener(this);
-		scrollPane = new JScrollPane(eventNameArea);
+		scrollPane = new JScrollPane(eventNameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		eventNameFieldBorder = new JPanel();
 		eventNameFieldBorder.add(scrollPane);
 		eventNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Event"));

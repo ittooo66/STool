@@ -37,7 +37,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.ggg = ggg;
 
 		this.setLayout(new FlowLayout(FlowLayout.LEFT));
-		this.setPreferredSize(new Dimension(0,80));
+		this.setPreferredSize(new Dimension(0, 80));
 
 		//RemoveButton
 		remove = new JButton("Remove Goal");
@@ -54,7 +54,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		nameArea = new JTextArea(2, 15);
 		nameArea.getDocument().addDocumentListener(this);
 		nameArea.addKeyListener(this);
-		JScrollPane scroll = new JScrollPane(nameArea);
+		JScrollPane scroll = new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel nameAreaBorder = new JPanel();
 		nameAreaBorder.add(scroll);
 		nameAreaBorder.setBorder(new TitledBorder(new EtchedBorder(), "Name"));
