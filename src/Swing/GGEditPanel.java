@@ -198,8 +198,21 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		int parentGoalId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
 		String name = nameArea.getText();
 
+		//Goal追加時の重なり防止
+		int h = 30;
+		for (int i = 30; i < ggg.height - 30; i += 10) {
+			boolean hasGoal = false;
+			for (Goal g : ste.fgm.getGoals()) {
+				if (0 < g.x && g.x < 200 && g.y - 45 < i && i < g.y + 45) hasGoal = true;
+			}
+			if (!hasGoal) {
+				h = i;
+				break;
+			}
+		}
+
 		//fgm編集
-		String str = ste.fgm.addGoal(name, parentGoalId, ggg.width / 2, ggg.height / 2);
+		String str = ste.fgm.addGoal(name, parentGoalId, (int) ggg.textWidth(name) / 2 + 25, h);
 		if (str != null) {
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}

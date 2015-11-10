@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import static Processing.Component.PUtility.mouseIsInRect;
+
 public class PFEditPanel extends JPanel implements ActionListener, DocumentListener, KeyListener {
 	//各種インスタンスへの参照
 	private final SToolEditor ste;
@@ -136,8 +138,21 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		//各種パラメータ取得
 		String name = nameArea.getText();
 
+		//Domain追加時の重なり防止
+		int h = 30;
+		for (int i = 30; i < pfg.height - 30; i += 10) {
+			boolean hasDomain = false;
+			for (Domain d : ste.fgm.getDomains()) {
+				if (mouseIsInRect(0, d.y - 45, 200, 90, d.x, i)) hasDomain = true;
+			}
+			if (!hasDomain) {
+				h = i;
+				break;
+			}
+		}
+
 		//fgm編集
-		String str = ste.fgm.addDomain(name, Domain.DomainType.NONE, pfg.width / 2, pfg.height / 2);
+		String str = ste.fgm.addDomain(name, Domain.DomainType.NONE, (int) pfg.textWidth(name) / 2 + 25, h);
 		if (str != null) {
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
