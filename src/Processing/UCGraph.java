@@ -126,7 +126,7 @@ public class UCGraph extends PApplet {
 			fill(COLOR_SELECTED);
 			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
 			fill(COLOR_BACKGROUND);
-		} else {
+		} else if (selectedUsecaseId != -1) {
 			stroke(COLOR_LINES);
 			noFill();
 			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
