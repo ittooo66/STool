@@ -147,45 +147,56 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		boolean stepSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowType != -1 && ucg.selectedStepId != -1;
 
 		try {
-			Usecase uc = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
+			Usecase selectedUsecase = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
+			Step selectedStep = (selectedUsecase == null) ? null : selectedUsecase.getStepById(ucg.selectedStepId);
 
-			if (usecaseSelected) {
+			if (selectedUsecase != null) {
 				//親ゴールの名前を表示
-				parentGoalNameLabel.setText(ste.fgm.getGoalById(uc.parentLeafGoalId).name);
-
+				parentGoalNameLabel.setText(ste.fgm.getGoalById(selectedUsecase.parentLeafGoalId).name);
 				//Usecase名前詰め込んで描画
-				if (!nameArea.hasFocus()) nameArea.setText(uc.name);
+				if (!nameArea.hasFocus()) nameArea.setText(selectedUsecase.name);
+			}
 
-			} else if (flowSelected) {
-				// UCEdit:altExcflowComboBox更新
+			if (flowSelected && selectedUsecase != null) {
+				//sourceStepComboBox更新
 				sourceStepComboBoxIdList.clear();
 				sourceStepComboBox.removeAllItems();
-				List<Step> ls = uc.getMainFlow();
+				List<Step> ls = selectedUsecase.getMainFlow();
 				for (Step s : ls) {
-					sourceStepComboBox.addItem(s.getStepName(ste.fgm, uc));
+					sourceStepComboBox.addItem(s.getStepName(ste.fgm, selectedUsecase));
 					sourceStepComboBoxIdList.add(s.id);
 				}
 
-				//Condition名前詰め込んで描画
-				if (!conditionArea.hasFocus()) {
-					switch (ucg.selectedFlowType) {
-						case 1:
-							if (uc.getAlternativeFlowList() != null && uc.getAlternativeFlowList().get(ucg.selectedFlowIndex) != null && uc.getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0) != null)
-								conditionArea.setText(uc.getAlternativeFlowList().get(ucg.selectedFlowIndex).get(0).condition);
-							break;
-						case 2:
-							if (uc.getExceptionalFlowList() != null && uc.getExceptionalFlowList().get(ucg.selectedFlowIndex) != null && uc.getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0) != null)
-								conditionArea.setText(uc.getExceptionalFlowList().get(ucg.selectedFlowIndex).get(0).condition);
-							break;
+				//flowの頭出し用ステップ取得
+				Step flowIndex = null;
+				List<Step> sl = null;
+				switch (ucg.selectedFlowType) {
+					case 1:
+						sl = selectedUsecase.getAlternativeFlowList().get(ucg.selectedFlowIndex);
+						break;
+					case 2:
+						sl = selectedUsecase.getExceptionalFlowList().get(ucg.selectedFlowIndex);
+						break;
+				}
+				if (sl != null) flowIndex = sl.get(0);
+
+				//sourceStepComboBox選択
+				if (flowIndex != null) {
+					for (int id : sourceStepComboBoxIdList) {
+						if (id == flowIndex.sourceStepId)
+							sourceStepComboBox.setSelectedIndex(sourceStepComboBoxIdList.indexOf(id));
 					}
 				}
 
-			} else if (stepSelected) {
-				//Step描画
-				Step step = uc.getStepById(ucg.selectedStepId);
+				//Condition名前詰め込み
+				if (flowIndex != null && !conditionArea.hasFocus()) {
+					conditionArea.setText(flowIndex.condition);
+				}
+			}
 
+			if (stepSelected) {
 				//StepType描画
-				switch (step.stepType) {
+				switch (selectedStep.stepType) {
 					case NOP:
 						stepTypeNop.setSelected(true);
 						break;
@@ -203,7 +214,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 				// GOTO or INCLUDE ComboBox中身更新
 				toComboBoxIdList.clear();
 				toComboBox.removeAllItems();
-				switch (step.stepType) {
+				switch (selectedStep.stepType) {
 					case INCLUDE:
 						for (Usecase u : ste.fgm.getUsecases()) {
 							toComboBox.addItem(u.name);
@@ -211,16 +222,16 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 						}
 
 						//ComboBox選択
-						toComboBoxIdList.stream().filter(id -> id == step.includeUsecaseId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
+						toComboBoxIdList.stream().filter(id -> id == selectedStep.includeUsecaseId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
 						break;
 					case GOTO:
-						for (Step s : uc.getMainFlow()) {
-							toComboBox.addItem(s.getStepName(ste.fgm, uc));
+						for (Step s : selectedUsecase.getMainFlow()) {
+							toComboBox.addItem(s.getStepName(ste.fgm, selectedUsecase));
 							toComboBoxIdList.add(s.id);
 						}
 
 						//ComboBox選択
-						toComboBoxIdList.stream().filter(id -> id == step.gotoStepId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
+						toComboBoxIdList.stream().filter(id -> id == selectedStep.gotoStepId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
 						break;
 				}
 
@@ -235,11 +246,11 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 				}
 
 				//Object,SubjectComboBox選択
-				objectAndSubjectComboBoxIdList.stream().filter(id -> id == step.objectDomainId).forEach(id -> objectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
-				objectAndSubjectComboBoxIdList.stream().filter(id -> id == step.subjectDomainId).forEach(id -> subjectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
+				objectAndSubjectComboBoxIdList.stream().filter(id -> id == selectedStep.objectDomainId).forEach(id -> objectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
+				objectAndSubjectComboBoxIdList.stream().filter(id -> id == selectedStep.subjectDomainId).forEach(id -> subjectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
 
 				//Text更新
-				if (!eventNameArea.hasFocus()) eventNameArea.setText(step.Event);
+				if (!eventNameArea.hasFocus()) eventNameArea.setText(selectedStep.Event);
 			}
 
 			//Editorパネル可視性変更
@@ -279,6 +290,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private void editAltFlow(Usecase usecase, int flowIndex) {
 		Step s = usecase.getAlternativeFlowList().get(flowIndex).get(0);
 		s.condition = conditionArea.getText();
+		s.sourceStepId = sourceStepComboBoxIdList.get(sourceStepComboBox.getSelectedIndex());
 		usecase.editStep(s.id, s);
 		ste.fgm.editUsecase(usecase.id, usecase);
 	}
@@ -286,6 +298,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private void editExcFlow(Usecase usecase, int flowIndex) {
 		Step s = usecase.getExceptionalFlowList().get(flowIndex).get(0);
 		s.condition = conditionArea.getText();
+		s.sourceStepId = sourceStepComboBoxIdList.get(sourceStepComboBox.getSelectedIndex());
 		usecase.editStep(s.id, s);
 		ste.fgm.editUsecase(usecase.id, usecase);
 	}
