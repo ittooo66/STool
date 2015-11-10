@@ -1,5 +1,8 @@
 package Processing;
 
+import Processing.Component.ButtonSetFrame;
+import Processing.Component.ListBox;
+import Processing.Component.ListBoxContent;
 import Processing.Component.PUtility;
 import Swing.SToolEditor;
 import Models.Step;
@@ -50,26 +53,26 @@ public class UCGraph extends PApplet {
 		smooth();
 
 		//ButtonSetFrameをSetup
-		usecaseBSF = new ButtonSetFrame("Usecases");
+		usecaseBSF = new ButtonSetFrame("Usecases", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
 		usecaseBSF.addButton("↑");
 		usecaseBSF.addButton("↓");
-		altFlowBSF = new ButtonSetFrame("AlternativeFlows");
+		altFlowBSF = new ButtonSetFrame("AlternativeFlows", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
 		altFlowBSF.addButton("＋");
 		altFlowBSF.addButton("－");
-		excFlowBSF = new ButtonSetFrame("ExceptionalFlows");
+		excFlowBSF = new ButtonSetFrame("ExceptionalFlows", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
 		excFlowBSF.addButton("＋");
 		excFlowBSF.addButton("－");
-		stepBSF = new ButtonSetFrame("Steps");
+		stepBSF = new ButtonSetFrame("Steps", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
 		stepBSF.addButton("＋");
 		stepBSF.addButton("－");
 		stepBSF.addButton("↑");
 		stepBSF.addButton("↓");
 
 		//ListBoxをSetup
-		usecaseLB = new ListBox();
-		altFlowLB = new ListBox();
-		excFlowLB = new ListBox();
-		stepLB = new ListBox();
+		usecaseLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		altFlowLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		excFlowLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		stepLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
 	}
 
 	//変更フラグ
@@ -97,13 +100,13 @@ public class UCGraph extends PApplet {
 
 		//ButtonSetFrame記述
 		usecaseBSF.adjust(MERGIN, MERGIN, COLUMN_WIDTH, MERGIN);
-		usecaseBSF.draw();
+		usecaseBSF.draw(this);
 		altFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, MERGIN);
-		altFlowBSF.draw();
+		altFlowBSF.draw(this);
 		excFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, MERGIN);
-		excFlowBSF.draw();
+		excFlowBSF.draw(this);
 		stepBSF.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
-		stepBSF.draw();
+		stepBSF.draw(this);
 
 		//TODO:ASIS,TOBE,ALL,REDUCEDを考慮した詰め込みにする
 		//usecaseLB中身詰め込み+draw()
@@ -112,7 +115,7 @@ public class UCGraph extends PApplet {
 		for (Usecase uc : usecases) lbc.add(new ListBoxContent(uc.id, uc.name));
 		usecaseLB.setContents(lbc);
 		usecaseLB.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN, selectedUsecaseId);
-		usecaseLB.draw();
+		usecaseLB.draw(this);
 
 		//Usecase取得
 		Usecase uc = sToolEditor.fgm.getUsecaseById(selectedUsecaseId);
@@ -142,7 +145,7 @@ public class UCGraph extends PApplet {
 		}
 		altFlowLB.setContents(lbc);
 		altFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 5 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 1 ? selectedFlowIndex : -1);
-		altFlowLB.draw();
+		altFlowLB.draw(this);
 
 		//excFlow中身詰め込み+draw()
 		lbc = new ArrayList<>();
@@ -152,7 +155,7 @@ public class UCGraph extends PApplet {
 		}
 		excFlowLB.setContents(lbc);
 		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 7 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 2 ? selectedFlowIndex : -1);
-		excFlowLB.draw();
+		excFlowLB.draw(this);
 
 		//stepLB中身詰め込み+draw()
 		lbc = new ArrayList<>();
@@ -184,188 +187,7 @@ public class UCGraph extends PApplet {
 		}
 		stepLB.setContents(lbc);
 		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN, selectedStepId);
-		stepLB.draw();
-	}
-
-	/**
-	 * 表示するButtonクラス
-	 */
-	class ButtonSetFrame {
-		private int x, y, w, h;
-		private String title;
-		private List<String> buttonList;
-
-		public ButtonSetFrame(String title) {
-			this.title = title;
-			buttonList = new ArrayList<>();
-		}
-
-		public void addButton(String buttonLabel) {
-			buttonList.add(buttonLabel);
-		}
-
-		/**
-		 * ProcessingのWindowサイズ変更に対応するように各種値を調整
-		 *
-		 * @param x Processing上のX座標位置
-		 * @param y Processing上のY座標位置
-		 * @param w こいつの描画幅
-		 * @param h こいつの描画高さ
-		 */
-		public void adjust(int x, int y, int w, int h) {
-			this.x = x;
-			this.y = y;
-			this.w = w;
-			this.h = h;
-		}
-
-		/**
-		 * こいつをクリック、クリックされたボタン番号を返す。
-		 *
-		 * @return ボタン番号、クリックがずれてるなら -1
-		 */
-		public int getButtonIdOnMouse(int mouseX, int mouseY) {
-			for (int i = 0; i < buttonList.size(); i++) {
-				if (PUtility.mouseIsInEllipse(x + h / 2 + i * h, y + h / 2, h - 2, h - 2, mouseX, mouseY)) {
-					return i;
-				}
-			}
-			return -1;
-		}
-
-		/**
-		 * 描画
-		 */
-
-		public void draw() {
-			fill(COLOR_LINES);
-			textAlign(RIGHT);
-			text(title, x, y, w, h);
-			for (int i = 0; i < buttonList.size(); i++) {
-				if (getButtonIdOnMouse(mouseX, mouseY) == i) {
-					noStroke();
-					fill(COLOR_SELECTED);
-					ellipse(x + i * h + h / 2, y + h / 2, h - 4, h - 4);
-					fill(COLOR_BACKGROUND);
-				} else {
-					stroke(COLOR_LINES);
-					noFill();
-					ellipse(x + i * h + h / 2, y + h / 2, h - 4, h - 4);
-					fill(COLOR_LINES);
-				}
-				textAlign(CENTER, CENTER);
-				noStroke();
-				text(buttonList.get(i), x + i * h + h / 2, y + h / 2 - 2);
-			}
-		}
-
-	}
-
-	/**
-	 * 表示するListクラス
-	 */
-	class ListBox {
-		//dh:１カラムの幅
-		private int x, y, w, h, dh;
-		//現在スクロールされている量
-		private int scrollIndex;
-		private int selectedId;
-		//コンテンツ
-		private List<ListBoxContent> contents;
-
-		public ListBox() {
-			contents = new ArrayList<>();
-		}
-
-		/**
-		 * コンテンツ更新
-		 *
-		 * @param contents ListBoxの表示内容
-		 */
-		public void setContents(List<ListBoxContent> contents) {
-			this.contents = contents;
-		}
-
-		public ListBoxContent getContentOnMouse(int mouseX, int mouseY) {
-			for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
-				if (PUtility.mouseIsInRect(x, y + i * dh, w, dh, mouseX, mouseY)) return contents.get(j);
-			}
-			return null;
-		}
-
-		/**
-		 * BOX項目をスクロール
-		 *
-		 * @param e +1:scrollDown,-1:scrollUp,0:reset
-		 */
-		public void scroll(int e) {
-			scrollIndex = (scrollIndex + e > 0) ? (scrollIndex + e < contents.size()) ? scrollIndex + e : scrollIndex : 0;
-			if (e == 0) scrollIndex = 0;
-		}
-
-		/**
-		 * ProcessingのWindowサイズ変更に伴う各種値を調整
-		 *
-		 * @param x  Processing上のX座標位置
-		 * @param y  Processing上のY座標位置
-		 * @param w  こいつの描画幅
-		 * @param h  こいつの描画高さ
-		 * @param dh リスト１項目あたりの高さ
-		 */
-		public void adjust(int x, int y, int w, int h, int dh, int selectedId) {
-			this.x = x;
-			this.y = y;
-			this.w = w;
-			this.h = h;
-			this.dh = dh;
-			this.selectedId = selectedId;
-		}
-
-		public void draw() {
-			textAlign(LEFT, CENTER);
-			fill(COLOR_LINES);
-			noFill();
-			stroke(COLOR_LINES);
-
-			for (int i = 0, j = scrollIndex; j < contents.size() && i * dh < h; i++, j++) {
-				if (selectedId == contents.get(j).id) {
-					noStroke();
-					fill(COLOR_SELECTED);
-					rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
-					fill(COLOR_BACKGROUND);
-				} else {
-					stroke(COLOR_LINES);
-					noFill();
-					rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
-					fill(COLOR_LINES);
-				}
-				noStroke();
-				text(contents.get(j).name, x + 7, y + i * dh, w - 7, dh);
-			}
-
-			//はみ出し部分を塗りつぶし
-			fill(COLOR_BACKGROUND);
-			stroke(COLOR_BACKGROUND);
-			rect(x - 2, y + h, w + 4, dh);
-
-			//枠線
-			stroke(COLOR_LINES);
-			noFill();
-			rect(x, y, w, h);
-		}
-	}
-
-	/**
-	 * ListBoxに詰めるコンテンツ
-	 */
-	class ListBoxContent {
-		public int id;
-		public String name;
-
-		public ListBoxContent(int id, String name) {
-			this.id = id;
-			this.name = name;
-		}
+		stepLB.draw(this);
 	}
 
 	public void mousePressed() {
