@@ -40,23 +40,23 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setPreferredSize(new Dimension(0, 80));
 		this.setBorder(new EtchedBorder());
 
-		//JumpButton
-		jump = new JButton("Jump to Parent Goal");
-		jump.addActionListener(e -> ste.jumpToGGTab(ste.fgm.getUsecaseById(ucg.selectedUsecaseId).parentLeafGoalId));
 		//NameTextArea
 		nameArea = new JTextArea(2, 15);
 		nameArea.getDocument().addDocumentListener(this);
 		nameAreaPanel = new JPanel();
 		nameAreaPanel.add(new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
 		nameAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Usecase Name"));
+		this.add(nameAreaPanel);
 		//parentGoalLabel
 		parentGoalNameLabel = new JLabel("null");
 		parentGoalNameLabel.setPreferredSize(new Dimension(160, 20));
 		parentGoalNameLabelPanel = new JPanel();
 		parentGoalNameLabelPanel.add(parentGoalNameLabel);
 		parentGoalNameLabelPanel.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
-		this.add(nameAreaPanel);
 		this.add(parentGoalNameLabelPanel);
+		//JumpButton
+		jump = new JButton("Jump to Parent Goal");
+		jump.addActionListener(e -> ste.jumpToGGTab(ste.fgm.getUsecaseById(ucg.selectedUsecaseId).parentLeafGoalId));
 		this.add(jump);
 
 		//Condition
@@ -65,6 +65,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		conditionAreaPanel = new JPanel();
 		conditionAreaPanel.add(new JScrollPane(conditionArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
 		conditionAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Condition"));
+		this.add(conditionAreaPanel);
 		//sourceStepComboBox周り
 		sourceStepComboBox = new JComboBox();
 		sourceStepComboBox.setPreferredSize(new Dimension(160, 20));
@@ -72,7 +73,6 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		sourceStepComboBoxPanel = new JPanel();
 		sourceStepComboBoxPanel.add(sourceStepComboBox);
 		sourceStepComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "SourceStep"));
-		this.add(conditionAreaPanel);
 		this.add(sourceStepComboBoxPanel);
 		sourceStepComboBoxIdList = new ArrayList<>();
 
