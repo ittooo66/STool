@@ -31,8 +31,13 @@ public class PUtility {
 	 * @return 存在するならtrue
 	 */
 	public static boolean mouseIsInEllipse(int x, int y, int w, int h, int mouseX, int mouseY) {
-		//TODO:
-		return x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h;
+		float a = w / 2;
+		float b = h / 2;
+		float x0 = mouseX - x;
+		float y0 = mouseY - y;
+		float D = (x0 * x0) / (a * a) + (y0 * y0) / (b * b) - 1;
+		if (D < 0) return true;
+		else return false;
 	}
 
 	/**
