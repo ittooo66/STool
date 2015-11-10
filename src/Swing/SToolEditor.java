@@ -96,9 +96,13 @@ public class SToolEditor extends JFrame {
 		viewMode.setBorder(new TitledBorder(new EtchedBorder(), "viewmode"));
 		sharedEndPanel.add(viewMode);
 		//差分ブラウザを開く
-		JButton diffBrouseButton = new JButton("Open Diff Browser");
-		diffBrouseButton.addActionListener(e -> diffBrowseButtonPressed());
-		sharedEndPanel.add(diffBrouseButton);
+		JButton diffBrowseButton = new JButton("Open Diff Browser");
+		diffBrowseButton.addActionListener(e -> diffBrowseButtonPressed());
+		sharedEndPanel.add(diffBrowseButton);
+		//Metricsウィンドウを開く
+		JButton metricsBrowseButton = new JButton("Open Metrics Browser");
+		metricsBrowseButton.addActionListener(e -> metricsBrowseButtonPressed());
+		sharedEndPanel.add(metricsBrowseButton);
 		//////////////////////////////GGTab部分作成///////////////////////////////
 		JPanel ggPanel = new JPanel(new BorderLayout());
 		//ggTabのProcessing周り
@@ -144,8 +148,12 @@ public class SToolEditor extends JFrame {
 		redraw();
 	}
 
+	private void metricsBrowseButtonPressed() {
+		//TODO:MetricsBrowser作成（Priority:2）
+	}
+
 	private void diffBrowseButtonPressed() {
-		//TODO:DiffBrowser作成（Priorityは低め）
+		//TODO:DiffBrowser作成（Priority:3）
 	}
 
 	private void viewmodeReducedRadioButtonPressed() {
