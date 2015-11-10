@@ -22,9 +22,9 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	private JButton jump;
 	private JTextArea nameArea, conditionArea, eventNameArea;
-	private JPanel conditionBorder, sourceStepComboBoxBorder;
-	private JPanel parentNameLabelBorder, nameFieldBorder;
-	private JPanel stepTypeBorder, subjectComboBoxBorder, objectComboBoxBorder, eventNameFieldBorder, toComboBoxBorder;
+	private JPanel conditionAreaPanel, sourceStepComboBoxPanel;
+	private JPanel parentGoalNameLabelPanel, nameAreaPanel;
+	private JPanel stepTypePanel, subjectComboBoxPanel, objectComboBoxPanel, eventNameAreaPanel, toComboBoxPanel;
 	private JRadioButton stepTypeNop, stepTypeAction, stepTypeGoto, stepTypeInclude;
 	private JLabel parentGoalNameLabel;
 	private JComboBox sourceStepComboBox, subjectComboBox, objectComboBox, toComboBox;
@@ -46,34 +46,34 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		//NameTextArea
 		nameArea = new JTextArea(2, 15);
 		nameArea.getDocument().addDocumentListener(this);
-		nameFieldBorder = new JPanel();
-		nameFieldBorder.add(new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-		nameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Usecase Name"));
+		nameAreaPanel = new JPanel();
+		nameAreaPanel.add(new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+		nameAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Usecase Name"));
 		//parentGoalLabel
 		parentGoalNameLabel = new JLabel("null");
 		parentGoalNameLabel.setPreferredSize(new Dimension(160, 20));
-		parentNameLabelBorder = new JPanel();
-		parentNameLabelBorder.add(parentGoalNameLabel);
-		parentNameLabelBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
-		this.add(nameFieldBorder);
-		this.add(parentNameLabelBorder);
+		parentGoalNameLabelPanel = new JPanel();
+		parentGoalNameLabelPanel.add(parentGoalNameLabel);
+		parentGoalNameLabelPanel.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
+		this.add(nameAreaPanel);
+		this.add(parentGoalNameLabelPanel);
 		this.add(jump);
 
 		//Condition
 		conditionArea = new JTextArea(2, 15);
 		conditionArea.getDocument().addDocumentListener(this);
-		conditionBorder = new JPanel();
-		conditionBorder.add(new JScrollPane(conditionArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-		conditionBorder.setBorder(new TitledBorder(new EtchedBorder(), "Condition"));
+		conditionAreaPanel = new JPanel();
+		conditionAreaPanel.add(new JScrollPane(conditionArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+		conditionAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Condition"));
 		//sourceStepComboBox周り
 		sourceStepComboBox = new JComboBox();
 		sourceStepComboBox.setPreferredSize(new Dimension(160, 20));
 		sourceStepComboBox.addActionListener(this);
-		sourceStepComboBoxBorder = new JPanel();
-		sourceStepComboBoxBorder.add(sourceStepComboBox);
-		sourceStepComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "SourceStep"));
-		this.add(conditionBorder);
-		this.add(sourceStepComboBoxBorder);
+		sourceStepComboBoxPanel = new JPanel();
+		sourceStepComboBoxPanel.add(sourceStepComboBox);
+		sourceStepComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "SourceStep"));
+		this.add(conditionAreaPanel);
+		this.add(sourceStepComboBoxPanel);
 		sourceStepComboBoxIdList = new ArrayList<>();
 
 		//StepType
@@ -87,56 +87,55 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		stepTypeInclude = new JRadioButton("INCLUDE");
 		stepTypeInclude.addActionListener(this);
 		//stepTypeButtonGroup作成
-		ButtonGroup refineTypeButtonGroup = new ButtonGroup();
-		refineTypeButtonGroup.add(stepTypeNop);
-		refineTypeButtonGroup.add(stepTypeAction);
-		refineTypeButtonGroup.add(stepTypeGoto);
-		refineTypeButtonGroup.add(stepTypeInclude);
+		ButtonGroup stepTypeButtonGroup = new ButtonGroup();
+		stepTypeButtonGroup.add(stepTypeNop);
+		stepTypeButtonGroup.add(stepTypeAction);
+		stepTypeButtonGroup.add(stepTypeGoto);
+		stepTypeButtonGroup.add(stepTypeInclude);
 		//StepTypeグループのラベル（パネル）作成
-		stepTypeBorder = new JPanel();
-		stepTypeBorder.add(stepTypeNop);
-		stepTypeBorder.add(stepTypeAction);
-		stepTypeBorder.add(stepTypeGoto);
-		stepTypeBorder.add(stepTypeInclude);
-		stepTypeBorder.setBorder(new TitledBorder(new EtchedBorder(), "StepType"));
-		stepTypeBorder.setVisible(false);
-		this.add(stepTypeBorder);
+		stepTypePanel = new JPanel();
+		stepTypePanel.add(stepTypeNop);
+		stepTypePanel.add(stepTypeAction);
+		stepTypePanel.add(stepTypeGoto);
+		stepTypePanel.add(stepTypeInclude);
+		stepTypePanel.setBorder(new TitledBorder(new EtchedBorder(), "StepType"));
+		stepTypePanel.setVisible(false);
+		this.add(stepTypePanel);
 
 		//subjectComboBox
 		subjectComboBox = new JComboBox();
 		subjectComboBox.setPreferredSize(new Dimension(160, 20));
 		subjectComboBox.addActionListener(this);
-		subjectComboBoxBorder = new JPanel();
-		subjectComboBoxBorder.add(subjectComboBox);
-		subjectComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Subject"));
-		this.add(subjectComboBoxBorder);
+		subjectComboBoxPanel = new JPanel();
+		subjectComboBoxPanel.add(subjectComboBox);
+		subjectComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "Subject"));
+		this.add(subjectComboBoxPanel);
 		//eventNameArea
 		eventNameArea = new JTextArea(1, 15);
 		eventNameArea.getDocument().addDocumentListener(this);
-		eventNameFieldBorder = new JPanel();
-		eventNameFieldBorder.add(new JScrollPane(eventNameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
-		eventNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Event"));
-		this.add(eventNameFieldBorder);
+		eventNameAreaPanel = new JPanel();
+		eventNameAreaPanel.add(new JScrollPane(eventNameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+		eventNameAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Event"));
+		this.add(eventNameAreaPanel);
 		//objectComboBox
 		objectComboBox = new JComboBox();
 		objectComboBox.setPreferredSize(new Dimension(160, 20));
 		objectComboBox.addActionListener(this);
-		objectComboBoxBorder = new JPanel();
-		objectComboBoxBorder.add(objectComboBox);
-		objectComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Object"));
-		this.add(objectComboBoxBorder);
+		objectComboBoxPanel = new JPanel();
+		objectComboBoxPanel.add(objectComboBox);
+		objectComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "Object"));
+		this.add(objectComboBoxPanel);
 		objectAndSubjectComboBoxIdList = new ArrayList<>();
 
 		//toComboBox
 		toComboBox = new JComboBox();
 		toComboBox.setPreferredSize(new Dimension(160, 20));
 		toComboBox.addActionListener(this);
-		toComboBoxBorder = new JPanel();
-		toComboBoxBorder.add(toComboBox);
-		toComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "To"));
-		this.add(toComboBoxBorder);
+		toComboBoxPanel = new JPanel();
+		toComboBoxPanel.add(toComboBox);
+		toComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "To"));
+		this.add(toComboBoxPanel);
 		toComboBoxIdList = new ArrayList<>();
-
 	}
 
 	public void redraw() {
@@ -259,17 +258,17 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 			//Editorパネル可視性変更
 			//Usecase
 			jump.setVisible(usecaseSelected);
-			parentNameLabelBorder.setVisible(usecaseSelected);
-			nameFieldBorder.setVisible(usecaseSelected);
+			parentGoalNameLabelPanel.setVisible(usecaseSelected);
+			nameAreaPanel.setVisible(usecaseSelected);
 			//flow
-			conditionBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
-			sourceStepComboBoxBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
+			conditionAreaPanel.setVisible(flowSelected && ucg.selectedFlowType != 0);
+			sourceStepComboBoxPanel.setVisible(flowSelected && ucg.selectedFlowType != 0);
 			//step
-			stepTypeBorder.setVisible(stepSelected);
-			objectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-			subjectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-			eventNameFieldBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-			toComboBoxBorder.setVisible(stepSelected && (stepTypeInclude.isSelected() || stepTypeGoto.isSelected()));
+			stepTypePanel.setVisible(stepSelected);
+			objectComboBoxPanel.setVisible(stepSelected && stepTypeAction.isSelected());
+			subjectComboBoxPanel.setVisible(stepSelected && stepTypeAction.isSelected());
+			eventNameAreaPanel.setVisible(stepSelected && stepTypeAction.isSelected());
+			toComboBoxPanel.setVisible(stepSelected && (stepTypeInclude.isSelected() || stepTypeGoto.isSelected()));
 		} catch (NullPointerException e) {
 			//Usecase削除時のNullPointerException対策
 			ucg.selectedUsecaseId = -1;
@@ -282,7 +281,6 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 		isDrawing = false;
 	}
-
 
 	private void editUsecase(Usecase usecase) {
 		usecase.name = nameArea.getText();
