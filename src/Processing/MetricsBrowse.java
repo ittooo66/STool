@@ -20,6 +20,7 @@ public class MetricsBrowse extends PApplet {
 		smooth();
 	}
 
+	//変更フラグ
 	private boolean hasChanges;
 
 	public void redraw() {
@@ -27,9 +28,10 @@ public class MetricsBrowse extends PApplet {
 	}
 
 	public void draw() {
+		//省力draw()
 		if (!hasChanges) return;
 		else hasChanges = false;
-
+		
 		//TODO:
 	}
 
