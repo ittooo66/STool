@@ -142,22 +142,42 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	public void redraw() {
 		isDrawing = true;
 
+		//選択中フラグ
 		boolean usecaseSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowIndex == -1 && ucg.selectedStepId == -1;
 		boolean flowSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowType != -1 && ucg.selectedStepId == -1;
 		boolean stepSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowType != -1 && ucg.selectedStepId != -1;
 
+		//Editorパネル可視性変更
+		//Usecase
+		jump.setVisible(usecaseSelected);
+		parentNameLabelBorder.setVisible(usecaseSelected);
+		nameFieldBorder.setVisible(usecaseSelected);
+		//flow
+		conditionBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
+		sourceStepComboBoxBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
+		//step
+		stepTypeBorder.setVisible(stepSelected);
+		objectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
+		subjectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
+		eventNameFieldBorder.setVisible(stepSelected && stepTypeAction.isSelected());
+		toComboBoxBorder.setVisible(stepSelected && (stepTypeInclude.isSelected() || stepTypeGoto.isSelected()));
+
 		try {
 			Usecase selectedUsecase = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
-			Step selectedStep = (selectedUsecase == null) ? null : selectedUsecase.getStepById(ucg.selectedStepId);
+			if (selectedUsecase == null) {
+				isDrawing = false;
+				return;
+			}
+			Step selectedStep = selectedUsecase.getStepById(ucg.selectedStepId);
 
-			if (selectedUsecase != null) {
+			if (usecaseSelected) {
 				//親ゴールの名前を表示
 				parentGoalNameLabel.setText(ste.fgm.getGoalById(selectedUsecase.parentLeafGoalId).name);
 				//Usecase名前詰め込んで描画
 				if (!nameArea.hasFocus()) nameArea.setText(selectedUsecase.name);
 			}
 
-			if (flowSelected && selectedUsecase != null) {
+			if (flowSelected) {
 				//sourceStepComboBox更新
 				sourceStepComboBoxIdList.clear();
 				sourceStepComboBox.removeAllItems();
@@ -252,22 +272,6 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 				//Text更新
 				if (!eventNameArea.hasFocus()) eventNameArea.setText(selectedStep.Event);
 			}
-
-			//Editorパネル可視性変更
-			//Usecase
-			jump.setVisible(usecaseSelected);
-			parentNameLabelBorder.setVisible(usecaseSelected);
-			nameFieldBorder.setVisible(usecaseSelected);
-			//flow
-			conditionBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
-			sourceStepComboBoxBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
-			//step
-			stepTypeBorder.setVisible(stepSelected);
-			objectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-			subjectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-			eventNameFieldBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-			toComboBoxBorder.setVisible(stepSelected && (stepTypeInclude.isSelected() || stepTypeGoto.isSelected()));
-
 		} catch (NullPointerException e) {
 			//Usecase削除時のNullPointerException対策
 			ucg.selectedUsecaseId = -1;
