@@ -226,7 +226,7 @@ public class UCGraph extends PApplet {
 		 */
 		public int getButtonIdOnMouse(int mouseX, int mouseY) {
 			for (int i = 0; i < buttonList.size(); i++) {
-				if (PUtility.mouseIsInRect(x + i * h, y, h, h, mouseX, mouseY)) {
+				if (PUtility.mouseIsInEllipse(x + h / 2 + i * h, y + h / 2, h - 2, h - 2, mouseX, mouseY)) {
 					return i;
 				}
 			}
