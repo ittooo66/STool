@@ -1,6 +1,7 @@
 package Processing;
 
 import Models.*;
+import Processing.Component.PUtility;
 import Swing.*;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -74,7 +75,7 @@ public class GGGraph extends PApplet {
 					if (childGoal.parentId == parentGoal.id) {
 
 						//ゴール角度
-						float childR = getRadian(parentGoal, childGoal);
+						float childR = PUtility.getRadian(parentGoal.x, parentGoal.y, childGoal.x, childGoal.y);
 
 						//1st Goalのとき、とりあえずtemp にいれちゃう
 						if (countOfChildGoals == 0) {
@@ -104,8 +105,8 @@ public class GGGraph extends PApplet {
 				Goal parentGoal = sToolEditor.fgm.getGoalById(childGoal.parentId);
 
 				//（子||親）から見た（親||子）ゴールの方角
-				float childR = getRadian(childGoal, parentGoal);
-				float parentR = getRadian(parentGoal, childGoal);
+				float childR = PUtility.getRadian(childGoal.x, childGoal.y, parentGoal.x, parentGoal.y);
+				float parentR = PUtility.getRadian(parentGoal.x, parentGoal.y, childGoal.x, childGoal.y);
 				//ゴール楕円上のx,y座標（親x,yと子x,y）
 				float xC = ((textWidth(childGoal.name) + 40) / 2) * cos(childR);
 				float yC = (40 / 2) * sin(childR);
@@ -183,31 +184,6 @@ public class GGGraph extends PApplet {
 				}
 			}
 		}
-	}
-
-	/**
-	 * ２つのゴールのなす角度を返す
-	 *
-	 * @param root 基点ゴール
-	 * @param dist 終点ゴール
-	 * @return rootから見てdistがどこの方面（ラジアン）にあるかを返す。
-	 * 東：0 (2*PI)
-	 * 南：PI/2
-	 * 西：PI
-	 * 北：3*PI/2
-	 * となる。arc()記述用のラジアンに対応している
-	 */
-	private float getRadian(Goal root, Goal dist) {
-		//枝の刺さる角度
-		float radian = (PI / 2) + atan((float) (dist.y - root.y) / (float) (dist.x - root.x));
-		//第２、３象限のとき、atan()の都合上修正噛ます
-		if (root.x > dist.x) radian += PI;
-		if (radian < PI / 2) {
-			radian += 3 * PI / 2;
-		} else {
-			radian -= PI / 2;
-		}
-		return radian;
 	}
 
 	public void mousePressed() {

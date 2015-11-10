@@ -1,5 +1,6 @@
 package Processing;
 
+import Processing.Component.PUtility;
 import Swing.SToolEditor;
 import Models.Step;
 import Models.Usecase;
@@ -225,7 +226,7 @@ public class UCGraph extends PApplet {
 		 */
 		public int getButtonIdOnMouse(int mouseX, int mouseY) {
 			for (int i = 0; i < buttonList.size(); i++) {
-				if (x + i * h < mouseX && mouseX < x + i * h + h && y < mouseY && mouseY < y + h) {
+				if (PUtility.mouseIsInRect(x + i * h, y, h, h, mouseX, mouseY)) {
 					return i;
 				}
 			}
@@ -235,6 +236,7 @@ public class UCGraph extends PApplet {
 		/**
 		 * 描画
 		 */
+
 		public void draw() {
 			fill(COLOR_LINES);
 			textAlign(RIGHT);
@@ -286,7 +288,7 @@ public class UCGraph extends PApplet {
 
 		public ListBoxContent getContentOnMouse(int mouseX, int mouseY) {
 			for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
-				if (mouseIsInRect(x, y + i * dh, w, dh, mouseX, mouseY)) return contents.get(j);
+				if (PUtility.mouseIsInRect(x, y + i * dh, w, dh, mouseX, mouseY)) return contents.get(j);
 			}
 			return null;
 		}
@@ -366,21 +368,6 @@ public class UCGraph extends PApplet {
 		}
 	}
 
-	/**
-	 * マウスが矩形内にいるかどうか
-	 *
-	 * @param x      X座標
-	 * @param y      Y座標
-	 * @param w      幅
-	 * @param h      高さ
-	 * @param mouseX マウスX座標
-	 * @param mouseY マウスY座標
-	 * @return
-	 */
-	private static boolean mouseIsInRect(int x, int y, int w, int h, int mouseX, int mouseY) {
-		return (x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h);
-	}
-
 	public void mousePressed() {
 		//マウス押下位置
 		int x = mouseX;
@@ -397,7 +384,7 @@ public class UCGraph extends PApplet {
 		if (uc == null) return;
 
 		//MainFlow押下時処理
-		if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, x, y)) {
+		if (PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, x, y)) {
 			selectedFlowType = 0;
 			selectedFlowIndex = 0;
 			deselectStep();
@@ -490,13 +477,13 @@ public class UCGraph extends PApplet {
 		int e = event.getCount() > 0 ? 1 : -1;
 
 		//スクロール箇所の特定・適用
-		if (mouseIsInRect(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
+		if (PUtility.mouseIsInRect(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
 			usecaseLB.scroll(e);
-		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
+		} else if (PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
 			altFlowLB.scroll(e);
-		} else if (mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
+		} else if (PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
 			excFlowLB.scroll(e);
-		} else if (mouseIsInRect(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
+		} else if (PUtility.mouseIsInRect(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
 			stepLB.scroll(e);
 		}
 
