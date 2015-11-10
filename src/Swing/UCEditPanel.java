@@ -147,131 +147,129 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		boolean flowSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowType != -1 && ucg.selectedStepId == -1;
 		boolean stepSelected = ucg.selectedUsecaseId != -1 && ucg.selectedFlowType != -1 && ucg.selectedStepId != -1;
 
-		//Editorパネル可視性変更
-		//Usecase
-		jump.setVisible(usecaseSelected);
-		parentNameLabelBorder.setVisible(usecaseSelected);
-		nameFieldBorder.setVisible(usecaseSelected);
-		//flow
-		conditionBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
-		sourceStepComboBoxBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
-		//step
-		stepTypeBorder.setVisible(stepSelected);
-		objectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-		subjectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-		eventNameFieldBorder.setVisible(stepSelected && stepTypeAction.isSelected());
-		toComboBoxBorder.setVisible(stepSelected && (stepTypeInclude.isSelected() || stepTypeGoto.isSelected()));
-
 		try {
 			Usecase selectedUsecase = ste.fgm.getUsecaseById(ucg.selectedUsecaseId);
-			if (selectedUsecase == null) {
-				isDrawing = false;
-				return;
-			}
-			Step selectedStep = selectedUsecase.getStepById(ucg.selectedStepId);
+			if (selectedUsecase != null) {
+				Step selectedStep = selectedUsecase.getStepById(ucg.selectedStepId);
 
-			if (usecaseSelected) {
-				//親ゴールの名前を表示
-				parentGoalNameLabel.setText(ste.fgm.getGoalById(selectedUsecase.parentLeafGoalId).name);
-				//Usecase名前詰め込んで描画
-				if (!nameArea.hasFocus()) nameArea.setText(selectedUsecase.name);
-			}
-
-			if (flowSelected) {
-				//sourceStepComboBox更新
-				sourceStepComboBoxIdList.clear();
-				sourceStepComboBox.removeAllItems();
-				List<Step> ls = selectedUsecase.getMainFlow();
-				for (Step s : ls) {
-					sourceStepComboBox.addItem(s.getStepName(ste.fgm, selectedUsecase));
-					sourceStepComboBoxIdList.add(s.id);
+				if (usecaseSelected) {
+					//親ゴールの名前を表示
+					parentGoalNameLabel.setText(ste.fgm.getGoalById(selectedUsecase.parentLeafGoalId).name);
+					//Usecase名前詰め込んで描画
+					if (!nameArea.hasFocus()) nameArea.setText(selectedUsecase.name);
 				}
 
-				//flowの頭出し用ステップ取得
-				Step flowIndex = null;
-				List<Step> sl = null;
-				switch (ucg.selectedFlowType) {
-					case 1:
-						sl = selectedUsecase.getAlternativeFlowList().get(ucg.selectedFlowIndex);
-						break;
-					case 2:
-						sl = selectedUsecase.getExceptionalFlowList().get(ucg.selectedFlowIndex);
-						break;
-				}
-				if (sl != null) flowIndex = sl.get(0);
+				if (flowSelected) {
+					//sourceStepComboBox更新
+					sourceStepComboBoxIdList.clear();
+					sourceStepComboBox.removeAllItems();
+					List<Step> ls = selectedUsecase.getMainFlow();
+					for (Step s : ls) {
+						sourceStepComboBox.addItem(s.getStepName(ste.fgm, selectedUsecase));
+						sourceStepComboBoxIdList.add(s.id);
+					}
 
-				//sourceStepComboBox選択
-				if (flowIndex != null) {
-					for (int id : sourceStepComboBoxIdList) {
-						if (id == flowIndex.sourceStepId)
-							sourceStepComboBox.setSelectedIndex(sourceStepComboBoxIdList.indexOf(id));
+					//flowの頭出し用ステップ取得
+					Step flowIndex = null;
+					List<Step> sl = null;
+					switch (ucg.selectedFlowType) {
+						case 1:
+							sl = selectedUsecase.getAlternativeFlowList().get(ucg.selectedFlowIndex);
+							break;
+						case 2:
+							sl = selectedUsecase.getExceptionalFlowList().get(ucg.selectedFlowIndex);
+							break;
+					}
+					if (sl != null) flowIndex = sl.get(0);
+
+					//sourceStepComboBox選択
+					if (flowIndex != null) {
+						for (int id : sourceStepComboBoxIdList) {
+							if (id == flowIndex.sourceStepId)
+								sourceStepComboBox.setSelectedIndex(sourceStepComboBoxIdList.indexOf(id));
+						}
+					}
+
+					//Condition名前詰め込み
+					if (flowIndex != null && !conditionArea.hasFocus()) {
+						conditionArea.setText(flowIndex.condition);
 					}
 				}
 
-				//Condition名前詰め込み
-				if (flowIndex != null && !conditionArea.hasFocus()) {
-					conditionArea.setText(flowIndex.condition);
+				if (stepSelected) {
+					//StepType描画
+					switch (selectedStep.stepType) {
+						case NOP:
+							stepTypeNop.setSelected(true);
+							break;
+						case ACTION:
+							stepTypeAction.setSelected(true);
+							break;
+						case INCLUDE:
+							stepTypeInclude.setSelected(true);
+							break;
+						case GOTO:
+							stepTypeGoto.setSelected(true);
+							break;
+					}
+
+					// GOTO or INCLUDE ComboBox中身更新
+					toComboBoxIdList.clear();
+					toComboBox.removeAllItems();
+					switch (selectedStep.stepType) {
+						case INCLUDE:
+							for (Usecase u : ste.fgm.getUsecases()) {
+								toComboBox.addItem(u.name);
+								toComboBoxIdList.add(u.id);
+							}
+
+							//ComboBox選択
+							toComboBoxIdList.stream().filter(id -> id == selectedStep.includeUsecaseId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
+							break;
+						case GOTO:
+							for (Step s : selectedUsecase.getMainFlow()) {
+								toComboBox.addItem(s.getStepName(ste.fgm, selectedUsecase));
+								toComboBoxIdList.add(s.id);
+							}
+
+							//ComboBox選択
+							toComboBoxIdList.stream().filter(id -> id == selectedStep.gotoStepId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
+							break;
+					}
+
+					//Sbj,Obj ComboBox中身更新
+					objectAndSubjectComboBoxIdList.clear();
+					objectComboBox.removeAllItems();
+					subjectComboBox.removeAllItems();
+					for (Domain d : ste.fgm.getDomains()) {
+						objectAndSubjectComboBoxIdList.add(d.id);
+						subjectComboBox.addItem(d.name);
+						objectComboBox.addItem(d.name);
+					}
+
+					//Object,SubjectComboBox選択
+					objectAndSubjectComboBoxIdList.stream().filter(id -> id == selectedStep.objectDomainId).forEach(id -> objectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
+					objectAndSubjectComboBoxIdList.stream().filter(id -> id == selectedStep.subjectDomainId).forEach(id -> subjectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
+
+					//Text更新
+					if (!eventNameArea.hasFocus()) eventNameArea.setText(selectedStep.Event);
 				}
 			}
 
-			if (stepSelected) {
-				//StepType描画
-				switch (selectedStep.stepType) {
-					case NOP:
-						stepTypeNop.setSelected(true);
-						break;
-					case ACTION:
-						stepTypeAction.setSelected(true);
-						break;
-					case INCLUDE:
-						stepTypeInclude.setSelected(true);
-						break;
-					case GOTO:
-						stepTypeGoto.setSelected(true);
-						break;
-				}
-
-				// GOTO or INCLUDE ComboBox中身更新
-				toComboBoxIdList.clear();
-				toComboBox.removeAllItems();
-				switch (selectedStep.stepType) {
-					case INCLUDE:
-						for (Usecase u : ste.fgm.getUsecases()) {
-							toComboBox.addItem(u.name);
-							toComboBoxIdList.add(u.id);
-						}
-
-						//ComboBox選択
-						toComboBoxIdList.stream().filter(id -> id == selectedStep.includeUsecaseId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
-						break;
-					case GOTO:
-						for (Step s : selectedUsecase.getMainFlow()) {
-							toComboBox.addItem(s.getStepName(ste.fgm, selectedUsecase));
-							toComboBoxIdList.add(s.id);
-						}
-
-						//ComboBox選択
-						toComboBoxIdList.stream().filter(id -> id == selectedStep.gotoStepId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
-						break;
-				}
-
-				//Sbj,Obj ComboBox中身更新
-				objectAndSubjectComboBoxIdList.clear();
-				objectComboBox.removeAllItems();
-				subjectComboBox.removeAllItems();
-				for (Domain d : ste.fgm.getDomains()) {
-					objectAndSubjectComboBoxIdList.add(d.id);
-					subjectComboBox.addItem(d.name);
-					objectComboBox.addItem(d.name);
-				}
-
-				//Object,SubjectComboBox選択
-				objectAndSubjectComboBoxIdList.stream().filter(id -> id == selectedStep.objectDomainId).forEach(id -> objectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
-				objectAndSubjectComboBoxIdList.stream().filter(id -> id == selectedStep.subjectDomainId).forEach(id -> subjectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
-
-				//Text更新
-				if (!eventNameArea.hasFocus()) eventNameArea.setText(selectedStep.Event);
-			}
+			//Editorパネル可視性変更
+			//Usecase
+			jump.setVisible(usecaseSelected);
+			parentNameLabelBorder.setVisible(usecaseSelected);
+			nameFieldBorder.setVisible(usecaseSelected);
+			//flow
+			conditionBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
+			sourceStepComboBoxBorder.setVisible(flowSelected && ucg.selectedFlowType != 0);
+			//step
+			stepTypeBorder.setVisible(stepSelected);
+			objectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
+			subjectComboBoxBorder.setVisible(stepSelected && stepTypeAction.isSelected());
+			eventNameFieldBorder.setVisible(stepSelected && stepTypeAction.isSelected());
+			toComboBoxBorder.setVisible(stepSelected && (stepTypeInclude.isSelected() || stepTypeGoto.isSelected()));
 		} catch (NullPointerException e) {
 			//Usecase削除時のNullPointerException対策
 			ucg.selectedUsecaseId = -1;
