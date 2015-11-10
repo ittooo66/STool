@@ -2,6 +2,7 @@ package Swing;
 
 import Models.*;
 import Processing.*;
+import processing.core.PApplet;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -149,7 +150,7 @@ public class SToolEditor extends JFrame {
 	}
 
 	private void metricsBrowseButtonPressed() {
-		//TODO:MetricsBrowser作成（Priority:2）
+		new MetricsBrowser(fgm);
 	}
 
 	private void diffBrowseButtonPressed() {
