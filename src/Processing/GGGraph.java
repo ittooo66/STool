@@ -187,8 +187,6 @@ public class GGGraph extends PApplet {
 	}
 
 	public void mousePressed() {
-		final int goalClickMergin = 40;
-
 		//変更前のゴールIDを保存
 		int preSelectedGoalId = selectedGoalId;
 
@@ -196,13 +194,11 @@ public class GGGraph extends PApplet {
 		selectedGoalId = -1;
 		for (Goal g : sToolEditor.fgm.getGoals()) {
 			//マウスクリック範囲にドメインがあれば、それを選択
-			if (g.x - goalClickMergin < mouseX && mouseX < g.x + goalClickMergin &&
-					g.y - goalClickMergin < mouseY && mouseY < g.y + goalClickMergin) {
+			if (PUtility.mouseIsInEllipse(g.x, g.y, (int) textWidth(g.name) + 40, 40, mouseX, mouseY))
 				selectedGoalId = g.id;
-			}
 		}
 
-		//Ctrl押下時のみ、枝張りショートカット実行
+		//Shift押下時のみ、枝張りショートカット実行
 		if (shiftKeyPressed) {
 			Goal preSelectedGoal = sToolEditor.fgm.getGoalById(preSelectedGoalId);
 			if (preSelectedGoal != null && sToolEditor.fgm.getGoalById(selectedGoalId) != null) {
@@ -233,7 +229,7 @@ public class GGGraph extends PApplet {
 	public void mouseDragged() {
 		if (mouseButton == LEFT && selectedGoalId != -1) {
 			Goal g = sToolEditor.fgm.getGoalById(selectedGoalId);
-			if (g != null && 0 < mouseX && mouseX < width && 0 < mouseY && mouseY < height)
+			if (g != null && PUtility.mouseIsInRect(0, 0, width, height, mouseX, mouseY))
 				sToolEditor.fgm.moveGoal(selectedGoalId, mouseX, mouseY);
 		}
 		redraw();
