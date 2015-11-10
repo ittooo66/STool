@@ -8,7 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="processing2.2.1.core" level="project" />
-    <orderEntry type="library" name="controlP5" level="project" />
     <orderEntry type="library" exported="" name="org.json-20120521" level="project" />
   </component>
 </module>
