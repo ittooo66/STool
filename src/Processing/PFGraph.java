@@ -1,6 +1,7 @@
 package Processing;
 
 import Models.*;
+import Processing.Component.PUtility;
 import Swing.*;
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -123,16 +124,12 @@ public class PFGraph extends PApplet {
 	}
 
 	public void mousePressed() {
-		final int domainClickMergin = 40;
-
 		//ドメイン選択の一時解除
 		selectedDomainId = -1;
 		for (Domain d : sToolEditor.fgm.getDomains()) {
 			//マウスクリック範囲にドメインがあれば、それを選択
-			if (d.x - domainClickMergin < mouseX && mouseX < d.x + domainClickMergin &&
-					d.y - domainClickMergin < mouseY && mouseY < d.y + domainClickMergin) {
+			if (PUtility.mouseIsInRect(d.x - (int) textWidth(d.name) / 2 - 15, d.y - 20, (int) textWidth(d.name) + 30, 40, mouseX, mouseY))
 				selectedDomainId = d.id;
-			}
 		}
 
 		if (selectedDomainId == -1) sToolEditor.initTextArea();
