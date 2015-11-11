@@ -19,6 +19,10 @@ public class PUtility {
 		return x < mouseX && mouseX < x + w && y < mouseY && mouseY < y + h;
 	}
 
+	public static boolean mouseIsInRect(float x, float y, float w, float h, int mouseX, int mouseY) {
+		return mouseIsInRect((int) x, (int) y, (int) w, (int) h, mouseX, mouseY);
+	}
+
 	/**
 	 * マウスが楕円内に存在するかどうかを返す
 	 *
