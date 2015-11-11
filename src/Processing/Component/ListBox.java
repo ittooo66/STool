@@ -86,7 +86,9 @@ public class ListBox implements Drawable {
 			} else {
 				pApplet.stroke(COLOR_LINES);
 				pApplet.noFill();
+				pApplet.strokeWeight(PUtility.mouseIsInRect(x + 2, y + 2 + i * dh, w - 4, dh - 4, pApplet.mouseX, pApplet.mouseY) ? (float) 1.5 : 1);
 				pApplet.rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
+				pApplet.strokeWeight(1);
 				pApplet.fill(COLOR_LINES);
 			}
 			pApplet.noStroke();

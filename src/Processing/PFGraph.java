@@ -88,7 +88,9 @@ public class PFGraph extends PApplet {
 				fill(COLOR_BACKGROUND);
 				stroke(COLOR_LINES);
 			}
+			strokeWeight(PUtility.mouseIsInRect(d.x - dW / 2, d.y - dH / 2, dW, dH, mouseX, mouseY) ? (float) 1.5 : 1);
 			rect(d.x - dW / 2, d.y - dH / 2, dW, dH);
+			strokeWeight(1);
 
 			//DomainType描画
 			stroke(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);

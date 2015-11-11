@@ -127,14 +127,15 @@ public class UCGraph extends PApplet {
 			noStroke();
 			fill(COLOR_SELECTED);
 			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
-			fill(COLOR_BACKGROUND);
 		} else if (selectedUsecaseId != -1) {
 			stroke(COLOR_LINES);
 			noFill();
+			strokeWeight(PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY) ? (float) 1.5 : 1);
 			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
-			fill(COLOR_LINES);
+			strokeWeight(1);
 		}
 		noStroke();
+		fill(selectedFlowType == 0 ? COLOR_BACKGROUND : COLOR_LINES);
 		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH + 7, 2 * MERGIN, COLUMN_WIDTH - 7, MERGIN);
 
 		//altFlow中身詰め込み+draw()

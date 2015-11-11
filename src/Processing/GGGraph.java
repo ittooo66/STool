@@ -161,7 +161,9 @@ public class GGGraph extends PApplet {
 			//ゴール名が１行の場合
 			if (match(g.name, "\n") == null) {
 				//わっか記述
+				strokeWeight(PUtility.mouseIsInEllipse(g.x, g.y, (int) textWidth(g.name) + 40, 40, mouseX, mouseY) ? (float) 1.5 : 1);
 				ellipse(g.x, g.y, textWidth(g.name) + 40, 40);
+				strokeWeight(1);
 
 				//fill変更(選択中か否か、リーフか否か)
 				fill(g.id == selectedGoalId ? COLOR_BACKGROUND : COLOR_LINES);
