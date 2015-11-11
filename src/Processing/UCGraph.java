@@ -135,7 +135,7 @@ public class UCGraph extends PApplet {
 			strokeWeight(1);
 		}
 		noStroke();
-		fill(selectedFlowType == 0 ? COLOR_BACKGROUND : COLOR_LINES);
+		fill(selectedFlowType == 0 || selectedUsecaseId == -1 ? COLOR_BACKGROUND : COLOR_LINES);
 		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH + 7, 2 * MERGIN, COLUMN_WIDTH - 7, MERGIN);
 
 		//altFlow中身詰め込み+draw()
