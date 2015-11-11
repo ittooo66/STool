@@ -136,12 +136,12 @@ public class PMetricsBrowse extends PApplet {
 
 		//Buttonsetframe更新して記述
 		bsf.setTitle(metricsType.toString());
-		bsf.adjust(30, 30, width - 60, 30);
+		bsf.adjust(20, 20, width - 60, 30);
 		bsf.draw(this);
 		//ListBox詰め込んで記述
 		List<ListBoxContent> lbc = MetricsType.getList(metricsType, fgm);
 		lb.setContents(lbc);
-		lb.adjust(30, 60, width - 60, height - 120, 30, -1);
+		lb.adjust(20, 50, width - 40, height - 70, 30, -1);
 		lb.draw(this);
 	}
 
