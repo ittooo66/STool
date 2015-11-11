@@ -24,6 +24,10 @@ public class ButtonSetFrame implements Drawable {
 		buttonList = new ArrayList<>();
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public void addButton(String buttonLabel) {
 		buttonList.add(buttonLabel);
 	}
