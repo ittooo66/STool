@@ -4,11 +4,11 @@ import Models.FGModel;
 import processing.core.PApplet;
 import processing.core.PFont;
 
-public class MetricsBrowse extends PApplet {
+public class PMetricsBrowse extends PApplet {
 
 	public FGModel fgm;
 
-	public MetricsBrowse(FGModel fgm) {
+	public PMetricsBrowse(FGModel fgm) {
 		this.fgm = fgm;
 	}
 
@@ -31,13 +31,14 @@ public class MetricsBrowse extends PApplet {
 		//省力draw()
 		if (!hasChanges) return;
 		else hasChanges = false;
-		
+
 		//TODO:
+		background(random(255), random(255), random(255));
+		text("W:" + width + ", H:" + height, width / 2, height / 2);
 	}
 
 	public void mousePressed() {
-		background(random(255), random(255), random(255));
-		text("W:" + width + ", H:" + height, width / 2, height / 2);
+		redraw();
 	}
 
 

@@ -49,6 +49,9 @@ public class SToolEditor extends JFrame {
 	private PFGraph pfGraph;
 	private UCGraph ucGraph;
 
+	//MetricsBrowser
+	private MetricsBrowser metricsBrowser;
+
 	//Tab
 	JTabbedPane tabbedpane;
 
@@ -102,7 +105,7 @@ public class SToolEditor extends JFrame {
 		sharedEndPanel.add(diffBrowseButton);
 		//Metricsウィンドウを開く
 		JButton metricsBrowseButton = new JButton("Open Metrics Browser");
-		metricsBrowseButton.addActionListener(e -> metricsBrowseButtonPressed());
+		metricsBrowseButton.addActionListener(e -> metricsBrowser = new MetricsBrowser(fgm));
 		sharedEndPanel.add(metricsBrowseButton);
 		//////////////////////////////GGTab部分作成///////////////////////////////
 		JPanel ggPanel = new JPanel(new BorderLayout());
@@ -149,10 +152,6 @@ public class SToolEditor extends JFrame {
 		redraw();
 	}
 
-	private void metricsBrowseButtonPressed() {
-		new MetricsBrowser(fgm);
-	}
-
 	private void diffBrowseButtonPressed() {
 		//TODO:DiffBrowser作成（Priority:3）
 	}
@@ -190,6 +189,9 @@ public class SToolEditor extends JFrame {
 		ggEditPanel.redraw();
 		pfEditPanel.redraw();
 		ucEditPanel.redraw();
+
+		//MetricsBrowserをRedraw
+		if (metricsBrowser != null) metricsBrowser.redraw();
 	}
 
 	public void initTextArea() {
