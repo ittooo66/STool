@@ -1,6 +1,7 @@
 package Processing.Component;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public class PUtility {
 
@@ -40,8 +41,7 @@ public class PUtility {
 		float x0 = mouseX - x;
 		float y0 = mouseY - y;
 		float D = (x0 * x0) / (a * a) + (y0 * y0) / (b * b) - 1;
-		if (D < 0) return true;
-		else return false;
+		return D < 0;
 	}
 
 	/**
@@ -70,5 +70,36 @@ public class PUtility {
 		}
 		return radian;
 	}
+
+
+	/**
+	 * 修正版Arc関数、楕円状のArcに対応
+	 *
+	 * @param pApplet 記述対象のPApplet
+	 * @param x       （だ）円中心のX座標
+	 * @param y       （だ）円中心のY座標
+	 * @param w       （だ）円の幅
+	 * @param h       （だ）円の高さ
+	 * @param begin   開始角度（ラジアン）
+	 * @param end     終了角度（ラジアン）
+	 */
+	public static void myArc(PApplet pApplet, float x, float y, float w, float h, float begin, float end) {
+		float fai_end;
+		float asin_end = PApplet.asin(PApplet.sqrt(1 - (1 / (1 + (w * w * PApplet.tan(end) * PApplet.tan(end)) / (h * h)))));
+		if (0 < end && end <= PConstants.PI / 2) fai_end = asin_end;
+		else if (PConstants.PI / 2 < end && end <= PConstants.PI) fai_end = PConstants.PI - asin_end;
+		else if (PConstants.PI < end && end <= 3 * PConstants.PI / 2) fai_end = PConstants.PI + asin_end;
+		else fai_end = 2 * PConstants.PI - asin_end;
+
+		float fai_begin;
+		float asin_begin = PApplet.asin(PApplet.sqrt(1 - (1 / (1 + (w * w * PApplet.tan(begin) * PApplet.tan(begin)) / (h * h)))));
+		if (0 < begin && begin <= PConstants.PI / 2) fai_begin = asin_begin;
+		else if (PConstants.PI / 2 < begin && begin <= PConstants.PI) fai_begin = PConstants.PI - asin_begin;
+		else if (PConstants.PI < begin && begin <= 3 * PConstants.PI / 2) fai_begin = PConstants.PI + asin_begin;
+		else fai_begin = 2 * PConstants.PI - asin_begin;
+
+		pApplet.arc(x, y, w, h, fai_begin, fai_end);
+	}
+
 
 }
