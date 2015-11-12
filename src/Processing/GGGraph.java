@@ -92,7 +92,7 @@ public class GGGraph extends PApplet {
 
 				//ゴールカウントが２以上で線引き
 				if (countOfChildGoals > 1) {
-					arc(parentGoal.x, parentGoal.y, textWidth(parentGoal.name) + 40 + 30, 40 + 30, rootR, distR);
+					PUtility.myArc(this, parentGoal.x, parentGoal.y, textWidth(parentGoal.name) + 40 + 30, 40 + 30, rootR, distR);
 				}
 			}
 		}
@@ -103,25 +103,21 @@ public class GGGraph extends PApplet {
 			if (childGoal.parentId != -1) {
 				//親ゴール取得
 				Goal parentGoal = sToolEditor.fgm.getGoalById(childGoal.parentId);
-
-				//（子||親）から見た（親||子）ゴールの方角
+				//子から見た親ゴールの方角
 				float childR = PUtility.getRadian(childGoal.x, childGoal.y, parentGoal.x, parentGoal.y);
-				float parentR = PUtility.getRadian(parentGoal.x, parentGoal.y, childGoal.x, childGoal.y);
-				//ゴール楕円上のx,y座標（親x,yと子x,y）
-				float xC = ((textWidth(childGoal.name) + 40) / 2) * cos(childR);
-				float yC = (40 / 2) * sin(childR);
-				float xP = ((textWidth(parentGoal.name) + 40) / 2) * cos(parentR);
-				float yP = (40 / 2) * sin(parentR);
+				//ゴール楕円上のx,y座標（子x,y）
+				float x = PUtility.getPointXOnEllipse(childGoal.x, childGoal.y, (int) (textWidth(childGoal.name) + 40), 40, childR);
+				float y = PUtility.getPointYOnEllipse(childGoal.x, childGoal.y, (int) (textWidth(childGoal.name) + 40), 40, childR);
 
-				if (match(childGoal.name, "\n") == null) {//子ゴールの名前が一行
+				//子ゴールの名前が一行
+				if (match(childGoal.name, "\n") == null) {
 					//枝引き
-					line(parentGoal.x + xP, parentGoal.y + yP, childGoal.x + xC, childGoal.y + yC);
-					ellipse(childGoal.x + xC, childGoal.y + yC, 10, 10);
+					line(parentGoal.x, parentGoal.y, childGoal.x, childGoal.y);
+					ellipse(x, y, 10, 10);
 				} else {//子ゴールの名前が二行以上
 					String[] texts = splitTokens(childGoal.name, "\n");
 
 					//ゴール中心（child.x,child.y）から、ゴール縁のx,y座標を計算
-					float x, y;
 					float w = textWidth(childGoal.name) + 40;//ゴールの幅
 					float h = texts.length * 16 + 20;//ゴールの高さ
 
@@ -142,7 +138,8 @@ public class GGGraph extends PApplet {
 					}
 
 					//枝引き
-					line(xP + parentGoal.x, yP + parentGoal.y, x + childGoal.x, y + childGoal.y);
+					line(parentGoal.x, parentGoal.y, x + childGoal.x, y + childGoal.y);
+					//Direction表示用Ellipse
 					ellipse(childGoal.x + x, childGoal.y + y, 10, 10);
 				}
 			}
