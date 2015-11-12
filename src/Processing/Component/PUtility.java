@@ -101,5 +101,37 @@ public class PUtility {
 		pApplet.arc(x, y, w, h, fai_begin, fai_end);
 	}
 
+	/**
+	 * 楕円上のR回転時のX座標を返す
+	 * @param x 楕円中心のX座標
+	 * @param y 楕円中心のY座標
+	 * @param w 楕円幅
+	 * @param h 楕円高さ
+	 * @param R 楕円回転量（右から下に向かって0=>2PI）
+	 * @return 楕円状のX座標
+	 */
+	public static int getPointXOnEllipse(int x, int y, int w, int h, float R) {
+		int a = w / 2;
+		int b = h / 2;
+		int pX = (int) PApplet.sqrt((a * a * b * b) / (b * b + a * a * PApplet.tan(R) * PApplet.tan(R)));
+		if (0 <= R && R <= PConstants.PI / 2 || 3 * PConstants.PI / 2 < R && R <= 2 * PConstants.PI) return pX + x;
+		else return -pX + x;
+	}
 
+	/**
+	 * 楕円上のR回転時のX座標を返す
+	 * @param x 楕円中心のX座標
+	 * @param y 楕円中心のY座標
+	 * @param w 楕円幅
+	 * @param h 楕円高さ
+	 * @param R 楕円回転量（右から下に向かって0=>2PI）
+	 * @return 楕円状のY座標
+	 */
+	public static int getPointYOnEllipse(int x, int y, int w, int h, float R) {
+		int a = w / 2;
+		int b = h / 2;
+		int pY = (int) PApplet.sqrt((a * a * b * b * PApplet.tan(R) * PApplet.tan(R)) / (a * a * PApplet.tan(R) * PApplet.tan(R) + b * b));
+		if (PConstants.PI < R) return -pY + y;
+		else return pY + y;
+	}
 }
