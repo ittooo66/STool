@@ -16,13 +16,17 @@ public class Metrics {
 
 	public static int getANOS(Usecase uc, FGModel fgm) {
 		int ANOS = 0;
-
-		for (Step s : uc.getAllActionStep()) {
-			if (fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE ||
-					fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE)
-				ANOS++;
+		try {
+			for (Step s : uc.getAllActionStep()) {
+				if (fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE ||
+						fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE)
+					ANOS++;
+			}
+		} catch (Exception e) {
+			//モデルが不正
+			e.printStackTrace();
+			return -1;
 		}
-
 		return ANOS;
 	}
 
@@ -62,7 +66,9 @@ public class Metrics {
 			}
 
 		} catch (Exception e) {
-			//TODO:あとでどうにかすること！
+			//モデルが不正
+			e.printStackTrace();
+			return -1;
 		}
 		return ACC;
 	}
@@ -72,33 +78,39 @@ public class Metrics {
 		List<Integer> subjectIdListOfThisDomain = new ArrayList<>();
 		List<Integer> objectIdListOfThisDomain = new ArrayList<>();
 
-		//fgmodel中のすべてのActionStepを取得
-		List<Step> allActionStepList = new ArrayList<>();
-		for (Usecase uc : fgm.getUsecases()) {
-			allActionStepList.addAll(uc.getAllActionStep().stream().collect(Collectors.toList()));
-		}
+		try {
+			//fgmodel中のすべてのActionStepを取得
+			List<Step> allActionStepList = new ArrayList<>();
+			for (Usecase uc : fgm.getUsecases()) {
+				allActionStepList.addAll(uc.getAllActionStep().stream().collect(Collectors.toList()));
+			}
 
-		for (Step s : allActionStepList) {
-			//Actionの片側以上が自分のドメインだった場合
-			if (s.subjectDomainId == d.id || s.objectDomainId == d.id) {
-				//一旦新イベントとしてみなす
-				boolean isNewEvent = true;
+			for (Step s : allActionStepList) {
+				//Actionの片側以上が自分のドメインだった場合
+				if (s.subjectDomainId == d.id || s.objectDomainId == d.id) {
+					//一旦新イベントとしてみなす
+					boolean isNewEvent = true;
 
-				//重複していればfalseに
-				for (int i = 0; i < eventListOfThisDomain.size(); i++) {
-					if (s.Event.equals(eventListOfThisDomain.get(i)) &&
-							subjectIdListOfThisDomain.get(i) == s.subjectDomainId &&
-							objectIdListOfThisDomain.get(i) == s.objectDomainId)
-						isNewEvent = false;
-				}
+					//重複していればfalseに
+					for (int i = 0; i < eventListOfThisDomain.size(); i++) {
+						if (s.Event.equals(eventListOfThisDomain.get(i)) &&
+								subjectIdListOfThisDomain.get(i) == s.subjectDomainId &&
+								objectIdListOfThisDomain.get(i) == s.objectDomainId)
+							isNewEvent = false;
+					}
 
-				//重複してなかった場合
-				if (isNewEvent) {
-					eventListOfThisDomain.add(s.Event);
-					subjectIdListOfThisDomain.add(s.subjectDomainId);
-					objectIdListOfThisDomain.add(s.objectDomainId);
+					//重複してなかった場合
+					if (isNewEvent) {
+						eventListOfThisDomain.add(s.Event);
+						subjectIdListOfThisDomain.add(s.subjectDomainId);
+						objectIdListOfThisDomain.add(s.objectDomainId);
+					}
 				}
 			}
+		} catch (Exception e) {
+			//モデルが不正
+			e.printStackTrace();
+			return -1;
 		}
 
 		return eventListOfThisDomain.size();
