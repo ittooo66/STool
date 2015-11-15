@@ -226,8 +226,8 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private void remove() {
 		//削除確認
 		if (JOptionPane.showConfirmDialog(this,
-				"このゴールに関連するユースケースも削除されます。実行しますか？",
-				"確認", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) return;
+				"Are you sure you want to remove this goal AND ASSOCIATED USECASE ?",
+				"OK", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) return;
 
 		//fgm編集
 		String str = ste.fgm.removeGoal(ggg.selectedGoalId);
