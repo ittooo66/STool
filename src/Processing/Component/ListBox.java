@@ -9,17 +9,17 @@ import java.util.List;
 public class ListBox implements Drawable {
 
 	//配色
-	private final int COLOR_BACKGROUND;
-	private final int COLOR_LINES;
-	private final int COLOR_SELECTED;
+	protected final int COLOR_BACKGROUND;
+	protected final int COLOR_LINES;
+	protected final int COLOR_SELECTED;
 
 	//dh:１カラムの幅
-	private int x, y, w, h, dh;
+	protected int x, y, w, h, dh;
 	//現在スクロールされている量
-	private int scrollIndex;
-	private int selectedId;
+	protected int scrollIndex;
+	protected int selectedId;
 	//コンテンツ
-	private List<ListBoxContent> contents;
+	protected List<ListBoxContent> contents;
 
 	public ListBox(int COLOR_BACKGROUND, int COLOR_LINES, int COLOR_SELECTED) {
 		this.COLOR_BACKGROUND = COLOR_BACKGROUND;
