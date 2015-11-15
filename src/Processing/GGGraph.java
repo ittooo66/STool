@@ -90,9 +90,11 @@ public class GGGraph extends PApplet {
 					}
 				}
 
-				//ゴールカウントが２以上で線引き
-				if (countOfChildGoals > 1) {
+				//ゴールカウントが２以上で線引き、ゴール名の行数に応じてArcのマージン変更
+				if (countOfChildGoals > 1 && match(parentGoal.name, "\n") == null) {
 					PUtility.myArc(this, parentGoal.x, parentGoal.y, textWidth(parentGoal.name) + 40 + 30, 40 + 30, rootR, distR);
+				} else {
+					PUtility.myArc(this, parentGoal.x, parentGoal.y, textWidth(parentGoal.name) + 40 + 30 + 20 * splitTokens(parentGoal.name, "\n").length, 40 + 30 + 20 * splitTokens(parentGoal.name, "\n").length, rootR, distR);
 				}
 			}
 		}
