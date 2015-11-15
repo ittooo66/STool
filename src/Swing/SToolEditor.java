@@ -2,12 +2,12 @@ package Swing;
 
 import Models.*;
 import Processing.*;
-import processing.core.PApplet;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.io.File;
 
 /**
  * Created by 66 on 2015/10/03.
@@ -16,7 +16,7 @@ import java.awt.*;
 public class SToolEditor extends JFrame {
 
 	//融合ゴールモデル
-	public FGModel fgm;
+	public FGModelAdapter fgm;
 
 	//バージョン指定
 	private VERSION version;
@@ -60,8 +60,8 @@ public class SToolEditor extends JFrame {
 	 * コンストラクタがほぼほぼView要素を頑張って書くスタイル
 	 */
 	SToolEditor() {
-		//FGModel
-		fgm = new FGModel();
+		//FGModelAdapter
+		fgm = new FGModelAdapter();
 
 		//////////////////////////////下部分共通パネル//////////////////////////////
 		JPanel sharedEndPanel = new JPanel();
@@ -108,6 +108,26 @@ public class SToolEditor extends JFrame {
 		JButton metricsBrowseButton = new JButton("Open Metrics Browser");
 		metricsBrowseButton.addActionListener(e -> metricsBrowser = new MetricsBrowser(fgm));
 		sharedEndPanel.add(metricsBrowseButton);
+		/////////////////////////////MenuBar作成/////////////////////////////
+		JMenuBar jMenuBar = new JMenuBar();
+
+		JMenu fileMenu = new JMenu("File");
+		jMenuBar.add(fileMenu);
+
+		JMenuItem fileNewMenuItem = new JMenuItem("New");
+		fileNewMenuItem.addActionListener(e -> menuFileNewPressed());
+		fileMenu.add(fileNewMenuItem);
+
+		JMenuItem fileOpenMenuItem = new JMenuItem("Open");
+		fileOpenMenuItem.addActionListener(e -> menuFileOpenPressed());
+		fileMenu.add(fileOpenMenuItem);
+
+		JMenuItem fileSaveAsMenuItem = new JMenuItem("Save As");
+		fileSaveAsMenuItem.addActionListener(e -> menuFileSaveAsPressed());
+		fileMenu.add(fileSaveAsMenuItem);
+
+		setJMenuBar(jMenuBar);
+
 		//////////////////////////////GGTab部分作成///////////////////////////////
 		JPanel ggPanel = new JPanel(new BorderLayout());
 		//ggTabのProcessing周り
@@ -151,6 +171,44 @@ public class SToolEditor extends JFrame {
 
 		//諸々を描画
 		redraw();
+	}
+
+	private void menuFileOpenPressed() {
+		JFileChooser filechooser = new JFileChooser();
+
+		int selected = filechooser.showOpenDialog(this);
+		if (selected == JFileChooser.APPROVE_OPTION){
+			File file = filechooser.getSelectedFile();
+			fgm.loadXML(file);
+		}else if (selected == JFileChooser.CANCEL_OPTION){
+			System.out.println("CANCEL");
+		}else if (selected == JFileChooser.ERROR_OPTION){
+			System.out.println("ERROR");
+		}
+	}
+
+	private void menuFileSaveAsPressed() {
+		JFileChooser filechooser = new JFileChooser();
+
+		int selected = filechooser.showSaveDialog(this);
+		if (selected == JFileChooser.APPROVE_OPTION){
+			File file = filechooser.getSelectedFile();
+			fgm.saveXML(file);
+		}else if (selected == JFileChooser.CANCEL_OPTION){
+			System.out.println("CANCEL");
+		}else if (selected == JFileChooser.ERROR_OPTION){
+			System.out.println("ERROR");
+		}
+
+	}
+
+	private void menuFileNewPressed() {
+		//削除確認
+		if (JOptionPane.showConfirmDialog(this,
+				"Are you sure you want to create new project ?",
+				"Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) != JOptionPane.YES_OPTION) return;
+
+		fgm = new FGModelAdapter();
 	}
 
 	private void diffBrowseButtonPressed() {

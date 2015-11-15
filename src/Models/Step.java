@@ -86,7 +86,7 @@ public class Step implements Cloneable {
 	 * @param uc  このステップが存在しているUsecase
 	 * @return ステップ名
 	 */
-	public String getStepName(FGModel fgm, Usecase uc) {
+	public String getStepName(FGModelAdapter fgm, Usecase uc) {
 		switch (stepType) {
 			case ALT_INDEX:
 				return condition;

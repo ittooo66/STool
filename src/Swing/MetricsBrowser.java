@@ -1,6 +1,6 @@
 package Swing;
 
-import Models.FGModel;
+import Models.FGModelAdapter;
 import Processing.PMetricsBrowse;
 
 import javax.swing.*;
@@ -9,7 +9,7 @@ public class MetricsBrowser extends JFrame {
 
 	private PMetricsBrowse pMetricsBrowse;
 
-	public MetricsBrowser(FGModel fgm) {
+	public MetricsBrowser(FGModelAdapter fgm) {
 
 		//Processing初期化＆追加
 		pMetricsBrowse = new PMetricsBrowse(fgm);

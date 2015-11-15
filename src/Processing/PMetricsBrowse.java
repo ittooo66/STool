@@ -2,7 +2,7 @@ package Processing;
 
 import Metrics.Metrics;
 import Models.Domain;
-import Models.FGModel;
+import Models.FGModelAdapter;
 import Models.Usecase;
 import Processing.Component.ButtonSetFrame;
 import Processing.Component.ListBox;
@@ -41,7 +41,7 @@ public class PMetricsBrowse extends PApplet {
 		}
 
 
-		public static List<ListBoxContent> getList(MetricsType mt, FGModel fgm) {
+		public static List<ListBoxContent> getList(MetricsType mt, FGModelAdapter fgm) {
 			List<ListBoxContent> lbc = new ArrayList<>();
 			switch (mt) {
 				case ACC:
@@ -70,7 +70,7 @@ public class PMetricsBrowse extends PApplet {
 		}
 	}
 
-	public FGModel fgm;
+	public FGModelAdapter fgm;
 
 	private ButtonSetFrame bsf;
 	private ListBox lb;
@@ -80,7 +80,7 @@ public class PMetricsBrowse extends PApplet {
 	private final int COLOR_LINES = color(51, 51, 51);
 	private final int COLOR_SELECTED = color(57, 152, 214);
 
-	public PMetricsBrowse(FGModel fgm) {
+	public PMetricsBrowse(FGModelAdapter fgm) {
 		this.fgm = fgm;
 	}
 

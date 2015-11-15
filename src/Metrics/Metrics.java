@@ -1,7 +1,7 @@
 package Metrics;
 
 import Models.Domain;
-import Models.FGModel;
+import Models.FGModelAdapter;
 import Models.Step;
 import Models.Usecase;
 
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public class Metrics {
 
-	public static int getANOS(Usecase uc, FGModel fgm) {
+	public static int getANOS(Usecase uc, FGModelAdapter fgm) {
 		int ANOS = 0;
 		try {
 			for (Step s : uc.getAllActionStep()) {
@@ -30,7 +30,7 @@ public class Metrics {
 		return ANOS;
 	}
 
-	public static int getACC(Usecase uc, FGModel fgm) {
+	public static int getACC(Usecase uc, FGModelAdapter fgm) {
 		int ACC = 0;
 		try {
 			List<Step> mainFlow = uc.getMainFlow();
@@ -78,7 +78,7 @@ public class Metrics {
 		return ACC;
 	}
 
-	public static int getNE(Domain d, FGModel fgm) {
+	public static int getNE(Domain d, FGModelAdapter fgm) {
 		List<String> eventListOfThisDomain = new ArrayList<>();
 		List<Integer> subjectIdListOfThisDomain = new ArrayList<>();
 		List<Integer> objectIdListOfThisDomain = new ArrayList<>();
@@ -121,7 +121,7 @@ public class Metrics {
 		return eventListOfThisDomain.size();
 	}
 
-	public static int getUCP(FGModel fgm) {
+	public static int getUCP(FGModelAdapter fgm) {
 		int ucp = 0;
 		for (Usecase uc : fgm.getUsecases()) {
 			for (Step s : uc.getAllActionStep()) {
