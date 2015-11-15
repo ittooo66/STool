@@ -21,7 +21,10 @@ public class FGModel {
 	}
 
 	public void loadXML(File file) {
-		JAXB.unmarshal(file, FGModel.class);
+		FGModel fgm = JAXB.unmarshal(file, FGModel.class);
+		this.goals = fgm.goals;
+		this.usecases = fgm.usecases;
+		this.domains = fgm.domains;
 	}
 
 	public void saveXML(File file) {
