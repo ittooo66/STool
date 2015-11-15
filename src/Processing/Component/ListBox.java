@@ -1,6 +1,7 @@
 package Processing.Component;
 
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,7 @@ public class ListBox implements Drawable {
 	}
 
 	public void draw(PApplet pApplet) {
-		pApplet.textAlign(pApplet.LEFT, pApplet.CENTER);
+		pApplet.textAlign(PConstants.LEFT, PConstants.CENTER);
 		pApplet.fill(COLOR_LINES);
 		pApplet.noFill();
 		pApplet.stroke(COLOR_LINES);
