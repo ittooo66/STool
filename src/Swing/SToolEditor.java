@@ -11,6 +11,7 @@ import java.awt.*;
 
 /**
  * Created by 66 on 2015/10/03.
+ * エディタ本体
  */
 public class SToolEditor extends JFrame {
 
