@@ -33,19 +33,9 @@ public class Metrics {
 	public static int getACC(Usecase uc, FGModel fgm) {
 		int ACC = 0;
 		try {
-
 			List<Step> mainFlow = uc.getMainFlow();
 			for (Step s : mainFlow) {
-				if (fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE ||
-						fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
-					ACC++;
-					break;
-				}
-			}
-
-			List<List<Step>> altFlowList = uc.getAlternativeFlowList();
-			for (List<Step> stepList : altFlowList) {
-				for (Step s : stepList) {
+				if (s.stepType == Step.StepType.ACTION) {
 					if (fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE ||
 							fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
 						ACC++;
@@ -54,13 +44,28 @@ public class Metrics {
 				}
 			}
 
+			List<List<Step>> altFlowList = uc.getAlternativeFlowList();
+			for (List<Step> stepList : altFlowList) {
+				for (Step s : stepList) {
+					if (s.stepType == Step.StepType.ACTION) {
+						if (fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE ||
+								fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
+							ACC++;
+							break;
+						}
+					}
+				}
+			}
+
 			List<List<Step>> excFlowList = uc.getExceptionalFlowList();
 			for (List<Step> stepList : excFlowList) {
 				for (Step s : stepList) {
-					if (fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE ||
-							fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
-						ACC++;
-						break;
+					if (s.stepType == Step.StepType.ACTION) {
+						if (fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE ||
+								fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
+							ACC++;
+							break;
+						}
 					}
 				}
 			}
