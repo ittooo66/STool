@@ -94,7 +94,6 @@ public class PFGraph extends PApplet {
 
 			//DomainType描画
 			stroke(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);
-			char domainChar = d.domainType.toString().charAt(0);
 			switch (d.domainType) {
 				case SYSTEM:
 					line(d.x - dW / 2 + 10, d.y - dH / 2, d.x - dW / 2 + 10, d.y + dH / 2);
@@ -103,8 +102,6 @@ public class PFGraph extends PApplet {
 					break;
 				case NONE:
 					break;
-				case LEXICAL:
-					domainChar = 'X';
 				default:
 					//BIDDABLE or CAUSAL or LEXICAL
 					noFill();
@@ -112,7 +109,7 @@ public class PFGraph extends PApplet {
 					textAlign(LEFT, BOTTOM);
 					textSize(10);
 					fill(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);
-					text(domainChar, d.x - dW / 2 + 3, d.y + dH / 2 + 2);
+					text(Domain.DomainType.getPrefix(d.domainType), d.x - dW / 2 + 3, d.y + dH / 2 + 2);
 					break;
 			}
 
