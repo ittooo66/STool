@@ -18,7 +18,7 @@ public class Usecase implements Cloneable {
 	 * Flowにステップ列をまとめて入れる。
 	 * 代替系列どうすんの、とかについてはStep.javaのほう参照
 	 */
-	private List<Step> flow;
+	public List<Step> flow;
 
 	public Usecase(int id, String name, int parentLeafGoalId) {
 		this.id = id;
