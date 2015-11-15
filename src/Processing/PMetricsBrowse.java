@@ -3,11 +3,11 @@ package Processing;
 import Metrics.Metrics;
 import Models.Domain;
 import Models.FGModel;
-import Models.Step;
 import Models.Usecase;
 import Processing.Component.ButtonSetFrame;
 import Processing.Component.ListBox;
 import Processing.Component.ListBoxContent;
+import Processing.Component.ListBoxForMetrics;
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -70,19 +70,19 @@ public class PMetricsBrowse extends PApplet {
 				case ACC:
 					for (Usecase uc : fgm.getUsecases()) {
 						int i = Metrics.getACC(uc, fgm);
-						lbc.add(new ListBoxContent(-1, uc.name + ":" + i));
+						lbc.add(new ListBoxContent(i, uc.name));
 					}
 					break;
 				case ANOS:
 					for (Usecase uc : fgm.getUsecases()) {
 						int i = Metrics.getANOS(uc, fgm);
-						lbc.add(new ListBoxContent(-1, uc.name + ":" + i));
+						lbc.add(new ListBoxContent(i, uc.name));
 					}
 					break;
 				case NE:
 					for (Domain d : fgm.getDomains()) {
 						int i = Metrics.getNE(d, fgm);
-						lbc.add(new ListBoxContent(-1, d.name + ":" + i));
+						lbc.add(new ListBoxContent(i, Domain.DomainType.getPrefix(d.domainType) + ":" + d.name));
 					}
 					break;
 			}
@@ -115,9 +115,9 @@ public class PMetricsBrowse extends PApplet {
 		bsf = new ButtonSetFrame("Metrics", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
 		bsf.addButton("←");
 		bsf.addButton("→");
-		lb = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		lb = new ListBoxForMetrics(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
 
-		metricsType = metricsType.ANOS;
+		metricsType = MetricsType.ANOS;
 	}
 
 	//変更フラグ
