@@ -141,7 +141,7 @@ public class CreateFGModel {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		fg.setUsecases(usecases);
+		fg.usecases = usecases;
 		return fg;
 	}
 
