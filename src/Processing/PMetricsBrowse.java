@@ -25,7 +25,7 @@ public class PMetricsBrowse extends PApplet {
 			public MetricsType prev() {
 				return NE;
 			}
-		}, ANOS, NE {
+		}, ANOS, UCP, NE {
 			@Override
 			public MetricsType next() {
 				return ACC;
@@ -40,29 +40,6 @@ public class PMetricsBrowse extends PApplet {
 			return values()[ordinal() - 1];
 		}
 
-		public static MetricsType parse(String str) {
-			switch (str) {
-				case "ACC":
-					return ACC;
-				case "ANOS":
-					return ANOS;
-				case "NE":
-					return NE;
-			}
-			return null;
-		}
-
-		public static String toString(MetricsType mt) {
-			switch (mt) {
-				case ACC:
-					return "ACC";
-				case ANOS:
-					return "ANOS";
-				case NE:
-					return "NE";
-			}
-			return null;
-		}
 
 		public static List<ListBoxContent> getList(MetricsType mt, FGModel fgm) {
 			List<ListBoxContent> lbc = new ArrayList<>();
@@ -85,6 +62,9 @@ public class PMetricsBrowse extends PApplet {
 						lbc.add(new ListBoxContent(i, Domain.DomainType.getPrefix(d.domainType) + ":" + d.name));
 					}
 					break;
+				case UCP:
+					int i = Metrics.getUCP(fgm);
+					lbc.add(new ListBoxContent(i, "Usecase Point"));
 			}
 			return lbc;
 		}
