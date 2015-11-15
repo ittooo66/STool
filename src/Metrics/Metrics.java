@@ -121,4 +121,21 @@ public class Metrics {
 		return eventListOfThisDomain.size();
 	}
 
+	public static int getUCP(FGModel fgm) {
+		int ucp = 0;
+		for (Usecase uc : fgm.getUsecases()) {
+			for (Step s : uc.getAllActionStep()) {
+				//Biddable Domainの関与するイベントのみ３ポイントでほかは１ポイント。
+				//両端で計測するので２倍
+				if (fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE) {
+					ucp += 2;
+				}
+				if (fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
+					ucp += 2;
+				}
+				ucp += 2;
+			}
+		}
+		return ucp;
+	}
 }
