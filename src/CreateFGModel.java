@@ -77,7 +77,7 @@ public class CreateFGModel {
 				temp.y = 0;
 				domains.add(temp);
 			}
-			fg.setDomains(domains);
+			fg.domains = domains;
 
 			iter = jsonObj.keys();
 			int usecaseId = 1;
