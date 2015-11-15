@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
  * String add~(),String edit~(),String remove~()の仕様：<p>
  * ・null値：編集操作成功<p>
  * ・文字列：エラーメッセージ
- *
  */
 public class FGModelAdapter {
 	private FGModel fgm;
@@ -26,11 +25,11 @@ public class FGModelAdapter {
 	}
 
 	public void loadXML(File file) {
-		JAXB.unmarshal(file, FGModel.class);
+		fgm.loadXML(file);
 	}
 
 	public void saveXML(File file) {
-		JAXB.marshal(fgm, file);
+		fgm.saveXML(file);
 	}
 
 	public Goal getGoalById(int id) {
@@ -141,7 +140,8 @@ public class FGModelAdapter {
 			}
 		}
 		//インスタンス作成
-		Usecase u = new Usecase(id, name, parentGoalId);
+		Usecase u = new Usecase();
+		u.init(id, name, parentGoalId);
 		u.addStep(0, 0);
 
 		//追加

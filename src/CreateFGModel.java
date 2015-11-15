@@ -92,7 +92,8 @@ public class CreateFGModel {
 			iter = jsonObj.keys();  //各ユースケース名を所得
 			while (iter.hasNext()) { //各ユースエースを見るためのループ
 				String key = (String) iter.next();
-				Usecase uc = new Usecase(usecaseName2Id.get(key), key, -1);
+				Usecase uc = new Usecase();
+				uc.init(usecaseName2Id.get(key), key, -1);
 				ArrayList<Step> steps = new ArrayList<Step>();
 				JSONArray JssonArr = jsonObj.getJSONArray(key);
 				for (int i = 0; i < JssonArr.length(); i++) {  //各ユースケース名中の各ステップのjsonObjを読む

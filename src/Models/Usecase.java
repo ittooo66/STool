@@ -20,11 +20,11 @@ public class Usecase implements Cloneable {
 	 */
 	public List<Step> flow;
 
-	public Usecase(int id, String name, int parentLeafGoalId) {
+	public void init(int id, String name, int parentLeafGoalId) {
 		this.id = id;
 		this.name = name;
 		this.parentLeafGoalId = parentLeafGoalId;
-		flow = new ArrayList<>();
+		this.flow = new ArrayList<>();
 	}
 
 	/**
