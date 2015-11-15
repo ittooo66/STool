@@ -175,31 +175,30 @@ public class SToolEditor extends JFrame {
 
 	private void menuFileOpenPressed() {
 		JFileChooser filechooser = new JFileChooser();
-
-		int selected = filechooser.showOpenDialog(this);
-		if (selected == JFileChooser.APPROVE_OPTION){
-			File file = filechooser.getSelectedFile();
-			fgm.loadXML(file);
-		}else if (selected == JFileChooser.CANCEL_OPTION){
-			System.out.println("CANCEL");
-		}else if (selected == JFileChooser.ERROR_OPTION){
-			System.out.println("ERROR");
+		switch (filechooser.showOpenDialog(this)) {
+			case JFileChooser.APPROVE_OPTION:
+				File file = filechooser.getSelectedFile();
+				try {
+					fgm.loadXML(file);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(this, "invalid file", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+				break;
+			case JFileChooser.ERROR_OPTION:
+				JOptionPane.showMessageDialog(this, "WTF", "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	private void menuFileSaveAsPressed() {
 		JFileChooser filechooser = new JFileChooser();
-
-		int selected = filechooser.showSaveDialog(this);
-		if (selected == JFileChooser.APPROVE_OPTION){
-			File file = filechooser.getSelectedFile();
-			fgm.saveXML(file);
-		}else if (selected == JFileChooser.CANCEL_OPTION){
-			System.out.println("CANCEL");
-		}else if (selected == JFileChooser.ERROR_OPTION){
-			System.out.println("ERROR");
+		switch (filechooser.showSaveDialog(this)) {
+			case JFileChooser.APPROVE_OPTION:
+				File file = filechooser.getSelectedFile();
+				fgm.saveXML(file);
+				break;
+			case JFileChooser.ERROR_OPTION:
+				JOptionPane.showMessageDialog(this, "WTF", "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
-
 	}
 
 	private void menuFileNewPressed() {
