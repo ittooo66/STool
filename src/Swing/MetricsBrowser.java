@@ -21,6 +21,8 @@ public class MetricsBrowser extends JFrame {
 		this.setBounds(10, 10, 300, 600);
 		this.setTitle("MetricsBrowser");
 		this.setVisible(true);
+
+		redraw();
 	}
 
 	public void redraw() {
