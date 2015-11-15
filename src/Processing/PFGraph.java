@@ -103,7 +103,6 @@ public class PFGraph extends PApplet {
 				case NONE:
 					break;
 				default:
-					//BIDDABLE or CAUSAL or LEXICAL
 					noFill();
 					rect(d.x - dW / 2, d.y + 6, 14, 14);
 					textAlign(LEFT, BOTTOM);
