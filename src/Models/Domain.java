@@ -63,6 +63,22 @@ public class Domain implements Cloneable {
 			}
 			return "NONE";
 		}
+
+		public static char getPrefix(DomainType dt) {
+			switch (dt) {
+				case BIDDABLE:
+					return 'B';
+				case CAUSAL:
+					return 'C';
+				case LEXICAL:
+					return 'X';
+				case SYSTEM:
+					return 'S';
+				case DESIGNED:
+					return 'D';
+			}
+			return 'N';
+		}
 	}
 
 	/**
