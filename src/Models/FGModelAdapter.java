@@ -286,33 +286,39 @@ public class FGModelAdapter implements FGModel {
 
 	public List<PFInterface> getPFInterfaceList() {
 		List<PFInterface> interfaces = new ArrayList<>();
-		for (Usecase usecase : getUsecases()) {
-			for (Step step : usecase.getAllActionStep()) {
+		for (Usecase uc : getUsecases()) {
+			for (Step s : uc.getAllActionStep()) {
 				//追加フラグ
-				boolean flag = false;
-				//現存Interfaceから該当を走査
+				boolean hasInterface = false;
+				//現存InterfaceListから該当Interfaceを走査
 				for (PFInterface i : interfaces) {
-					int r = i.rootDomainId;
-					int d = i.distDomainId;
-					int s = step.subjectDomainId;
-					int o = step.objectDomainId;
-					if (r == s && d == o) {
-						//順方向合致
-						i.add(new PFEvent(step.Event, true, usecase.id));
-						flag = true;
-						break;
-					} else if (r == o && d == s) {
-						//逆方向合致
-						i.add(new PFEvent(step.Event, false, usecase.id));
-						flag = true;
-						break;
+					//Interface該当時
+					if ((i.rootDomainId == s.subjectDomainId && i.distDomainId == s.objectDomainId) || (i.rootDomainId == s.objectDomainId && i.distDomainId == s.subjectDomainId)) {
+						boolean hasEvent = false;
+						for (PFEvent e : i.eventList) {
+							if (e.event.equals(s.Event)) {
+								hasEvent = true;
+								e.setRootUsecase(uc.id);
+								break;
+							}
+						}
+						if (!hasEvent) {
+							//イベント作成（コンストラクタでイベントの順逆指定）
+							PFEvent e = new PFEvent(s.Event, i.rootDomainId == s.subjectDomainId);
+							e.setRootUsecase(uc.id);
+							i.add(e);
+							hasInterface = true;
+							break;
+						}
 					}
 				}
 
-				//現存Interfaceに適合のない場合：Interface作成
-				if (!flag) {
-					PFInterface pfi = new PFInterface(getDomainById(step.subjectDomainId), getDomainById(step.objectDomainId));
-					pfi.add(new PFEvent(step.Event, true, usecase.id));
+				//現存Interfaceに適合のない場合：Interface,Event作成
+				if (!hasInterface) {
+					PFInterface pfi = new PFInterface(getDomainById(s.subjectDomainId), getDomainById(s.objectDomainId));
+					PFEvent e = new PFEvent(s.Event, true);
+					e.setRootUsecase(uc.id);
+					pfi.add(e);
 					interfaces.add(pfi);
 				}
 			}
