@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * Created by 66 on 2015/11/17.
- * //TODO:つくりかけなのでちゃんとする
+ * //TODO:つくりかけなのでちゃんとするかちゃんとしないかする
  */
 public interface FGModel {
 	void loadXML(File file);
