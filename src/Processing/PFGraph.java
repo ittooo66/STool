@@ -60,8 +60,18 @@ public class PFGraph extends PApplet {
 			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
 			Domain rootDomain = sToolEditor.fgm.getDomainById(pfi.rootDomainId);
 			Domain distDomain = sToolEditor.fgm.getDomainById(pfi.distDomainId);
+
+			//ライン描画
+			stroke(COLOR_LINES);
 			line(rootDomain.x, rootDomain.y, distDomain.x, distDomain.y);
-			fill(selectedInterfaceId == i ? COLOR_SELECTED : COLOR_BACKGROUND);
+
+			if (selectedInterfaceId == i) {
+				fill(COLOR_SELECTED);
+				noStroke();
+			} else {
+				fill(COLOR_BACKGROUND);
+				stroke(COLOR_LINES);
+			}
 			strokeWeight(PUtility.mouseIsInEllipse(pfi.x, pfi.y, 10, 10, mouseX, mouseY) ? (float) 1.5 : 1);
 			ellipse(pfi.x, pfi.y, 10, 10);
 			strokeWeight(1);
