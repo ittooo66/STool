@@ -23,8 +23,8 @@ import Models.Step.StepType;
  */
 public class CreateFGModel {
 
-	public static FGModel make() throws IOException, JSONException {
-		FGModel fg = new FGModel();
+	public static FGModelCore make() throws IOException, JSONException {
+		FGModelCore fg = new FGModelCore();
 		InputStream input;
 		int dmainId = 1;
 		HashMap<String, Integer> usecaseName2Id = new HashMap<String, Integer>();

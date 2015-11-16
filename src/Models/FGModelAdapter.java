@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
  * ・文字列：エラーメッセージ
  */
 public class FGModelAdapter {
-	private FGModel fgm;
+	private FGModelCore fgm;
 
 	//TODO:AS-IS,TO-BEスライスをいい感じにつくる
 	//enable,disableのセット
 	private List<List<Boolean>> enableGoalSet;
 
 	public FGModelAdapter() {
-		fgm = new FGModel();
+		fgm = new FGModelCore();
 	}
 
 	public void loadXML(File file) {
