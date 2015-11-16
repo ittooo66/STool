@@ -1,5 +1,7 @@
 package Models;
 
+import Swing.SToolEditor;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -284,9 +286,15 @@ public class FGModelAdapter implements FGModel {
 		return "COULD NOT FIND A DOMAIN THAT HAS ID:" + id;
 	}
 
-	public List<PFInterface> getPFInterfaceList() {
+	/**
+	 * InterfaceとしてFGMODELから各要素を取得
+	 * @param vm 現在の表示モード
+	 * @return Interfaceのリスト
+	 */
+	public List<PFInterface> getPFInterfaceList(SToolEditor.VIEWMODE vm) {
 		List<PFInterface> interfaces = new ArrayList<>();
 		for (Usecase uc : getUsecases()) {
+			if (!getGoalById(uc.parentLeafGoalId).isEnable && vm == SToolEditor.VIEWMODE.REDUCED) continue;
 			for (Step s : uc.getAllActionStep()) {
 				//追加フラグ
 				boolean hasInterface = false;
@@ -307,9 +315,9 @@ public class FGModelAdapter implements FGModel {
 							PFEvent e = new PFEvent(s.Event, i.rootDomainId == s.subjectDomainId);
 							e.setRootUsecase(uc.id);
 							i.add(e);
-							hasInterface = true;
-							break;
 						}
+						hasInterface = true;
+						break;
 					}
 				}
 
