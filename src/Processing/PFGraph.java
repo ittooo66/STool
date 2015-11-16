@@ -144,7 +144,6 @@ public class PFGraph extends PApplet {
 		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).size(); interfaceIndex++) {
 			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).get(interfaceIndex);
 			if (selectedInterfaceIndex == interfaceIndex) {
-				System.out.println(selectedInterfaceIndex);
 				//pfEvent描画
 				List<PFEvent> pfEventListT = pfi.getEvents(true);
 				List<PFEvent> pfEventListF = pfi.getEvents(false);
