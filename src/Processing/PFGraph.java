@@ -6,6 +6,8 @@ import Swing.*;
 import processing.core.PApplet;
 import processing.core.PFont;
 
+import java.util.List;
+
 /**
  * プロブレムフレームエディタタブで出力するProcessingコンポーネント
  */
@@ -13,6 +15,8 @@ public class PFGraph extends PApplet {
 
 	//選択中のドメインID
 	public int selectedDomainId = -1;
+	//選択中のインターフェースID
+	public int selectedInterfaceId = -1;
 
 	//本体
 	SToolEditor sToolEditor;
@@ -49,28 +53,18 @@ public class PFGraph extends PApplet {
 		background(COLOR_BACKGROUND);
 		stroke(COLOR_LINES);
 		strokeWeight(1);
+		noFill();
 
 		//各リレーションを描画
-		for (Usecase uc : sToolEditor.fgm.getUsecases()) {
-			for (Step s : uc.getAllActionStep()) {
-				Domain obj = sToolEditor.fgm.getDomainById(s.objectDomainId);
-				Domain sbj = sToolEditor.fgm.getDomainById(s.subjectDomainId);
-				if (obj != null && sbj != null) {
-					line(obj.x, obj.y, sbj.x, sbj.y);
-				}
-			}
-		}
-
-		//TODO:各イベントを描画(UseCase描画の後)
-		fill(COLOR_LINES);
-		for (Usecase uc : sToolEditor.fgm.getUsecases()) {
-			for (Step s : uc.getAllActionStep()) {
-				Domain obj = sToolEditor.fgm.getDomainById(s.objectDomainId);
-				Domain sbj = sToolEditor.fgm.getDomainById(s.subjectDomainId);
-				if (obj != null && sbj != null) {
-					text(sbj.name + "! " + s.Event, (obj.x + sbj.x) / 2, (obj.y + sbj.y) / 2);
-				}
-			}
+		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
+			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
+			Domain rootDomain = sToolEditor.fgm.getDomainById(pfi.rootDomainId);
+			Domain distDomain = sToolEditor.fgm.getDomainById(pfi.distDomainId);
+			line(rootDomain.x, rootDomain.y, distDomain.x, distDomain.y);
+			fill(selectedInterfaceId == i ? COLOR_SELECTED : COLOR_BACKGROUND);
+			strokeWeight(PUtility.mouseIsInEllipse(pfi.x, pfi.y, 10, 10, mouseX, mouseY) ? (float) 1.5 : 1);
+			ellipse(pfi.x, pfi.y, 10, 10);
+			strokeWeight(1);
 		}
 
 		//各ドメインを描画
@@ -119,15 +113,58 @@ public class PFGraph extends PApplet {
 			textSize(15);
 			text(d.name, d.x, d.y - 2);
 		}
+
+
+		fill(COLOR_BACKGROUND);
+		stroke(COLOR_LINES);
+
+		//TODO:インターフェース、イベント描画
+		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
+			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
+			if (PUtility.mouseIsInEllipse(pfi.x, pfi.y, 10, 10, mouseX, mouseY)) {
+				//InterfaceMouseOver時に描画
+				List<PFEvent> pfEventListT = pfi.getEvents(true);
+				List<PFEvent> pfEventListF = pfi.getEvents(false);
+
+				fill(selectedInterfaceId == i ? COLOR_SELECTED : COLOR_BACKGROUND);
+				ellipse(pfi.x, pfi.y, 10, 10);
+				triangle(pfi.x, pfi.y, pfi.x + 20, pfi.y + 30, pfi.x + 40, pfi.y + 30);
+				rect(pfi.x - 50, pfi.y + 30, 220, 300);
+
+
+				fill(COLOR_LINES);
+				noStroke();
+				for (PFEvent pfe : pfEventListT) {
+					text(pfe.event + "   <-", pfi.x - 50, pfi.y + 30);
+				}
+				for (PFEvent pfe : pfEventListF) {
+
+				}
+
+			}
+		}
 	}
 
 	public void mousePressed() {
 		//ドメイン選択の一時解除
 		selectedDomainId = -1;
+		selectedInterfaceId = -1;
+
+		//マウスクリック範囲にドメインがあれば、それを選択
 		for (Domain d : sToolEditor.fgm.getDomains()) {
-			//マウスクリック範囲にドメインがあれば、それを選択
-			if (PUtility.mouseIsInRect(d.x - (int) textWidth(d.name) / 2 - 15, d.y - 20, (int) textWidth(d.name) + 30, 40, mouseX, mouseY))
+			if (PUtility.mouseIsInRect(d.x - (int) textWidth(d.name) / 2 - 15, d.y - 20, (int) textWidth(d.name) + 30, 40, mouseX, mouseY)) {
 				selectedDomainId = d.id;
+				selectedInterfaceId = -1;
+			}
+		}
+
+		//マウスクリック範囲にインターフェースがあれば、それを選択
+		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
+			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
+			if (PUtility.mouseIsInEllipse(pfi.x, pfi.y, 10, 10, mouseX, mouseY)) {
+				selectedDomainId = -1;
+				selectedInterfaceId = i;
+			}
 		}
 
 		if (selectedDomainId == -1) sToolEditor.initTextArea();
