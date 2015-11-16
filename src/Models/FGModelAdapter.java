@@ -1,9 +1,7 @@
 package Models;
 
-import javax.xml.bind.JAXB;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +11,7 @@ import java.util.stream.Collectors;
  * ・null値：編集操作成功<p>
  * ・文字列：エラーメッセージ
  */
-public class FGModelAdapter {
+public class FGModelAdapter implements FGModel {
 	private FGModelCore fgm;
 
 	//TODO:AS-IS,TO-BEスライスをいい感じにつくる
@@ -286,4 +284,39 @@ public class FGModelAdapter {
 		return "COULD NOT FIND A DOMAIN THAT HAS ID:" + id;
 	}
 
+	public List<PFInterface> getPFInterfaceList() {
+		List<PFInterface> interfaces = new ArrayList<>();
+		for (Usecase usecase : getUsecases()) {
+			for (Step step : usecase.getAllActionStep()) {
+				//追加フラグ
+				boolean flag = false;
+				//現存Interfaceから該当を走査
+				for (PFInterface i : interfaces) {
+					int r = i.rootDomainId;
+					int d = i.distDomainId;
+					int s = step.subjectDomainId;
+					int o = step.objectDomainId;
+					if (r == s && d == o) {
+						//順方向合致
+						i.add(new PFEvent(step.Event, true, usecase.id));
+						flag = true;
+						break;
+					} else if (r == o && d == s) {
+						//逆方向合致
+						i.add(new PFEvent(step.Event, false, usecase.id));
+						flag = true;
+						break;
+					}
+				}
+
+				//現存Interfaceに適合のない場合：Interface作成
+				if (!flag) {
+					PFInterface pfi = new PFInterface(getDomainById(step.subjectDomainId), getDomainById(step.objectDomainId));
+					pfi.add(new PFEvent(step.Event, true, usecase.id));
+					interfaces.add(pfi);
+				}
+			}
+		}
+		return interfaces;
+	}
 }
