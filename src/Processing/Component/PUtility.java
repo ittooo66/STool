@@ -44,6 +44,10 @@ public class PUtility {
 		return D < 0;
 	}
 
+	public static boolean mouseIsInEllipse(float x, float y, float w, float h, int mouseX, int mouseY) {
+		return mouseIsInEllipse((int) x, (int) y, (int) w, (int) h, mouseX, mouseY);
+	}
+
 	/**
 	 * ２つの座標のなす方角を返す
 	 *
@@ -103,6 +107,7 @@ public class PUtility {
 
 	/**
 	 * 楕円上のR回転時のX座標を返す
+	 *
 	 * @param x 楕円中心のX座標
 	 * @param y 楕円中心のY座標
 	 * @param w 楕円幅
@@ -120,6 +125,7 @@ public class PUtility {
 
 	/**
 	 * 楕円上のR回転時のX座標を返す
+	 *
 	 * @param x 楕円中心のX座標
 	 * @param y 楕円中心のY座標
 	 * @param w 楕円幅
