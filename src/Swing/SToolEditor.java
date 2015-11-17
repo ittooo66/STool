@@ -270,4 +270,10 @@ public class SToolEditor extends JFrame {
 		ggGraph.selectedGoalId = parentLeafGoalId;
 		redraw();
 	}
+
+	public void jumpToUCTab(int usecaseId) {
+		tabbedpane.setSelectedIndex(1);
+		ucGraph.selectedUsecaseId = usecaseId;
+		redraw();
+	}
 }
