@@ -152,7 +152,7 @@ public class GGGraph extends PApplet {
 		for (Goal g : sToolEditor.fgm.getGoals()) {
 
 			//fill変更(リーフか否か,選択中か否か)
-			fill((g.id == selectedGoalId) ? COLOR_SELECTED : (g.childrenType.equals(Goal.ChildrenType.LEAF) ? COLOR_FILL : COLOR_BACKGROUND));
+			fill(g.id == selectedGoalId ? COLOR_SELECTED : g.isEnable ? COLOR_FILL : COLOR_BACKGROUND);
 			//stroke変更(選択中か否か)
 			if (g.id == selectedGoalId) noStroke();
 			else stroke(COLOR_LINES);
