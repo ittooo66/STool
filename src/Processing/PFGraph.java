@@ -24,7 +24,6 @@ public class PFGraph extends PApplet {
 	//選択中のイベントID
 	public boolean isInvSelected = false;
 	public int selectedEventIndex = -1;
-	public int selectedUsecaseId = -1;
 
 	//本体
 	private SToolEditor sToolEditor;
@@ -157,7 +156,11 @@ public class PFGraph extends PApplet {
 				textAlign(LEFT, CENTER);
 				fill(COLOR_LINES);
 				text(sToolEditor.fgm.getDomainById(pfi.rootDomainId).name + "!", pfi.x < width / 2 ? width / 2 + 5 : 25, 15, width / 2 - 10, 40);
+				if (selectedEventIndex != -1 && !isInvSelected)
+					text("Generated from", pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, 15, width / 2 - 10, 40);
+
 				lbc = new ArrayList<>();
+				//EventListを詰め込み
 				for (int i = 0; i < pfEventListT.size(); i++) {
 					lbc.add(new ListBoxContent(i, pfEventListT.get(i).event));
 				}
@@ -165,16 +168,28 @@ public class PFGraph extends PApplet {
 				eventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 : 25, 50, width / 4 - 30, height / 2 - 60, 30, !isInvSelected ? selectedEventIndex : -1);
 				eventLB.draw(this);
 
-				//TODO:適切な詰め込み
 				lbc = new ArrayList<>();
+				//Event発生元の各Usecaseを詰め込み
+				if (selectedEventIndex != -1 && pfEventListT.size() > selectedEventIndex) {
+					PFEvent pfe = pfEventListT.get(selectedEventIndex);
+					for (int i = 0; i < pfe.rootUsecaseId.size(); i++) {
+						Usecase uc = sToolEditor.fgm.getUsecaseById(pfe.rootUsecaseId.get(i));
+						if (uc != null) {
+							lbc.add(new ListBoxContent(uc.id, uc.name));
+						}
+					}
+				}
 				rootUCEventLB.setContents(lbc);
-				rootUCEventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, 50, width / 4 - 30, height / 2 - 60, 30, !isInvSelected ? selectedUsecaseId : -1);
+				rootUCEventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, 50, width / 4 - 30, height / 2 - 60, 30, -1);
 				if (selectedEventIndex != -1 && !isInvSelected) rootUCEventLB.draw(this);
 
 				textAlign(LEFT, CENTER);
 				fill(COLOR_LINES);
 				text(sToolEditor.fgm.getDomainById(pfi.distDomainId).name + "!", pfi.x < width / 2 ? width / 2 + 5 : 25, height / 2 - 5, width / 2 - 10, 40);
+				if (selectedEventIndex != -1 && isInvSelected)
+					text("Genereted from", pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 - 5, width / 2 - 10, 40);
 				lbc = new ArrayList<>();
+				//EventListを詰め込み
 				for (int i = 0; i < pfEventListF.size(); i++) {
 					lbc.add(new ListBoxContent(i, pfEventListF.get(i).event));
 				}
@@ -182,10 +197,19 @@ public class PFGraph extends PApplet {
 				invEventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 : 25, height / 2 + 30, width / 4 - 30, height / 2 - 60, 30, isInvSelected ? selectedEventIndex : -1);
 				invEventLB.draw(this);
 
-				//TODO:適切な詰め込み
 				lbc = new ArrayList<>();
+				//Event発生元の各Usecaseを詰め込み
+				if (selectedEventIndex != -1 && pfEventListF.size() > selectedEventIndex) {
+					PFEvent pfe = pfEventListF.get(selectedEventIndex);
+					for (int i = 0; i < pfe.rootUsecaseId.size(); i++) {
+						Usecase uc = sToolEditor.fgm.getUsecaseById(pfe.rootUsecaseId.get(i));
+						if (uc != null) {
+							lbc.add(new ListBoxContent(uc.id, uc.name));
+						}
+					}
+				}
 				invRootUCEventLB.setContents(lbc);
-				invRootUCEventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 + 30, width / 4 - 30, height / 2 - 60, 30, isInvSelected ? selectedUsecaseId : -1);
+				invRootUCEventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 + 30, width / 4 - 30, height / 2 - 60, 30, -1);
 				if (selectedEventIndex != -1 && isInvSelected) invRootUCEventLB.draw(this);
 
 				//枠まわり
@@ -215,12 +239,22 @@ public class PFGraph extends PApplet {
 				return;
 			}
 		}
+		//イベント選択時
+		if (selectedEventIndex != -1) {
+			if (rootUCEventLB.getContentOnMouse(mouseX, mouseY) != null && !isInvSelected) {
+				int selectedUsecaseId = rootUCEventLB.getContentOnMouse(mouseX, mouseY).id;
+				sToolEditor.jumpToUCTab(selectedUsecaseId);
+			}
+			if (invRootUCEventLB.getContentOnMouse(mouseX, mouseY) != null && isInvSelected) {
+				int selectedUsecaseId = invRootUCEventLB.getContentOnMouse(mouseX, mouseY).id;
+				sToolEditor.jumpToUCTab(selectedUsecaseId);
+			}
+		}
 
 		//選択の一時解除
 		selectedDomainId = -1;
 		selectedInterfaceIndex = -1;
 		selectedEventIndex = -1;
-		selectedUsecaseId = -1;
 
 		//マウスクリック範囲にドメインがあれば、それを選択
 		for (Domain d : sToolEditor.fgm.getDomains()) {
