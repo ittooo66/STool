@@ -23,6 +23,4 @@ public interface FGModel {
 	Usecase getUsecaseById(int id);
 
 	List<Usecase> getUsecases();
-
-
 }

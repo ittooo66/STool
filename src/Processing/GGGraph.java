@@ -17,9 +17,6 @@ public class GGGraph extends PApplet {
 	//選択中のゴールID（-1なら非選択）
 	public int selectedGoalId = -1;
 
-	//TODO:PRO MODE
-	//public boolean isProMode;
-
 	//本体
 	private SToolEditor sToolEditor;
 

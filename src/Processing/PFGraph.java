@@ -139,7 +139,7 @@ public class PFGraph extends PApplet {
 			text(d.name, d.x, d.y - 2);
 		}
 
-		//TODO:インターフェース、イベント描画
+		//インターフェース、イベント描画
 		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).size(); interfaceIndex++) {
 			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).get(interfaceIndex);
 			if (selectedInterfaceIndex == interfaceIndex) {
