@@ -45,7 +45,7 @@ public class Step implements Cloneable {
 		}
 
 		//StepTypeをStringに
-		public static String toString(StepType st) {
+		public static String getString(StepType st) {
 			switch (st) {
 				case ALT_INDEX:
 					return "ALT_INDEX";

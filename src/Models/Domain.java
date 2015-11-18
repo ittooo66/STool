@@ -31,24 +31,27 @@ public class Domain implements Cloneable {
 			return values()[ordinal() - 1];
 		}
 
-		//StringをDomaintypeにパース
 		public static DomainType parse(String str) {
+			if (str == null) return null;
 			switch (str) {
 				case "BIDDABLE":
-					return DomainType.BIDDABLE;
+					return BIDDABLE;
 				case "CAUSAL":
-					return DomainType.CAUSAL;
+					return CAUSAL;
 				case "LEXICAL":
-					return DomainType.LEXICAL;
+					return LEXICAL;
 				case "SYSTEM":
-					return DomainType.SYSTEM;
+					return SYSTEM;
 				case "DESIGNED":
-					return DomainType.DESIGNED;
+					return DESIGNED;
+				case "NONE":
+					return NONE;
 			}
-			return NONE;
+			return null;
 		}
 
-		public static String toString(DomainType dt) {
+		public static String getString(DomainType dt) {
+			if (dt == null) return null;
 			switch (dt) {
 				case BIDDABLE:
 					return "BIDDABLE";
@@ -60,8 +63,10 @@ public class Domain implements Cloneable {
 					return "SYSTEM";
 				case DESIGNED:
 					return "DESIGNED";
+				case NONE:
+					return "NONE";
 			}
-			return "NONE";
+			return null;
 		}
 
 		public static char getPrefix(DomainType dt) {

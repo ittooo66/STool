@@ -26,8 +26,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JPanel conditionAreaPanel, sourceStepComboBoxPanel;
 	private JPanel parentGoalNameLabelPanel, nameAreaPanel;
 	private JPanel subjectComboBoxPanel, objectComboBoxPanel, eventNameAreaPanel, toComboBoxPanel;
-	private TitledJRadioButtonGroupPanel stepTypePanel;
-	private JRadioButton stepTypeNop, stepTypeAction, stepTypeGoto, stepTypeInclude;
+	private TitledJRadioButtonGroupPanel stepType;
 	private JLabel parentGoalNameLabel;
 	private JComboBox sourceStepComboBox, subjectComboBox, objectComboBox, toComboBox;
 	private List<Integer> sourceStepComboBoxIdList, objectAndSubjectComboBoxIdList, toComboBoxIdList;
@@ -79,21 +78,13 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		sourceStepComboBoxIdList = new ArrayList<>();
 
 		//StepType
-		stepTypeNop = new JRadioButton("NOP");
-		stepTypeNop.setSelected(true);
-		stepTypeNop.addActionListener(this);
-		stepTypeAction = new JRadioButton("ACTION");
-		stepTypeAction.addActionListener(this);
-		stepTypeGoto = new JRadioButton("GOTO");
-		stepTypeGoto.addActionListener(this);
-		stepTypeInclude = new JRadioButton("INCLUDE");
-		stepTypeInclude.addActionListener(this);
-		stepTypePanel = new TitledJRadioButtonGroupPanel("StepType");
-		stepTypePanel.add(stepTypeNop);
-		stepTypePanel.add(stepTypeAction);
-		stepTypePanel.add(stepTypeGoto);
-		stepTypePanel.add(stepTypeInclude);
-		this.add(stepTypePanel);
+		stepType = new TitledJRadioButtonGroupPanel("StepType");
+		stepType.add(new JRadioButton(Step.StepType.getString(Step.StepType.NOP), true));
+		stepType.add(new JRadioButton(Step.StepType.getString(Step.StepType.ACTION)));
+		stepType.add(new JRadioButton(Step.StepType.getString(Step.StepType.GOTO)));
+		stepType.add(new JRadioButton(Step.StepType.getString(Step.StepType.INCLUDE)));
+		stepType.addActionListenerToAll(this);
+		this.add(stepType);
 
 		//subjectComboBox
 		subjectComboBox = new JComboBox();
@@ -190,20 +181,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 				if (stepSelected) {
 					//StepType描画
-					switch (selectedStep.stepType) {
-						case NOP:
-							stepTypeNop.setSelected(true);
-							break;
-						case ACTION:
-							stepTypeAction.setSelected(true);
-							break;
-						case INCLUDE:
-							stepTypeInclude.setSelected(true);
-							break;
-						case GOTO:
-							stepTypeGoto.setSelected(true);
-							break;
-					}
+					stepType.setSelected(selectedStep.stepType.toString());
 
 					// GOTO or INCLUDE ComboBox中身更新
 					toComboBoxIdList.clear();
@@ -257,11 +235,11 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 			conditionAreaPanel.setVisible(flowSelected && ucg.selectedFlowType != 0);
 			sourceStepComboBoxPanel.setVisible(flowSelected && ucg.selectedFlowType != 0);
 			//step
-			stepTypePanel.setVisible(stepSelected);
-			objectComboBoxPanel.setVisible(stepSelected && stepTypeAction.isSelected());
-			subjectComboBoxPanel.setVisible(stepSelected && stepTypeAction.isSelected());
-			eventNameAreaPanel.setVisible(stepSelected && stepTypeAction.isSelected());
-			toComboBoxPanel.setVisible(stepSelected && (stepTypeInclude.isSelected() || stepTypeGoto.isSelected()));
+			stepType.setVisible(stepSelected);
+			objectComboBoxPanel.setVisible(stepSelected && stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
+			subjectComboBoxPanel.setVisible(stepSelected && stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
+			eventNameAreaPanel.setVisible(stepSelected && stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
+			toComboBoxPanel.setVisible(stepSelected && (stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.INCLUDE)) || stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.GOTO))));
 		} catch (NullPointerException e) {
 			//Usecase削除時のNullPointerException対策
 			ucg.selectedUsecaseId = -1;
@@ -297,9 +275,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	}
 
 	private void editStep(Usecase usecase, Step step) {
-		step.stepType = stepTypeGoto.isSelected() ? Step.StepType.GOTO
-				: stepTypeInclude.isSelected() ? Step.StepType.INCLUDE
-				: stepTypeAction.isSelected() ? Step.StepType.ACTION : Step.StepType.NOP;
+		step.stepType = Step.StepType.parse(stepType.getSelectedButtonCommand());
 
 		int toComboBoxSelectedIndex = toComboBox.getSelectedIndex();
 		switch (step.stepType) {

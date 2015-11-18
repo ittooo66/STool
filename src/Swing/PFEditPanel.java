@@ -25,7 +25,6 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 	//PFEditorコンポーネント
 	private JButton remove, add;
 	private JTextArea nameArea;
-	private JRadioButton domainTypeNone, domainTypeBiddable, domainTypeCausal, domainTypeLexical, domainTypeSystem, domainTypeDesigned;
 	private TitledJRadioButtonGroupPanel domainType;
 
 	//Draw中のフラグ
@@ -54,28 +53,15 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		add.addActionListener(e -> add());
 		this.add(add);
 
-		//DomainType周り
-		domainTypeNone = new JRadioButton("NONE");
-		domainTypeNone.setSelected(true);
-		domainTypeNone.addActionListener(this);
-		domainTypeBiddable = new JRadioButton("BIDDABLE");
-		domainTypeBiddable.addActionListener(this);
-		domainTypeCausal = new JRadioButton("CAUSAL");
-		domainTypeCausal.addActionListener(this);
-		domainTypeLexical = new JRadioButton("LEXICAL");
-		domainTypeLexical.addActionListener(this);
-		domainTypeSystem = new JRadioButton("SYSTEM");
-		domainTypeSystem.addActionListener(this);
-		domainTypeDesigned = new JRadioButton("DESIGNED");
-		domainTypeDesigned.addActionListener(this);
-		//DomainTyoeグループのパネル作成
+		//DomainType
 		domainType = new TitledJRadioButtonGroupPanel("DomainType");
-		domainType.add(domainTypeNone);
-		domainType.add(domainTypeBiddable);
-		domainType.add(domainTypeCausal);
-		domainType.add(domainTypeLexical);
-		domainType.add(domainTypeSystem);
-		domainType.add(domainTypeDesigned);
+		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.NONE), true));
+		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.BIDDABLE)));
+		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.CAUSAL)));
+		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.LEXICAL)));
+		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.SYSTEM)));
+		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.DESIGNED)));
+		domainType.addActionListenerToAll(this);
 		this.add(domainType);
 
 		//Remove Button
@@ -96,25 +82,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 			if (!nameArea.hasFocus()) nameArea.setText(selectedDomain.name);
 
 			//DomainType更新
-			switch (selectedDomain.domainType) {
-				case NONE:
-					domainTypeNone.setSelected(true);
-					break;
-				case BIDDABLE:
-					domainTypeBiddable.setSelected(true);
-					break;
-				case CAUSAL:
-					domainTypeCausal.setSelected(true);
-					break;
-				case DESIGNED:
-					domainTypeDesigned.setSelected(true);
-					break;
-				case SYSTEM:
-					domainTypeSystem.setSelected(true);
-					break;
-				case LEXICAL:
-					domainTypeLexical.setSelected(true);
-			}
+			domainType.setSelected(selectedDomain.domainType.toString());
 		}
 
 		//PFEditor各種コンポーネント：表示・非表示切り替え
@@ -158,12 +126,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		//各種パラメータ取得
 		String name = nameArea.getText();
 		int id = pfg.selectedDomainId;
-		Domain.DomainType dt = domainTypeBiddable.isSelected() ?
-				Domain.DomainType.BIDDABLE : domainTypeCausal.isSelected() ?
-				Domain.DomainType.CAUSAL : domainTypeDesigned.isSelected() ?
-				Domain.DomainType.DESIGNED : domainTypeLexical.isSelected() ?
-				Domain.DomainType.LEXICAL : domainTypeSystem.isSelected() ?
-				Domain.DomainType.SYSTEM : Domain.DomainType.NONE;
+		Domain.DomainType dt = Domain.DomainType.parse(domainType.getSelectedButtonCommand());
 
 		//fgm編集
 		String str = ste.fgm.editDomain(id, name, dt);
