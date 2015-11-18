@@ -16,12 +16,41 @@ import java.util.stream.Collectors;
 public class FGModelAdapter implements FGModel {
 	private FGModelCore fgm;
 
-	//TODO:AS-IS,TO-BEスライスをいい感じにつくる
-	//enable,disableのセット
-	private List<List<Boolean>> enableGoalSet;
+	//VERSION指定(ASIS，TOBE)
+	private VERSION version;
+
+	public enum VERSION {
+		ASIS, TOBE
+	}
+
+	public void setVersion(VERSION version) {
+		this.version = version;
+	}
+
+	public VERSION getVersion() {
+		return version;
+	}
+
+	//VIEWMODE指定(ALL,REDUCED)
+	private VIEWMODE viewmode;
+
+	public enum VIEWMODE {
+		ALL, REDUCED
+	}
+
+	public void setViewmode(VIEWMODE viewmode) {
+		this.viewmode = viewmode;
+	}
+
+	public VIEWMODE getViewmode() {
+		return viewmode;
+	}
+
 
 	public FGModelAdapter() {
 		fgm = new FGModelCore();
+		version = VERSION.ASIS;
+		viewmode = VIEWMODE.ALL;
 	}
 
 	public void loadXML(File file) {
@@ -148,7 +177,7 @@ public class FGModelAdapter implements FGModel {
 		fgm.usecases.add(u);
 	}
 
-	public String editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId, boolean isEnable) {
+	public String editGoal(int id, String name, Goal.ChildrenType childrenType, int parentId, boolean isEnableForAsIs, boolean isEnableForToBe) {
 		//編集対象のゴール取得
 		Goal goal = null;
 		for (Goal g : fgm.goals) {
@@ -175,7 +204,8 @@ public class FGModelAdapter implements FGModel {
 		goal.name = name;
 		goal.childrenType = childrenType;
 		goal.parentId = parentId;
-		goal.isEnable = isEnable;
+		goal.isEnableForAsIs = isEnableForAsIs;
+		goal.isEnableForToBe = isEnableForToBe;
 		return null;
 
 	}
@@ -288,13 +318,12 @@ public class FGModelAdapter implements FGModel {
 
 	/**
 	 * InterfaceとしてFGMODELから各要素を取得
-	 * @param vm 現在の表示モード
+	 *
 	 * @return Interfaceのリスト
 	 */
-	public List<PFInterface> getPFInterfaceList(SToolEditor.VIEWMODE vm) {
+	public List<PFInterface> getPFInterfaceList() {
 		List<PFInterface> interfaces = new ArrayList<>();
 		for (Usecase uc : getUsecases()) {
-			if (!getGoalById(uc.parentLeafGoalId).isEnable && vm == SToolEditor.VIEWMODE.REDUCED) continue;
 			for (Step s : uc.getAllActionStep()) {
 				//追加フラグ
 				boolean hasInterface = false;
