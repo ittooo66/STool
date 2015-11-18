@@ -48,11 +48,13 @@ public class SToolEditor extends JFrame {
 		JRadioButton asIsVer = new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.ASIS), true);
 		asIsVer.addActionListener(e -> {
 			fgm.setVersion(FGModelAdapter.VERSION.ASIS);
+			deselectAll();
 			redraw();
 		});
 		JRadioButton toBeVer = new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.TOBE));
 		toBeVer.addActionListener(e -> {
 			fgm.setVersion(FGModelAdapter.VERSION.TOBE);
+			deselectAll();
 			redraw();
 		});
 		versionJRBG.add(asIsVer);
@@ -62,11 +64,13 @@ public class SToolEditor extends JFrame {
 		JRadioButton viewAll = new JRadioButton("All", true);
 		viewAll.addActionListener(e -> {
 			fgm.setViewmode(FGModelAdapter.VIEWMODE.ALL);
+			deselectAll();
 			redraw();
 		});
 		JRadioButton viewReduced = new JRadioButton("Reduced");
 		viewReduced.addActionListener(e -> {
 			fgm.setViewmode(FGModelAdapter.VIEWMODE.REDUCED);
+			deselectAll();
 			redraw();
 		});
 		TitledJRadioButtonGroupPanel viewmodeJRBG = new TitledJRadioButtonGroupPanel("viewmode");
@@ -202,6 +206,20 @@ public class SToolEditor extends JFrame {
 	public void initTextArea() {
 		ggEditPanel.initTextArea();
 		pfEditPanel.initTextArea();
+	}
+
+	/**
+	 * ProcessingのSelectedを全解除
+	 */
+	public void deselectAll() {
+		ggGraph.selectedGoalId = -1;
+		pfGraph.selectedDomainId = -1;
+		pfGraph.selectedEventIndex = -1;
+		pfGraph.selectedInterfaceIndex = -1;
+		ucGraph.selectedUsecaseId = -1;
+		ucGraph.selectedStepId = -1;
+		ucGraph.selectedFlowIndex = -1;
+		ucGraph.selectedFlowType = -1;
 	}
 
 	public static void main(String[] args) {
