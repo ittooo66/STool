@@ -124,7 +124,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			if (!nameArea.hasFocus()) nameArea.setText(selectedGoal.name);
 
 			//RefineType更新
-			refineType.setSelected(selectedGoal.childrenType.toString());
+			refineType.setSelected(Goal.ChildrenType.getString(selectedGoal.childrenType));
 
 			//ComboBox選択
 			for (int id : parentComboBoxIdList) {
