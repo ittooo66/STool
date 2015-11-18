@@ -5,7 +5,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
