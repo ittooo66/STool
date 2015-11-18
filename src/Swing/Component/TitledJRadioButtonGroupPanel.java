@@ -53,6 +53,10 @@ public class TitledJRadioButtonGroupPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * 抱えているJRadioボタン全てにアクションリスナを付与する
+	 * @param actionListener 付与するアクションリスナ
+	 */
 	public void addActionListenerToAll(ActionListener actionListener) {
 		for (JRadioButton jrb : jRadioButtonList) jrb.addActionListener(actionListener);
 	}
