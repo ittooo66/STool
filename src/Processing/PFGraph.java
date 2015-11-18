@@ -91,6 +91,10 @@ public class PFGraph extends PApplet {
 
 		//各ドメインを描画
 		for (Domain d : sToolEditor.fgm.getDomains()) {
+			//Reduced時、関連ドメインでなければ記述対象から除外
+			if (sToolEditor.fgm.getViewmode() == FGModelAdapter.VIEWMODE.REDUCED && !sToolEditor.fgm.hasRelatedEvent(d.id))
+				continue;
+
 			//幅と高さを取得
 			float dW = textWidth(d.name) + 30;
 			float dH = 40;
