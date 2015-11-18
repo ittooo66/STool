@@ -392,7 +392,7 @@ public class FGModelAdapter implements FGModel {
 				}
 
 				//現存Interfaceに適合のない場合：Interface,Event作成
-				if (!hasInterface) {
+				if (!hasInterface && getDomainById(s.subjectDomainId) != null && getDomainById(s.objectDomainId) != null) {
 					PFInterface pfi = new PFInterface(getDomainById(s.subjectDomainId), getDomainById(s.objectDomainId));
 					PFEvent e = new PFEvent(s.Event, true);
 					e.setRootUsecase(uc.id);
