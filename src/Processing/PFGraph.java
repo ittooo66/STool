@@ -287,6 +287,7 @@ public class PFGraph extends PApplet {
 		//カウント取得
 		int e = event.getCount() > 0 ? 1 : -1;
 
+		//
 		PFInterface pfi = null;
 		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList().size(); interfaceIndex++)
 			if (selectedInterfaceIndex == interfaceIndex)
@@ -294,15 +295,10 @@ public class PFGraph extends PApplet {
 		if (pfi == null) return;
 
 		//スクロール箇所の特定・適用
-		if (PUtility.mouseIsInRect(pfi.x < width / 2 ? width / 2 + 5 : 25, 50, width / 4 - 30, height / 2 - 60, mouseX, mouseY)) {
-			eventLB.scroll(e);
-		} else if (PUtility.mouseIsInRect(pfi.x < width / 2 ? width / 2 + 5 : 25, height / 2 + 30, width / 4 - 30, height / 2 - 60, mouseX, mouseY)) {
-			invEventLB.scroll(e);
-		} else if (PUtility.mouseIsInRect(pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, 50, width / 4 - 30, height / 2 - 60, mouseX, mouseY)) {
-			rootUCEventLB.scroll(e);
-		} else if (PUtility.mouseIsInRect(pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 + 30, width / 4 - 30, height / 2 - 60, mouseX, mouseY)) {
-			invRootUCEventLB.scroll(e);
-		}
+		if (eventLB.isOn(mouseX, mouseY)) eventLB.scroll(e);
+		if (invEventLB.isOn(mouseX, mouseY)) invEventLB.scroll(e);
+		if (rootUCEventLB.isOn(mouseX, mouseY)) rootUCEventLB.scroll(e);
+		if (invRootUCEventLB.isOn(mouseX, mouseY)) invRootUCEventLB.scroll(e);
 		redraw();
 	}
 

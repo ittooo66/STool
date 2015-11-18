@@ -30,11 +30,6 @@ public class UCGraph extends PApplet {
 	//本体
 	private SToolEditor sToolEditor;
 
-	//各種描画値（finalじゃないやつは画面サイズで可変）
-	private final int MERGIN = 30;
-	private int COLUMN_WIDTH;
-	private int ALT_EXC_HEIGHT;
-
 	public UCGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
 	}
@@ -84,8 +79,10 @@ public class UCGraph extends PApplet {
 
 		background(COLOR.BACKGROUND);
 
-		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
-		ALT_EXC_HEIGHT = (height - 8 * MERGIN) / 2;
+		//描画用各種パラメータ
+		int MERGIN = 30;
+		int COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
+		int ALT_EXC_HEIGHT = (height - 8 * MERGIN) / 2;
 
 		//ButtonSetFrame記述
 		usecaseBSF.adjust(MERGIN, MERGIN, COLUMN_WIDTH, MERGIN);
@@ -191,7 +188,7 @@ public class UCGraph extends PApplet {
 		if (uc == null) return;
 
 		//MainFlow押下時処理
-		if (PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, x, y)) {
+		if (mainFlowLB.isOn(x, y)) {
 			selectedFlowType = 0;
 			selectedFlowIndex = 0;
 			deselectStep();

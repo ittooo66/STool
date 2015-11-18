@@ -190,10 +190,10 @@ public class GGGraph extends PApplet {
 		//変更前のゴールIDを保存
 		int preSelectedGoalId = selectedGoalId;
 
-		//ドメイン選択の一時解除
+		//ゴール選択の一時解除
 		selectedGoalId = -1;
 		for (Goal g : sToolEditor.fgm.getGoals()) {
-			//マウスクリック範囲にドメインがあれば、それを選択
+			//マウスクリック範囲にゴールがあれば、それを選択
 			if (PUtility.mouseIsInEllipse(g.x, g.y, (int) textWidth(g.name) + 40, 40, mouseX, mouseY))
 				selectedGoalId = g.id;
 		}
