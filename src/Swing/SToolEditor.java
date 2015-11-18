@@ -221,6 +221,9 @@ public class SToolEditor extends JFrame {
 	public void jumpToUCTab(int usecaseId) {
 		tabbedpane.setSelectedIndex(1);
 		ucGraph.selectedUsecaseId = usecaseId;
+		ucGraph.selectedFlowType = -1;
+		ucGraph.selectedFlowIndex = -1;
+		ucGraph.selectedStepId = -1;
 		redraw();
 	}
 }
