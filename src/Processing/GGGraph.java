@@ -1,6 +1,7 @@
 package Processing;
 
 import Models.*;
+import Processing.Component.COLOR;
 import Processing.Component.PUtility;
 import Swing.*;
 import processing.core.PApplet;
@@ -19,12 +20,6 @@ public class GGGraph extends PApplet {
 
 	//本体
 	private SToolEditor sToolEditor;
-
-	//カラーパレット
-	private final int COLOR_BACKGROUND = color(255, 255, 255);
-	private final int COLOR_LINES = color(51, 51, 51);
-	private final int COLOR_FILL = color(220, 233, 255);
-	private final int COLOR_SELECTED = color(57, 152, 214);
 
 	public GGGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
@@ -51,10 +46,10 @@ public class GGGraph extends PApplet {
 		else hasChanges = false;
 
 		//背景描画
-		background(COLOR_BACKGROUND);
+		background(COLOR.BACKGROUND);
 
 		//記述の下準備
-		stroke(COLOR_LINES);
+		stroke(COLOR.LINES);
 		strokeWeight(1);
 		noFill();
 
@@ -97,7 +92,7 @@ public class GGGraph extends PApplet {
 		}
 
 		//枝を描画
-		fill(COLOR_LINES);
+		fill(COLOR.LINES);
 		for (Goal childGoal : sToolEditor.fgm.getGoals()) {
 			if (childGoal.parentId != -1) {
 				//親ゴール取得
@@ -150,16 +145,16 @@ public class GGGraph extends PApplet {
 
 			//fill変更(Enableか否か,選択中か否か)
 			if (g.id == selectedGoalId) {
-				fill(COLOR_SELECTED);
+				fill(COLOR.SELECTED);
 			} else if (sToolEditor.fgm.getVersion() == FGModelAdapter.VERSION.ASIS && g.isEnableForAsIs ||
 					sToolEditor.fgm.getVersion() == FGModelAdapter.VERSION.TOBE && g.isEnableForToBe) {
-				fill(COLOR_FILL);
+				fill(COLOR.FILL);
 			} else {
-				fill(COLOR_BACKGROUND);
+				fill(COLOR.BACKGROUND);
 			}
 			//stroke変更(選択中か否か)
 			if (g.id == selectedGoalId) noStroke();
-			else stroke(COLOR_LINES);
+			else stroke(COLOR.LINES);
 
 			//ゴール名が１行の場合
 			if (match(g.name, "\n") == null) {
@@ -169,7 +164,7 @@ public class GGGraph extends PApplet {
 				strokeWeight(1);
 
 				//fill変更(選択中か否か、リーフか否か)
-				fill(g.id == selectedGoalId ? COLOR_BACKGROUND : COLOR_LINES);
+				fill(g.id == selectedGoalId ? COLOR.BACKGROUND : COLOR.LINES);
 
 				//名前の記述
 				text(g.name, g.x, g.y - 2);
@@ -181,7 +176,7 @@ public class GGGraph extends PApplet {
 				rect(g.x - (textWidth(g.name) + 40) / 2, g.y - texts.length * 8 - 10, textWidth(g.name) + 40, texts.length * 16 + 20, 8);
 
 				//fill変更(選択中か否か、リーフか否か)
-				fill(g.id == selectedGoalId ? COLOR_BACKGROUND : COLOR_LINES);
+				fill(g.id == selectedGoalId ? COLOR.BACKGROUND : COLOR.LINES);
 
 				//名前の記述
 				for (int i = 0; i < texts.length; i++) {
