@@ -8,11 +8,6 @@ import java.util.List;
 
 public class ListBox implements Drawable {
 
-	//配色
-	protected final int COLOR_BACKGROUND;
-	protected final int COLOR_LINES;
-	protected final int COLOR_SELECTED;
-
 	//dh:１カラムの幅
 	protected int x, y, w, h, dh;
 	//現在スクロールされている量
@@ -21,10 +16,7 @@ public class ListBox implements Drawable {
 	//コンテンツ
 	protected List<ListBoxContent> contents;
 
-	public ListBox(int COLOR_BACKGROUND, int COLOR_LINES, int COLOR_SELECTED) {
-		this.COLOR_BACKGROUND = COLOR_BACKGROUND;
-		this.COLOR_LINES = COLOR_LINES;
-		this.COLOR_SELECTED = COLOR_SELECTED;
+	public ListBox() {
 		contents = new ArrayList<>();
 	}
 
@@ -73,36 +65,45 @@ public class ListBox implements Drawable {
 	}
 
 	public void draw(PApplet pApplet) {
-		pApplet.textAlign(PConstants.LEFT, PConstants.CENTER);
-		pApplet.fill(COLOR_LINES);
-		pApplet.noFill();
-		pApplet.stroke(COLOR_LINES);
-
 		for (int i = 0, j = scrollIndex; j < contents.size() && i * dh < h; i++, j++) {
 			if (selectedId == contents.get(j).id) {
+				//選択中のコンテンツのとき
 				pApplet.noStroke();
-				pApplet.fill(COLOR_SELECTED);
+				pApplet.fill(COLOR.SELECTED);
 				pApplet.rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
-				pApplet.fill(COLOR_BACKGROUND);
+			} else if (contents.get(j).isBold) {
+				//太字指定のとき
+				pApplet.stroke(COLOR.LINES);
+				pApplet.fill(COLOR.FILL);
+				pApplet.strokeWeight(PUtility.mouseIsInRect(x + 2, y + 2 + i * dh, w - 4, dh - 4, pApplet.mouseX, pApplet.mouseY) ? (float) 1.5 : 1);
+				pApplet.rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
+				pApplet.strokeWeight(1);
 			} else {
-				pApplet.stroke(COLOR_LINES);
+				//通常の描画
+				pApplet.stroke(COLOR.LINES);
 				pApplet.noFill();
 				pApplet.strokeWeight(PUtility.mouseIsInRect(x + 2, y + 2 + i * dh, w - 4, dh - 4, pApplet.mouseX, pApplet.mouseY) ? (float) 1.5 : 1);
 				pApplet.rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
 				pApplet.strokeWeight(1);
-				pApplet.fill(COLOR_LINES);
 			}
 			pApplet.noStroke();
+			pApplet.textAlign(PConstants.LEFT, PConstants.CENTER);
+			pApplet.fill(selectedId == contents.get(j).id ? COLOR.BACKGROUND : COLOR.LINES);
 			pApplet.text(contents.get(j).name, x + 7, y + i * dh, w - 7, dh);
+
+			//パラメータを出力（-1のときは無効として扱う）
+			pApplet.textAlign(PConstants.RIGHT, PConstants.CENTER);
+			if (contents.get(j).param != -1)
+				pApplet.text(String.valueOf(contents.get(j).param), x + 7, y + i * dh, w - 14, dh);
 		}
 
 		//はみ出し部分を塗りつぶし
-		pApplet.fill(COLOR_BACKGROUND);
-		pApplet.stroke(COLOR_BACKGROUND);
+		pApplet.fill(COLOR.BACKGROUND);
+		pApplet.stroke(COLOR.BACKGROUND);
 		pApplet.rect(x - 2, y + h, w + 4, dh);
 
 		//枠線
-		pApplet.stroke(COLOR_LINES);
+		pApplet.stroke(COLOR.LINES);
 		pApplet.noFill();
 		pApplet.rect(x, y, w, h);
 	}
