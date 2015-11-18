@@ -3,6 +3,7 @@ package Swing;
 import Models.FGModelAdapter;
 import Models.Goal;
 import Processing.GGGraph;
+import Swing.Component.TitledJRadioButtonGroupPanel;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -26,7 +27,8 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JButton add, remove;
 	private JRadioButton refineTypeAnd, refineTypeOr, refineTypeLeaf, necessityIsEnable, necessityIsDisable;
 	private JTextArea nameArea;
-	private JPanel refineType, necessity, parentComboBoxBorder;
+	private JPanel parentComboBoxBorder;
+	private TitledJRadioButtonGroupPanel refineType, necessity;
 	private JComboBox<String> parentComboBox;
 	private List<Integer> parentComboBoxIdList;
 
@@ -73,18 +75,11 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		refineTypeOr.addActionListener(this);
 		refineTypeLeaf = new JRadioButton("LEAF");
 		refineTypeLeaf.addActionListener(this);
-		//refineTypeButtonGroup作成
-		ButtonGroup refineTypeButtonGroup = new ButtonGroup();
-		refineTypeButtonGroup.add(refineTypeAnd);
-		refineTypeButtonGroup.add(refineTypeOr);
-		refineTypeButtonGroup.add(refineTypeLeaf);
-		//RefineTyoeグループのラベル（パネル）作成
-		refineType = new JPanel();
+		//RefineTyoeグループのパネル作成
+		refineType = new TitledJRadioButtonGroupPanel("RefineType");
 		refineType.add(refineTypeAnd);
 		refineType.add(refineTypeOr);
 		refineType.add(refineTypeLeaf);
-		refineType.setBorder(new TitledBorder(new EtchedBorder(), "RefineType"));
-		refineType.setVisible(false);
 		this.add(refineType);
 
 		//Necessity周り
@@ -93,16 +88,10 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		necessityIsEnable.addActionListener(this);
 		necessityIsDisable = new JRadioButton("Disable");
 		necessityIsDisable.addActionListener(this);
-		//NecessityButtonGroup作成
-		ButtonGroup necessityButtonGroup = new ButtonGroup();
-		necessityButtonGroup.add(necessityIsEnable);
-		necessityButtonGroup.add(necessityIsDisable);
-		//Necessityグループのラベル（パネル）作成
-		necessity = new JPanel();
+		//Necessityグループのパネル作成
+		necessity = new TitledJRadioButtonGroupPanel("Necessity");
 		necessity.add(necessityIsEnable);
 		necessity.add(necessityIsDisable);
-		necessity.setBorder(new TitledBorder(new EtchedBorder(), "Necessity"));
-		necessity.setVisible(false);
 		this.add(necessity);
 
 		//RemoveButton
