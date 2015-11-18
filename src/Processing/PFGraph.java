@@ -1,6 +1,7 @@
 package Processing;
 
 import Models.*;
+import Processing.Component.COLOR;
 import Processing.Component.ListBox;
 import Processing.Component.ListBoxContent;
 import Processing.Component.PUtility;
@@ -31,11 +32,6 @@ public class PFGraph extends PApplet {
 	//Event表示用ListBox
 	private ListBox eventLB, invEventLB, rootUCEventLB, invRootUCEventLB;
 
-	//カラーパレット
-	private final int COLOR_BACKGROUND = color(255, 255, 255);
-	private final int COLOR_LINES = color(51, 51, 51);
-	private final int COLOR_SELECTED = color(57, 152, 214);
-
 	public PFGraph(SToolEditor sToolEditor) {
 		this.sToolEditor = sToolEditor;
 	}
@@ -48,10 +44,10 @@ public class PFGraph extends PApplet {
 		smooth();
 
 		//ListBox初期化
-		eventLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
-		invEventLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
-		rootUCEventLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
-		invRootUCEventLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		eventLB = new ListBox();
+		invEventLB = new ListBox();
+		rootUCEventLB = new ListBox();
+		invRootUCEventLB = new ListBox();
 	}
 
 	//変更フラグ
@@ -66,8 +62,8 @@ public class PFGraph extends PApplet {
 		if (!hasChanges) return;
 		else hasChanges = false;
 
-		background(COLOR_BACKGROUND);
-		stroke(COLOR_LINES);
+		background(COLOR.BACKGROUND);
+		stroke(COLOR.LINES);
 		strokeWeight(1);
 		noFill();
 
@@ -78,15 +74,15 @@ public class PFGraph extends PApplet {
 			Domain distDomain = sToolEditor.fgm.getDomainById(pfi.distDomainId);
 
 			//ライン描画
-			stroke(COLOR_LINES);
+			stroke(COLOR.LINES);
 			line(rootDomain.x, rootDomain.y, distDomain.x, distDomain.y);
 
 			if (selectedInterfaceIndex == i) {
-				fill(COLOR_SELECTED);
+				fill(COLOR.SELECTED);
 				noStroke();
 			} else {
-				fill(COLOR_BACKGROUND);
-				stroke(COLOR_LINES);
+				fill(COLOR.BACKGROUND);
+				stroke(COLOR.LINES);
 			}
 			strokeWeight(PUtility.mouseIsInEllipse(pfi.x, pfi.y, 10, 10, mouseX, mouseY) ? (float) 1.5 : 1);
 			ellipse(pfi.x, pfi.y, 10, 10);
@@ -101,18 +97,18 @@ public class PFGraph extends PApplet {
 
 			//ドメイン描画
 			if (d.id == selectedDomainId) {
-				fill(COLOR_SELECTED);
+				fill(COLOR.SELECTED);
 				noStroke();
 			} else {
-				fill(COLOR_BACKGROUND);
-				stroke(COLOR_LINES);
+				fill(COLOR.BACKGROUND);
+				stroke(COLOR.LINES);
 			}
 			strokeWeight(PUtility.mouseIsInRect(d.x - dW / 2, d.y - dH / 2, dW, dH, mouseX, mouseY) ? (float) 1.5 : 1);
 			rect(d.x - dW / 2, d.y - dH / 2, dW, dH);
 			strokeWeight(1);
 
 			//DomainType描画
-			stroke(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);
+			stroke(d.id == selectedDomainId ? COLOR.BACKGROUND : COLOR.LINES);
 			switch (d.domainType) {
 				case SYSTEM:
 					line(d.x - dW / 2 + 10, d.y - dH / 2, d.x - dW / 2 + 10, d.y + dH / 2);
@@ -126,13 +122,13 @@ public class PFGraph extends PApplet {
 					rect(d.x - dW / 2, d.y + 6, 14, 14);
 					textAlign(LEFT, BOTTOM);
 					textSize(10);
-					fill(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);
+					fill(d.id == selectedDomainId ? COLOR.BACKGROUND : COLOR.LINES);
 					text(Domain.DomainType.getPrefix(d.domainType), d.x - dW / 2 + 3, d.y + dH / 2 + 2);
 					break;
 			}
 
 			//名前描画
-			fill(d.id == selectedDomainId ? COLOR_BACKGROUND : COLOR_LINES);
+			fill(d.id == selectedDomainId ? COLOR.BACKGROUND : COLOR.LINES);
 			noStroke();
 			textAlign(CENTER, CENTER);
 			textSize(15);
@@ -149,12 +145,12 @@ public class PFGraph extends PApplet {
 				List<ListBoxContent> lbc;
 
 				//背景ぬりつぶし
-				fill(COLOR_BACKGROUND);
+				fill(COLOR.BACKGROUND);
 				noStroke();
 				rect(pfi.x < width / 2 ? width / 2 : 20, 20, width / 2 - 20, height - 40);
 
 				textAlign(LEFT, CENTER);
-				fill(COLOR_LINES);
+				fill(COLOR.LINES);
 				text(sToolEditor.fgm.getDomainById(pfi.rootDomainId).name + "!", pfi.x < width / 2 ? width / 2 + 5 : 25, 15, width / 2 - 10, 40);
 				if (selectedEventIndex != -1 && !isInvSelected)
 					text("Generated from", pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, 15, width / 2 - 10, 40);
@@ -184,7 +180,7 @@ public class PFGraph extends PApplet {
 				if (selectedEventIndex != -1 && !isInvSelected) rootUCEventLB.draw(this);
 
 				textAlign(LEFT, CENTER);
-				fill(COLOR_LINES);
+				fill(COLOR.LINES);
 				text(sToolEditor.fgm.getDomainById(pfi.distDomainId).name + "!", pfi.x < width / 2 ? width / 2 + 5 : 25, height / 2 - 5, width / 2 - 10, 40);
 				if (selectedEventIndex != -1 && isInvSelected)
 					text("Genereted from", pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 - 5, width / 2 - 10, 40);
@@ -213,11 +209,11 @@ public class PFGraph extends PApplet {
 				if (selectedEventIndex != -1 && isInvSelected) invRootUCEventLB.draw(this);
 
 				//枠まわり
-				fill(COLOR_SELECTED);
+				fill(COLOR.SELECTED);
 				noStroke();
 				triangle(pfi.x, pfi.y, width / 2, height / 2 + 20, width / 2, height / 2 - 20);
 				noFill();
-				stroke(COLOR_LINES);
+				stroke(COLOR.LINES);
 				rect(pfi.x < width / 2 ? width / 2 : 20, 20, width / 2 - 20, height - 40);
 			}
 		}

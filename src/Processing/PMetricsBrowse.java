@@ -5,9 +5,9 @@ import Models.Domain;
 import Models.FGModelAdapter;
 import Models.Usecase;
 import Processing.Component.ButtonSetFrame;
+import Processing.Component.COLOR;
 import Processing.Component.ListBox;
 import Processing.Component.ListBoxContent;
-import Processing.Component.ListBoxForMetrics;
 import processing.core.PApplet;
 import processing.core.PFont;
 
@@ -75,11 +75,6 @@ public class PMetricsBrowse extends PApplet {
 	private ButtonSetFrame bsf;
 	private ListBox lb;
 
-	//カラーパレット
-	private final int COLOR_BACKGROUND = color(255, 255, 255);
-	private final int COLOR_LINES = color(51, 51, 51);
-	private final int COLOR_SELECTED = color(57, 152, 214);
-
 	public PMetricsBrowse(FGModelAdapter fgm) {
 		this.fgm = fgm;
 	}
@@ -92,10 +87,10 @@ public class PMetricsBrowse extends PApplet {
 		smooth();
 
 		//ButtonSetFrame,ListBoxをSetup
-		bsf = new ButtonSetFrame("Metrics", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		bsf = new ButtonSetFrame("Metrics");
 		bsf.addButton("←");
 		bsf.addButton("→");
-		lb = new ListBoxForMetrics(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		lb = new ListBox();
 
 		metricsType = MetricsType.ANOS;
 	}

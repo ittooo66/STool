@@ -1,9 +1,6 @@
 package Processing;
 
-import Processing.Component.ButtonSetFrame;
-import Processing.Component.ListBox;
-import Processing.Component.ListBoxContent;
-import Processing.Component.PUtility;
+import Processing.Component.*;
 import Swing.SToolEditor;
 import Models.Step;
 import Models.Usecase;
@@ -31,11 +28,6 @@ public class UCGraph extends PApplet {
 	//本体
 	private SToolEditor sToolEditor;
 
-	//カラーパレット
-	private final int COLOR_BACKGROUND = color(255, 255, 255);
-	private final int COLOR_LINES = color(51, 51, 51);
-	private final int COLOR_SELECTED = color(57, 152, 214);
-
 	//各種描画値（finalじゃないやつは画面サイズで可変）
 	private final int MERGIN = 30;
 	private int COLUMN_WIDTH;
@@ -53,26 +45,26 @@ public class UCGraph extends PApplet {
 		smooth();
 
 		//ButtonSetFrameをSetup
-		usecaseBSF = new ButtonSetFrame("Usecases", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		usecaseBSF = new ButtonSetFrame("Usecases");
 		usecaseBSF.addButton("↑");
 		usecaseBSF.addButton("↓");
-		altFlowBSF = new ButtonSetFrame("AlternativeFlows", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		altFlowBSF = new ButtonSetFrame("AlternativeFlows");
 		altFlowBSF.addButton("＋");
 		altFlowBSF.addButton("－");
-		excFlowBSF = new ButtonSetFrame("ExceptionalFlows", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		excFlowBSF = new ButtonSetFrame("ExceptionalFlows");
 		excFlowBSF.addButton("＋");
 		excFlowBSF.addButton("－");
-		stepBSF = new ButtonSetFrame("Steps", COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		stepBSF = new ButtonSetFrame("Steps");
 		stepBSF.addButton("＋");
 		stepBSF.addButton("－");
 		stepBSF.addButton("↑");
 		stepBSF.addButton("↓");
 
 		//ListBoxをSetup
-		usecaseLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
-		altFlowLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
-		excFlowLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
-		stepLB = new ListBox(COLOR_BACKGROUND, COLOR_LINES, COLOR_SELECTED);
+		usecaseLB = new ListBox();
+		altFlowLB = new ListBox();
+		excFlowLB = new ListBox();
+		stepLB = new ListBox();
 	}
 
 	//変更フラグ
@@ -87,9 +79,9 @@ public class UCGraph extends PApplet {
 		if (!hasChanges) return;
 		else hasChanges = false;
 
-		background(COLOR_BACKGROUND);
-		fill(COLOR_LINES);
-		stroke(COLOR_LINES);
+		background(COLOR.BACKGROUND);
+		fill(COLOR.LINES);
+		stroke(COLOR.LINES);
 		noFill();
 		strokeWeight(1);
 
@@ -125,17 +117,17 @@ public class UCGraph extends PApplet {
 		//mainFlow記述
 		if (selectedFlowType == 0) {
 			noStroke();
-			fill(COLOR_SELECTED);
+			fill(COLOR.SELECTED);
 			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
 		} else if (selectedUsecaseId != -1) {
-			stroke(COLOR_LINES);
+			stroke(COLOR.LINES);
 			noFill();
 			strokeWeight(PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY) ? (float) 1.5 : 1);
 			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
 			strokeWeight(1);
 		}
 		noStroke();
-		fill(selectedFlowType == 0 || selectedUsecaseId == -1 ? COLOR_BACKGROUND : COLOR_LINES);
+		fill(selectedFlowType == 0 || selectedUsecaseId == -1 ? COLOR.BACKGROUND : COLOR.LINES);
 		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH + 7, 2 * MERGIN, COLUMN_WIDTH - 7, MERGIN);
 
 		//altFlow中身詰め込み+draw()

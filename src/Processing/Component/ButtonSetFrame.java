@@ -7,20 +7,12 @@ import java.util.List;
 
 public class ButtonSetFrame implements Drawable {
 
-	//カラーパレット
-	private int COLOR_BACKGROUND;
-	private int COLOR_LINES;
-	private int COLOR_SELECTED;
-
 	private int x, y, w, h;
 	private String title;
 	private List<String> buttonList;
 
-	public ButtonSetFrame(String title, int COLOR_BACKGROUND, int COLOR_LINES, int COLOR_SELECTED) {
+	public ButtonSetFrame(String title) {
 		this.title = title;
-		this.COLOR_BACKGROUND = COLOR_BACKGROUND;
-		this.COLOR_LINES = COLOR_LINES;
-		this.COLOR_SELECTED = COLOR_SELECTED;
 		buttonList = new ArrayList<>();
 	}
 
@@ -65,20 +57,20 @@ public class ButtonSetFrame implements Drawable {
 	 * 描画
 	 */
 	public void draw(PApplet pApplet) {
-		pApplet.fill(COLOR_LINES);
+		pApplet.fill(COLOR.LINES);
 		pApplet.textAlign(pApplet.RIGHT);
 		pApplet.text(title, x, y, w, h);
 		for (int i = 0; i < buttonList.size(); i++) {
 			if (getButtonIdOnMouse(pApplet.mouseX, pApplet.mouseY) == i) {
 				pApplet.noStroke();
-				pApplet.fill(COLOR_SELECTED);
+				pApplet.fill(COLOR.SELECTED);
 				pApplet.ellipse(x + i * h + h / 2, y + h / 2, h - 4, h - 4);
-				pApplet.fill(COLOR_BACKGROUND);
+				pApplet.fill(COLOR.BACKGROUND);
 			} else {
-				pApplet.stroke(COLOR_LINES);
+				pApplet.stroke(COLOR.LINES);
 				pApplet.noFill();
 				pApplet.ellipse(x + i * h + h / 2, y + h / 2, h - 4, h - 4);
-				pApplet.fill(COLOR_LINES);
+				pApplet.fill(COLOR.LINES);
 			}
 			pApplet.textAlign(pApplet.CENTER, pApplet.CENTER);
 			pApplet.noStroke();
