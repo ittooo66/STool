@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Created by 66 on 2015/11/18.
- * 排他的JRadioButtonをグループでまとめるためのClass
+ * 排他的JRadioButtonをグループでまとめてごにょごにょするためのJPanel
  */
 public class TitledJRadioButtonGroupPanel extends JPanel {
 
