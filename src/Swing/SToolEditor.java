@@ -2,10 +2,9 @@ package Swing;
 
 import Models.*;
 import Processing.*;
+import Swing.Component.TitledJRadioButtonGroupPanel;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.io.File;
 
@@ -44,40 +43,37 @@ public class SToolEditor extends JFrame {
 		//////////////////////////////下部分共通パネル//////////////////////////////
 		JPanel sharedEndPanel = new JPanel();
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		//version_RadioButton作成
+		//version作成
 		JRadioButton asIsVer = new JRadioButton("As-Is");
 		asIsVer.setSelected(true);
-		version = VERSION.ASIS;
-		asIsVer.addActionListener(e -> versionAsIsRadioButtonPressed());
+		asIsVer.addActionListener(e -> {
+			fgm.setVersion(FGModelAdapter.VERSION.ASIS);
+			redraw();
+		});
 		JRadioButton toBeVer = new JRadioButton("To-Be");
-		toBeVer.addActionListener(e -> versionToBeRadioButtonPressed());
-		//version_ButtonGroup作成
-		ButtonGroup versionGroup = new ButtonGroup();
-		versionGroup.add(asIsVer);
-		versionGroup.add(toBeVer);
-		//version_グループのラベル（パネル）作成
-		JPanel version = new JPanel();
-		version.add(asIsVer);
-		version.add(toBeVer);
-		version.setBorder(new TitledBorder(new EtchedBorder(), "version"));
-		sharedEndPanel.add(version);
-		//viewmode_RadioButton作成
+		toBeVer.addActionListener(e -> {
+			fgm.setVersion(FGModelAdapter.VERSION.TOBE);
+			redraw();
+		});
+		TitledJRadioButtonGroupPanel versionJRBG = new TitledJRadioButtonGroupPanel("version");
+		versionJRBG.add(asIsVer);
+		versionJRBG.add(toBeVer);
+		sharedEndPanel.add(versionJRBG);
+		//viewmode作成
 		JRadioButton viewAll = new JRadioButton("All");
-		viewAll.addActionListener(e -> viewmodeAllRadioButtonPressed());
-		viewAll.setSelected(true);
-		viewmode = VIEWMODE.ALL;
+		viewAll.addActionListener(e -> {
+			fgm.setViewmode(FGModelAdapter.VIEWMODE.ALL);
+			redraw();
+		});
 		JRadioButton viewReduced = new JRadioButton("Reduced");
-		viewReduced.addActionListener(e -> viewmodeReducedRadioButtonPressed());
-		//viewmode_ButtonGroup作成
-		ButtonGroup viewModeGroup = new ButtonGroup();
-		viewModeGroup.add(viewAll);
-		viewModeGroup.add(viewReduced);
-		//viewmode_グループのラベル（パネル）作成
-		JPanel viewMode = new JPanel();
-		viewMode.add(viewAll);
-		viewMode.add(viewReduced);
-		viewMode.setBorder(new TitledBorder(new EtchedBorder(), "viewmode"));
-		sharedEndPanel.add(viewMode);
+		viewReduced.addActionListener(e -> {
+			fgm.setViewmode(FGModelAdapter.VIEWMODE.REDUCED);
+			redraw();
+		});
+		TitledJRadioButtonGroupPanel viewmodeJRBG = new TitledJRadioButtonGroupPanel("viewmode");
+		viewmodeJRBG.add(viewAll);
+		viewmodeJRBG.add(viewReduced);
+		sharedEndPanel.add(viewmodeJRBG);
 		//差分ブラウザを開く
 		JButton diffBrowseButton = new JButton("Open Diff Browser");
 		diffBrowseButton.addActionListener(e -> diffBrowseButtonPressed());
@@ -217,9 +213,9 @@ public class SToolEditor extends JFrame {
 		ste.setVisible(true);
 	}
 
-	public void jumpToGGTab(int parentLeafGoalId) {
+	public void jumpToGGTab(int goalId) {
 		tabbedpane.setSelectedIndex(0);
-		ggGraph.selectedGoalId = parentLeafGoalId;
+		ggGraph.selectedGoalId = goalId;
 		redraw();
 	}
 
