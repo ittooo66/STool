@@ -6,7 +6,7 @@ import processing.core.PConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListBox implements Drawable {
+public class ListBox {
 
 	//dh:１カラムの幅
 	protected int x, y, w, h, dh;

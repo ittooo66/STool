@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * ・null値：編集操作成功<p>
  * ・文字列：エラーメッセージ
  */
-public class FGModelAdapter implements FGModel {
+public class FGModelAdapter{
 	private FGModelCore fgm;
 
 	//VERSION指定(ASIS，TOBE)

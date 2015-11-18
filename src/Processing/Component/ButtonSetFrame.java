@@ -5,7 +5,7 @@ import processing.core.PApplet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ButtonSetFrame implements Drawable {
+public class ButtonSetFrame {
 
 	private int x, y, w, h;
 	private String title;
