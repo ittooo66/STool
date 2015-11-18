@@ -72,8 +72,8 @@ public class PFGraph extends PApplet {
 		noFill();
 
 		//各リレーションを描画
-		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).size(); i++) {
-			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).get(i);
+		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
+			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
 			Domain rootDomain = sToolEditor.fgm.getDomainById(pfi.rootDomainId);
 			Domain distDomain = sToolEditor.fgm.getDomainById(pfi.distDomainId);
 
@@ -140,8 +140,8 @@ public class PFGraph extends PApplet {
 		}
 
 		//インターフェース、イベント描画
-		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).size(); interfaceIndex++) {
-			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).get(interfaceIndex);
+		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList().size(); interfaceIndex++) {
+			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(interfaceIndex);
 			if (selectedInterfaceIndex == interfaceIndex) {
 				//pfEvent描画
 				List<PFEvent> pfEventListT = pfi.getEvents(true);
@@ -265,8 +265,8 @@ public class PFGraph extends PApplet {
 		}
 
 		//マウスクリック範囲にインターフェースがあれば、それを選択
-		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).size(); i++) {
-			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).get(i);
+		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
+			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
 			if (PUtility.mouseIsInEllipse(pfi.x, pfi.y, 10, 10, mouseX, mouseY)) {
 				selectedDomainId = -1;
 				selectedInterfaceIndex = i;
@@ -292,9 +292,9 @@ public class PFGraph extends PApplet {
 		int e = event.getCount() > 0 ? 1 : -1;
 
 		PFInterface pfi = null;
-		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).size(); interfaceIndex++)
+		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList().size(); interfaceIndex++)
 			if (selectedInterfaceIndex == interfaceIndex)
-				pfi = sToolEditor.fgm.getPFInterfaceList(sToolEditor.getViewmode()).get(interfaceIndex);
+				pfi = sToolEditor.fgm.getPFInterfaceList().get(interfaceIndex);
 		if (pfi == null) return;
 
 		//スクロール箇所の特定・適用

@@ -148,8 +148,15 @@ public class GGGraph extends PApplet {
 		textAlign(CENTER, CENTER);
 		for (Goal g : sToolEditor.fgm.getGoals()) {
 
-			//fill変更(リーフか否か,選択中か否か)
-			fill(g.id == selectedGoalId ? COLOR_SELECTED : g.isEnable ? COLOR_FILL : COLOR_BACKGROUND);
+			//fill変更(Enableか否か,選択中か否か)
+			if (g.id == selectedGoalId) {
+				fill(COLOR_SELECTED);
+			} else if (sToolEditor.fgm.getVersion() == FGModelAdapter.VERSION.ASIS && g.isEnableForAsIs ||
+					sToolEditor.fgm.getVersion() == FGModelAdapter.VERSION.TOBE && g.isEnableForToBe) {
+				fill(COLOR_FILL);
+			} else {
+				fill(COLOR_BACKGROUND);
+			}
 			//stroke変更(選択中か否か)
 			if (g.id == selectedGoalId) noStroke();
 			else stroke(COLOR_LINES);
@@ -201,7 +208,7 @@ public class GGGraph extends PApplet {
 			Goal preSelectedGoal = sToolEditor.fgm.getGoalById(preSelectedGoalId);
 			if (preSelectedGoal != null && sToolEditor.fgm.getGoalById(selectedGoalId) != null) {
 				preSelectedGoal.parentId = selectedGoalId;
-				String str = sToolEditor.fgm.editGoal(preSelectedGoal.id, preSelectedGoal.name, preSelectedGoal.childrenType, selectedGoalId, preSelectedGoal.isEnable);
+				String str = sToolEditor.fgm.editGoal(preSelectedGoal.id, preSelectedGoal.name, preSelectedGoal.childrenType, selectedGoalId, preSelectedGoal.isEnableForAsIs, preSelectedGoal.isEnableForToBe);
 				if (str != null) {
 					JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
