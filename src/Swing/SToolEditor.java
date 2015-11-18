@@ -79,6 +79,7 @@ public class SToolEditor extends JFrame {
 		sharedEndPanel.add(viewmodeJRBG);
 		//差分ブラウザを開く
 		JButton diffBrowseButton = new JButton("Open Diff Browser");
+		diffBrowseButton.setEnabled(false);
 		diffBrowseButton.addActionListener(e -> diffBrowseButtonPressed());
 		sharedEndPanel.add(diffBrowseButton);
 		//Metricsウィンドウを開く
