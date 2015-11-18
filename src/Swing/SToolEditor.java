@@ -59,7 +59,7 @@ public class SToolEditor extends JFrame {
 		versionJRBG.add(toBeVer);
 		sharedEndPanel.add(versionJRBG);
 		//viewmode作成
-		JRadioButton viewAll = new JRadioButton("All");
+		JRadioButton viewAll = new JRadioButton("All", true);
 		viewAll.addActionListener(e -> {
 			fgm.setViewmode(FGModelAdapter.VIEWMODE.ALL);
 			redraw();
