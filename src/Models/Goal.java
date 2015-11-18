@@ -7,7 +7,8 @@ public class Goal implements Cloneable {
 	public String name;
 
 	//このゴールを選択中かどうか
-	public boolean isEnable;
+	public boolean isEnableForAsIs;
+	public boolean isEnableForToBe;
 
 	//親ゴールのID
 	public int parentId;
