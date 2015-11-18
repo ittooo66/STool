@@ -48,12 +48,9 @@ public class GGGraph extends PApplet {
 		//背景描画
 		background(COLOR.BACKGROUND);
 
-		//記述の下準備
-		stroke(COLOR.LINES);
-		strokeWeight(1);
-		noFill();
-
 		//ANDArc描画
+		stroke(COLOR.LINES);
+		noFill();
 		for (Goal parentGoal : sToolEditor.fgm.getGoals()) {
 			if (parentGoal.childrenType.equals(Goal.ChildrenType.AND)) {
 
@@ -133,7 +130,6 @@ public class GGGraph extends PApplet {
 
 					//枝引き
 					line(parentGoal.x, parentGoal.y, x + childGoal.x, y + childGoal.y);
-					//Direction表示用Ellipse
 					ellipse(childGoal.x + x, childGoal.y + y, 10, 10);
 				}
 			}
