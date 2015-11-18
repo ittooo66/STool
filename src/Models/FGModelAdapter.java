@@ -336,13 +336,35 @@ public class FGModelAdapter implements FGModel {
 	}
 
 	/**
+	 * 関連イベントを持つドメインかどうかを返す
+	 *
+	 * @param domainId ドメインID
+	 * @return 関連イベントを持つなら真
+	 */
+	public boolean hasRelatedEvent(int domainId) {
+		boolean hasRelatedEvent = false;
+		List<PFInterface> interfaces = getPFInterfaceList();
+		for (PFInterface pfi : interfaces) {
+			if (pfi.rootDomainId == domainId || pfi.distDomainId == domainId) hasRelatedEvent = true;
+		}
+		return hasRelatedEvent;
+	}
+
+	/**
 	 * InterfaceとしてFGMODELから各要素を取得
+	 * インスタンスの保持するVersionで有効なインターフェースのみを返す
 	 *
 	 * @return Interfaceのリスト
 	 */
 	public List<PFInterface> getPFInterfaceList() {
 		List<PFInterface> interfaces = new ArrayList<>();
 		for (Usecase uc : getUsecases()) {
+			//Usecaseが有効(EnableGoalと連結)でなければcontinue
+			Goal pg = getGoalById(uc.parentLeafGoalId);
+			if (pg == null) continue;
+			if (version == VERSION.ASIS && !pg.isEnableForAsIs) continue;
+			if (version == VERSION.TOBE && !pg.isEnableForToBe) continue;
+
 			for (Step s : uc.getAllActionStep()) {
 				//追加フラグ
 				boolean hasInterface = false;
