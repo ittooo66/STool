@@ -2,6 +2,7 @@ package Swing;
 
 import Models.Domain;
 import Processing.PFGraph;
+import Swing.Component.TitledJRadioButtonGroupPanel;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -25,7 +26,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JButton remove, add;
 	private JTextArea nameArea;
 	private JRadioButton domainTypeNone, domainTypeBiddable, domainTypeCausal, domainTypeLexical, domainTypeSystem, domainTypeDesigned;
-	private JPanel domainType;
+	private TitledJRadioButtonGroupPanel domainType;
 
 	//Draw中のフラグ
 	private boolean isDrawing;
@@ -67,24 +68,14 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		domainTypeSystem.addActionListener(this);
 		domainTypeDesigned = new JRadioButton("DESIGNED");
 		domainTypeDesigned.addActionListener(this);
-		//DomainTypeButtonGroup作成
-		ButtonGroup domainTypeButtonGroup = new ButtonGroup();
-		domainTypeButtonGroup.add(domainTypeNone);
-		domainTypeButtonGroup.add(domainTypeBiddable);
-		domainTypeButtonGroup.add(domainTypeCausal);
-		domainTypeButtonGroup.add(domainTypeLexical);
-		domainTypeButtonGroup.add(domainTypeSystem);
-		domainTypeButtonGroup.add(domainTypeDesigned);
-		//DomainTyoeグループのラベル（パネル）作成
-		domainType = new JPanel();
+		//DomainTyoeグループのパネル作成
+		domainType = new TitledJRadioButtonGroupPanel("DomainType");
 		domainType.add(domainTypeNone);
 		domainType.add(domainTypeBiddable);
 		domainType.add(domainTypeCausal);
 		domainType.add(domainTypeLexical);
 		domainType.add(domainTypeSystem);
 		domainType.add(domainTypeDesigned);
-		domainType.setBorder(new TitledBorder(new EtchedBorder(), "DomainType"));
-		domainType.setVisible(false);
 		this.add(domainType);
 
 		//Remove Button

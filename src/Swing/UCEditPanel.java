@@ -4,6 +4,7 @@ import Models.Domain;
 import Models.Step;
 import Models.Usecase;
 import Processing.UCGraph;
+import Swing.Component.TitledJRadioButtonGroupPanel;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -24,7 +25,8 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JTextArea nameArea, conditionArea, eventNameArea;
 	private JPanel conditionAreaPanel, sourceStepComboBoxPanel;
 	private JPanel parentGoalNameLabelPanel, nameAreaPanel;
-	private JPanel stepTypePanel, subjectComboBoxPanel, objectComboBoxPanel, eventNameAreaPanel, toComboBoxPanel;
+	private JPanel subjectComboBoxPanel, objectComboBoxPanel, eventNameAreaPanel, toComboBoxPanel;
+	private TitledJRadioButtonGroupPanel stepTypePanel;
 	private JRadioButton stepTypeNop, stepTypeAction, stepTypeGoto, stepTypeInclude;
 	private JLabel parentGoalNameLabel;
 	private JComboBox sourceStepComboBox, subjectComboBox, objectComboBox, toComboBox;
@@ -86,20 +88,11 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		stepTypeGoto.addActionListener(this);
 		stepTypeInclude = new JRadioButton("INCLUDE");
 		stepTypeInclude.addActionListener(this);
-		//stepTypeButtonGroup作成
-		ButtonGroup stepTypeButtonGroup = new ButtonGroup();
-		stepTypeButtonGroup.add(stepTypeNop);
-		stepTypeButtonGroup.add(stepTypeAction);
-		stepTypeButtonGroup.add(stepTypeGoto);
-		stepTypeButtonGroup.add(stepTypeInclude);
-		//StepTypeグループのラベル（パネル）作成
-		stepTypePanel = new JPanel();
+		stepTypePanel = new TitledJRadioButtonGroupPanel("StepType");
 		stepTypePanel.add(stepTypeNop);
 		stepTypePanel.add(stepTypeAction);
 		stepTypePanel.add(stepTypeGoto);
 		stepTypePanel.add(stepTypeInclude);
-		stepTypePanel.setBorder(new TitledBorder(new EtchedBorder(), "StepType"));
-		stepTypePanel.setVisible(false);
 		this.add(stepTypePanel);
 
 		//subjectComboBox
