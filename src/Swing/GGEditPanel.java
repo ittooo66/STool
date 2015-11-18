@@ -4,6 +4,7 @@ import Models.FGModelAdapter;
 import Models.Goal;
 import Processing.GGGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.VisibilitySet;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -23,14 +24,14 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private final SToolEditor ste;
 	private final GGGraph ggg;
 
-	//GGEditorコンポーネント
-	private JButton add, remove;
-	private JRadioButton refineTypeAnd, refineTypeOr, refineTypeLeaf, necessityIsEnable, necessityIsDisable;
+	//可視性セット
+	private VisibilitySet goalSelectedVisibility, goalNotSelectedVisibility;
+
+	//各種Component
 	private JTextArea nameArea;
-	private JPanel parentComboBoxBorder;
-	private TitledJRadioButtonGroupPanel refineType, necessity;
 	private JComboBox<String> parentComboBox;
 	private List<Integer> parentComboBoxIdList;
+	private TitledJRadioButtonGroupPanel refineType, necessity;
 
 	//Draw中のフラグ
 	private boolean isDrawing;
@@ -43,6 +44,10 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setPreferredSize(new Dimension(0, 80));
 		this.setBorder(new EtchedBorder());
 
+		//可視性セット
+		goalSelectedVisibility = new VisibilitySet();
+		goalNotSelectedVisibility = new VisibilitySet();
+
 		//NameTextArea周り
 		nameArea = new JTextArea(2, 15);
 		nameArea.getDocument().addDocumentListener(this);
@@ -54,51 +59,44 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(nameAreaBorder);
 
 		//Add New Goal Button
-		add = new JButton("Add New Goal");
-		add.addActionListener(e -> add());
-		this.add(add);
+		JButton addButton = new JButton("Add New Goal");
+		addButton.addActionListener(e -> add());
+		this.add(addButton);
+		goalNotSelectedVisibility.add(addButton);
 
 		//parent指定ComboBox周り
 		parentComboBox = new JComboBox<>();
 		parentComboBox.addActionListener(this);
-		parentComboBoxBorder = new JPanel();
+		JPanel parentComboBoxBorder = new JPanel();
 		parentComboBoxBorder.add(parentComboBox);
 		parentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
 		this.add(parentComboBoxBorder);
 		parentComboBoxIdList = new ArrayList<>();
+		goalSelectedVisibility.add(parentComboBoxBorder);
 
-		//refineType周り
-		refineTypeAnd = new JRadioButton("AND");
-		refineTypeAnd.setSelected(true);
-		refineTypeAnd.addActionListener(this);
-		refineTypeOr = new JRadioButton("OR");
-		refineTypeOr.addActionListener(this);
-		refineTypeLeaf = new JRadioButton("LEAF");
-		refineTypeLeaf.addActionListener(this);
-		//RefineTyoeグループのパネル作成
+		//refineType
 		refineType = new TitledJRadioButtonGroupPanel("RefineType");
-		refineType.add(refineTypeAnd);
-		refineType.add(refineTypeOr);
-		refineType.add(refineTypeLeaf);
+		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.AND), true));
+		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.OR)));
+		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.LEAF)));
+		refineType.addActionListenerToAll(this);
 		this.add(refineType);
+		goalSelectedVisibility.add(refineType);
 
-		//Necessity周り
-		necessityIsEnable = new JRadioButton("Enable");
-		necessityIsEnable.setSelected(true);
-		necessityIsEnable.addActionListener(this);
-		necessityIsDisable = new JRadioButton("Disable");
-		necessityIsDisable.addActionListener(this);
-		//Necessityグループのパネル作成
+		//Necessity
 		necessity = new TitledJRadioButtonGroupPanel("Necessity");
-		necessity.add(necessityIsEnable);
-		necessity.add(necessityIsDisable);
+		necessity.add(new JRadioButton("Enable", true));
+		necessity.add(new JRadioButton("Disable"));
+		necessity.addActionListenerToAll(this);
 		this.add(necessity);
+		goalSelectedVisibility.add(necessity);
 
 		//RemoveButton
-		remove = new JButton("Remove Goal");
-		remove.addActionListener(e -> remove());
-		remove.setVisible(false);
-		this.add(remove);
+		JButton removeButton = new JButton("Remove Goal");
+		removeButton.addActionListener(e -> remove());
+		removeButton.setVisible(false);
+		this.add(removeButton);
+		goalSelectedVisibility.add(removeButton);
 	}
 
 	public void redraw() {
@@ -126,17 +124,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			if (!nameArea.hasFocus()) nameArea.setText(selectedGoal.name);
 
 			//RefineType更新
-			switch (selectedGoal.childrenType) {
-				case AND:
-					refineTypeAnd.setSelected(true);
-					break;
-				case OR:
-					refineTypeOr.setSelected(true);
-					break;
-				case LEAF:
-					refineTypeLeaf.setSelected(true);
-					break;
-			}
+			refineType.setSelected(selectedGoal.childrenType.toString());
 
 			//ComboBox選択
 			for (int id : parentComboBoxIdList) {
@@ -149,25 +137,22 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			//Necessity更新
 			if (ste.fgm.getVersion() == FGModelAdapter.VERSION.ASIS) {
 				if (selectedGoal.isEnableForAsIs) {
-					necessityIsEnable.setSelected(true);
+					necessity.setSelected("Enable");
 				} else {
-					necessityIsDisable.setSelected(true);
+					necessity.setSelected("Disable");
 				}
 			} else if (ste.fgm.getVersion() == FGModelAdapter.VERSION.TOBE) {
 				if (selectedGoal.isEnableForToBe) {
-					necessityIsEnable.setSelected(true);
+					necessity.setSelected("Enable");
 				} else {
-					necessityIsDisable.setSelected(true);
+					necessity.setSelected("Disable");
 				}
 			}
 		}
 
-		//GGEditor各種コンポーネント:表示・非表示切り替え
-		add.setVisible(ggg.selectedGoalId == -1);
-		remove.setVisible(ggg.selectedGoalId != -1);
-		necessity.setVisible(ggg.selectedGoalId != -1);
-		refineType.setVisible(ggg.selectedGoalId != -1);
-		parentComboBoxBorder.setVisible(ggg.selectedGoalId != -1);
+		//Visibility切り替え
+		goalSelectedVisibility.setVisible(ggg.selectedGoalId != -1);
+		goalNotSelectedVisibility.setVisible(ggg.selectedGoalId == -1);
 
 		//draw終了
 		isDrawing = false;
@@ -177,14 +162,14 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		//各種コンポーネントからパラメータ取得
 		String name = nameArea.getText();
 		Goal prevGoal = ste.fgm.getGoalById(ggg.selectedGoalId);
-		Goal.ChildrenType ct = refineTypeAnd.isSelected() ? Goal.ChildrenType.AND : refineTypeOr.isSelected() ? Goal.ChildrenType.OR : Goal.ChildrenType.LEAF;
+		Goal.ChildrenType ct = Goal.ChildrenType.parse(refineType.getSelectedButtonCommand());
 		int parentId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
 		boolean isEnableForAsIs = prevGoal.isEnableForAsIs;
 		boolean isEnableForToBe = prevGoal.isEnableForToBe;
 		if (ste.fgm.getVersion() == FGModelAdapter.VERSION.ASIS) {
-			isEnableForAsIs = necessityIsEnable.isSelected();
+			isEnableForAsIs = necessity.getSelectedButtonCommand().equals("Enable");
 		} else if (ste.fgm.getVersion() == FGModelAdapter.VERSION.TOBE) {
-			isEnableForToBe = necessityIsEnable.isSelected();
+			isEnableForToBe = necessity.getSelectedButtonCommand().equals("Enable");
 		}
 
 		//fgm編集
