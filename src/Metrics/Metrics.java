@@ -87,6 +87,12 @@ public class Metrics {
 			//fgmodel中のすべてのActionStepを取得
 			List<Step> allActionStepList = new ArrayList<>();
 			for (Usecase uc : fgm.getUsecases()) {
+				//カウント対象でなければContinure
+				if (fgm.getVersion() == FGModelAdapter.VERSION.ASIS && !fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs)
+					continue;
+				if (fgm.getVersion() == FGModelAdapter.VERSION.TOBE && !fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe)
+					continue;
+
 				allActionStepList.addAll(uc.getAllActionStep().stream().collect(Collectors.toList()));
 			}
 
@@ -124,6 +130,12 @@ public class Metrics {
 	public static int getUCP(FGModelAdapter fgm) {
 		int ucp = 0;
 		for (Usecase uc : fgm.getUsecases()) {
+			//カウント対象でなければContinue
+			if (fgm.getVersion() == FGModelAdapter.VERSION.ASIS && !fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs)
+				continue;
+			if (fgm.getVersion() == FGModelAdapter.VERSION.TOBE && !fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe)
+				continue;
+
 			for (Step s : uc.getAllActionStep()) {
 				//Biddable Domainの関与するイベントのみ３ポイントでほかは１ポイント。
 				//両端で計測するので２倍
