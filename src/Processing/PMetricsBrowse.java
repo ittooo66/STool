@@ -48,13 +48,15 @@ public class PMetricsBrowse extends PApplet {
 				case ACC:
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getACC(uc, fgm);
-						lbc.add(new ListBoxContent(id++, uc.name, param));
+						boolean isEnable = fgm.getVersion() == FGModelAdapter.VERSION.ASIS ? fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs : fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
+						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
 					}
 					break;
 				case ANOS:
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getANOS(uc, fgm);
-						lbc.add(new ListBoxContent(id++, uc.name, param));
+						boolean isEnable = fgm.getVersion() == FGModelAdapter.VERSION.ASIS ? fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs : fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
+						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
 					}
 					break;
 				case NE:

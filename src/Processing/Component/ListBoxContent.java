@@ -33,4 +33,11 @@ public class ListBoxContent {
 		this.isBold = false;
 		this.param = param;
 	}
+
+	public ListBoxContent(int id, String name, int param, boolean isBold) {
+		this.id = id;
+		this.name = name;
+		this.isBold = isBold;
+		this.param = param;
+	}
 }
