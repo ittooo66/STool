@@ -43,6 +43,7 @@ public class Goal implements Cloneable {
 		}
 
 		public static ChildrenType parse(String str) {
+			if (str == null) return null;
 			switch (str) {
 				case "AND":
 					return AND;
@@ -54,7 +55,8 @@ public class Goal implements Cloneable {
 			return null;
 		}
 
-		public static String toString(ChildrenType ct) {
+		public static String getString(ChildrenType ct) {
+			if (ct == null) return null;
 			switch (ct) {
 				case AND:
 					return "AND";
