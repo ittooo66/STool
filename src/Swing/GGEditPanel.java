@@ -1,5 +1,6 @@
 package Swing;
 
+import Models.FGModelAdapter;
 import Models.Goal;
 import Processing.GGGraph;
 
@@ -157,10 +158,18 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			}
 
 			//Necessity更新
-			if (selectedGoal.isEnable) {
-				necessityIsEnable.setSelected(true);
-			} else {
-				necessityIsDisable.setSelected(true);
+			if (ste.fgm.getVersion() == FGModelAdapter.VERSION.ASIS) {
+				if (selectedGoal.isEnableForAsIs) {
+					necessityIsEnable.setSelected(true);
+				} else {
+					necessityIsDisable.setSelected(true);
+				}
+			} else if (ste.fgm.getVersion() == FGModelAdapter.VERSION.TOBE) {
+				if (selectedGoal.isEnableForToBe) {
+					necessityIsEnable.setSelected(true);
+				} else {
+					necessityIsDisable.setSelected(true);
+				}
 			}
 		}
 
@@ -181,10 +190,16 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		Goal prevGoal = ste.fgm.getGoalById(ggg.selectedGoalId);
 		Goal.ChildrenType ct = refineTypeAnd.isSelected() ? Goal.ChildrenType.AND : refineTypeOr.isSelected() ? Goal.ChildrenType.OR : Goal.ChildrenType.LEAF;
 		int parentId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
-		boolean isEnable = necessityIsEnable.isSelected();
+		boolean isEnableForAsIs = prevGoal.isEnableForAsIs;
+		boolean isEnableForToBe = prevGoal.isEnableForToBe;
+		if (ste.fgm.getVersion() == FGModelAdapter.VERSION.ASIS) {
+			isEnableForAsIs = necessityIsEnable.isSelected();
+		} else if (ste.fgm.getVersion() == FGModelAdapter.VERSION.TOBE) {
+			isEnableForToBe = necessityIsEnable.isSelected();
+		}
 
 		//fgm編集
-		String str = ste.fgm.editGoal(prevGoal.id, name, ct, parentId, isEnable);
+		String str = ste.fgm.editGoal(prevGoal.id, name, ct, parentId, isEnableForAsIs, isEnableForToBe);
 		if (str != null) {
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
