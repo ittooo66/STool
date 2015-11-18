@@ -43,28 +43,29 @@ public class PMetricsBrowse extends PApplet {
 
 		public static List<ListBoxContent> getList(MetricsType mt, FGModelAdapter fgm) {
 			List<ListBoxContent> lbc = new ArrayList<>();
+			int id = 0;
 			switch (mt) {
 				case ACC:
 					for (Usecase uc : fgm.getUsecases()) {
-						int i = Metrics.getACC(uc, fgm);
-						lbc.add(new ListBoxContent(i, uc.name));
+						int param = Metrics.getACC(uc, fgm);
+						lbc.add(new ListBoxContent(id++, uc.name, param));
 					}
 					break;
 				case ANOS:
 					for (Usecase uc : fgm.getUsecases()) {
-						int i = Metrics.getANOS(uc, fgm);
-						lbc.add(new ListBoxContent(i, uc.name));
+						int param = Metrics.getANOS(uc, fgm);
+						lbc.add(new ListBoxContent(id++, uc.name, param));
 					}
 					break;
 				case NE:
 					for (Domain d : fgm.getDomains()) {
-						int i = Metrics.getNE(d, fgm);
-						lbc.add(new ListBoxContent(i, Domain.DomainType.getPrefix(d.domainType) + ":" + d.name));
+						int param = Metrics.getNE(d, fgm);
+						lbc.add(new ListBoxContent(id++, Domain.DomainType.getPrefix(d.domainType) + ":" + d.name, param));
 					}
 					break;
 				case UCP:
-					int i = Metrics.getUCP(fgm);
-					lbc.add(new ListBoxContent(i, "Usecase Point"));
+					int param = Metrics.getUCP(fgm);
+					lbc.add(new ListBoxContent(id++, "Usecase Point", param));
 			}
 			return lbc;
 		}
