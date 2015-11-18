@@ -29,6 +29,12 @@ public class ListBox implements Drawable {
 		this.contents = contents;
 	}
 
+	/**
+	 * 特定のマウスカーソル上にあるコンテンツを返す
+	 * @param mouseX マウスカーソルX座標
+	 * @param mouseY マウスカーソルY座標
+	 * @return コンテンツ
+	 */
 	public ListBoxContent getContentOnMouse(int mouseX, int mouseY) {
 		for (int i = 0, j = scrollIndex; j < contents.size(); i++, j++) {
 			if (PUtility.mouseIsInRect(x, y + i * dh, w, dh, mouseX, mouseY)) return contents.get(j);
@@ -44,6 +50,17 @@ public class ListBox implements Drawable {
 	public void scroll(int e) {
 		scrollIndex = (scrollIndex + e > 0) ? (scrollIndex + e < contents.size()) ? scrollIndex + e : scrollIndex : 0;
 		if (e == 0) scrollIndex = 0;
+	}
+
+	/**
+	 * このListBoxが特定のマウスカーソル上にあるか
+	 *
+	 * @param mouseX マウスカーソルX座標
+	 * @param mouseY マウスカーソルY座標
+	 * @return あるかどうか
+	 */
+	public boolean isOn(int mouseX, int mouseY) {
+		return PUtility.mouseIsInRect(x, y, w, h, mouseX, mouseY);
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package Processing;
 
+import Models.FGModelAdapter;
+import Models.Goal;
 import Processing.Component.*;
 import Swing.SToolEditor;
 import Models.Step;
@@ -23,7 +25,7 @@ public class UCGraph extends PApplet {
 
 	//ButtonSetFrameとListBox
 	private ButtonSetFrame usecaseBSF, altFlowBSF, excFlowBSF, stepBSF;
-	private ListBox usecaseLB, altFlowLB, excFlowLB, stepLB;
+	private ListBox usecaseLB, mainFlowLB, altFlowLB, excFlowLB, stepLB;
 
 	//本体
 	private SToolEditor sToolEditor;
@@ -62,6 +64,7 @@ public class UCGraph extends PApplet {
 
 		//ListBoxをSetup
 		usecaseLB = new ListBox();
+		mainFlowLB = new ListBox();
 		altFlowLB = new ListBox();
 		excFlowLB = new ListBox();
 		stepLB = new ListBox();
@@ -80,15 +83,9 @@ public class UCGraph extends PApplet {
 		else hasChanges = false;
 
 		background(COLOR.BACKGROUND);
-		fill(COLOR.LINES);
-		stroke(COLOR.LINES);
-		noFill();
-		strokeWeight(1);
 
 		COLUMN_WIDTH = (width - 4 * MERGIN) / 3;
 		ALT_EXC_HEIGHT = (height - 8 * MERGIN) / 2;
-
-		textAlign(CENTER, CENTER);
 
 		//ButtonSetFrame記述
 		usecaseBSF.adjust(MERGIN, MERGIN, COLUMN_WIDTH, MERGIN);
@@ -100,11 +97,15 @@ public class UCGraph extends PApplet {
 		stepBSF.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
 		stepBSF.draw(this);
 
-		//TODO:ASIS,TOBE,ALL,REDUCEDを考慮した詰め込みにする
 		//usecaseLB中身詰め込み+draw()
 		List<ListBoxContent> lbc = new ArrayList<>();
-		List<Usecase> usecases = sToolEditor.fgm.getUsecases();
-		for (Usecase uc : usecases) lbc.add(new ListBoxContent(uc.id, uc.name));
+		for (Usecase uc : sToolEditor.fgm.getUsecases()) {
+			//詰め込み外対象でなければ詰め込み
+			Goal g = sToolEditor.fgm.getGoalById(uc.parentLeafGoalId);
+			boolean isEnable = sToolEditor.fgm.getVersion() == FGModelAdapter.VERSION.ASIS ? g.isEnableForAsIs : g.isEnableForToBe;
+			if (sToolEditor.fgm.getViewmode() != FGModelAdapter.VIEWMODE.REDUCED || isEnable)
+				lbc.add(new ListBoxContent(uc.id, uc.name, isEnable));
+		}
 		usecaseLB.setContents(lbc);
 		usecaseLB.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, MERGIN, selectedUsecaseId);
 		usecaseLB.draw(this);
@@ -115,20 +116,11 @@ public class UCGraph extends PApplet {
 		List<List<Step>> excFlowList = new ArrayList<>();
 
 		//mainFlow記述
-		if (selectedFlowType == 0) {
-			noStroke();
-			fill(COLOR.SELECTED);
-			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
-		} else if (selectedUsecaseId != -1) {
-			stroke(COLOR.LINES);
-			noFill();
-			strokeWeight(PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, mouseX, mouseY) ? (float) 1.5 : 1);
-			rect(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN);
-			strokeWeight(1);
-		}
-		noStroke();
-		fill(selectedFlowType == 0 || selectedUsecaseId == -1 ? COLOR.BACKGROUND : COLOR.LINES);
-		text("MainFlow", 2 * MERGIN + COLUMN_WIDTH + 7, 2 * MERGIN, COLUMN_WIDTH - 7, MERGIN);
+		lbc = new ArrayList<>();
+		if (selectedUsecaseId != -1) lbc.add(new ListBoxContent(0, "MainFlow"));
+		mainFlowLB.setContents(lbc);
+		mainFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, MERGIN, MERGIN, selectedFlowType);
+		mainFlowLB.draw(this);
 
 		//altFlow中身詰め込み+draw()
 		lbc = new ArrayList<>();
@@ -288,20 +280,17 @@ public class UCGraph extends PApplet {
 	}
 
 	public void mouseWheel(MouseEvent event) {
+		//マウス位置取得
+		int x = mouseX;
+		int y = mouseY;
 		//カウント取得
 		int e = event.getCount() > 0 ? 1 : -1;
-
 		//スクロール箇所の特定・適用
-		if (PUtility.mouseIsInRect(MERGIN, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
-			usecaseLB.scroll(e);
-		} else if (PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 4 * MERGIN, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
-			altFlowLB.scroll(e);
-		} else if (PUtility.mouseIsInRect(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT, COLUMN_WIDTH, ALT_EXC_HEIGHT, mouseX, mouseY)) {
-			excFlowLB.scroll(e);
-		} else if (PUtility.mouseIsInRect(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, height - 3 * MERGIN, mouseX, mouseY)) {
-			stepLB.scroll(e);
-		}
-
+		if (usecaseLB.isOn(x, y)) usecaseLB.scroll(e);
+		if (altFlowLB.isOn(x, y)) altFlowLB.scroll(e);
+		if (excFlowLB.isOn(x, y)) excFlowLB.scroll(e);
+		if (stepLB.isOn(x, y)) stepLB.scroll(e);
+		//再描画
 		redraw();
 	}
 
