@@ -18,28 +18,6 @@ public class SToolEditor extends JFrame {
 	//融合ゴールモデル
 	public FGModelAdapter fgm;
 
-	//バージョン指定
-	private VERSION version;
-
-	public enum VERSION {
-		ASIS, TOBE
-	}
-
-	public VERSION getVersion() {
-		return version;
-	}
-
-	//ビュー指定
-	private VIEWMODE viewmode;
-
-	public enum VIEWMODE {
-		ALL, REDUCED
-	}
-
-	public VIEWMODE getViewmode() {
-		return viewmode;
-	}
-
 	//EditPanel
 	private final GGEditPanel ggEditPanel;
 	private final PFEditPanel pfEditPanel;
@@ -110,24 +88,18 @@ public class SToolEditor extends JFrame {
 		sharedEndPanel.add(metricsBrowseButton);
 		/////////////////////////////MenuBar作成/////////////////////////////
 		JMenuBar jMenuBar = new JMenuBar();
-
 		JMenu fileMenu = new JMenu("File");
 		jMenuBar.add(fileMenu);
-
 		JMenuItem fileNewMenuItem = new JMenuItem("New");
 		fileNewMenuItem.addActionListener(e -> menuFileNewPressed());
 		fileMenu.add(fileNewMenuItem);
-
 		JMenuItem fileOpenMenuItem = new JMenuItem("Open");
 		fileOpenMenuItem.addActionListener(e -> menuFileOpenPressed());
 		fileMenu.add(fileOpenMenuItem);
-
 		JMenuItem fileSaveAsMenuItem = new JMenuItem("Save As");
 		fileSaveAsMenuItem.addActionListener(e -> menuFileSaveAsPressed());
 		fileMenu.add(fileSaveAsMenuItem);
-
 		setJMenuBar(jMenuBar);
-
 		//////////////////////////////GGTab部分作成///////////////////////////////
 		JPanel ggPanel = new JPanel(new BorderLayout());
 		//ggTabのProcessing周り
@@ -212,26 +184,6 @@ public class SToolEditor extends JFrame {
 
 	private void diffBrowseButtonPressed() {
 		//TODO:DiffBrowser作成（Priority:3）
-	}
-
-	private void viewmodeReducedRadioButtonPressed() {
-		viewmode = VIEWMODE.REDUCED;
-		redraw();
-	}
-
-	private void viewmodeAllRadioButtonPressed() {
-		viewmode = VIEWMODE.ALL;
-		redraw();
-	}
-
-	private void versionAsIsRadioButtonPressed() {
-		version = VERSION.ASIS;
-		redraw();
-	}
-
-	private void versionToBeRadioButtonPressed() {
-		version = VERSION.TOBE;
-		redraw();
 	}
 
 	/**
