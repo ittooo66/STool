@@ -44,18 +44,17 @@ public class SToolEditor extends JFrame {
 		JPanel sharedEndPanel = new JPanel();
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//version作成
-		JRadioButton asIsVer = new JRadioButton("As-Is");
-		asIsVer.setSelected(true);
+		TitledJRadioButtonGroupPanel versionJRBG = new TitledJRadioButtonGroupPanel("version");
+		JRadioButton asIsVer = new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.ASIS), true);
 		asIsVer.addActionListener(e -> {
 			fgm.setVersion(FGModelAdapter.VERSION.ASIS);
 			redraw();
 		});
-		JRadioButton toBeVer = new JRadioButton("To-Be");
+		JRadioButton toBeVer = new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.TOBE));
 		toBeVer.addActionListener(e -> {
 			fgm.setVersion(FGModelAdapter.VERSION.TOBE);
 			redraw();
 		});
-		TitledJRadioButtonGroupPanel versionJRBG = new TitledJRadioButtonGroupPanel("version");
 		versionJRBG.add(asIsVer);
 		versionJRBG.add(toBeVer);
 		sharedEndPanel.add(versionJRBG);

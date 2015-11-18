@@ -1,7 +1,5 @@
 package Models;
 
-import Swing.SToolEditor;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,28 @@ public class FGModelAdapter implements FGModel {
 	private VERSION version;
 
 	public enum VERSION {
-		ASIS, TOBE
+		ASIS, TOBE;
+
+		public static String getString(VERSION version) {
+			if (version == null) return null;
+			switch (version) {
+				case ASIS:
+					return "As-Is";
+				case TOBE:
+					return "To-Be";
+			}
+			return null;
+		}
+
+		public VERSION parse(String version) {
+			if (version == null) return null;
+			if (version.equals(getString(ASIS))) {
+				return ASIS;
+			} else if (version.equals(getString(TOBE))) {
+				return TOBE;
+			}
+			return null;
+		}
 	}
 
 	public void setVersion(VERSION version) {

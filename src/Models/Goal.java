@@ -44,13 +44,12 @@ public class Goal implements Cloneable {
 
 		public static ChildrenType parse(String str) {
 			if (str == null) return null;
-			switch (str) {
-				case "AND":
-					return AND;
-				case "OR":
-					return OR;
-				case "LEAF":
-					return LEAF;
+			if (str.equals(getString(AND))) {
+				return AND;
+			} else if (str.equals(getString(OR))) {
+				return OR;
+			} else if (str.equals(getString(LEAF))) {
+				return LEAF;
 			}
 			return null;
 		}
@@ -59,11 +58,11 @@ public class Goal implements Cloneable {
 			if (ct == null) return null;
 			switch (ct) {
 				case AND:
-					return "AND";
+					return "And";
 				case OR:
-					return "OR";
+					return "Or";
 				case LEAF:
-					return "LEAF";
+					return "Leaf";
 			}
 			return null;
 		}

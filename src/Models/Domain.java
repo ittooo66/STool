@@ -33,19 +33,18 @@ public class Domain implements Cloneable {
 
 		public static DomainType parse(String str) {
 			if (str == null) return null;
-			switch (str) {
-				case "BIDDABLE":
-					return BIDDABLE;
-				case "CAUSAL":
-					return CAUSAL;
-				case "LEXICAL":
-					return LEXICAL;
-				case "SYSTEM":
-					return SYSTEM;
-				case "DESIGNED":
-					return DESIGNED;
-				case "NONE":
-					return NONE;
+			if (str.equals(getString(BIDDABLE))) {
+				return BIDDABLE;
+			} else if (str.equals(getString(CAUSAL))) {
+				return CAUSAL;
+			} else if (str.equals(getString(LEXICAL))) {
+				return LEXICAL;
+			} else if (str.equals(getString(SYSTEM))) {
+				return SYSTEM;
+			} else if (str.equals(getString(DESIGNED))) {
+				return DESIGNED;
+			} else if (str.equals(getString(NONE))) {
+				return NONE;
 			}
 			return null;
 		}

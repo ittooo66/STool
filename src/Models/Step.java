@@ -27,19 +27,19 @@ public class Step implements Cloneable {
 
 		//StringをStepTypeに
 		public static StepType parse(String str) {
-			switch (str) {
-				case "ALT_INDEX":
-					return ALT_INDEX;
-				case "EXC_INDEX":
-					return EXC_INDEX;
-				case "GOTO":
-					return GOTO;
-				case "INCLUDE":
-					return INCLUDE;
-				case "ACTION":
-					return ACTION;
-				case "NOP":
-					return NOP;
+			if (str == null) return null;
+			if (str.equals(getString(ALT_INDEX))) {
+				return ALT_INDEX;
+			} else if (str.equals(getString(EXC_INDEX))) {
+				return EXC_INDEX;
+			} else if (str.equals(getString(GOTO))) {
+				return GOTO;
+			} else if (str.equals(getString(INCLUDE))) {
+				return INCLUDE;
+			} else if (str.equals(getString(ACTION))) {
+				return ACTION;
+			} else if (str.equals(getString(NOP))) {
+				return NOP;
 			}
 			return null;
 		}
