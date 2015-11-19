@@ -255,6 +255,10 @@ public class PFGraph extends PApplet {
 		selectedDomainId = -1;
 		selectedInterfaceIndex = -1;
 		selectedEventIndex = -1;
+		eventLB.scroll(0);
+		invEventLB.scroll(0);
+		rootUCEventLB.scroll(0);
+		invRootUCEventLB.scroll(0);
 
 		//マウスクリック範囲にドメインがあれば、それを選択
 		for (Domain d : sToolEditor.fgm.getDomains()) {
