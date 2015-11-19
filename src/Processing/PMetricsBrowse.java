@@ -113,7 +113,7 @@ public class PMetricsBrowse extends PApplet {
 		background(255);
 
 		//Buttonsetframe更新して記述
-		bsf.setTitle(metricsType.toString());
+		bsf.setTitle(metricsType.toString() + "(" + FGModelAdapter.VERSION.getString(fgm.getVersion()) + ")");
 		bsf.adjust(20, 20, width - 60, 30);
 		bsf.draw(this);
 		//ListBox詰め込んで記述
