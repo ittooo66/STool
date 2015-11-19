@@ -5,6 +5,8 @@ import Models.Step;
 import Models.Usecase;
 import Processing.UCGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.ValuedComboBoxPanel;
+import Swing.Component.VisibilitySet;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -23,13 +25,12 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	private JButton jump;
 	private JTextArea nameArea, conditionArea, eventNameArea;
-	private JPanel conditionAreaPanel, sourceStepComboBoxPanel;
+	private JPanel conditionAreaPanel;
 	private JPanel parentGoalNameLabelPanel, nameAreaPanel;
-	private JPanel subjectComboBoxPanel, objectComboBoxPanel, eventNameAreaPanel, toComboBoxPanel;
+	private ValuedComboBoxPanel subjectComboBoxPanel, objectComboBoxPanel, toComboBoxPanel, sourceStepComboBoxPanel;
+	private JPanel eventNameAreaPanel;
 	private TitledJRadioButtonGroupPanel stepType;
 	private JLabel parentGoalNameLabel;
-	private JComboBox sourceStepComboBox, subjectComboBox, objectComboBox, toComboBox;
-	private List<Integer> sourceStepComboBoxIdList, objectAndSubjectComboBoxIdList, toComboBoxIdList;
 
 	//Draw中のフラグ
 	private boolean isDrawing;
@@ -67,15 +68,10 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		conditionAreaPanel.add(new JScrollPane(conditionArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
 		conditionAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Condition"));
 		this.add(conditionAreaPanel);
-		//sourceStepComboBox周り
-		sourceStepComboBox = new JComboBox();
-		sourceStepComboBox.setPreferredSize(new Dimension(160, 20));
-		sourceStepComboBox.addActionListener(this);
-		sourceStepComboBoxPanel = new JPanel();
-		sourceStepComboBoxPanel.add(sourceStepComboBox);
-		sourceStepComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "SourceStep"));
+		//sourceStepComboBox
+		sourceStepComboBoxPanel = new ValuedComboBoxPanel("SourceStep");
+		sourceStepComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(sourceStepComboBoxPanel);
-		sourceStepComboBoxIdList = new ArrayList<>();
 
 		//StepType
 		stepType = new TitledJRadioButtonGroupPanel("StepType");
@@ -87,12 +83,8 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(stepType);
 
 		//subjectComboBox
-		subjectComboBox = new JComboBox();
-		subjectComboBox.setPreferredSize(new Dimension(160, 20));
-		subjectComboBox.addActionListener(this);
-		subjectComboBoxPanel = new JPanel();
-		subjectComboBoxPanel.add(subjectComboBox);
-		subjectComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "Subject"));
+		subjectComboBoxPanel = new ValuedComboBoxPanel("Subject");
+		subjectComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(subjectComboBoxPanel);
 		//eventNameArea
 		eventNameArea = new JTextArea(1, 15);
@@ -102,24 +94,14 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		eventNameAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Event"));
 		this.add(eventNameAreaPanel);
 		//objectComboBox
-		objectComboBox = new JComboBox();
-		objectComboBox.setPreferredSize(new Dimension(160, 20));
-		objectComboBox.addActionListener(this);
-		objectComboBoxPanel = new JPanel();
-		objectComboBoxPanel.add(objectComboBox);
-		objectComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "Object"));
+		objectComboBoxPanel = new ValuedComboBoxPanel("Object");
+		objectComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(objectComboBoxPanel);
-		objectAndSubjectComboBoxIdList = new ArrayList<>();
 
 		//toComboBox
-		toComboBox = new JComboBox();
-		toComboBox.setPreferredSize(new Dimension(160, 20));
-		toComboBox.addActionListener(this);
-		toComboBoxPanel = new JPanel();
-		toComboBoxPanel.add(toComboBox);
-		toComboBoxPanel.setBorder(new TitledBorder(new EtchedBorder(), "To"));
+		toComboBoxPanel = new ValuedComboBoxPanel("To");
+		toComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(toComboBoxPanel);
-		toComboBoxIdList = new ArrayList<>();
 	}
 
 	public void redraw() {
@@ -144,13 +126,9 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 				if (flowSelected) {
 					//sourceStepComboBox更新
-					sourceStepComboBoxIdList.clear();
-					sourceStepComboBox.removeAllItems();
-					List<Step> ls = selectedUsecase.getMainFlow();
-					for (Step s : ls) {
-						sourceStepComboBox.addItem(s.getStepName(ste.fgm, selectedUsecase));
-						sourceStepComboBoxIdList.add(s.id);
-					}
+					sourceStepComboBoxPanel.initItem();
+					for (Step s : selectedUsecase.getMainFlow())
+						sourceStepComboBoxPanel.addItem(s.getStepName(ste.fgm, selectedUsecase), s.id);
 
 					//flowの頭出し用ステップ取得
 					Step flowIndex = null;
@@ -166,12 +144,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 					if (sl != null) flowIndex = sl.get(0);
 
 					//sourceStepComboBox選択
-					if (flowIndex != null) {
-						for (int id : sourceStepComboBoxIdList) {
-							if (id == flowIndex.sourceStepId)
-								sourceStepComboBox.setSelectedIndex(sourceStepComboBoxIdList.indexOf(id));
-						}
-					}
+					if (flowIndex != null) sourceStepComboBoxPanel.setSelected(flowIndex.sourceStepId);
 
 					//Condition名前詰め込み
 					if (flowIndex != null && !conditionArea.hasFocus()) {
@@ -184,42 +157,35 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 					stepType.setSelected(selectedStep.stepType.toString());
 
 					// GOTO or INCLUDE ComboBox中身更新
-					toComboBoxIdList.clear();
-					toComboBox.removeAllItems();
+					toComboBoxPanel.initItem();
 					switch (selectedStep.stepType) {
 						case INCLUDE:
 							for (Usecase u : ste.fgm.getUsecases()) {
-								toComboBox.addItem(u.name);
-								toComboBoxIdList.add(u.id);
+								toComboBoxPanel.addItem(u.name, u.id);
 							}
-
 							//ComboBox選択
-							toComboBoxIdList.stream().filter(id -> id == selectedStep.includeUsecaseId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
+							toComboBoxPanel.setSelected(selectedStep.includeUsecaseId);
 							break;
 						case GOTO:
 							for (Step s : selectedUsecase.getMainFlow()) {
-								toComboBox.addItem(s.getStepName(ste.fgm, selectedUsecase));
-								toComboBoxIdList.add(s.id);
+								toComboBoxPanel.addItem(s.getStepName(ste.fgm, selectedUsecase), s.id);
 							}
-
 							//ComboBox選択
-							toComboBoxIdList.stream().filter(id -> id == selectedStep.gotoStepId).forEach(id -> toComboBox.setSelectedIndex(toComboBoxIdList.indexOf(id)));
+							toComboBoxPanel.setSelected(selectedStep.gotoStepId);
 							break;
 					}
 
 					//Sbj,Obj ComboBox中身更新
-					objectAndSubjectComboBoxIdList.clear();
-					objectComboBox.removeAllItems();
-					subjectComboBox.removeAllItems();
+					objectComboBoxPanel.initItem();
+					subjectComboBoxPanel.initItem();
 					for (Domain d : ste.fgm.getDomains()) {
-						objectAndSubjectComboBoxIdList.add(d.id);
-						subjectComboBox.addItem(d.name);
-						objectComboBox.addItem(d.name);
+						objectComboBoxPanel.addItem(d.name, d.id);
+						subjectComboBoxPanel.addItem(d.name, d.id);
 					}
 
 					//Object,SubjectComboBox選択
-					objectAndSubjectComboBoxIdList.stream().filter(id -> id == selectedStep.objectDomainId).forEach(id -> objectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
-					objectAndSubjectComboBoxIdList.stream().filter(id -> id == selectedStep.subjectDomainId).forEach(id -> subjectComboBox.setSelectedIndex(objectAndSubjectComboBoxIdList.indexOf(id)));
+					objectComboBoxPanel.setSelected(selectedStep.objectDomainId);
+					subjectComboBoxPanel.setSelected(selectedStep.subjectDomainId);
 
 					//Text更新
 					if (!eventNameArea.hasFocus()) eventNameArea.setText(selectedStep.Event);
@@ -261,7 +227,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private void editAltFlow(Usecase usecase, int flowIndex) {
 		Step s = usecase.getAlternativeFlowList().get(flowIndex).get(0);
 		s.condition = conditionArea.getText();
-		s.sourceStepId = sourceStepComboBoxIdList.get(sourceStepComboBox.getSelectedIndex());
+		s.sourceStepId = sourceStepComboBoxPanel.getSelectedParam();
 		usecase.editStep(s.id, s);
 		ste.fgm.editUsecase(usecase.id, usecase);
 	}
@@ -269,7 +235,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private void editExcFlow(Usecase usecase, int flowIndex) {
 		Step s = usecase.getExceptionalFlowList().get(flowIndex).get(0);
 		s.condition = conditionArea.getText();
-		s.sourceStepId = sourceStepComboBoxIdList.get(sourceStepComboBox.getSelectedIndex());
+		s.sourceStepId = sourceStepComboBoxPanel.getSelectedParam();
 		usecase.editStep(s.id, s);
 		ste.fgm.editUsecase(usecase.id, usecase);
 	}
@@ -277,22 +243,16 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private void editStep(Usecase usecase, Step step) {
 		step.stepType = Step.StepType.parse(stepType.getSelectedButtonCommand());
 
-		int toComboBoxSelectedIndex = toComboBox.getSelectedIndex();
 		switch (step.stepType) {
 			case GOTO:
-				if (toComboBoxSelectedIndex != -1) step.gotoStepId = toComboBoxIdList.get(toComboBoxSelectedIndex);
+				step.gotoStepId = toComboBoxPanel.getSelectedParam();
 				break;
 			case INCLUDE:
-				if (toComboBoxSelectedIndex != -1)
-					step.includeUsecaseId = toComboBoxIdList.get(toComboBoxSelectedIndex);
+				step.includeUsecaseId = toComboBoxPanel.getSelectedParam();
 				break;
 			case ACTION:
-				int objectComboBoxSelectedIndex = objectComboBox.getSelectedIndex();
-				int subjectComboBoxSelectedIndex = subjectComboBox.getSelectedIndex();
-				if (objectComboBoxSelectedIndex != -1)
-					step.objectDomainId = objectAndSubjectComboBoxIdList.get(objectComboBoxSelectedIndex);
-				if (subjectComboBoxSelectedIndex != -1)
-					step.subjectDomainId = objectAndSubjectComboBoxIdList.get(subjectComboBoxSelectedIndex);
+				step.objectDomainId = objectComboBoxPanel.getSelectedParam();
+				step.subjectDomainId=subjectComboBoxPanel.getSelectedParam();
 				String str = eventNameArea.getText();
 				if (str != null) step.Event = str;
 				break;

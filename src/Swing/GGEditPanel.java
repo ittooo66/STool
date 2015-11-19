@@ -4,6 +4,7 @@ import Models.FGModelAdapter;
 import Models.Goal;
 import Processing.GGGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.ValuedComboBoxPanel;
 import Swing.Component.VisibilitySet;
 
 import javax.swing.*;
@@ -15,8 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GGEditPanel extends JPanel implements ActionListener, DocumentListener, KeyListener {
 
@@ -29,9 +28,8 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	//各種Component
 	private JTextArea nameArea;
-	private JComboBox<String> parentComboBox;
-	private List<Integer> parentComboBoxIdList;
 	private TitledJRadioButtonGroupPanel refineType, necessity;
+	private ValuedComboBoxPanel parentGoalComboBoxPanel;
 
 	//Draw中のフラグ
 	private boolean isDrawing;
@@ -64,15 +62,11 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(addButton);
 		goalNotSelectedVisibility.add(addButton);
 
-		//parent指定ComboBox周り
-		parentComboBox = new JComboBox<>();
-		parentComboBox.addActionListener(this);
-		JPanel parentComboBoxBorder = new JPanel();
-		parentComboBoxBorder.add(parentComboBox);
-		parentComboBoxBorder.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
-		this.add(parentComboBoxBorder);
-		parentComboBoxIdList = new ArrayList<>();
-		goalSelectedVisibility.add(parentComboBoxBorder);
+		//parent指定ComboBoxPanel
+		parentGoalComboBoxPanel = new ValuedComboBoxPanel("Parent Goal");
+		parentGoalComboBoxPanel.addActionListenerToComboBox(this);
+		this.add(parentGoalComboBoxPanel);
+		goalSelectedVisibility.add(parentGoalComboBoxPanel);
 
 		//refineType
 		refineType = new TitledJRadioButtonGroupPanel("RefineType");
@@ -103,16 +97,10 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		//draw開始
 		isDrawing = true;
 
-		//GGEdit:ComboBox更新
-		parentComboBoxIdList.clear();
-		parentComboBox.removeAllItems();
-		parentComboBox.addItem("NONE (Top Goal)");
-		parentComboBoxIdList.add(-1);
 		//ComboBox詰め替え
-		ste.fgm.getGoals().stream().filter(g -> g.id != ggg.selectedGoalId).forEach(g -> {
-			parentComboBox.addItem(g.name);
-			parentComboBoxIdList.add(g.id);
-		});
+		parentGoalComboBoxPanel.initItem();
+		parentGoalComboBoxPanel.addItem("NONE (Top Goal)", -1);
+		ste.fgm.getGoals().stream().filter(g -> g.id != ggg.selectedGoalId).forEach(g -> parentGoalComboBoxPanel.addItem(g.name, g.id));
 
 		//GGEdit:GGGraph.selectedGoalIdに応じたエディタ画面に更新
 		if (ggg.selectedGoalId != -1) {
@@ -127,12 +115,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			refineType.setSelected(Goal.ChildrenType.getString(selectedGoal.childrenType));
 
 			//ComboBox選択
-			for (int id : parentComboBoxIdList) {
-				if (selectedGoal.parentId == id) {
-					parentComboBox.setSelectedIndex(parentComboBoxIdList.indexOf(id));
-					break;
-				}
-			}
+			parentGoalComboBoxPanel.setSelected(selectedGoal.parentId);
 
 			//Necessity更新
 			if (ste.fgm.getVersion() == FGModelAdapter.VERSION.ASIS) {
@@ -163,7 +146,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		String name = nameArea.getText();
 		Goal prevGoal = ste.fgm.getGoalById(ggg.selectedGoalId);
 		Goal.ChildrenType ct = Goal.ChildrenType.parse(refineType.getSelectedButtonCommand());
-		int parentId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
+		int parentId = parentGoalComboBoxPanel.getSelectedParam();
 		boolean isEnableForAsIs = prevGoal.isEnableForAsIs;
 		boolean isEnableForToBe = prevGoal.isEnableForToBe;
 		if (ste.fgm.getVersion() == FGModelAdapter.VERSION.ASIS) {
@@ -184,7 +167,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	private void add() {
 		//各種コンポーネントからパラメータ取得
-		int parentGoalId = parentComboBoxIdList.get(parentComboBox.getSelectedIndex());
+		int parentGoalId = parentGoalComboBoxPanel.getSelectedParam();
 		String name = nameArea.getText();
 
 		//Goal追加時の重なり防止

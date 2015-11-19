@@ -3,13 +3,14 @@ package Swing.Component;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 66 on 2015/11/19.
- * 値+名前持ちの枠付きコンボボックス
+ * 値持ちの枠付きコンボボックス
  */
 public class ValuedComboBoxPanel extends JPanel {
 
@@ -20,6 +21,7 @@ public class ValuedComboBoxPanel extends JPanel {
 		this.setBorder(new TitledBorder(new EtchedBorder(), title));
 		comboBoxParamList = new ArrayList<>();
 		comboBox = new JComboBox<>();
+		comboBox.setPreferredSize(new Dimension(160, 20));
 		this.add(comboBox);
 	}
 
@@ -44,6 +46,7 @@ public class ValuedComboBoxPanel extends JPanel {
 	}
 
 	public int getSelectedParam() {
+		if (comboBox.getSelectedIndex() == -1) return -1;
 		return comboBoxParamList.get(comboBox.getSelectedIndex());
 	}
 }
