@@ -35,6 +35,7 @@ public class ValuedComboBoxPanel extends JPanel {
 		for (int i = 0; i < comboBox.getItemCount(); i++) {
 			if (comboBox.getItemAt(i).equals(sb.toString())) {
 				sb.append(" ");
+				i = 0;
 			}
 		}
 
