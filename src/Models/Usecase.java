@@ -306,4 +306,12 @@ public class Usecase implements Cloneable {
 		}
 		return null;
 	}
+
+	public List<Step> getAllIncludeStep() {
+		List<Step> allIncludeStep = new ArrayList<>();
+		for (Step s : flow) {
+			if (s.stepType == Step.StepType.INCLUDE && s.includeUsecaseId != -1) allIncludeStep.add(s);
+		}
+		return allIncludeStep;
+	}
 }
