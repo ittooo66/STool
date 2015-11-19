@@ -78,12 +78,17 @@ public class SToolEditor extends JFrame {
 		viewmodeJRBG.add(viewReduced);
 		sharedEndPanel.add(viewmodeJRBG);
 		//差分ブラウザを開く
-		JButton diffBrowseButton = new JButton("Open Diff Browser");
+		JButton diffBrowseButton = new JButton("Usecase Diff Browser");
 		diffBrowseButton.setEnabled(false);
 		diffBrowseButton.addActionListener(e -> diffBrowseButtonPressed());
 		sharedEndPanel.add(diffBrowseButton);
+		//差分ブラウザを開く
+		JButton scenarioEditButton = new JButton("Scenario Editor");
+		scenarioEditButton.setEnabled(false);
+		scenarioEditButton.addActionListener(e -> scenarioEditButtonPressed());
+		sharedEndPanel.add(scenarioEditButton);
 		//Metricsウィンドウを開く
-		JButton metricsBrowseButton = new JButton("Open Metrics Browser");
+		JButton metricsBrowseButton = new JButton("Metrics Browser");
 		metricsBrowseButton.addActionListener(e -> metricsBrowser = new MetricsBrowser(fgm));
 		sharedEndPanel.add(metricsBrowseButton);
 		/////////////////////////////MenuBar作成/////////////////////////////
@@ -184,6 +189,10 @@ public class SToolEditor extends JFrame {
 
 	private void diffBrowseButtonPressed() {
 		//TODO:DiffBrowser作成（Priority:3）
+	}
+
+	private void scenarioEditButtonPressed() {
+		//TODO:ScenarioEditor作成（Priority:2）
 	}
 
 	/**
