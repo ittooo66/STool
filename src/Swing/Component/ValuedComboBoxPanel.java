@@ -30,7 +30,19 @@ public class ValuedComboBoxPanel extends JPanel {
 	}
 
 	public void addItem(String name, int param) {
-		comboBox.addItem(name);
+		//文字列の重複を検知した場合、適宜後ろに空白を詰める
+		StringBuilder sb = new StringBuilder(name);
+		for (int i = 0; i < comboBox.getItemCount(); i++) {
+			if (comboBox.getItemAt(i).equals(sb.toString())) {
+				sb.append(" ");
+			}
+		}
+
+		//重複しない文字列を生成
+		String str = new String(sb);
+
+		//詰め込み
+		comboBox.addItem(str);
 		comboBoxParamList.add(param);
 	}
 
