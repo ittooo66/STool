@@ -22,6 +22,11 @@ public class Metrics {
 						fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE)
 					ANOS++;
 			}
+
+			//Include先のユースケースのANOSも含める
+			for (Step s : uc.getAllIncludeStep()) {
+				ANOS += getANOS(fgm.getUsecaseById(s.includeUsecaseId), fgm);
+			}
 		} catch (Exception e) {
 			//モデルが不正
 			e.printStackTrace();
@@ -40,6 +45,9 @@ public class Metrics {
 							fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
 						ACC++;
 						break;
+					} else if (s.stepType == Step.StepType.INCLUDE) {
+						//Include先のユースケースのACCも含める
+						ACC += getACC(fgm.getUsecaseById(s.includeUsecaseId), fgm);
 					}
 				}
 			}
@@ -53,6 +61,9 @@ public class Metrics {
 							ACC++;
 							break;
 						}
+					} else if (s.stepType == Step.StepType.INCLUDE) {
+						//Include先のユースケースのACCも含める
+						ACC += getACC(fgm.getUsecaseById(s.includeUsecaseId), fgm);
 					}
 				}
 			}
@@ -66,10 +77,12 @@ public class Metrics {
 							ACC++;
 							break;
 						}
+					} else if (s.stepType == Step.StepType.INCLUDE) {
+						//Include先のユースケースのACCも含める
+						ACC += getACC(fgm.getUsecaseById(s.includeUsecaseId), fgm);
 					}
 				}
 			}
-
 		} catch (Exception e) {
 			//モデルが不正
 			e.printStackTrace();
