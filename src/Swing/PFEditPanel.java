@@ -3,10 +3,10 @@ package Swing;
 import Models.Domain;
 import Processing.PFGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.TitledTextAreaPanel;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -24,7 +24,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	//PFEditorコンポーネント
 	private JButton remove, add;
-	private JTextArea nameArea;
+	private TitledTextAreaPanel nameAreaPanel;
 	private TitledJRadioButtonGroupPanel domainType;
 
 	//Draw中のフラグ
@@ -39,14 +39,10 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setBorder(new EtchedBorder());
 
 		//NameTextArea周り
-		nameArea = new JTextArea(2, 15);
-		nameArea.getDocument().addDocumentListener(this);
-		nameArea.addKeyListener(this);
-		JScrollPane pfScroll = new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		JPanel pfEditNameFieldBorder = new JPanel();
-		pfEditNameFieldBorder.add(pfScroll);
-		pfEditNameFieldBorder.setBorder(new TitledBorder(new EtchedBorder(), "Domain Name"));
-		this.add(pfEditNameFieldBorder);
+		nameAreaPanel = new TitledTextAreaPanel("Domain Name", 2, 15);
+		nameAreaPanel.addDocumentListener(this);
+		nameAreaPanel.addKeyListener(this);
+		this.add(nameAreaPanel);
 
 		//Add New Domain Button
 		add = new JButton("Add New Domain");
@@ -79,7 +75,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 			//選択中のドメインを取得
 			Domain selectedDomain = ste.fgm.getDomainById(pfg.selectedDomainId);
 			//Text更新
-			if (!nameArea.hasFocus()) nameArea.setText(selectedDomain.name);
+			if (!nameAreaPanel.hasFocus()) nameAreaPanel.setText(selectedDomain.name);
 
 			//DomainType更新
 			domainType.setSelected(selectedDomain.domainType.toString());
@@ -95,7 +91,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	private void add() {
 		//各種パラメータ取得
-		String name = nameArea.getText();
+		String name = nameAreaPanel.getText();
 
 		//Domain追加時の重なり防止
 		int h = 30;
@@ -116,7 +112,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 
-		nameArea.setText("");
+		nameAreaPanel.setText("");
 
 		//再描画
 		ste.redraw();
@@ -124,7 +120,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	private void edit() {
 		//各種パラメータ取得
-		String name = nameArea.getText();
+		String name = nameAreaPanel.getText();
 		int id = pfg.selectedDomainId;
 		Domain.DomainType dt = Domain.DomainType.parse(domainType.getSelectedButtonCommand());
 
@@ -176,7 +172,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	public void initTextArea() {
 		isDrawing = true;
-		nameArea.setText("");
+		nameAreaPanel.setText("");
 		isDrawing = false;
 	}
 
@@ -195,7 +191,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 			case KeyEvent.VK_ENTER:
 				if (shiftKeyPressed) {
 					add();
-					nameArea.setText("");
+					nameAreaPanel.setText("");
 				}
 				break;
 		}
