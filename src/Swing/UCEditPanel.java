@@ -6,7 +6,6 @@ import Models.Usecase;
 import Processing.UCGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
 import Swing.Component.ValuedComboBoxPanel;
-import Swing.Component.VisibilitySet;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -16,7 +15,6 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 import java.util.List;
 
 public class UCEditPanel extends JPanel implements ActionListener, DocumentListener {

@@ -5,7 +5,6 @@ import Models.Goal;
 import Processing.GGGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
 import Swing.Component.ValuedComboBoxPanel;
-import Swing.Component.VisibilitySet;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -23,13 +22,11 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private final SToolEditor ste;
 	private final GGGraph ggg;
 
-	//可視性セット
-	private VisibilitySet goalSelectedVisibility, goalNotSelectedVisibility;
-
 	//各種Component
 	private JTextArea nameArea;
 	private TitledJRadioButtonGroupPanel refineType, necessity;
 	private ValuedComboBoxPanel parentGoalComboBoxPanel;
+	private JButton addButton, removeButton;
 
 	//Draw中のフラグ
 	private boolean isDrawing;
@@ -42,10 +39,6 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setPreferredSize(new Dimension(0, 80));
 		this.setBorder(new EtchedBorder());
 
-		//可視性セット
-		goalSelectedVisibility = new VisibilitySet();
-		goalNotSelectedVisibility = new VisibilitySet();
-
 		//NameTextArea周り
 		nameArea = new JTextArea(2, 15);
 		nameArea.getDocument().addDocumentListener(this);
@@ -57,16 +50,14 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(nameAreaBorder);
 
 		//Add New Goal Button
-		JButton addButton = new JButton("Add New Goal");
+		addButton = new JButton("Add New Goal");
 		addButton.addActionListener(e -> add());
 		this.add(addButton);
-		goalNotSelectedVisibility.add(addButton);
 
 		//parent指定ComboBoxPanel
 		parentGoalComboBoxPanel = new ValuedComboBoxPanel("Parent Goal");
 		parentGoalComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(parentGoalComboBoxPanel);
-		goalSelectedVisibility.add(parentGoalComboBoxPanel);
 
 		//refineType
 		refineType = new TitledJRadioButtonGroupPanel("RefineType");
@@ -75,7 +66,6 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.LEAF)));
 		refineType.addActionListenerToAll(this);
 		this.add(refineType);
-		goalSelectedVisibility.add(refineType);
 
 		//Necessity
 		necessity = new TitledJRadioButtonGroupPanel("Necessity");
@@ -83,14 +73,12 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		necessity.add(new JRadioButton("Disable"));
 		necessity.addActionListenerToAll(this);
 		this.add(necessity);
-		goalSelectedVisibility.add(necessity);
 
 		//RemoveButton
-		JButton removeButton = new JButton("Remove Goal");
+		removeButton = new JButton("Remove Goal");
 		removeButton.addActionListener(e -> remove());
 		removeButton.setVisible(false);
 		this.add(removeButton);
-		goalSelectedVisibility.add(removeButton);
 	}
 
 	public void redraw() {
@@ -134,9 +122,11 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		}
 
 		//Visibility切り替え
-		goalSelectedVisibility.setVisible(ggg.selectedGoalId != -1);
-		goalNotSelectedVisibility.setVisible(ggg.selectedGoalId == -1);
-
+		removeButton.setVisible(ggg.selectedGoalId != -1);
+		necessity.setVisible(ggg.selectedGoalId != -1);
+		refineType.setVisible(ggg.selectedGoalId != -1);
+		parentGoalComboBoxPanel.setVisible(ggg.selectedGoalId != -1);
+		addButton.setVisible(ggg.selectedGoalId == -1);
 		//draw終了
 		isDrawing = false;
 	}
