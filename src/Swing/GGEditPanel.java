@@ -40,38 +40,28 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setPreferredSize(new Dimension(0, 80));
 		this.setBorder(new EtchedBorder());
 
-		//NameTextArea周り
+		//コンポーネント作成＋追加
 		nameAreaPanel = new TitledTextAreaPanel("Goal Name", 15, 2);
 		nameAreaPanel.addDocumentListener(this);
 		nameAreaPanel.addKeyListener(this);
 		this.add(nameAreaPanel);
-
-		//Add New Goal Button
 		addButton = new JButton("Add New Goal");
 		addButton.addActionListener(e -> add());
 		this.add(addButton);
-
-		//parent指定ComboBoxPanel
 		parentGoalComboBoxPanel = new TitledComboBoxWithValuePanel("Parent Goal");
 		parentGoalComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(parentGoalComboBoxPanel);
-
-		//refineType
 		refineType = new TitledJRadioButtonGroupPanel("RefineType");
 		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.AND), true));
 		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.OR)));
 		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.LEAF)));
 		refineType.addActionListenerToAll(this);
 		this.add(refineType);
-
-		//Necessity
 		necessity = new TitledJRadioButtonGroupPanel("Necessity");
 		necessity.add(new JRadioButton("Enable", true));
 		necessity.add(new JRadioButton("Disable"));
 		necessity.addActionListenerToAll(this);
 		this.add(necessity);
-
-		//RemoveButton
 		removeButton = new JButton("Remove Goal");
 		removeButton.addActionListener(e -> remove());
 		removeButton.setVisible(false);

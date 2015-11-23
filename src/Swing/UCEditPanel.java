@@ -5,12 +5,12 @@ import Models.Step;
 import Models.Usecase;
 import Processing.UCGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.TitledLabelPanel;
 import Swing.Component.TitledTextAreaPanel;
 import Swing.Component.TitledComboBoxWithValuePanel;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -23,11 +23,10 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private final SToolEditor ste;
 
 	private JButton jump;
-	private JPanel parentGoalNameLabelPanel;
 	private TitledTextAreaPanel nameAreaPanel, conditionAreaPanel, eventNameAreaPanel;
 	private TitledComboBoxWithValuePanel subjectComboBoxPanel, objectComboBoxPanel, toComboBoxPanel, sourceStepComboBoxPanel;
-	private TitledJRadioButtonGroupPanel stepType;
-	private JLabel parentGoalNameLabel;
+	private TitledJRadioButtonGroupPanel stepTypePanel;
+	private TitledLabelPanel parentGoalNameLabelPanel;
 
 	//Draw中のフラグ
 	private boolean isDrawing;
@@ -39,54 +38,43 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setPreferredSize(new Dimension(0, 80));
 		this.setBorder(new EtchedBorder());
 
-		//NameTextArea
+		//Usecase選択時コンポーネント
 		nameAreaPanel = new TitledTextAreaPanel("Usecase Name", 15, 2);
 		nameAreaPanel.addDocumentListener(this);
 		this.add(nameAreaPanel);
-		//parentGoalLabel
-		parentGoalNameLabel = new JLabel("null");
-		parentGoalNameLabel.setPreferredSize(new Dimension(160, 20));
-		parentGoalNameLabelPanel = new JPanel();
-		parentGoalNameLabelPanel.add(parentGoalNameLabel);
-		parentGoalNameLabelPanel.setBorder(new TitledBorder(new EtchedBorder(), "Parent Goal"));
+		parentGoalNameLabelPanel = new TitledLabelPanel("Parent Goal", 160, 20);
 		this.add(parentGoalNameLabelPanel);
-		//JumpButton
 		jump = new JButton("Jump to Parent Goal");
 		jump.addActionListener(e -> ste.jumpToGGTab(ste.fgm.getUsecaseById(ucg.selectedUsecaseId).parentLeafGoalId));
 		this.add(jump);
 
-		//Condition
+		//AltFlow,ExcFlow選択時コンポーネント
 		conditionAreaPanel = new TitledTextAreaPanel("Condition", 15, 2);
 		conditionAreaPanel.addDocumentListener(this);
 		this.add(conditionAreaPanel);
-		//sourceStepComboBox
 		sourceStepComboBoxPanel = new TitledComboBoxWithValuePanel("SourceStep");
 		sourceStepComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(sourceStepComboBoxPanel);
 
 		//StepType
-		stepType = new TitledJRadioButtonGroupPanel("StepType");
-		stepType.add(new JRadioButton(Step.StepType.getString(Step.StepType.NOP), true));
-		stepType.add(new JRadioButton(Step.StepType.getString(Step.StepType.ACTION)));
-		stepType.add(new JRadioButton(Step.StepType.getString(Step.StepType.GOTO)));
-		stepType.add(new JRadioButton(Step.StepType.getString(Step.StepType.INCLUDE)));
-		stepType.addActionListenerToAll(this);
-		this.add(stepType);
+		stepTypePanel = new TitledJRadioButtonGroupPanel("StepType");
+		stepTypePanel.add(new JRadioButton(Step.StepType.getString(Step.StepType.NOP), true));
+		stepTypePanel.add(new JRadioButton(Step.StepType.getString(Step.StepType.ACTION)));
+		stepTypePanel.add(new JRadioButton(Step.StepType.getString(Step.StepType.GOTO)));
+		stepTypePanel.add(new JRadioButton(Step.StepType.getString(Step.StepType.INCLUDE)));
+		stepTypePanel.addActionListenerToAll(this);
+		this.add(stepTypePanel);
 
-		//subjectComboBox
+		//Step->Action選択時コンポーネント
 		subjectComboBoxPanel = new TitledComboBoxWithValuePanel("Subject");
 		subjectComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(subjectComboBoxPanel);
-		//eventNameArea
 		eventNameAreaPanel = new TitledTextAreaPanel("Event", 15, 1);
 		eventNameAreaPanel.addDocumentListener(this);
 		this.add(eventNameAreaPanel);
-		//objectComboBox
 		objectComboBoxPanel = new TitledComboBoxWithValuePanel("Object");
 		objectComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(objectComboBoxPanel);
-
-		//toComboBox
 		toComboBoxPanel = new TitledComboBoxWithValuePanel("To");
 		toComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(toComboBoxPanel);
@@ -107,7 +95,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 				if (usecaseSelected) {
 					//親ゴールの名前を表示
-					parentGoalNameLabel.setText(ste.fgm.getGoalById(selectedUsecase.parentLeafGoalId).name);
+					parentGoalNameLabelPanel.setText(ste.fgm.getGoalById(selectedUsecase.parentLeafGoalId).name);
 					//Usecase名前詰め込んで描画
 					if (!nameAreaPanel.hasFocus()) nameAreaPanel.setText(selectedUsecase.name);
 				}
@@ -142,7 +130,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 				if (stepSelected) {
 					//StepType描画
-					stepType.setSelected(selectedStep.stepType.toString());
+					stepTypePanel.setSelected(selectedStep.stepType.toString());
 
 					// GOTO or INCLUDE ComboBox中身更新
 					toComboBoxPanel.initItem();
@@ -189,11 +177,11 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 			conditionAreaPanel.setVisible(flowSelected && ucg.selectedFlowType != 0);
 			sourceStepComboBoxPanel.setVisible(flowSelected && ucg.selectedFlowType != 0);
 			//step
-			stepType.setVisible(stepSelected);
-			objectComboBoxPanel.setVisible(stepSelected && stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
-			subjectComboBoxPanel.setVisible(stepSelected && stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
-			eventNameAreaPanel.setVisible(stepSelected && stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
-			toComboBoxPanel.setVisible(stepSelected && (stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.INCLUDE)) || stepType.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.GOTO))));
+			stepTypePanel.setVisible(stepSelected);
+			objectComboBoxPanel.setVisible(stepSelected && stepTypePanel.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
+			subjectComboBoxPanel.setVisible(stepSelected && stepTypePanel.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
+			eventNameAreaPanel.setVisible(stepSelected && stepTypePanel.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.ACTION)));
+			toComboBoxPanel.setVisible(stepSelected && (stepTypePanel.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.INCLUDE)) || stepTypePanel.getSelectedButtonCommand().equals(Step.StepType.getString(Step.StepType.GOTO))));
 		} catch (NullPointerException e) {
 			//Usecase削除時のNullPointerException対策
 			ucg.selectedUsecaseId = -1;
@@ -229,7 +217,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	}
 
 	private void editStep(Usecase usecase, Step step) {
-		step.stepType = Step.StepType.parse(stepType.getSelectedButtonCommand());
+		step.stepType = Step.StepType.parse(stepTypePanel.getSelectedButtonCommand());
 
 		switch (step.stepType) {
 			case GOTO:
