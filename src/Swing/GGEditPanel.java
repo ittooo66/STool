@@ -4,7 +4,7 @@ import Models.FGModelAdapter;
 import Models.Goal;
 import Processing.GGGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
-import Swing.Component.ValuedComboBoxPanel;
+import Swing.Component.TitledComboBoxWithValuePanel;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -25,7 +25,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	//各種Component
 	private JTextArea nameArea;
 	private TitledJRadioButtonGroupPanel refineType, necessity;
-	private ValuedComboBoxPanel parentGoalComboBoxPanel;
+	private TitledComboBoxWithValuePanel parentGoalComboBoxPanel;
 	private JButton addButton, removeButton;
 
 	//Draw中のフラグ
@@ -55,7 +55,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(addButton);
 
 		//parent指定ComboBoxPanel
-		parentGoalComboBoxPanel = new ValuedComboBoxPanel("Parent Goal");
+		parentGoalComboBoxPanel = new TitledComboBoxWithValuePanel("Parent Goal");
 		parentGoalComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(parentGoalComboBoxPanel);
 

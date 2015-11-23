@@ -12,12 +12,12 @@ import java.util.List;
  * Created by 66 on 2015/11/19.
  * 値持ちの枠付きコンボボックス
  */
-public class ValuedComboBoxPanel extends JPanel {
+public class TitledComboBoxWithValuePanel extends JPanel {
 
 	private List<Integer> comboBoxParamList;
 	private JComboBox<String> comboBox;
 
-	public ValuedComboBoxPanel(String title) {
+	public TitledComboBoxWithValuePanel(String title) {
 		this.setBorder(new TitledBorder(new EtchedBorder(), title));
 		comboBoxParamList = new ArrayList<>();
 		comboBox = new JComboBox<>();

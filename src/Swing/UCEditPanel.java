@@ -5,7 +5,7 @@ import Models.Step;
 import Models.Usecase;
 import Processing.UCGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
-import Swing.Component.ValuedComboBoxPanel;
+import Swing.Component.TitledComboBoxWithValuePanel;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -25,7 +25,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JTextArea nameArea, conditionArea, eventNameArea;
 	private JPanel conditionAreaPanel;
 	private JPanel parentGoalNameLabelPanel, nameAreaPanel;
-	private ValuedComboBoxPanel subjectComboBoxPanel, objectComboBoxPanel, toComboBoxPanel, sourceStepComboBoxPanel;
+	private TitledComboBoxWithValuePanel subjectComboBoxPanel, objectComboBoxPanel, toComboBoxPanel, sourceStepComboBoxPanel;
 	private JPanel eventNameAreaPanel;
 	private TitledJRadioButtonGroupPanel stepType;
 	private JLabel parentGoalNameLabel;
@@ -81,7 +81,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(stepType);
 
 		//subjectComboBox
-		subjectComboBoxPanel = new ValuedComboBoxPanel("Subject");
+		subjectComboBoxPanel = new TitledComboBoxWithValuePanel("Subject");
 		subjectComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(subjectComboBoxPanel);
 		//eventNameArea
@@ -92,12 +92,12 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		eventNameAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Event"));
 		this.add(eventNameAreaPanel);
 		//objectComboBox
-		objectComboBoxPanel = new ValuedComboBoxPanel("Object");
+		objectComboBoxPanel = new TitledComboBoxWithValuePanel("Object");
 		objectComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(objectComboBoxPanel);
 
 		//toComboBox
-		toComboBoxPanel = new ValuedComboBoxPanel("To");
+		toComboBoxPanel = new TitledComboBoxWithValuePanel("To");
 		toComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(toComboBoxPanel);
 	}
