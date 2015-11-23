@@ -4,6 +4,7 @@ import Models.FGModelAdapter;
 import Models.Goal;
 import Processing.GGGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.TitledTextAreaPanel;
 import Swing.Component.TitledComboBoxWithValuePanel;
 
 import javax.swing.*;
@@ -23,7 +24,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private final GGGraph ggg;
 
 	//各種Component
-	private JTextArea nameArea;
+	private TitledTextAreaPanel nameAreaPanel;
 	private TitledJRadioButtonGroupPanel refineType, necessity;
 	private TitledComboBoxWithValuePanel parentGoalComboBoxPanel;
 	private JButton addButton, removeButton;
@@ -40,14 +41,10 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setBorder(new EtchedBorder());
 
 		//NameTextArea周り
-		nameArea = new JTextArea(2, 15);
-		nameArea.getDocument().addDocumentListener(this);
-		nameArea.addKeyListener(this);
-		JScrollPane scroll = new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		JPanel nameAreaBorder = new JPanel();
-		nameAreaBorder.add(scroll);
-		nameAreaBorder.setBorder(new TitledBorder(new EtchedBorder(), "Goal Name"));
-		this.add(nameAreaBorder);
+		nameAreaPanel = new TitledTextAreaPanel("Goal Name", 15, 2);
+		nameAreaPanel.addDocumentListener(this);
+		nameAreaPanel.addKeyListener(this);
+		this.add(nameAreaPanel);
 
 		//Add New Goal Button
 		addButton = new JButton("Add New Goal");
@@ -97,7 +94,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			Goal selectedGoal = ste.fgm.getGoalById(ggg.selectedGoalId);
 
 			//Text更新
-			if (!nameArea.hasFocus()) nameArea.setText(selectedGoal.name);
+			if (!nameAreaPanel.hasFocus()) nameAreaPanel.setText(selectedGoal.name);
 
 			//RefineType更新
 			refineType.setSelected(Goal.ChildrenType.getString(selectedGoal.childrenType));
@@ -133,7 +130,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	private void edit() {
 		//各種コンポーネントからパラメータ取得
-		String name = nameArea.getText();
+		String name = nameAreaPanel.getText();
 		Goal prevGoal = ste.fgm.getGoalById(ggg.selectedGoalId);
 		Goal.ChildrenType ct = Goal.ChildrenType.parse(refineType.getSelectedButtonCommand());
 		int parentId = parentGoalComboBoxPanel.getSelectedParam();
@@ -158,7 +155,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	private void add() {
 		//各種コンポーネントからパラメータ取得
 		int parentGoalId = parentGoalComboBoxPanel.getSelectedParam();
-		String name = nameArea.getText();
+		String name = nameAreaPanel.getText();
 
 		//Goal追加時の重なり防止
 		int h = 30;
@@ -179,7 +176,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			JOptionPane.showMessageDialog(this, str, "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 
-		nameArea.setText("");
+		nameAreaPanel.setText("");
 
 		//再描画
 		ste.redraw();
@@ -229,7 +226,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	//JTextArea初期化
 	public void initTextArea() {
 		isDrawing = true;
-		nameArea.setText("");
+		nameAreaPanel.setText("");
 		isDrawing = false;
 	}
 
@@ -248,7 +245,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 			case KeyEvent.VK_ENTER:
 				if (shiftKeyPressed) {
 					add();
-					nameArea.setText("");
+					nameAreaPanel.setText("");
 				}
 				break;
 		}
