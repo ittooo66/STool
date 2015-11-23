@@ -39,7 +39,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setBorder(new EtchedBorder());
 
 		//NameTextArea周り
-		nameAreaPanel = new TitledTextAreaPanel("Domain Name", 2, 15);
+		nameAreaPanel = new TitledTextAreaPanel("Domain Name", 15, 2);
 		nameAreaPanel.addDocumentListener(this);
 		nameAreaPanel.addKeyListener(this);
 		this.add(nameAreaPanel);
