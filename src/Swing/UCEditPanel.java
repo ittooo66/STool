@@ -5,7 +5,6 @@ import Models.Step;
 import Models.Usecase;
 import Processing.UCGraph;
 import Swing.Component.TitledJRadioButtonGroupPanel;
-import Swing.Component.TitledTextAreaPanel;
 import Swing.Component.TitledComboBoxWithValuePanel;
 
 import javax.swing.*;
@@ -23,9 +22,11 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private final SToolEditor ste;
 
 	private JButton jump;
-	private JPanel parentGoalNameLabelPanel;
-	private TitledTextAreaPanel nameAreaPanel, conditionAreaPanel, eventNameAreaPanel;
+	private JTextArea nameArea, conditionArea, eventNameArea;
+	private JPanel conditionAreaPanel;
+	private JPanel parentGoalNameLabelPanel, nameAreaPanel;
 	private TitledComboBoxWithValuePanel subjectComboBoxPanel, objectComboBoxPanel, toComboBoxPanel, sourceStepComboBoxPanel;
+	private JPanel eventNameAreaPanel;
 	private TitledJRadioButtonGroupPanel stepType;
 	private JLabel parentGoalNameLabel;
 
@@ -40,8 +41,11 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.setBorder(new EtchedBorder());
 
 		//NameTextArea
-		nameAreaPanel = new TitledTextAreaPanel("Usecase Name", 15, 2);
-		nameAreaPanel.addDocumentListener(this);
+		nameArea = new JTextArea(2, 15);
+		nameArea.getDocument().addDocumentListener(this);
+		nameAreaPanel = new JPanel();
+		nameAreaPanel.add(new JScrollPane(nameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+		nameAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Usecase Name"));
 		this.add(nameAreaPanel);
 		//parentGoalLabel
 		parentGoalNameLabel = new JLabel("null");
@@ -56,11 +60,14 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(jump);
 
 		//Condition
-		conditionAreaPanel = new TitledTextAreaPanel("Condition", 15, 2);
-		conditionAreaPanel.addDocumentListener(this);
+		conditionArea = new JTextArea(2, 15);
+		conditionArea.getDocument().addDocumentListener(this);
+		conditionAreaPanel = new JPanel();
+		conditionAreaPanel.add(new JScrollPane(conditionArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+		conditionAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Condition"));
 		this.add(conditionAreaPanel);
 		//sourceStepComboBox
-		sourceStepComboBoxPanel = new TitledComboBoxWithValuePanel("SourceStep");
+		sourceStepComboBoxPanel = new ValuedComboBoxPanel("SourceStep");
 		sourceStepComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(sourceStepComboBoxPanel);
 
@@ -78,8 +85,11 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		subjectComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(subjectComboBoxPanel);
 		//eventNameArea
-		eventNameAreaPanel = new TitledTextAreaPanel("Event", 15, 1);
-		eventNameAreaPanel.addDocumentListener(this);
+		eventNameArea = new JTextArea(1, 15);
+		eventNameArea.getDocument().addDocumentListener(this);
+		eventNameAreaPanel = new JPanel();
+		eventNameAreaPanel.add(new JScrollPane(eventNameArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+		eventNameAreaPanel.setBorder(new TitledBorder(new EtchedBorder(), "Event"));
 		this.add(eventNameAreaPanel);
 		//objectComboBox
 		objectComboBoxPanel = new TitledComboBoxWithValuePanel("Object");
@@ -109,7 +119,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 					//親ゴールの名前を表示
 					parentGoalNameLabel.setText(ste.fgm.getGoalById(selectedUsecase.parentLeafGoalId).name);
 					//Usecase名前詰め込んで描画
-					if (!nameAreaPanel.hasFocus()) nameAreaPanel.setText(selectedUsecase.name);
+					if (!nameArea.hasFocus()) nameArea.setText(selectedUsecase.name);
 				}
 
 				if (flowSelected) {
@@ -135,8 +145,8 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 					if (flowIndex != null) sourceStepComboBoxPanel.setSelected(flowIndex.sourceStepId);
 
 					//Condition名前詰め込み
-					if (flowIndex != null && !conditionAreaPanel.hasFocus()) {
-						conditionAreaPanel.setText(flowIndex.condition);
+					if (flowIndex != null && !conditionArea.hasFocus()) {
+						conditionArea.setText(flowIndex.condition);
 					}
 				}
 
@@ -176,7 +186,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 					subjectComboBoxPanel.setSelected(selectedStep.subjectDomainId);
 
 					//Text更新
-					if (!eventNameAreaPanel.hasFocus()) eventNameAreaPanel.setText(selectedStep.Event);
+					if (!eventNameArea.hasFocus()) eventNameArea.setText(selectedStep.Event);
 				}
 			}
 
@@ -208,13 +218,13 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	}
 
 	private void editUsecase(Usecase usecase) {
-		usecase.name = nameAreaPanel.getText();
+		usecase.name = nameArea.getText();
 		ste.fgm.editUsecase(usecase.id, usecase);
 	}
 
 	private void editAltFlow(Usecase usecase, int flowIndex) {
 		Step s = usecase.getAlternativeFlowList().get(flowIndex).get(0);
-		s.condition = conditionAreaPanel.getText();
+		s.condition = conditionArea.getText();
 		s.sourceStepId = sourceStepComboBoxPanel.getSelectedParam();
 		usecase.editStep(s.id, s);
 		ste.fgm.editUsecase(usecase.id, usecase);
@@ -222,7 +232,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	private void editExcFlow(Usecase usecase, int flowIndex) {
 		Step s = usecase.getExceptionalFlowList().get(flowIndex).get(0);
-		s.condition = conditionAreaPanel.getText();
+		s.condition = conditionArea.getText();
 		s.sourceStepId = sourceStepComboBoxPanel.getSelectedParam();
 		usecase.editStep(s.id, s);
 		ste.fgm.editUsecase(usecase.id, usecase);
@@ -240,8 +250,8 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 				break;
 			case ACTION:
 				step.objectDomainId = objectComboBoxPanel.getSelectedParam();
-				step.subjectDomainId = subjectComboBoxPanel.getSelectedParam();
-				String str = eventNameAreaPanel.getText();
+				step.subjectDomainId=subjectComboBoxPanel.getSelectedParam();
+				String str = eventNameArea.getText();
 				if (str != null) step.Event = str;
 				break;
 		}
