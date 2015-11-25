@@ -26,6 +26,10 @@ public class PFGraph extends PApplet {
 	public boolean isInvSelected = false;
 	public int selectedEventIndex = -1;
 
+	//スクロール位置
+	public int scrollX, scrollY;
+	private int mouseXBuffer, mouseYBuffer;
+
 	//本体
 	private SToolEditor sToolEditor;
 
@@ -42,12 +46,14 @@ public class PFGraph extends PApplet {
 		textFont(font);
 		//Smoothに描画
 		smooth();
-
 		//ListBox初期化
 		eventLB = new ListBox();
 		invEventLB = new ListBox();
 		rootUCEventLB = new ListBox();
 		invRootUCEventLB = new ListBox();
+		//初期スクロール位置
+		scrollX = 0;
+		scrollY = 0;
 	}
 
 	//変更フラグ
@@ -62,10 +68,19 @@ public class PFGraph extends PApplet {
 		if (!hasChanges) return;
 		else hasChanges = false;
 
+		//背景描画
 		background(COLOR.BACKGROUND);
-		stroke(COLOR.LINES);
-		strokeWeight(1);
-		noFill();
+
+		//スクロール適用
+		translate(scrollX, scrollY);
+
+		//編集外枠描画
+		noStroke();
+		fill(COLOR.LINES);
+		rect(-1000, -20, 1000, 2460);
+		rect(-1000, -1000, 4580, 1000);
+		rect(2560, -20, 1000, 2460);
+		rect(-20, 1440, 2580, 1000);
 
 		//各リレーションを描画
 		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
@@ -84,7 +99,7 @@ public class PFGraph extends PApplet {
 				fill(COLOR.BACKGROUND);
 				stroke(COLOR.LINES);
 			}
-			strokeWeight(PUtility.mouseIsInEllipse(pfi.x, pfi.y, 10, 10, mouseX, mouseY) ? (float) 1.5 : 1);
+			strokeWeight(PUtility.mouseIsInEllipse(pfi.x + scrollX, pfi.y + scrollY, 10, 10, mouseX, mouseY) ? (float) 1.5 : 1);
 			ellipse(pfi.x, pfi.y, 10, 10);
 			strokeWeight(1);
 		}
@@ -107,7 +122,7 @@ public class PFGraph extends PApplet {
 				fill(COLOR.BACKGROUND);
 				stroke(COLOR.LINES);
 			}
-			strokeWeight(PUtility.mouseIsInRect(d.x - dW / 2, d.y - dH / 2, dW, dH, mouseX, mouseY) ? (float) 1.5 : 1);
+			strokeWeight(PUtility.mouseIsInRect(d.x - dW / 2, d.y - dH / 2, dW, dH, mouseX - scrollX, mouseY - scrollY) ? (float) 1.5 : 1);
 			rect(d.x - dW / 2, d.y - dH / 2, dW, dH);
 			strokeWeight(1);
 
@@ -139,6 +154,9 @@ public class PFGraph extends PApplet {
 			text(d.name, d.x, d.y - 2);
 		}
 
+		//座標系戻し
+		translate(-scrollX, -scrollY);
+
 		//インターフェース、イベント描画
 		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList().size(); interfaceIndex++) {
 			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(interfaceIndex);
@@ -151,13 +169,16 @@ public class PFGraph extends PApplet {
 				//背景ぬりつぶし
 				fill(COLOR.BACKGROUND);
 				noStroke();
-				rect(pfi.x < width / 2 ? width / 2 : 20, 20, width / 2 - 20, height - 40);
+
+				//左記述かどうか
+				boolean isDrawingToRight = pfi.x + scrollX < width / 2;
+				rect(isDrawingToRight ? width / 2 : 20, 20, width / 2 - 20, height - 40);
 
 				textAlign(LEFT, CENTER);
 				fill(COLOR.LINES);
-				text(sToolEditor.fgm.getDomainById(pfi.rootDomainId).name + "!", pfi.x < width / 2 ? width / 2 + 5 : 25, 15, width / 2 - 10, 40);
+				text(sToolEditor.fgm.getDomainById(pfi.rootDomainId).name + "!", isDrawingToRight ? width / 2 + 5 : 25, 15, width / 2 - 10, 40);
 				if (selectedEventIndex != -1 && !isInvSelected)
-					text("Generated from", pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, 15, width / 2 - 10, 40);
+					text("Generated from", isDrawingToRight ? width / 2 + 5 + width / 4 : 25 + width / 4, 15, width / 2 - 10, 40);
 
 				lbc = new ArrayList<>();
 				//EventListを詰め込み
@@ -165,7 +186,7 @@ public class PFGraph extends PApplet {
 					lbc.add(new ListBoxContent(i, pfEventListT.get(i).event));
 				}
 				eventLB.setContents(lbc);
-				eventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 : 25, 50, width / 4 - 30, height / 2 - 60, 30, !isInvSelected ? selectedEventIndex : -1);
+				eventLB.adjust(isDrawingToRight ? width / 2 + 5 : 25, 50, width / 4 - 30, height / 2 - 60, 30, !isInvSelected ? selectedEventIndex : -1);
 				eventLB.draw(this);
 
 				lbc = new ArrayList<>();
@@ -180,21 +201,21 @@ public class PFGraph extends PApplet {
 					}
 				}
 				rootUCEventLB.setContents(lbc);
-				rootUCEventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, 50, width / 4 - 30, height / 2 - 60, 30, -1);
+				rootUCEventLB.adjust(isDrawingToRight ? width / 2 + 5 + width / 4 : 25 + width / 4, 50, width / 4 - 30, height / 2 - 60, 30, -1);
 				if (selectedEventIndex != -1 && !isInvSelected) rootUCEventLB.draw(this);
 
 				textAlign(LEFT, CENTER);
 				fill(COLOR.LINES);
-				text(sToolEditor.fgm.getDomainById(pfi.distDomainId).name + "!", pfi.x < width / 2 ? width / 2 + 5 : 25, height / 2 - 5, width / 2 - 10, 40);
+				text(sToolEditor.fgm.getDomainById(pfi.distDomainId).name + "!", isDrawingToRight ? width / 2 + 5 : 25, height / 2 - 5, width / 2 - 10, 40);
 				if (selectedEventIndex != -1 && isInvSelected)
-					text("Genereted from", pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 - 5, width / 2 - 10, 40);
+					text("Genereted from", isDrawingToRight ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 - 5, width / 2 - 10, 40);
 				lbc = new ArrayList<>();
 				//EventListを詰め込み
 				for (int i = 0; i < pfEventListF.size(); i++) {
 					lbc.add(new ListBoxContent(i, pfEventListF.get(i).event));
 				}
 				invEventLB.setContents(lbc);
-				invEventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 : 25, height / 2 + 30, width / 4 - 30, height / 2 - 60, 30, isInvSelected ? selectedEventIndex : -1);
+				invEventLB.adjust(isDrawingToRight ? width / 2 + 5 : 25, height / 2 + 30, width / 4 - 30, height / 2 - 60, 30, isInvSelected ? selectedEventIndex : -1);
 				invEventLB.draw(this);
 
 				lbc = new ArrayList<>();
@@ -209,31 +230,42 @@ public class PFGraph extends PApplet {
 					}
 				}
 				invRootUCEventLB.setContents(lbc);
-				invRootUCEventLB.adjust(pfi.x < width / 2 ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 + 30, width / 4 - 30, height / 2 - 60, 30, -1);
+				invRootUCEventLB.adjust(isDrawingToRight ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 + 30, width / 4 - 30, height / 2 - 60, 30, -1);
 				if (selectedEventIndex != -1 && isInvSelected) invRootUCEventLB.draw(this);
 
 				//枠まわり
 				fill(COLOR.SELECTED);
 				noStroke();
-				triangle(pfi.x, pfi.y, width / 2, height / 2 + 20, width / 2, height / 2 - 20);
+				triangle(pfi.x + scrollX, pfi.y + scrollY, width / 2, height / 2 + 20, width / 2, height / 2 - 20);
 				noFill();
 				stroke(COLOR.LINES);
-				rect(pfi.x < width / 2 ? width / 2 : 20, 20, width / 2 - 20, height - 40);
+				rect(isDrawingToRight ? width / 2 : 20, 20, width / 2 - 20, height - 40);
 			}
 		}
 	}
 
 	public void mousePressed() {
+		//スクロール用バッファ保持
+		mouseXBuffer = mouseX;
+		mouseYBuffer = mouseY;
+		if (mouseButton == RIGHT) {
+			scrollX = 0;
+			scrollY = 0;
+		}
+		//temp
+		ListBoxContent lbc;
 		//インターフェース選択時
 		if (selectedInterfaceIndex != -1) {
-			if (eventLB.getContentOnMouse(mouseX, mouseY) != null) {
-				selectedEventIndex = eventLB.getContentOnMouse(mouseX, mouseY).id;
+			lbc = eventLB.getContentOnMouse(mouseX, mouseY);
+			if (lbc != null) {
+				selectedEventIndex = lbc.id;
 				isInvSelected = false;
 				redraw();
 				return;
 			}
-			if (invEventLB.getContentOnMouse(mouseX, mouseY) != null) {
-				selectedEventIndex = invEventLB.getContentOnMouse(mouseX, mouseY).id;
+			lbc = invEventLB.getContentOnMouse(mouseX, mouseY);
+			if (lbc != null) {
+				selectedEventIndex = lbc.id;
 				isInvSelected = true;
 				redraw();
 				return;
@@ -241,12 +273,14 @@ public class PFGraph extends PApplet {
 		}
 		//イベント選択時
 		if (selectedEventIndex != -1) {
-			if (rootUCEventLB.getContentOnMouse(mouseX, mouseY) != null && !isInvSelected) {
-				int selectedUsecaseId = rootUCEventLB.getContentOnMouse(mouseX, mouseY).id;
+			lbc = rootUCEventLB.getContentOnMouse(mouseX, mouseY);
+			if (lbc != null && !isInvSelected) {
+				int selectedUsecaseId = lbc.id;
 				sToolEditor.jumpToUCTab(selectedUsecaseId);
 			}
-			if (invRootUCEventLB.getContentOnMouse(mouseX, mouseY) != null && isInvSelected) {
-				int selectedUsecaseId = invRootUCEventLB.getContentOnMouse(mouseX, mouseY).id;
+			lbc = invRootUCEventLB.getContentOnMouse(mouseX, mouseY);
+			if (lbc != null && isInvSelected) {
+				int selectedUsecaseId = lbc.id;
 				sToolEditor.jumpToUCTab(selectedUsecaseId);
 			}
 		}
@@ -262,7 +296,7 @@ public class PFGraph extends PApplet {
 
 		//マウスクリック範囲にドメインがあれば、それを選択
 		for (Domain d : sToolEditor.fgm.getDomains()) {
-			if (PUtility.mouseIsInRect(d.x - (int) textWidth(d.name) / 2 - 15, d.y - 20, (int) textWidth(d.name) + 30, 40, mouseX, mouseY)) {
+			if (PUtility.mouseIsInRect(scrollX + d.x - (int) textWidth(d.name) / 2 - 15, scrollY + d.y - 20, (int) textWidth(d.name) + 30, 40, mouseX, mouseY)) {
 				selectedDomainId = d.id;
 				selectedInterfaceIndex = -1;
 			}
@@ -271,7 +305,7 @@ public class PFGraph extends PApplet {
 		//マウスクリック範囲にインターフェースがあれば、それを選択
 		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
 			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
-			if (PUtility.mouseIsInEllipse(pfi.x, pfi.y, 10, 10, mouseX, mouseY)) {
+			if (PUtility.mouseIsInEllipse(pfi.x + scrollX, pfi.y + scrollY, 10, 10, mouseX, mouseY)) {
 				selectedDomainId = -1;
 				selectedInterfaceIndex = i;
 			}
@@ -286,10 +320,25 @@ public class PFGraph extends PApplet {
 		if (mouseButton == LEFT && selectedDomainId != -1) {
 			Domain d = sToolEditor.fgm.getDomainById(selectedDomainId);
 			if (d != null && 0 < mouseX && mouseX < width && 0 < mouseY && mouseY < height)
-				sToolEditor.fgm.moveDomain(selectedDomainId, mouseX, mouseY);
+				sToolEditor.fgm.moveDomain(selectedDomainId, mouseX - scrollX, mouseY - scrollY);
+		} else {
+			scrollX += mouseX - mouseXBuffer;
+			scrollY += mouseY - mouseYBuffer;
+			mouseXBuffer = mouseX;
+			mouseYBuffer = mouseY;
 		}
 		redraw();
 	}
+
+	public void mouseReleased() {
+		//行き過ぎ防止
+		if (scrollX > 10) scrollX = 10;
+		if (scrollX - width < -2570) scrollX = -2570 + width;
+		if (scrollY > 10) scrollY = 10;
+		if (scrollY - height < -1450) scrollY = -1450 + height;
+		redraw();
+	}
+
 
 	public void mouseWheel(MouseEvent event) {
 		//カウント取得
