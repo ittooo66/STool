@@ -37,8 +37,12 @@ public class TitledTextAreaPanel extends JPanel {
 		return textArea.getText();
 	}
 
-	public boolean hasFocus(){
+	public boolean hasFocus() {
 		return textArea.hasFocus();
+	}
+
+	public void requestFocus() {
+		textArea.requestFocus();
 	}
 
 }
