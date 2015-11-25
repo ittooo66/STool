@@ -4,8 +4,10 @@ import Models.FGModelAdapter;
 import Processing.PMetricsBrowse;
 
 import javax.swing.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
-public class MetricsBrowser extends JFrame {
+public class MetricsBrowser extends JFrame implements ComponentListener {
 
 	private PMetricsBrowse pMetricsBrowse;
 
@@ -22,10 +24,32 @@ public class MetricsBrowser extends JFrame {
 		this.setTitle("MetricsBrowser");
 		this.setVisible(true);
 
+		this.addComponentListener(this);
+
 		redraw();
 	}
 
 	public void redraw() {
 		pMetricsBrowse.redraw();
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		redraw();
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+
 	}
 }
