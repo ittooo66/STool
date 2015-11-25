@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * ・null値：編集操作成功<p>
  * ・文字列：エラーメッセージ
  */
-public class FGModelAdapter{
+public class FGModelAdapter {
 	private FGModelCore fgm;
 
 	//VERSION指定(ASIS，TOBE)
@@ -326,6 +326,17 @@ public class FGModelAdapter{
 	}
 
 	public String removeDomain(int id) {
+
+		//どこかにこいつを使うアクションステップが生きてるなら削除不可能
+		for (Usecase uc : getUsecases()) {
+			for (Step s : uc.getAllActionStep()) {
+				if (s.subjectDomainId == id || s.objectDomainId == id) {
+					return "CANNOT DELETE DOMAIN BECAUSE OF USECASE \"" + uc.name + "\" REFs";
+				}
+			}
+		}
+
+		//Domain削除
 		for (int i = 0; i < fgm.domains.size(); i++) {
 			if (fgm.domains.get(i).id == id) {
 				fgm.domains.remove(i);
