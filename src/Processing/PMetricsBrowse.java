@@ -5,16 +5,15 @@ import Models.Domain;
 import Models.FGModelAdapter;
 import Models.Usecase;
 import Processing.Component.ButtonSetFrame;
-import Processing.Component.COLOR;
 import Processing.Component.ListBox;
 import Processing.Component.ListBoxContent;
-import com.sun.deploy.util.ParameterUtil;
-import com.sun.deploy.util.StringUtils;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.event.MouseEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class PMetricsBrowse extends PApplet {
@@ -190,6 +189,7 @@ public class PMetricsBrowse extends PApplet {
 		bsf.addButton("←");
 		bsf.addButton("→");
 		lb = new ListBox();
+		lb.setSelectable(false);
 
 		metricsType = MetricsType.ANOS_ASIS;
 	}
@@ -214,6 +214,7 @@ public class PMetricsBrowse extends PApplet {
 		bsf.draw(this);
 		//ListBox詰め込んで記述
 		List<ListBoxContent> lbc = MetricsType.getList(metricsType, fgm);
+		lbc.sort((o1, o2) -> o2.param - o1.param);
 		lb.setContents(lbc);
 		lb.adjust(20, 50, width - 40, height - 70, 30, -1);
 		lb.draw(this);
@@ -228,9 +229,11 @@ public class PMetricsBrowse extends PApplet {
 		switch (bsf.getButtonIdOnMouse(x, y)) {
 			case 0://左移動
 				metricsType = metricsType.prev();
+				lb.scroll(0);
 				break;
 			case 1://右移動
 				metricsType = metricsType.next();
+				lb.scroll(0);
 				break;
 		}
 		redraw();
