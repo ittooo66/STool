@@ -6,13 +6,15 @@ import Swing.Component.TitledJRadioButtonGroupPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.File;
 
 /**
  * Created by 66 on 2015/10/03.
  * エディタ本体
  */
-public class SToolEditor extends JFrame {
+public class SToolEditor extends JFrame implements ComponentListener {
 
 	//融合ゴールモデル
 	public FGModelAdapter fgm;
@@ -238,14 +240,6 @@ public class SToolEditor extends JFrame {
 		ucGraph.selectedFlowType = -1;
 	}
 
-	public static void main(String[] args) {
-		SToolEditor ste = new SToolEditor();
-		ste.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ste.setBounds(10, 10, 1024, 768);
-		ste.setTitle("SToolEditor");
-		ste.setVisible(true);
-	}
-
 	public void jumpToGGTab(int goalId) {
 		tabbedpane.setSelectedIndex(0);
 		ggGraph.selectedGoalId = goalId;
@@ -286,4 +280,8 @@ public class SToolEditor extends JFrame {
 	}
 
 
+	public static void main(String[] args) {
+		SToolEditor ste = new SToolEditor();
+
+	}
 }
