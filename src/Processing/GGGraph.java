@@ -18,6 +18,10 @@ public class GGGraph extends PApplet {
 	//選択中のゴールID（-1なら非選択）
 	public int selectedGoalId = -1;
 
+	//スクロール位置
+	public int scrollX, scrollY;
+	private int mouseXBuffer, mouseYBuffer;
+
 	//本体
 	private SToolEditor sToolEditor;
 
@@ -31,6 +35,9 @@ public class GGGraph extends PApplet {
 		textFont(font);
 		//Smoothに描画
 		smooth();
+		//初期スクロール位置
+		scrollX = 0;
+		scrollY = 0;
 	}
 
 	//変更フラグ
@@ -47,6 +54,16 @@ public class GGGraph extends PApplet {
 
 		//背景描画
 		background(COLOR.BACKGROUND);
+		//スクロール適用
+		translate(scrollX, scrollY);
+
+		//目印枠描画
+		noStroke();
+		fill(COLOR.LINES);
+		rect(-1000, -20, 1000, 2460);
+		rect(-1000, -1000, 4580, 1000);
+		rect(2560, -20, 1000, 2460);
+		rect(-20, 1440, 2580, 1000);
 
 		//ANDArc描画
 		stroke(COLOR.LINES);
@@ -155,7 +172,7 @@ public class GGGraph extends PApplet {
 			//ゴール名が１行の場合
 			if (match(g.name, "\n") == null) {
 				//わっか記述
-				strokeWeight(PUtility.mouseIsInEllipse(g.x, g.y, (int) textWidth(g.name) + 40, 40, mouseX, mouseY) ? (float) 1.5 : 1);
+				strokeWeight(PUtility.mouseIsInEllipse(g.x + scrollX, g.y + scrollY, (int) textWidth(g.name) + 40, 40, mouseX, mouseY) ? (float) 1.5 : 1);
 				ellipse(g.x, g.y, textWidth(g.name) + 40, 40);
 				strokeWeight(1);
 
@@ -183,6 +200,14 @@ public class GGGraph extends PApplet {
 	}
 
 	public void mousePressed() {
+		//スクロール用バッファ保持
+		mouseXBuffer = mouseX;
+		mouseYBuffer = mouseY;
+		if (mouseButton == RIGHT) {
+			scrollX = 0;
+			scrollY = 0;
+		}
+
 		//変更前のゴールIDを保存
 		int preSelectedGoalId = selectedGoalId;
 
@@ -190,7 +215,7 @@ public class GGGraph extends PApplet {
 		selectedGoalId = -1;
 		for (Goal g : sToolEditor.fgm.getGoals()) {
 			//マウスクリック範囲にゴールがあれば、それを選択
-			if (PUtility.mouseIsInEllipse(g.x, g.y, (int) textWidth(g.name) + 40, 40, mouseX, mouseY))
+			if (PUtility.mouseIsInEllipse(g.x + scrollX, g.y + scrollY, (int) textWidth(g.name) + 40, 40, mouseX, mouseY))
 				selectedGoalId = g.id;
 		}
 
@@ -226,8 +251,22 @@ public class GGGraph extends PApplet {
 		if (mouseButton == LEFT && selectedGoalId != -1) {
 			Goal g = sToolEditor.fgm.getGoalById(selectedGoalId);
 			if (g != null && PUtility.mouseIsInRect(0, 0, width, height, mouseX, mouseY))
-				sToolEditor.fgm.moveGoal(selectedGoalId, mouseX, mouseY);
+				sToolEditor.fgm.moveGoal(selectedGoalId, mouseX - scrollX, mouseY - scrollY);
+		} else {
+			scrollX += mouseX - mouseXBuffer;
+			scrollY += mouseY - mouseYBuffer;
+			mouseXBuffer = mouseX;
+			mouseYBuffer = mouseY;
 		}
+		redraw();
+	}
+
+	public void mouseReleased() {
+		//行き過ぎ防止
+		if (scrollX > 10) scrollX = 10;
+		if (scrollX - width < -2570) scrollX = -2570 + width;
+		if (scrollY > 10) scrollY = 10;
+		if (scrollY - height < -1450) scrollY = -1450 + height;
 		redraw();
 	}
 
