@@ -116,7 +116,7 @@ public class ListBox {
 			pApplet.noStroke();
 			pApplet.textAlign(PConstants.LEFT, PConstants.CENTER);
 			pApplet.fill(selectedId == contents.get(j).id ? COLOR.BACKGROUND : COLOR.LINES);
-			pApplet.text(contents.get(j).name, x + 7, y + i * dh, w - 7, dh);
+			pApplet.text(contents.get(j).name, x + 7, y + i * dh, w - 21, dh);
 
 			//パラメータを出力（-1のときは無効として扱う）
 			pApplet.textAlign(PConstants.RIGHT, PConstants.CENTER);
