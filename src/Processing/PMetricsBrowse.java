@@ -12,8 +12,6 @@ import processing.core.PFont;
 import processing.event.MouseEvent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class PMetricsBrowse extends PApplet {
