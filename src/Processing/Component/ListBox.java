@@ -15,9 +15,16 @@ public class ListBox {
 	protected int selectedId;
 	//コンテンツ
 	protected List<ListBoxContent> contents;
+	//選択可能かどうか
+	protected boolean isSelectable;
 
 	public ListBox() {
 		contents = new ArrayList<>();
+		isSelectable = true;
+	}
+
+	public void setSelectable(boolean isSelectable) {
+		this.isSelectable = isSelectable;
 	}
 
 	/**
@@ -31,6 +38,7 @@ public class ListBox {
 
 	/**
 	 * 特定のマウスカーソル上にあるコンテンツを返す
+	 *
 	 * @param mouseX マウスカーソルX座標
 	 * @param mouseY マウスカーソルY座標
 	 * @return コンテンツ
@@ -92,14 +100,16 @@ public class ListBox {
 				//太字指定のとき
 				pApplet.stroke(COLOR.LINES);
 				pApplet.fill(COLOR.FILL);
-				pApplet.strokeWeight(PUtility.mouseIsInRect(x + 2, y + 2 + i * dh, w - 4, dh - 4, pApplet.mouseX, pApplet.mouseY) ? (float) 1.5 : 1);
+				if (isSelectable)
+					pApplet.strokeWeight(PUtility.mouseIsInRect(x + 2, y + 2 + i * dh, w - 4, dh - 4, pApplet.mouseX, pApplet.mouseY) ? (float) 1.5 : 1);
 				pApplet.rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
 				pApplet.strokeWeight(1);
 			} else {
 				//通常の描画
 				pApplet.stroke(COLOR.LINES);
 				pApplet.noFill();
-				pApplet.strokeWeight(PUtility.mouseIsInRect(x + 2, y + 2 + i * dh, w - 4, dh - 4, pApplet.mouseX, pApplet.mouseY) ? (float) 1.5 : 1);
+				if (isSelectable)
+					pApplet.strokeWeight(PUtility.mouseIsInRect(x + 2, y + 2 + i * dh, w - 4, dh - 4, pApplet.mouseX, pApplet.mouseY) ? (float) 1.5 : 1);
 				pApplet.rect(x + 2, y + 2 + i * dh, w - 4, dh - 4);
 				pApplet.strokeWeight(1);
 			}
