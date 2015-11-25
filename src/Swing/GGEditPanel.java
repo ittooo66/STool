@@ -245,4 +245,8 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT) shiftKeyPressed = false;
 	}
+
+	public void requestFocusToTextArea() {
+		nameAreaPanel.requestFocus();
+	}
 }

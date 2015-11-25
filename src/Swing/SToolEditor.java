@@ -254,4 +254,9 @@ public class SToolEditor extends JFrame {
 		ucGraph.selectedStepId = -1;
 		redraw();
 	}
+
+	public void requestFocusToGGTextArea() {
+		ggEditPanel.requestFocusToTextArea();
+	}
+
 }

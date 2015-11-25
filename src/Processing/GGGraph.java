@@ -241,6 +241,7 @@ public class GGGraph extends PApplet {
 
 	public void keyPressed() {
 		if (keyCode == SHIFT) shiftKeyPressed = true;
+		else sToolEditor.requestFocusToGGTextArea();
 	}
 
 	public void keyReleased() {
