@@ -146,6 +146,12 @@ public class SToolEditor extends JFrame {
 		getContentPane().add(tabbedpane, BorderLayout.CENTER);
 		getContentPane().add(sharedEndPanel, BorderLayout.PAGE_END);
 
+		this.addComponentListener(this);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBounds(10, 10, 1024, 768);
+		this.setTitle("SToolEditor");
+		this.setVisible(true);
+
 		//諸々を描画
 		redraw();
 	}
@@ -258,5 +264,26 @@ public class SToolEditor extends JFrame {
 	public void requestFocusToGGTextArea() {
 		ggEditPanel.requestFocusToTextArea();
 	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		redraw();
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+
+	}
+
 
 }
