@@ -52,18 +52,14 @@ public class GGGraph extends PApplet {
 		if (!hasChanges) return;
 		else hasChanges = false;
 
-		//背景描画
-		background(COLOR.BACKGROUND);
 		//スクロール適用
 		translate(scrollX, scrollY);
 
-		//目印枠描画
+		//背景描画
 		noStroke();
-		fill(COLOR.LINES);
-		rect(-1000, -20, 1000, 2460);
-		rect(-1000, -1000, 4580, 1000);
-		rect(2560, -20, 1000, 2460);
-		rect(-20, 1440, 2580, 1000);
+		fill(COLOR.BACKGROUND);
+		background(COLOR.LINES);
+		rect(0, 0, 2560, 1440);
 
 		//ANDArc描画
 		stroke(COLOR.LINES);
