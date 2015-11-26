@@ -29,8 +29,9 @@ public class SToolEditor extends JFrame implements ComponentListener {
 	private PFGraph pfGraph;
 	private UCGraph ucGraph;
 
-	//MetricsBrowser
+	//MetricsBrowser,UsecaseDiffBrowser
 	private MetricsBrowser metricsBrowser;
+	private UsecaseDiffBrowser usecaseDiffBrowser;
 
 	//Tab
 	JTabbedPane tabbedpane;
@@ -81,8 +82,7 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		sharedEndPanel.add(viewmodeJRBG);
 		//差分ブラウザを開く
 		JButton diffBrowseButton = new JButton("Usecase Diff Browser");
-		diffBrowseButton.setEnabled(false);
-		diffBrowseButton.addActionListener(e -> diffBrowseButtonPressed());
+		diffBrowseButton.addActionListener(e -> usecaseDiffBrowser = new UsecaseDiffBrowser(fgm));
 		sharedEndPanel.add(diffBrowseButton);
 		//差分ブラウザを開く
 		JButton scenarioEditButton = new JButton("Scenario Editor");
@@ -195,10 +195,6 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		fgm = new FGModelAdapter();
 	}
 
-	private void diffBrowseButtonPressed() {
-		//TODO:DiffBrowser作成（Priority:3）
-	}
-
 	private void scenarioEditButtonPressed() {
 		//TODO:ScenarioEditor作成（Priority:2）
 	}
@@ -217,8 +213,9 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		pfEditPanel.redraw();
 		ucEditPanel.redraw();
 
-		//MetricsBrowserをRedraw
+		//BrowserをRedraw
 		if (metricsBrowser != null) metricsBrowser.redraw();
+		if (usecaseDiffBrowser != null) usecaseDiffBrowser.redraw();
 	}
 
 	public void initTextArea() {
