@@ -6,7 +6,8 @@ public class Step implements Cloneable {
 	//StepのId
 	public int id;
 
-	public StepType stepType;
+	//nullを許さない
+	public StepType stepType = StepType.NOP;
 
 	/**
 	 * ステップタイプ（ALT_INDEX,EXC_INDEX,GOTO,INCLUDE,ACTION）
