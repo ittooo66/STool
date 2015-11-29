@@ -1,7 +1,4 @@
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,14 +20,25 @@ import Models.Step.StepType;
  */
 public class CreateFGModel {
 
+	public static void main(String[] args) {
+		try {
+			CreateFGModel.make().saveXML(new File("res/test.txt"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static FGModelCore make() throws IOException, JSONException {
 		FGModelCore fg = new FGModelCore();
 		InputStream input;
 		int dmainId = 1;
 		HashMap<String, Integer> usecaseName2Id = new HashMap<String, Integer>();
-		ArrayList<Usecase> usecases = new ArrayList<Usecase>();
-		ArrayList<Domain> domains = new ArrayList<Domain>();
-		ArrayList<String> domainNames = new ArrayList<String>();
+		ArrayList<Goal> goals = new ArrayList<>();
+		ArrayList<Usecase> usecases = new ArrayList<>();
+		ArrayList<Domain> domains = new ArrayList<>();
+		ArrayList<String> domainNames = new ArrayList<>();
 		Domain temp;
 		try {
 			input = new FileInputStream("res/UsecaseParse.json");//生成したjsonファイルのパス
@@ -89,14 +97,37 @@ public class CreateFGModel {
 
 
 /**************************************************************************************************/
-			iter = jsonObj.keys();  //各ユースケース名を所得
-			while (iter.hasNext()) { //各ユースエースを見るためのループ
+			//各ユースケース名を取得
+			iter = jsonObj.keys();
+
+			//Goal用のID
+			int id = 0;
+
+			//各ユースケースを見るためのループ
+			while (iter.hasNext()) {
+
+				//Usecase初期設定
 				String key = (String) iter.next();
 				Usecase uc = new Usecase();
-				uc.init(usecaseName2Id.get(key), key, -1);
-				ArrayList<Step> steps = new ArrayList<Step>();
+				uc.init(usecaseName2Id.get(key), key, id);
+
+				//関連ゴール初期設定
+				Goal g = new Goal();
+				g.isEnableForAsIs = false;
+				g.isEnableForToBe = false;
+				g.id = id;
+				g.childrenType = Goal.ChildrenType.OR;
+				g.parentId = -1;
+				g.name = key;
+				g.x = 0;
+				g.y = 0;
+
+				//Step作成
+				ArrayList<Step> steps = new ArrayList<>();
 				JSONArray JssonArr = jsonObj.getJSONArray(key);
-				for (int i = 0; i < JssonArr.length(); i++) {  //各ユースケース名中の各ステップのjsonObjを読む
+
+				//各ユースケース名中の各ステップのjsonObjを読む
+				for (int i = 0; i < JssonArr.length(); i++) {
 					JSONObject stepJson = (JSONObject) JssonArr.get(i);
 					Step step = new Step();
 					step.subjectDomainId = DomainName2Id(domains, stepJson.getString("sub"));
@@ -138,11 +169,14 @@ public class CreateFGModel {
 					uc.setFlow(steps);
 				}
 				usecases.add(uc);
+				goals.add(g);
+				id++;
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		fg.usecases = usecases;
+		fg.goals = goals;
 		return fg;
 	}
 
