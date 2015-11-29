@@ -1,0 +1,1317 @@
+{
+  "カートの中身を表示する": [
+    {
+      "obj": "カート確認ページのリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客がカート確認ページのリンクをクリックする", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "カート確認ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザにカート確認ページを表示する", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }
+  ], 
+  "ログインする": [
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "ユースケース「商品検索ページを開く」を起動する", 
+      "step_id": 1, 
+      "type": "起動する", 
+      "event": "", 
+      "target": "商品検索ページを開く"
+    }, 
+    {
+      "obj": "ログイン画面のリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客がログイン画面のリンクをクリックする", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "ブラウザ", 
+      "sentence": "ブラウザがログイン画面に遷移する", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "遷移する", 
+      "target": "ログイン画面"
+    }, 
+    {
+      "obj": "メールアドレス", 
+      "sub": "顧客", 
+      "sentence": "顧客がメールアドレスをログインフォームに入力する", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "ログインフォーム"
+    }, 
+    {
+      "obj": "パスワード", 
+      "sub": "顧客", 
+      "sentence": "顧客がパスワードをログインフォームに入力する", 
+      "step_id": 5, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "ログインフォーム"
+    }, 
+    {
+      "obj": "ログインボタン", 
+      "sub": "", 
+      "sentence": "顧客はログインボタンをクリックする", 
+      "step_id": 6, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "ログインリクエスト", 
+      "sub": "システム", 
+      "sentence": "システムがログインリクエストを確認する", 
+      "step_id": 7, 
+      "type": "ACTION", 
+      "event": "確認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "商品検索ページ", 
+      "sub": "ステム", 
+      "sentence": "ステムがブラウザに商品検索ページを表示する", 
+      "step_id": 8, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "不正なメールアドレス", 
+      "sub": "顧客", 
+      "sentence": "顧客が不正なメールアドレスを入力した", 
+      "step_id": 9, 
+      "type": "ALT_INDEX", 
+      "event": "入力した", 
+      "target": ""
+    }, 
+    {
+      "obj": "メールアドレスの誤り", 
+      "sub": "システム", 
+      "sentence": "システムが顧客にメールアドレスの誤りを通知する", 
+      "step_id": 10, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "4に戻る", 
+      "step_id": 11, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "4"
+    }, 
+    {
+      "obj": "不正なパスワード", 
+      "sub": "顧客", 
+      "sentence": "顧客が不正なパスワードを入力した", 
+      "step_id": 12, 
+      "type": "ALT_INDEX", 
+      "event": "入力した", 
+      "target": ""
+    }, 
+    {
+      "obj": "パスワードの誤り", 
+      "sub": "システム", 
+      "sentence": "システムが顧客にパスワードの誤りを通知する", 
+      "step_id": 13, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "4に戻る", 
+      "step_id": 14, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "4"
+    }
+  ], 
+  "ログアウト": [
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "ユースケース「商品検索ページを開く」を起動する", 
+      "step_id": 1, 
+      "type": "起動する", 
+      "event": "", 
+      "target": "商品検索ページを開く"
+    }, 
+    {
+      "obj": "ログアウトのボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客がログアウトのボタンをクリックする", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }
+  ], 
+  "商品の詳細を見る": [
+    {
+      "obj": "商品のキーワード", 
+      "sub": "顧客", 
+      "sentence": "顧客が商品検索フォームに商品のキーワードを入力する", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "商品検索フォーム"
+    }, 
+    {
+      "obj": "商品", 
+      "sub": "システム", 
+      "sentence": "システムが商品のキーワードで商品を検索する", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "検索する", 
+      "target": ""
+    }, 
+    {
+      "obj": "検索結果", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザに検索結果を表示する", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "商品のサムネイル", 
+      "sub": "顧客", 
+      "sentence": "顧客が商品のサムネイルをクリックする", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "商品のサムネイル", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザに商品のサムネイルを表示する", 
+      "step_id": 5, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "価格", 
+      "sub": "システム", 
+      "sentence": "システムがウェブブラウザーに価格を表示する", 
+      "step_id": 6, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ウェブブラウザー"
+    }
+  ], 
+  "広告メール配信": [
+    {
+      "obj": "広告メール管理ページのリンク", 
+      "sub": "社員", 
+      "sentence": "社員が広告メール管理ページのリンクをクリックする", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "ブラウザ", 
+      "sentence": "ブラウザが広告管理ページに遷移する", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "遷移する", 
+      "target": "広告管理ページ"
+    }, 
+    {
+      "obj": "広告メールの新規作成ページのリンク", 
+      "sub": "社員", 
+      "sentence": "社員が広告メールの新規作成ページのリンクをクリックする", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "ブラウザ", 
+      "sentence": "ブラウザが広告メールの新規作成ページに遷移する", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "遷移する", 
+      "target": "広告メールの新規作成ページ"
+    }, 
+    {
+      "obj": "広告メールのタイトル", 
+      "sub": "社員", 
+      "sentence": "社員が広告メールのタイトルを広告メールの下書きフォームに入力する", 
+      "step_id": 5, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "広告メールの下書きフォーム"
+    }, 
+    {
+      "obj": "広告メールの本文", 
+      "sub": "社員", 
+      "sentence": "社員が広告メールの本文を広告メールの下書きフォームに入力する", 
+      "step_id": 6, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "広告メールの下書きフォーム"
+    }, 
+    {
+      "obj": "広告メールの下書き確認ボタン", 
+      "sub": "社員", 
+      "sentence": "社員が広告メールの下書き確認ボタンをクリックする", 
+      "step_id": 7, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "ブラウザ", 
+      "sentence": "ブラウザが広告メールの下書き確認ページに遷移する", 
+      "step_id": 8, 
+      "type": "ACTION", 
+      "event": "遷移する", 
+      "target": "広告メールの下書き確認ページ"
+    }, 
+    {
+      "obj": "広告メールの下書き", 
+      "sub": "社員", 
+      "sentence": "社員が広告メールの下書きを確認する", 
+      "step_id": 9, 
+      "type": "ACTION", 
+      "event": "確認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "広告メールの作成完了ボタン", 
+      "sub": "社員", 
+      "sentence": "社員が広告メールの作成完了ボタンをクリックする", 
+      "step_id": 10, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "ブラウザ", 
+      "sentence": "ブラウザが広告メール作成完了の通知ページに遷移する", 
+      "step_id": 11, 
+      "type": "ACTION", 
+      "event": "遷移する", 
+      "target": "広告メール作成完了の通知ページ"
+    }, 
+    {
+      "obj": "広告メール", 
+      "sub": "システム", 
+      "sentence": "システムが顧客に広告メールを送信する", 
+      "step_id": 12, 
+      "type": "ACTION", 
+      "event": "送信する", 
+      "target": "顧客"
+    }
+  ], 
+  "パスワード変更": [
+    {
+      "obj": "パスワード変更ページのリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客がパスワード変更ページのリンクをクリックする", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "パスワード変更ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザにパスワード変更ページを表示する", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "パスワード", 
+      "sub": "顧客", 
+      "sentence": "顧客がパスワードを入力する", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": ""
+    }, 
+    {
+      "obj": "新しいパスワード", 
+      "sub": "顧客", 
+      "sentence": "顧客が新しいパスワードを入力する", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": ""
+    }, 
+    {
+      "obj": "パスワード更新ボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客がパスワード更新ボタンをクリックする", 
+      "step_id": 5, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "パスワード変更リクエスト", 
+      "sub": "システム", 
+      "sentence": "システムがパスワード変更リクエストを確認する", 
+      "step_id": 6, 
+      "type": "ACTION", 
+      "event": "確認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "新しいパスワード", 
+      "sub": "システム", 
+      "sentence": "システムが新しいパスワードを登録する", 
+      "step_id": 7, 
+      "type": "ACTION", 
+      "event": "登録する", 
+      "target": ""
+    }, 
+    {
+      "obj": "アカウント設定ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザにアカウント設定ページを表示する", 
+      "step_id": 8, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "", 
+      "sub": "パスワード", 
+      "sentence": "既存のパスワードが異なる", 
+      "step_id": 9, 
+      "type": "ALT_INDEX", 
+      "event": "異なる", 
+      "target": ""
+    }, 
+    {
+      "obj": "パスワードの誤り", 
+      "sub": "システム", 
+      "sentence": "システムが顧客にパスワードの誤りを通知する", 
+      "step_id": 10, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "3に戻る", 
+      "step_id": 11, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "3"
+    }, 
+    {
+      "obj": "不正な新規パスワード", 
+      "sub": "顧客", 
+      "sentence": "顧客が不正な新規パスワードを入力する", 
+      "step_id": 12, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": ""
+    }, 
+    {
+      "obj": "新規パスワードの再入力", 
+      "sub": "システム", 
+      "sentence": "システムが顧客に新規パスワードの再入力を促す", 
+      "step_id": 13, 
+      "type": "ACTION", 
+      "event": "促す", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "3に戻る", 
+      "step_id": 14, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "3"
+    }
+  ], 
+  "アカウント設定ページを開く": [
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "ユースケース「商品検索ページを開く」を起動する", 
+      "step_id": 1, 
+      "type": "起動する", 
+      "event": "", 
+      "target": "商品検索ページを開く"
+    }, 
+    {
+      "obj": "アカウント設定画面のリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客がアカウント設定画面のリンクをクリックする", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "アカウント設定ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザにアカウント設定ページを表示する", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }
+  ], 
+  "広告メール配信拒否": [
+    {
+      "obj": "広告メール設定ページのリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客が広告メール設定ページのリンクをクリックする", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "広告メール設定ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザに広告メール設定ページを表示する", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "広告メール配信", 
+      "sub": "顧客", 
+      "sentence": "顧客が広告メール配信を拒否する", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "拒否する", 
+      "target": ""
+    }, 
+    {
+      "obj": "顧客の広告メール配信拒否", 
+      "sub": "システム", 
+      "sentence": "システムが顧客の広告メール配信拒否を登録する", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "登録する", 
+      "target": ""
+    }, 
+    {
+      "obj": "アカウント設定ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザにアカウント設定ページを表示する", 
+      "step_id": 5, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }
+  ], 
+  "チェックアウト": [
+    {
+      "obj": "決済画面のリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客が決済画面のリンクをクリックする", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "ブラウザ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザを手続画面に遷移させる", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "遷移させる", 
+      "target": "手続画面"
+    }, 
+    {
+      "obj": "支払方法", 
+      "sub": "顧客", 
+      "sentence": "顧客が支払方法を選択する", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "選択する", 
+      "target": ""
+    }, 
+    {
+      "obj": "ブラウザ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザを支払方法選択画面に遷移させる", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "遷移させる", 
+      "target": "支払方法選択画面"
+    }, 
+    {
+      "obj": "クレジットカード払い", 
+      "sub": "顧客", 
+      "sentence": "顧客がクレジットカード払いを選ぶ", 
+      "step_id": 5, 
+      "type": "ACTION", 
+      "event": "選ぶ", 
+      "target": ""
+    }, 
+    {
+      "obj": "クレジットカード情報の入力フォーム", 
+      "sub": "システム", 
+      "sentence": "システムがクレジットカード情報の入力フォームを表示する", 
+      "step_id": 6, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": ""
+    }, 
+    {
+      "obj": "クレジットカード番号", 
+      "sub": "顧客", 
+      "sentence": "顧客がクレジットカード番号を入力フォームに入力する", 
+      "step_id": 7, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "入力フォーム"
+    }, 
+    {
+      "obj": "クレジットカードの有効期限", 
+      "sub": "顧客", 
+      "sentence": "顧客がクレジットカードの有効期限を入力フォームに入力する", 
+      "step_id": 8, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "入力フォーム"
+    }, 
+    {
+      "obj": "クレジットカードのシークレットコード", 
+      "sub": "顧客", 
+      "sentence": "顧客がクレジットカードのシークレットコードを入力フォームに入力する", 
+      "step_id": 9, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "入力フォーム"
+    }, 
+    {
+      "obj": "クレジットカード情報の送信ボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客がクレジットカード情報の送信ボタンをクリックする", 
+      "step_id": 10, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "クレジットカード情報", 
+      "sub": "システム", 
+      "sentence": "システムがクレジットカード情報を確認する", 
+      "step_id": 11, 
+      "type": "ACTION", 
+      "event": "確認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "ブラウザ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザを配送方法の選択画面に遷移させる", 
+      "step_id": 12, 
+      "type": "ACTION", 
+      "event": "遷移させる", 
+      "target": "配送方法の選択画面"
+    }, 
+    {
+      "obj": "配送先住所", 
+      "sub": "顧客", 
+      "sentence": "顧客が配送先住所を入力する", 
+      "step_id": 13, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": ""
+    }, 
+    {
+      "obj": "配達日", 
+      "sub": "顧客", 
+      "sentence": "顧客が配達日を入力する", 
+      "step_id": 14, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": ""
+    }, 
+    {
+      "obj": "決済手続確認画面のリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客が決済手続確認画面のリンクをクリックする", 
+      "step_id": 15, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "配送方法", 
+      "sub": "システム", 
+      "sentence": "システムが配送方法を確認する", 
+      "step_id": 16, 
+      "type": "ACTION", 
+      "event": "確認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "ブラウザ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザを決済手続確認画面に遷移させる", 
+      "step_id": 17, 
+      "type": "ACTION", 
+      "event": "遷移させる", 
+      "target": "決済手続確認画面"
+    }, 
+    {
+      "obj": "購入商品の金額", 
+      "sub": "システム", 
+      "sentence": "システムが購入商品の金額を表示する", 
+      "step_id": 18, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": ""
+    }, 
+    {
+      "obj": "手数料", 
+      "sub": "システム", 
+      "sentence": "システムが手数料を表示する", 
+      "step_id": 19, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": ""
+    }, 
+    {
+      "obj": "支払方法", 
+      "sub": "顧客", 
+      "sentence": "顧客が支払方法を確認する", 
+      "step_id": 20, 
+      "type": "ACTION", 
+      "event": "確認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "配送方法", 
+      "sub": "顧客", 
+      "sentence": "顧客が配送方法を確認する", 
+      "step_id": 21, 
+      "type": "ACTION", 
+      "event": "確認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "決済手続完了ボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客が決済手続完了ボタンをクリックする", 
+      "step_id": 22, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "料金の支払い", 
+      "sub": "システム", 
+      "sentence": "システムが料金の支払いを承認する", 
+      "step_id": 23, 
+      "type": "ACTION", 
+      "event": "承認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "注文", 
+      "sub": "システム", 
+      "sentence": "システムが注文を承認する", 
+      "step_id": 24, 
+      "type": "ACTION", 
+      "event": "承認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "注文の承認", 
+      "sub": "システム", 
+      "sentence": "システムが顧客に電子メールで注文の承認を通知する", 
+      "step_id": 25, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "ブラウザ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザをトップページに遷移させる", 
+      "step_id": 26, 
+      "type": "ACTION", 
+      "event": "遷移させる", 
+      "target": "トップページ"
+    }, 
+    {
+      "obj": "", 
+      "sub": "顧客", 
+      "sentence": "顧客がシステムからログアウトしている", 
+      "step_id": 27, 
+      "type": "ALT_INDEX", 
+      "event": "ログアウトしている", 
+      "target": "システム"
+    }, 
+    {
+      "obj": "ブラウザ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザを顧客の認証画面に遷移させる", 
+      "step_id": 28, 
+      "type": "ACTION", 
+      "event": "遷移させる", 
+      "target": "顧客の認証画面"
+    }, 
+    {
+      "obj": "メールアドレス", 
+      "sub": "顧客", 
+      "sentence": "顧客がメールアドレスをログインフォームに入力する", 
+      "step_id": 29, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "ログインフォーム"
+    }, 
+    {
+      "obj": "パスワード", 
+      "sub": "顧客", 
+      "sentence": "顧客がパスワードをログインフォームに入力する", 
+      "step_id": 30, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "ログインフォーム"
+    }, 
+    {
+      "obj": "認証ボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客が認証ボタンをクリックする", 
+      "step_id": 31, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "メールアドレス", 
+      "sub": "システム", 
+      "sentence": "システムがメールアドレスを検査する", 
+      "step_id": 32, 
+      "type": "ACTION", 
+      "event": "検査する", 
+      "target": ""
+    }, 
+    {
+      "obj": "パスワード", 
+      "sub": "システム", 
+      "sentence": "システムがパスワードを検査する", 
+      "step_id": 33, 
+      "type": "ACTION", 
+      "event": "検査する", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "5に戻る", 
+      "step_id": 34, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "5"
+    }, 
+    {
+      "obj": "代金引換", 
+      "sub": "顧客", 
+      "sentence": "顧客が代金引換を選ぶ", 
+      "step_id": 35, 
+      "type": "ALT_INDEX", 
+      "event": "選ぶ", 
+      "target": ""
+    }, 
+    {
+      "obj": "手数料", 
+      "sub": "システム", 
+      "sentence": "システムが手数料を表示する", 
+      "step_id": 36, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": ""
+    }, 
+    {
+      "obj": "配送方法選択画面のリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客が配送方法選択画面のリンクをクリックする", 
+      "step_id": 37, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "12へ戻る", 
+      "step_id": 38, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "12"
+    }, 
+    {
+      "obj": "不正なクレジットカード番号", 
+      "sub": "顧客", 
+      "sentence": "顧客が不正なクレジットカード番号を入力した", 
+      "step_id": 39, 
+      "type": "ALT_INDEX", 
+      "event": "入力した", 
+      "target": ""
+    }, 
+    {
+      "obj": "クレジットカードの誤り", 
+      "sub": "システム", 
+      "sentence": "システムがクレジットカードの誤りを通知する", 
+      "step_id": 40, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "6に戻る", 
+      "step_id": 41, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "6"
+    }
+  ], 
+  "退会": [
+    {
+      "obj": "退会のリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客が退会のリンクをクリックする", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "ブラウザ", 
+      "sentence": "ブラウザが退会の確認画面に遷移する", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "遷移する", 
+      "target": "退会の確認画面"
+    }, 
+    {
+      "obj": "退会のボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客が退会のボタンをクリックする", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "商品検索ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザに商品検索ページを表示する", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "退会取消のリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客が退会取消のリンクをクリックする", 
+      "step_id": 5, 
+      "type": "ALT_INDEX", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "アカウント設定ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザにアカウント設定ページを表示する", 
+      "step_id": 6, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }
+  ], 
+  "会員登録": [
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "ユースケース「商品検索ページを開く」を起動する", 
+      "step_id": 1, 
+      "type": "起動する", 
+      "event": "", 
+      "target": "商品検索ページを開く"
+    }, 
+    {
+      "obj": "入会画面のリンク", 
+      "sub": "カスタマ", 
+      "sentence": "カスタマが入会画面のリンクをクリックする", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "ブラウザ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザを会員登録画面に遷移させる", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "遷移させる", 
+      "target": "会員登録画面"
+    }, 
+    {
+      "obj": "プライバシ規約", 
+      "sub": "システム", 
+      "sentence": "システムがプライバシ規約を表示する", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": ""
+    }, 
+    {
+      "obj": "プライバシ規約", 
+      "sub": "顧客", 
+      "sentence": "顧客がプライバシ規約を承認する", 
+      "step_id": 5, 
+      "type": "ACTION", 
+      "event": "承認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "利用規約", 
+      "sub": "システム", 
+      "sentence": "システムが利用規約を表示する", 
+      "step_id": 6, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": ""
+    }, 
+    {
+      "obj": "利用規約", 
+      "sub": "顧客", 
+      "sentence": "顧客が利用規約を承認する", 
+      "step_id": 7, 
+      "type": "ACTION", 
+      "event": "承認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "メールアドレス", 
+      "sub": "顧客", 
+      "sentence": "顧客がメールアドレスを会員登録フォームに入力する", 
+      "step_id": 8, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "会員登録フォーム"
+    }, 
+    {
+      "obj": "メールアドレス", 
+      "sub": "システム", 
+      "sentence": "システムが顧客からメールアドレスを受信する", 
+      "step_id": 9, 
+      "type": "ACTION", 
+      "event": "受信する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "メールアドレスの用途", 
+      "sub": "システム", 
+      "sentence": "システムが顧客にメールアドレスの用途を通知する", 
+      "step_id": 10, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "住所", 
+      "sub": "顧客", 
+      "sentence": "顧客が住所を会員登録フォームに入力する", 
+      "step_id": 11, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "会員登録フォーム"
+    }, 
+    {
+      "obj": "住所", 
+      "sub": "システム", 
+      "sentence": "システムがカスタマから住所を受信する", 
+      "step_id": 12, 
+      "type": "ACTION", 
+      "event": "受信する", 
+      "target": "カスタマ"
+    }, 
+    {
+      "obj": "住所の用途", 
+      "sub": "システム", 
+      "sentence": "システムが顧客に住所の用途を通知する", 
+      "step_id": 13, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "パスワード", 
+      "sub": "顧客", 
+      "sentence": "顧客がパスワードを会員登録フォームに入力する", 
+      "step_id": 14, 
+      "type": "ACTION", 
+      "event": "入力する", 
+      "target": "会員登録フォーム"
+    }, 
+    {
+      "obj": "パスワード", 
+      "sub": "システム", 
+      "sentence": "システムが顧客からパスワードを受信する", 
+      "step_id": 15, 
+      "type": "ACTION", 
+      "event": "受信する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "登録内容の確認ボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客が登録内容の確認ボタンをクリックする", 
+      "step_id": 16, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "会員登録フォームの確認画面", 
+      "sub": "システム", 
+      "sentence": "システムが会員登録フォームの確認画面を顧客に送信する", 
+      "step_id": 17, 
+      "type": "ACTION", 
+      "event": "送信する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "会員登録ボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客が会員登録ボタンをクリックする", 
+      "step_id": 18, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "会員登録情報", 
+      "sub": "システム", 
+      "sentence": "システムが会員登録情報をデータベースに登録する", 
+      "step_id": 19, 
+      "type": "ACTION", 
+      "event": "登録する", 
+      "target": "データベース"
+    }, 
+    {
+      "obj": "商品検索ページ", 
+      "sub": "システム", 
+      "sentence": "システムがウェブブラウザーに商品検索ページを表示する", 
+      "step_id": 20, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ウェブブラウザー"
+    }, 
+    {
+      "obj": "登録済みのメールアドレス", 
+      "sub": "顧客", 
+      "sentence": "顧客が登録済みのメールアドレスを入力する", 
+      "step_id": 21, 
+      "type": "ALT_INDEX", 
+      "event": "入力する", 
+      "target": ""
+    }, 
+    {
+      "obj": "メールアドレスの誤り", 
+      "sub": "システム", 
+      "sentence": "システムがメールアドレスの誤りを顧客に通知する", 
+      "step_id": 22, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "8に戻る", 
+      "step_id": 23, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "8"
+    }, 
+    {
+      "obj": "短いパスワード", 
+      "sub": "顧客", 
+      "sentence": "顧客が短いパスワードを入力する", 
+      "step_id": 24, 
+      "type": "ALT_INDEX", 
+      "event": "入力する", 
+      "target": ""
+    }, 
+    {
+      "obj": "最小のパスワード長", 
+      "sub": "システム", 
+      "sentence": "システムが最小のパスワード長を顧客に通知する", 
+      "step_id": 25, 
+      "type": "ACTION", 
+      "event": "通知する", 
+      "target": "顧客"
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "11に戻る", 
+      "step_id": 26, 
+      "type": "GOTO", 
+      "event": "戻る", 
+      "target": "11"
+    }
+  ], 
+  "広告メール配信承認": [
+    {
+      "obj": "広告メール設定ページのリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客が広告メール設定ページのリンクをクリックする", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "", 
+      "sub": "ブラウザ", 
+      "sentence": "ブラウザが広告メール設定ページに遷移する", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "遷移する", 
+      "target": "広告メール設定ページ"
+    }, 
+    {
+      "obj": "広告メール配信", 
+      "sub": "顧客", 
+      "sentence": "顧客が広告メール配信を承認する", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "承認する", 
+      "target": ""
+    }, 
+    {
+      "obj": "顧客の広告メール配信承認", 
+      "sub": "システム", 
+      "sentence": "システムが顧客の広告メール配信承認を登録する", 
+      "step_id": 4, 
+      "type": "ACTION", 
+      "event": "登録する", 
+      "target": ""
+    }, 
+    {
+      "obj": "アカウント設定ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザにアカウント設定ページを表示する", 
+      "step_id": 5, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }
+  ], 
+  "商品検索ページを開く": [
+    {
+      "obj": "商品検索ページのリンク", 
+      "sub": "顧客", 
+      "sentence": "顧客が商品検索ページのリンクをクリックする", 
+      "step_id": 1, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "商品検索ページ", 
+      "sub": "システム", 
+      "sentence": "システムがブラウザに商品検索ページを表示する", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "表示する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "トップページのURL", 
+      "sub": "顧客", 
+      "sentence": "顧客がトップページのURLをブラウザに入力する", 
+      "step_id": 3, 
+      "type": "ALT_INDEX", 
+      "event": "入力する", 
+      "target": "ブラウザ"
+    }, 
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "2へ進む", 
+      "step_id": 4, 
+      "type": "GOTO", 
+      "event": "進む", 
+      "target": "2"
+    }
+  ], 
+  "カートから商品を除く": [
+    {
+      "obj": "", 
+      "sub": "", 
+      "sentence": "ユースケース「カートの中身を表示する」を起動する", 
+      "step_id": 1, 
+      "type": "起動する", 
+      "event": "", 
+      "target": "カートの中身を表示する"
+    }, 
+    {
+      "obj": "商品の削除ボタン", 
+      "sub": "顧客", 
+      "sentence": "顧客が商品の削除ボタンをクリックする", 
+      "step_id": 2, 
+      "type": "ACTION", 
+      "event": "クリックする", 
+      "target": ""
+    }, 
+    {
+      "obj": "商品", 
+      "sub": "システム", 
+      "sentence": "システムが商品をカートから取り除く", 
+      "step_id": 3, 
+      "type": "ACTION", 
+      "event": "取り除く", 
+      "target": "カート"
+    }
+  ]
+}
