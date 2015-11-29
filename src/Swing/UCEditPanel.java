@@ -188,7 +188,8 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 			ucg.selectedFlowIndex = -1;
 			ucg.selectedFlowType = -1;
 			ucg.selectedStepId = -1;
-			System.out.println("UCEditPanel:redraw() avoid NullPointerException");
+			e.printStackTrace();
+			//System.out.println("UCEditPanel:redraw() avoid NullPointerException");
 			redraw();
 		}
 
