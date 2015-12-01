@@ -314,4 +314,22 @@ public class Usecase implements Cloneable {
 		}
 		return allIncludeStep;
 	}
+
+	/**
+	 * StringのリストとしてこのUsecaseを返す
+	 *
+	 * @param fgm
+	 * @return
+	 */
+	public List<String> toStringList(FGModelAdapter fgm) {
+		List<String> usecase = new ArrayList<>();
+		for (Step s : flow) {
+			String str = s.getStepName(fgm, this);
+			if (s.stepType != Step.StepType.ALT_INDEX && s.stepType != Step.StepType.EXC_INDEX) {
+				str = "・" + str;
+			}
+			usecase.add(str);
+		}
+		return usecase;
+	}
 }
