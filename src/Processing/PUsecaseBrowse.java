@@ -4,10 +4,12 @@ import Models.FGModelAdapter;
 import Models.Step;
 import Models.Usecase;
 import Processing.Component.ButtonSetFrame;
+import Processing.Component.COLOR;
 import Processing.Component.ListBox;
 import Processing.Component.ListBoxContent;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.event.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +25,12 @@ public class PUsecaseBrowse extends PApplet {
 	private ButtonSetFrame bsf1, bsf2;
 	private ListBox lb1, lb2;
 
-	private int ucindex1, ucindex2;
+	private int ucIndex1, ucIndex2;
 
 	public PUsecaseBrowse(FGModelAdapter fgm) {
 		this.fgm = fgm;
-		ucindex1 = 0;
-		ucindex2 = 0;
+		ucIndex1 = 0;
+		ucIndex2 = 0;
 	}
 
 	public void setup() {
@@ -51,37 +53,117 @@ public class PUsecaseBrowse extends PApplet {
 		lb2.setSelectable(false);
 	}
 
+	//変更フラグ
+	private boolean hasChanges;
+
+	public void redraw() {
+		hasChanges = true;
+	}
+
 	public void draw() {
+		//省力draw()
+		if (!hasChanges) return;
+		else hasChanges = false;
+
+		//背景描画
+		background(COLOR.BACKGROUND);
+
+		//各種設定値
+		int MERGIN = 30;
+		int COLUMN_WIDTH = (width - MERGIN * 3) / 2;
+		int COLUMN_HEIGHT = (height - MERGIN * 3);
 
 		//Usecase2つ取得
 		Usecase usecase1 = null, usecase2 = null;
 		List<Usecase> usecaseList = fgm.getUsecases();
 		for (int i = 0; i < usecaseList.size(); i++) {
-			if (ucindex1 == i) usecase1 = usecaseList.get(i);
-			if (ucindex2 == i) usecase2 = usecaseList.get(i);
+			if (ucIndex1 == i) usecase1 = usecaseList.get(i);
+			if (ucIndex2 == i) usecase2 = usecaseList.get(i);
 		}
 		if (usecase1 == null || usecase2 == null) return;
+		//FrameにTitleをSet
+		bsf1.setTitle(usecase1.name);
+		bsf2.setTitle(usecase2.name);
 
 		//lb詰め込み
 		List<ListBoxContent> lb = new ArrayList<>();
 		int id = 0;
-		for (Step s : usecase1.getAllActionStep()) {
-			lb.add(new ListBoxContent(id++, s.getStepName(fgm, usecase1)));
+		for (String str : usecase1.toStringList(fgm)) {
+			//TODO:diffの色つけて入れる
+			lb.add(new ListBoxContent(id++, str));
 		}
 		lb1.setContents(lb);
 
 		lb = new ArrayList<>();
 		id = 0;
-		for (Step s : usecase2.getAllActionStep()) {
-			lb.add(new ListBoxContent(id++, s.getStepName(fgm, usecase1)));
+		for (String str : usecase2.toStringList(fgm)) {
+			//TODO:diffの色つけて入れる
+			lb.add(new ListBoxContent(id++, str));
 		}
 		lb2.setContents(lb);
 
-
+		bsf1.adjust(MERGIN, MERGIN, COLUMN_WIDTH, MERGIN);
 		bsf1.draw(this);
+		bsf2.adjust(2 * MERGIN + COLUMN_WIDTH, MERGIN, COLUMN_WIDTH, MERGIN);
 		bsf2.draw(this);
+		lb1.adjust(MERGIN, 2 * MERGIN, COLUMN_WIDTH, COLUMN_HEIGHT, MERGIN, -1);
 		lb1.draw(this);
+		lb2.adjust(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, COLUMN_HEIGHT, MERGIN, -1);
 		lb2.draw(this);
 	}
 
+	public void mousePressed() {
+		//マウス位置取得
+		int x = mouseX;
+		int y = mouseY;
+
+		switch (bsf1.getButtonIdOnMouse(x, y)) {
+			case 0:
+				ucIndex1 = getPrevUcIndex(ucIndex1);
+				break;
+			case 1:
+				ucIndex1 = getNextUcIndex(ucIndex1);
+				break;
+		}
+		switch (bsf2.getButtonIdOnMouse(x, y)) {
+			case 0:
+				ucIndex2 = getPrevUcIndex(ucIndex2);
+				break;
+			case 1:
+				ucIndex2 = getNextUcIndex(ucIndex2);
+				break;
+		}
+		redraw();
+	}
+
+	private int getNextUcIndex(int ucIndex) {
+		if (ucIndex < fgm.getUsecases().size() - 1)
+			return ucIndex + 1;
+		else
+			return 0;
+	}
+
+	private int getPrevUcIndex(int ucIndex) {
+		if (ucIndex > 0)
+			return ucIndex - 1;
+		else
+			return fgm.getUsecases().size() - 1;
+	}
+
+	public void mouseWheel(MouseEvent event) {
+		//マウス位置取得
+		int x = mouseX;
+		int y = mouseY;
+		//カウント取得
+		int e = event.getCount() > 0 ? 1 : -1;
+		//スクロール箇所の特定・適用
+		if (lb1.isOn(x, y)) lb1.scroll(e);
+		if (lb2.isOn(x, y)) lb2.scroll(e);
+		//再描画
+		redraw();
+	}
+
+	public void mouseMoved() {
+		redraw();
+	}
 }
