@@ -21,7 +21,7 @@ public class UsecaseDiffBrowser extends JFrame implements ComponentListener {
 
 		//各種設定してVisible
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setBounds(10, 10, 600, 600);
+		this.setBounds(10, 10, 1000, 600);
 		this.setTitle("UsecaseDiffBrowser");
 		this.setVisible(true);
 
