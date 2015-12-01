@@ -99,7 +99,7 @@ public class Step implements Cloneable {
 				int i = 1;
 				for (Step s : ls) {
 					if (s.id == this.gotoStepId) {
-						return "GOTO:MAIN" + i;
+						return "GOTO MainStep " + i;
 					}
 					i++;
 				}
@@ -107,7 +107,7 @@ public class Step implements Cloneable {
 			case INCLUDE:
 				for (Usecase u : fgm.getUsecases()) {
 					if (u.id == includeUsecaseId) {
-						return "UC:" + u.name + "を起動";
+						return "Activate (" + u.name + ")";
 					}
 				}
 				return "INCLUDE NOTHING";
