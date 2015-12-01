@@ -2,7 +2,7 @@ package Swing;
 
 import Models.*;
 import Processing.*;
-import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.TitledRadioButtonGroupPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,7 +47,7 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		JPanel sharedEndPanel = new JPanel();
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//version作成
-		TitledJRadioButtonGroupPanel versionJRBG = new TitledJRadioButtonGroupPanel("version");
+		TitledRadioButtonGroupPanel versionJRBG = new TitledRadioButtonGroupPanel("version");
 		JRadioButton asIsVer = new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.ASIS), true);
 		asIsVer.addActionListener(e -> {
 			fgm.setVersion(FGModelAdapter.VERSION.ASIS);
@@ -76,7 +76,7 @@ public class SToolEditor extends JFrame implements ComponentListener {
 			deselectAll();
 			redraw();
 		});
-		TitledJRadioButtonGroupPanel viewmodeJRBG = new TitledJRadioButtonGroupPanel("viewmode");
+		TitledRadioButtonGroupPanel viewmodeJRBG = new TitledRadioButtonGroupPanel("viewmode");
 		viewmodeJRBG.add(viewAll);
 		viewmodeJRBG.add(viewReduced);
 		sharedEndPanel.add(viewmodeJRBG);

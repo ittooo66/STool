@@ -3,7 +3,7 @@ package Swing;
 import Models.FGModelAdapter;
 import Models.Goal;
 import Processing.GGGraph;
-import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.TitledRadioButtonGroupPanel;
 import Swing.Component.TitledTextAreaPanel;
 import Swing.Component.TitledComboBoxWithValuePanel;
 
@@ -25,7 +25,7 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 
 	//各種Component
 	private TitledTextAreaPanel nameAreaPanel;
-	private TitledJRadioButtonGroupPanel refineType, necessity;
+	private TitledRadioButtonGroupPanel refineType, necessity;
 	private TitledComboBoxWithValuePanel parentGoalComboBoxPanel;
 	private JButton addButton, removeButton;
 
@@ -51,13 +51,13 @@ public class GGEditPanel extends JPanel implements ActionListener, DocumentListe
 		parentGoalComboBoxPanel = new TitledComboBoxWithValuePanel("Parent Goal");
 		parentGoalComboBoxPanel.addActionListenerToComboBox(this);
 		this.add(parentGoalComboBoxPanel);
-		refineType = new TitledJRadioButtonGroupPanel("RefineType");
+		refineType = new TitledRadioButtonGroupPanel("RefineType");
 		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.AND), true));
 		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.OR)));
 		refineType.add(new JRadioButton(Goal.ChildrenType.getString(Goal.ChildrenType.LEAF)));
 		refineType.addActionListenerToAll(this);
 		this.add(refineType);
-		necessity = new TitledJRadioButtonGroupPanel("Necessity");
+		necessity = new TitledRadioButtonGroupPanel("Necessity");
 		necessity.add(new JRadioButton("Enable", true));
 		necessity.add(new JRadioButton("Disable"));
 		necessity.addActionListenerToAll(this);

@@ -4,7 +4,7 @@ import Models.Domain;
 import Models.Step;
 import Models.Usecase;
 import Processing.UCGraph;
-import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.TitledRadioButtonGroupPanel;
 import Swing.Component.TitledLabelPanel;
 import Swing.Component.TitledTextAreaPanel;
 import Swing.Component.TitledComboBoxWithValuePanel;
@@ -25,7 +25,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 	private JButton jump;
 	private TitledTextAreaPanel nameAreaPanel, conditionAreaPanel, eventNameAreaPanel;
 	private TitledComboBoxWithValuePanel subjectComboBoxPanel, objectComboBoxPanel, toComboBoxPanel, sourceStepComboBoxPanel;
-	private TitledJRadioButtonGroupPanel stepTypePanel;
+	private TitledRadioButtonGroupPanel stepTypePanel;
 	private TitledLabelPanel parentGoalNameLabelPanel;
 
 	//Draw中のフラグ
@@ -57,7 +57,7 @@ public class UCEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(sourceStepComboBoxPanel);
 
 		//StepType
-		stepTypePanel = new TitledJRadioButtonGroupPanel("StepType");
+		stepTypePanel = new TitledRadioButtonGroupPanel("StepType");
 		stepTypePanel.add(new JRadioButton(Step.StepType.getString(Step.StepType.NOP), true));
 		stepTypePanel.add(new JRadioButton(Step.StepType.getString(Step.StepType.ACTION)));
 		stepTypePanel.add(new JRadioButton(Step.StepType.getString(Step.StepType.GOTO)));

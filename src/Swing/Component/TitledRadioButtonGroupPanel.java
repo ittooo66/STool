@@ -11,12 +11,12 @@ import java.util.List;
  * Created by 66 on 2015/11/18.
  * 排他的JRadioButtonをグループでまとめてごにょごにょするためのJPanel
  */
-public class TitledJRadioButtonGroupPanel extends JPanel {
+public class TitledRadioButtonGroupPanel extends JPanel {
 
 	private ButtonGroup bg;
 	private List<JRadioButton> jRadioButtonList;
 
-	public TitledJRadioButtonGroupPanel(String title) {
+	public TitledRadioButtonGroupPanel(String title) {
 		this.setBorder(new TitledBorder(new EtchedBorder(), title));
 		bg = new ButtonGroup();
 		jRadioButtonList = new ArrayList<>();

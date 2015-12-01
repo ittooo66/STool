@@ -2,7 +2,7 @@ package Swing;
 
 import Models.Domain;
 import Processing.PFGraph;
-import Swing.Component.TitledJRadioButtonGroupPanel;
+import Swing.Component.TitledRadioButtonGroupPanel;
 import Swing.Component.TitledTextAreaPanel;
 
 import javax.swing.*;
@@ -25,7 +25,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 	//PFEditorコンポーネント
 	private JButton remove, add;
 	private TitledTextAreaPanel nameAreaPanel;
-	private TitledJRadioButtonGroupPanel domainType;
+	private TitledRadioButtonGroupPanel domainType;
 
 	//Draw中のフラグ
 	private boolean isDrawing;
@@ -50,7 +50,7 @@ public class PFEditPanel extends JPanel implements ActionListener, DocumentListe
 		this.add(add);
 
 		//DomainType
-		domainType = new TitledJRadioButtonGroupPanel("DomainType");
+		domainType = new TitledRadioButtonGroupPanel("DomainType");
 		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.NONE), true));
 		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.BIDDABLE)));
 		domainType.add(new JRadioButton(Domain.DomainType.getString(Domain.DomainType.CAUSAL)));
