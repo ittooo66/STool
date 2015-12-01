@@ -5,7 +5,7 @@
       <element id="module-output" name="STool" />
       <element id="extracted-dir" path="$PROJECT_DIR$/.idea/libraries/controlP5.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/.idea/libraries/processing2.2.1.core.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../修論ツール周り/org.json-20120521.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/.idea/libraries/org.json-20120521.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

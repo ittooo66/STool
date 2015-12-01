@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="org.json-20120521">
+  <library name="diffutils-1.2.1">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/.idea/libraries/org.json-20120521.jar!/" />
+      <root url="jar://$PROJECT_DIR$/.idea/libraries/diffutils-1.2.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
