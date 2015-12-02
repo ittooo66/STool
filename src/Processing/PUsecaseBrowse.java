@@ -7,6 +7,9 @@ import Processing.Component.ButtonSetFrame;
 import Processing.Component.COLOR;
 import Processing.Component.ListBox;
 import Processing.Component.ListBoxContent;
+import difflib.Delta;
+import difflib.DiffUtils;
+import difflib.Patch;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.event.MouseEvent;
@@ -85,20 +88,20 @@ public class PUsecaseBrowse extends PApplet {
 		bsf1.setTitle(usecase1.name);
 		bsf2.setTitle(usecase2.name);
 
-		//lb詰め込み
+		//各種lbに詰め込み
 		List<ListBoxContent> lb = new ArrayList<>();
 		int id = 0;
 		for (String str : usecase1.toStringList(fgm)) {
-			//TODO:diffの色つけて入れる
-			lb.add(new ListBoxContent(id++, str));
+			boolean isDiff = isDiff(usecase1.toStringList(fgm), usecase2.toStringList(fgm), str);
+			lb.add(new ListBoxContent(id++, str, isDiff));
 		}
 		lb1.setContents(lb);
 
 		lb = new ArrayList<>();
 		id = 0;
 		for (String str : usecase2.toStringList(fgm)) {
-			//TODO:diffの色つけて入れる
-			lb.add(new ListBoxContent(id++, str));
+			boolean isDiff = isDiff(usecase1.toStringList(fgm), usecase2.toStringList(fgm), str);
+			lb.add(new ListBoxContent(id++, str, isDiff));
 		}
 		lb2.setContents(lb);
 
@@ -110,6 +113,19 @@ public class PUsecaseBrowse extends PApplet {
 		lb1.draw(this);
 		lb2.adjust(2 * MERGIN + COLUMN_WIDTH, 2 * MERGIN, COLUMN_WIDTH, COLUMN_HEIGHT, MERGIN, -1);
 		lb2.draw(this);
+	}
+
+	private boolean isDiff(List<String> ori, List<String> rev, String line) {
+		Patch patch = DiffUtils.diff(ori, rev);
+		for (Delta delta : patch.getDeltas()) {
+			for (String str : (List<String>) delta.getOriginal().getLines()) {
+				if (str.equals(line)) return true;
+			}
+			for (String str : (List<String>) delta.getRevised().getLines()) {
+				if (str.equals(line)) return true;
+			}
+		}
+		return false;
 	}
 
 	public void mousePressed() {
