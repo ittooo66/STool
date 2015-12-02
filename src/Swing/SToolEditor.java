@@ -18,6 +18,8 @@ public class SToolEditor extends JFrame implements ComponentListener {
 
 	//融合ゴールモデル
 	public FGModelAdapter fgm;
+	//シナリオ
+	public Scenario scenario;
 
 	//EditPanel
 	private final GGEditPanel ggEditPanel;
@@ -29,9 +31,10 @@ public class SToolEditor extends JFrame implements ComponentListener {
 	private PFGraph pfGraph;
 	private UCGraph ucGraph;
 
-	//MetricsBrowser,UsecaseDiffBrowser
+	//MetricsBrowser,UsecaseDiffBrowser,ScanarioEditor
 	private MetricsBrowser metricsBrowser;
 	private UsecaseDiffBrowser usecaseDiffBrowser;
+	private ScenarioEditor scenarioEditor;
 
 	//Tab
 	JTabbedPane tabbedpane;
@@ -42,6 +45,7 @@ public class SToolEditor extends JFrame implements ComponentListener {
 	SToolEditor() {
 		//FGModelAdapter
 		fgm = new FGModelAdapter();
+		scenario = new Scenario();
 
 		//////////////////////////////下部分共通パネル//////////////////////////////
 		JPanel sharedEndPanel = new JPanel();
@@ -84,10 +88,9 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		JButton diffBrowseButton = new JButton("Usecase Diff Browser");
 		diffBrowseButton.addActionListener(e -> usecaseDiffBrowser = new UsecaseDiffBrowser(fgm));
 		sharedEndPanel.add(diffBrowseButton);
-		//差分ブラウザを開く
+		//シナリオエディタを開く
 		JButton scenarioEditButton = new JButton("Scenario Editor");
-		scenarioEditButton.setEnabled(false);
-		scenarioEditButton.addActionListener(e -> scenarioEditButtonPressed());
+		scenarioEditButton.addActionListener(e -> scenarioEditor = new ScenarioEditor(fgm, scenario));
 		sharedEndPanel.add(scenarioEditButton);
 		//Metricsウィンドウを開く
 		JButton metricsBrowseButton = new JButton("Metrics Browser");
@@ -195,10 +198,6 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		fgm = new FGModelAdapter();
 	}
 
-	private void scenarioEditButtonPressed() {
-		//TODO:ScenarioEditor作成（Priority:2）
-	}
-
 	/**
 	 * 各種コンポーネントをまとめて更新
 	 */
@@ -216,6 +215,7 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		//BrowserをRedraw
 		if (metricsBrowser != null) metricsBrowser.redraw();
 		if (usecaseDiffBrowser != null) usecaseDiffBrowser.redraw();
+		if (scenarioEditor != null) scenarioEditor.redraw();
 	}
 
 	public void initTextArea() {
@@ -276,9 +276,7 @@ public class SToolEditor extends JFrame implements ComponentListener {
 
 	}
 
-
 	public static void main(String[] args) {
-		SToolEditor ste = new SToolEditor();
-
+		new SToolEditor();
 	}
 }
