@@ -2,6 +2,7 @@ package Processing;
 
 import Models.*;
 import Models.FGModelAdapter.VERSION;
+import Models.Step.StepType;
 import Processing.Component.ButtonSetFrame;
 import Processing.Component.COLOR;
 import Processing.Component.ListBox;
@@ -45,6 +46,8 @@ public class PScenarioEditor extends PApplet {
 		//ButtonSetFrame
 		scenarioBSF = new ButtonSetFrame("Scenario");
 		scenarioBSF.addButton("－");
+		scenarioBSF.addButton("↑");
+		scenarioBSF.addButton("↓");
 		addBSF = new ButtonSetFrame("");
 		addBSF.addButton("↑");
 		usecaseBSF = new ButtonSetFrame("Usecases");
@@ -97,8 +100,15 @@ public class PScenarioEditor extends PApplet {
 		excFlowLB.adjust(2 * MERGIN + COLUMN_WIDTH, 7 * MERGIN + ALT_EXC_HEIGHT + height / 2, COLUMN_WIDTH, ALT_EXC_HEIGHT, MERGIN, selectedFlowType == 2 ? selectedFlowIndex : -1);
 		stepLB.adjust(3 * MERGIN + 2 * COLUMN_WIDTH, 2 * MERGIN + height / 2, COLUMN_WIDTH, height / 2 - 3 * MERGIN, MERGIN, selectedStepId);
 
-		//usecaseLB中身詰め込み+draw()
+		//scenarioLB中身詰め込み
 		List<ListBoxContent> lbc = new ArrayList<>();
+		for (int i = 0; i < scenario.size(); i++) {
+			lbc.add(new ListBoxContent(i, scenario.getStepName(i, fgm)));
+		}
+		scenarioLB.setContents(lbc);
+
+		//usecaseLB中身詰め込み
+		lbc = new ArrayList<>();
 		for (Usecase uc : fgm.getUsecases()) {
 			//詰め込み外対象でなければ詰め込み
 			Goal g = fgm.getGoalById(uc.parentLeafGoalId);
@@ -122,7 +132,7 @@ public class PScenarioEditor extends PApplet {
 		if (selectedUsecaseId != -1) lbc.add(new ListBoxContent(0, "MainFlow"));
 		mainFlowLB.setContents(lbc);
 
-		//altFlow中身詰め込み+draw()
+		//altFlow中身詰め込み
 		lbc = new ArrayList<>();
 		if (uc != null) altFlowList = uc.getAlternativeFlowList();
 		for (int i = 0; i < altFlowList.size(); i++) {
@@ -130,7 +140,7 @@ public class PScenarioEditor extends PApplet {
 		}
 		altFlowLB.setContents(lbc);
 
-		//excFlow中身詰め込み+draw()
+		//excFlow中身詰め込み
 		lbc = new ArrayList<>();
 		if (uc != null) excFlowList = uc.getExceptionalFlowList();
 		for (int i = 0; i < excFlowList.size(); i++) {
@@ -138,7 +148,7 @@ public class PScenarioEditor extends PApplet {
 		}
 		excFlowLB.setContents(lbc);
 
-		//stepLB中身詰め込み+draw()
+		//stepLB中身詰め込み
 		lbc = new ArrayList<>();
 		if (uc != null) {
 			int i = 0;
@@ -146,20 +156,20 @@ public class PScenarioEditor extends PApplet {
 				case 0:
 					for (Step s : uc.getMainFlow()) {
 						i++;
-						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
+						if (s.stepType != StepType.EXC_INDEX && s.stepType != StepType.ALT_INDEX)
 							lbc.add(new ListBoxContent(s.id, i + ". " + s.getStepName(fgm, uc)));
 					}
 					break;
 				case 1:
 					for (Step s : uc.getAlternativeFlowList().get(selectedFlowIndex)) {
-						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
+						if (s.stepType != StepType.EXC_INDEX && s.stepType != StepType.ALT_INDEX)
 							lbc.add(new ListBoxContent(s.id, i + ". " + s.getStepName(fgm, uc)));
 						i++;
 					}
 					break;
 				case 2:
 					for (Step s : uc.getExceptionalFlowList().get(selectedFlowIndex)) {
-						if (s.stepType != Step.StepType.EXC_INDEX && s.stepType != Step.StepType.ALT_INDEX)
+						if (s.stepType != StepType.EXC_INDEX && s.stepType != StepType.ALT_INDEX)
 							lbc.add(new ListBoxContent(s.id, i + ". " + s.getStepName(fgm, uc)));
 						i++;
 					}
@@ -187,6 +197,11 @@ public class PScenarioEditor extends PApplet {
 		//マウス押下位置
 		int x = mouseX;
 		int y = mouseY;
+
+		//ScenarioLB押下判定
+		if (scenarioLB.getContentOnMouse(x, y) != null) {
+			selectedScenarioIndex = scenarioLB.getContentOnMouse(x, y).id;
+		}
 
 		//UsecaseLB押下判定
 		if (usecaseLB.getContentOnMouse(x, y) != null) {
@@ -221,9 +236,70 @@ public class PScenarioEditor extends PApplet {
 			selectedStepId = stepLB.getContentOnMouse(x, y).id;
 		}
 
-
+		switch (addBSF.getButtonIdOnMouse(x, y)) {
+			case 0://AddButton
+				addStepsToScenario();
+				break;
+		}
+		switch (scenarioBSF.getButtonIdOnMouse(x, y)) {
+			case 0://removeScenario
+				scenario.removeStep(selectedScenarioIndex);
+				break;
+			case 1://moveUpScenario
+				if (scenario.moveStep(false, selectedScenarioIndex))
+					selectedScenarioIndex--;
+				break;
+			case 2://moveDnScenario
+				if (scenario.moveStep(true, selectedScenarioIndex))
+					selectedScenarioIndex++;
+				break;
+		}
 
 		redraw();
+	}
+
+	/**
+	 * 選択されたケースのシナリオを追加
+	 */
+	private void addStepsToScenario() {
+		if (selectedUsecaseId == -1) {
+			return;
+		} else if (selectedFlowType == -1) {
+			//Usecaseまるごと追加
+			Usecase uc = fgm.getUsecaseById(selectedUsecaseId);
+			if (uc == null) return;
+			for (Step s : uc.getAllActionStep()) {
+				scenario.addStep(s, uc);
+			}
+		} else if (selectedStepId == -1) {
+			//Flowまるごと追加
+			Usecase uc = fgm.getUsecaseById(selectedUsecaseId);
+			if (uc == null) return;
+			List<Step> stepList = null;
+			switch (selectedFlowType) {
+				case 0:
+					stepList = uc.getMainFlow();
+					break;
+				case 1:
+					stepList = uc.getAlternativeFlowList().get(selectedFlowIndex);
+					break;
+				case 2:
+					stepList = uc.getExceptionalFlowList().get(selectedFlowIndex);
+					break;
+			}
+			if (stepList == null) return;
+			for (Step s : stepList) {
+				if (s.stepType == StepType.ACTION) scenario.addStep(s, uc);
+			}
+		} else {
+			//Stepをひとつ追加
+			Usecase uc = fgm.getUsecaseById(selectedUsecaseId);
+			Step s = null;
+			if (uc != null)
+				s = uc.getStepById(selectedStepId);
+			if (s != null)
+				scenario.addStep(s, uc);
+		}
 	}
 
 	private void deselectFlow() {
@@ -250,6 +326,7 @@ public class PScenarioEditor extends PApplet {
 		if (altFlowLB.isOn(x, y)) altFlowLB.scroll(e);
 		if (excFlowLB.isOn(x, y)) excFlowLB.scroll(e);
 		if (stepLB.isOn(x, y)) stepLB.scroll(e);
+		if (scenarioLB.isOn(x, y)) scenarioLB.scroll(e);
 		//再描画
 		redraw();
 	}
