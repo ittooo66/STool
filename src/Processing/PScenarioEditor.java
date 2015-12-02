@@ -244,6 +244,7 @@ public class PScenarioEditor extends PApplet {
 		switch (scenarioBSF.getButtonIdOnMouse(x, y)) {
 			case 0://removeScenario
 				scenario.removeStep(selectedScenarioIndex);
+				if (scenario.size() - 1 < selectedScenarioIndex) selectedScenarioIndex = -1;
 				break;
 			case 1://moveUpScenario
 				if (scenario.moveStep(false, selectedScenarioIndex))

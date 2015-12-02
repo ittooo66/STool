@@ -19,9 +19,12 @@ public class Scenario {
 		rootUsecase.add(uc);
 	}
 
-	public void removeStep(int index) {
+	public boolean removeStep(int index) {
+		if (index < 0) return false;
+		if (index >= steps.size()) return false;
 		steps.remove(index);
 		rootUsecase.remove(index);
+		return true;
 	}
 
 	public boolean moveStep(boolean b, int index) {
