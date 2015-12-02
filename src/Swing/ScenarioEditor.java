@@ -21,7 +21,7 @@ public class ScenarioEditor extends JFrame implements ComponentListener {
 
 		//各種設定してVisible
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setBounds(10, 10, 1000, 600);
+		this.setBounds(10, 10, 1024, 768);
 		this.setTitle("ScenarioEditor");
 		this.setVisible(true);
 
