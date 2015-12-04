@@ -80,14 +80,25 @@ public class PFGraph extends PApplet {
 		//各リレーションを描画
 		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
 			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
-			Domain rootDomain = sToolEditor.fgm.getDomainById(pfi.rootDomainId);
-			Domain distDomain = sToolEditor.fgm.getDomainById(pfi.distDomainId);
+			Domain rootDomain = pfi.rootDomain;
+			Domain distDomain = pfi.distDomain;
 			if (rootDomain == null || distDomain == null) break;
 
-			//ライン描画
-			stroke(COLOR.LINES);
-			line(rootDomain.x, rootDomain.y, distDomain.x, distDomain.y);
+			//DomainIDが同じ場合（セルフループ記述）
+			if (rootDomain.id == distDomain.id) {
+				float dW = textWidth(rootDomain.name) / 2 + 35;
+				float dH = 40;
+				//ライン描画
+				stroke(COLOR.LINES);
+				noFill();
+				rect(rootDomain.x, rootDomain.y, dW, dH);
+			} else {
+				//ライン描画
+				stroke(COLOR.LINES);
+				line(rootDomain.x, rootDomain.y, distDomain.x, distDomain.y);
+			}
 
+			//Interface選択Ellipse描画
 			if (selectedInterfaceIndex == i) {
 				fill(COLOR.SELECTED);
 				noStroke();
@@ -95,8 +106,8 @@ public class PFGraph extends PApplet {
 				fill(COLOR.BACKGROUND);
 				stroke(COLOR.LINES);
 			}
-			strokeWeight(PUtility.mouseIsInEllipse(pfi.x + scrollX, pfi.y + scrollY, 10, 10, mouseX, mouseY) ? (float) 1.5 : 1);
-			ellipse(pfi.x, pfi.y, 10, 10);
+			strokeWeight(PUtility.mouseIsInEllipse(pfi.getX(this) + scrollX, pfi.getY() + scrollY, 10, 10, mouseX, mouseY) ? (float) 1.5 : 1);
+			ellipse(pfi.getX(this), pfi.getY(), 10, 10);
 			strokeWeight(1);
 		}
 
@@ -167,12 +178,12 @@ public class PFGraph extends PApplet {
 				noStroke();
 
 				//左記述かどうか
-				boolean isDrawingToRight = pfi.x + scrollX < width / 2;
+				boolean isDrawingToRight = pfi.getX(this) + scrollX < width / 2;
 				rect(isDrawingToRight ? width / 2 : 20, 20, width / 2 - 20, height - 40);
 
 				textAlign(LEFT, CENTER);
 				fill(COLOR.LINES);
-				text(sToolEditor.fgm.getDomainById(pfi.rootDomainId).name + "!", isDrawingToRight ? width / 2 + 5 : 25, 15, width / 2 - 10, 40);
+				text(pfi.rootDomain.name + "!", isDrawingToRight ? width / 2 + 5 : 25, 15, width / 2 - 10, 40);
 				if (selectedEventIndex != -1 && !isInvSelected)
 					text("Generated from", isDrawingToRight ? width / 2 + 5 + width / 4 : 25 + width / 4, 15, width / 2 - 10, 40);
 
@@ -202,7 +213,7 @@ public class PFGraph extends PApplet {
 
 				textAlign(LEFT, CENTER);
 				fill(COLOR.LINES);
-				text(sToolEditor.fgm.getDomainById(pfi.distDomainId).name + "!", isDrawingToRight ? width / 2 + 5 : 25, height / 2 - 5, width / 2 - 10, 40);
+				text(pfi.distDomain.name + "!", isDrawingToRight ? width / 2 + 5 : 25, height / 2 - 5, width / 2 - 10, 40);
 				if (selectedEventIndex != -1 && isInvSelected)
 					text("Genereted from", isDrawingToRight ? width / 2 + 5 + width / 4 : 25 + width / 4, height / 2 - 5, width / 2 - 10, 40);
 				lbc = new ArrayList<>();
@@ -232,7 +243,7 @@ public class PFGraph extends PApplet {
 				//枠まわり
 				fill(COLOR.SELECTED);
 				noStroke();
-				triangle(pfi.x + scrollX, pfi.y + scrollY, width / 2, height / 2 + 20, width / 2, height / 2 - 20);
+				triangle(pfi.getX(this) + scrollX, pfi.getY() + scrollY, width / 2, height / 2 + 20, width / 2, height / 2 - 20);
 				noFill();
 				stroke(COLOR.LINES);
 				rect(isDrawingToRight ? width / 2 : 20, 20, width / 2 - 20, height - 40);
@@ -301,7 +312,7 @@ public class PFGraph extends PApplet {
 		//マウスクリック範囲にインターフェースがあれば、それを選択
 		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
 			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
-			if (PUtility.mouseIsInEllipse(pfi.x + scrollX, pfi.y + scrollY, 10, 10, mouseX, mouseY)) {
+			if (PUtility.mouseIsInEllipse(pfi.getX(this) + scrollX, pfi.getY() + scrollY, 10, 10, mouseX, mouseY)) {
 				selectedDomainId = -1;
 				selectedInterfaceIndex = i;
 			}

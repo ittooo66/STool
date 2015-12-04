@@ -356,7 +356,7 @@ public class FGModelAdapter {
 		boolean hasRelatedEvent = false;
 		List<PFInterface> interfaces = getPFInterfaceList();
 		for (PFInterface pfi : interfaces) {
-			if (pfi.rootDomainId == domainId || pfi.distDomainId == domainId) hasRelatedEvent = true;
+			if (pfi.rootDomain.id == domainId || pfi.distDomain.id == domainId) hasRelatedEvent = true;
 		}
 		return hasRelatedEvent;
 	}
@@ -382,7 +382,7 @@ public class FGModelAdapter {
 				//現存InterfaceListから該当Interfaceを走査
 				for (PFInterface i : interfaces) {
 					//Interface該当時
-					if ((i.rootDomainId == s.subjectDomainId && i.distDomainId == s.objectDomainId) || (i.rootDomainId == s.objectDomainId && i.distDomainId == s.subjectDomainId)) {
+					if ((i.rootDomain.id == s.subjectDomainId && i.distDomain.id == s.objectDomainId) || (i.rootDomain.id == s.objectDomainId && i.distDomain.id == s.subjectDomainId)) {
 						boolean hasEvent = false;
 						for (PFEvent e : i.eventList) {
 							if (e.event.equals(s.Event)) {
@@ -393,7 +393,7 @@ public class FGModelAdapter {
 						}
 						if (!hasEvent) {
 							//イベント作成（コンストラクタでイベントの順逆指定）
-							PFEvent e = new PFEvent(s.Event, i.rootDomainId == s.subjectDomainId);
+							PFEvent e = new PFEvent(s.Event, i.rootDomain.id == s.subjectDomainId);
 							e.setRootUsecase(uc.id);
 							i.add(e);
 						}

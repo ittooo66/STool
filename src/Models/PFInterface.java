@@ -1,5 +1,8 @@
 package Models;
 
+import Processing.PFGraph;
+import processing.core.PApplet;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,15 +13,32 @@ import java.util.stream.Collectors;
  */
 public class PFInterface {
 	public List<PFEvent> eventList;
-	public int rootDomainId;
-	public int distDomainId;
-	public int x;
-	public int y;
+	public Domain rootDomain;
+	public Domain distDomain;
+	private int x;
+	private int y;
+
+	public int getX(PApplet pApplet) {
+		if (rootDomain.id != distDomain.id)
+			return x;
+		else {
+			//セルフループ時用のインターフェースクリック位置ずらし
+			return (int) pApplet.textWidth(rootDomain.name)/2 + 35 + x;
+		}
+	}
+
+	public int getY() {
+		if (rootDomain.id != distDomain.id)
+			return y;
+		else
+			//セルフループ時用のインターフェースクリック位置ずらし
+			return y + 40;
+	}
 
 	public PFInterface(Domain rootDomain, Domain distDomain) {
 		eventList = new ArrayList<>();
-		this.rootDomainId = rootDomain.id;
-		this.distDomainId = distDomain.id;
+		this.rootDomain = rootDomain;
+		this.distDomain = distDomain;
 		this.x = (rootDomain.x + distDomain.x) / 2;
 		this.y = (rootDomain.y + distDomain.y) / 2;
 	}
