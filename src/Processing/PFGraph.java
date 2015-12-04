@@ -82,6 +82,7 @@ public class PFGraph extends PApplet {
 			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
 			Domain rootDomain = sToolEditor.fgm.getDomainById(pfi.rootDomainId);
 			Domain distDomain = sToolEditor.fgm.getDomainById(pfi.distDomainId);
+			if (rootDomain == null || distDomain == null) break;
 
 			//ライン描画
 			stroke(COLOR.LINES);
