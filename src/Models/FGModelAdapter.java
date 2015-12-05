@@ -40,6 +40,11 @@ public class FGModelAdapter {
 			}
 			return null;
 		}
+
+		public VERSION getNext() {
+			if (this == ASIS) return TOBE;
+			else return ASIS;
+		}
 	}
 
 	public void setVersion(VERSION version) {
