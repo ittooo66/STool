@@ -1,6 +1,7 @@
 package Processing;
 
 import Metrics.Metrics;
+import Metrics.CE;
 import Models.Domain;
 import Models.FGModelAdapter;
 import Models.Scenario;
@@ -46,6 +47,18 @@ public class PMetricsBrowse extends PApplet {
 			public String toString() {
 				return "Usecase Point";
 			}
+		}, CE_ASIS {
+			public String toString() {
+				return "CE(As-Is)";
+			}
+		}, CE_TOBE {
+			public String toString() {
+				return "CE(To-Be)";
+			}
+		}, CE_DIFF {
+			public String toString() {
+				return "CE Diff(AsIs-ToBe)";
+			}
 		}, NE_ASIS {
 			public String toString() {
 				return "NE(As-Is)";
@@ -74,7 +87,7 @@ public class PMetricsBrowse extends PApplet {
 		}
 
 
-		public static List<ListBoxContent> getList(MetricsType mt, FGModelAdapter fgm) {
+		public static List<ListBoxContent> getList(MetricsType mt, FGModelAdapter fgm, Scenario scenario) {
 			//詰め込み対象とIDを用意
 			List<ListBoxContent> lbc = new ArrayList<>();
 			int id = 0;
@@ -147,6 +160,83 @@ public class PMetricsBrowse extends PApplet {
 						boolean isBold = d.domainType == Domain.DomainType.BIDDABLE;
 						lbc.add(new ListBoxContent(id++, name, paramAsis - paramTobe, isBold));
 					}
+					break;
+				case CE_ASIS:
+					//AsIsにスイッチ
+					boolean sw = false;
+					if (!scenario.isAsIs()) {
+						scenario.switchVersion();
+						sw = true;
+					}
+
+					//CEList取得して詰め込み
+					for (CE ce : Metrics.getCEs(scenario)) {
+						String name = fgm.getDomainById(ce.subjectDomainId).name + " -> " + ce.event + " -> " + fgm.getDomainById(ce.objectDomainId).name;
+						lbc.add(new ListBoxContent(id++, name, ce.count, false));
+					}
+
+					//変更した場合もとにもどす
+					if (sw) scenario.switchVersion();
+
+					break;
+				case CE_TOBE:
+					//ToBeにスイッチ
+					sw = false;
+					if (scenario.isAsIs()) {
+						scenario.switchVersion();
+						sw = true;
+					}
+
+					//CEList取得して詰め込み
+					for (CE ce : Metrics.getCEs(scenario)) {
+						String name = fgm.getDomainById(ce.subjectDomainId).name + " -> " + ce.event + " -> " + fgm.getDomainById(ce.objectDomainId).name;
+						lbc.add(new ListBoxContent(id++, name, ce.count, false));
+					}
+
+					//変更した場合もとにもどす
+					if (sw) scenario.switchVersion();
+
+					break;
+				case CE_DIFF:
+					//AsIs,ToBeのCE取得
+					List<CE> ceListAsIs = null, ceListToBe = null;
+					if (scenario.isAsIs()) {
+						ceListAsIs = Metrics.getCEs(scenario);
+						scenario.switchVersion();
+						ceListToBe = Metrics.getCEs(scenario);
+					} else {
+						ceListToBe = Metrics.getCEs(scenario);
+						scenario.switchVersion();
+						ceListAsIs = Metrics.getCEs(scenario);
+					}
+					//変更したのでもとにもどす
+					scenario.switchVersion();
+
+					//CEList取得して詰め込み
+					for (CE ce : ceListAsIs) {
+						//名前生成
+						String name = fgm.getDomainById(ce.subjectDomainId).name + " -> " + ce.event + " -> " + fgm.getDomainById(ce.objectDomainId).name;
+
+						//CEの差分取得
+						int diffCount = ce.count;
+						CE diffCE = CE.extractCE(ce, ceListToBe);
+						if (diffCE != null) {
+							diffCount -= diffCE.count;
+						}
+
+						//追加
+						lbc.add(new ListBoxContent(id++, name, diffCount, false));
+					}
+					//CEList取得して詰め込み（AsIsになかったやつを負数として追加）
+					for (CE ce : ceListToBe) {
+						//名前生成
+						String name = fgm.getDomainById(ce.subjectDomainId).name + " -> " + ce.event + " -> " + fgm.getDomainById(ce.objectDomainId).name;
+						//CE差分
+						int diffCount = -ce.count;
+						//追加
+						lbc.add(new ListBoxContent(id++, name, diffCount, false));
+					}
+
 					break;
 				case UCP:
 					fgm.setVersion(FGModelAdapter.VERSION.ASIS);

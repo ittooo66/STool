@@ -49,7 +49,9 @@ public class PScenarioEditor extends PApplet {
 		scenarioBSF.addButton("↑");
 		scenarioBSF.addButton("↓");
 		addBSF = new ButtonSetFrame("");
+		addBSF.addButton("←");
 		addBSF.addButton("↑");
+		addBSF.addButton("→");
 		usecaseBSF = new ButtonSetFrame("Usecases");
 		altFlowBSF = new ButtonSetFrame("AlternativeFlows");
 		excFlowBSF = new ButtonSetFrame("ExceptionalFlows");
@@ -86,7 +88,7 @@ public class PScenarioEditor extends PApplet {
 		int ALT_EXC_HEIGHT = (height / 2 - 8 * MERGIN) / 2;
 
 		//コンポーネント位置調整
-		addBSF.adjust(width / 2 - MERGIN / 2, height / 2 - MERGIN / 2, 3 * MERGIN, MERGIN);
+		addBSF.adjust(width / 2 - MERGIN / 2 - MERGIN, height / 2 - MERGIN / 2, 3 * MERGIN, MERGIN);
 		scenarioBSF.adjust(MERGIN, MERGIN, SCENARIO_WIDTH, MERGIN);
 		usecaseBSF.adjust(MERGIN, MERGIN + height / 2, COLUMN_WIDTH, MERGIN);
 		excFlowBSF.adjust(2 * MERGIN + COLUMN_WIDTH, 6 * MERGIN + ALT_EXC_HEIGHT + height / 2, COLUMN_WIDTH, MERGIN);
@@ -178,6 +180,8 @@ public class PScenarioEditor extends PApplet {
 		}
 		stepLB.setContents(lbc);
 
+		//AsIsToBeに応じたTitleに変更
+		scenarioBSF.setTitle("Scenario " + (scenario.isAsIs() ? "(As-Is)" : "(To-Be)"));
 		//draw
 		scenarioBSF.draw(this);
 		usecaseBSF.draw(this);
@@ -197,6 +201,32 @@ public class PScenarioEditor extends PApplet {
 		//マウス押下位置
 		int x = mouseX;
 		int y = mouseY;
+
+		switch (addBSF.getButtonIdOnMouse(x, y)) {
+			case 0:
+			case 2:
+				scenario.switchVersion();
+				fgm.setVersion(fgm.getVersion().getNext());
+				break;
+			case 1://AddButton
+				addStepsToScenario();
+				break;
+		}
+		switch (scenarioBSF.getButtonIdOnMouse(x, y)) {
+			case 0://removeScenario
+				scenario.removeStep(selectedScenarioIndex);
+				if (scenario.size() - 1 < selectedScenarioIndex) selectedScenarioIndex = -1;
+				break;
+			case 1://moveUpScenario
+				if (scenario.moveStep(false, selectedScenarioIndex))
+					selectedScenarioIndex--;
+				break;
+			case 2://moveDnScenario
+				if (scenario.moveStep(true, selectedScenarioIndex))
+					selectedScenarioIndex++;
+				break;
+		}
+
 
 		//ScenarioLB押下判定
 		if (scenarioLB.getContentOnMouse(x, y) != null) {
@@ -234,26 +264,6 @@ public class PScenarioEditor extends PApplet {
 		//stepLB押下判定
 		if (stepLB.getContentOnMouse(x, y) != null) {
 			selectedStepId = stepLB.getContentOnMouse(x, y).id;
-		}
-
-		switch (addBSF.getButtonIdOnMouse(x, y)) {
-			case 0://AddButton
-				addStepsToScenario();
-				break;
-		}
-		switch (scenarioBSF.getButtonIdOnMouse(x, y)) {
-			case 0://removeScenario
-				scenario.removeStep(selectedScenarioIndex);
-				if (scenario.size() - 1 < selectedScenarioIndex) selectedScenarioIndex = -1;
-				break;
-			case 1://moveUpScenario
-				if (scenario.moveStep(false, selectedScenarioIndex))
-					selectedScenarioIndex--;
-				break;
-			case 2://moveDnScenario
-				if (scenario.moveStep(true, selectedScenarioIndex))
-					selectedScenarioIndex++;
-				break;
 		}
 
 		redraw();
