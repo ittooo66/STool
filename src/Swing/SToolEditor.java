@@ -21,6 +21,9 @@ public class SToolEditor extends JFrame implements ComponentListener {
 	//シナリオ
 	public Scenario scenario;
 
+	//SToolEditorのComponent
+	private TitledRadioButtonGroupPanel versionJRBG, viewmodeJRBG;
+
 	//EditPanel
 	private final GGEditPanel ggEditPanel;
 	private final PFEditPanel pfEditPanel;
@@ -51,38 +54,30 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		JPanel sharedEndPanel = new JPanel();
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//version作成
-		TitledRadioButtonGroupPanel versionJRBG = new TitledRadioButtonGroupPanel("version");
-		JRadioButton asIsVer = new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.ASIS), true);
-		asIsVer.addActionListener(e -> {
+		versionJRBG = new TitledRadioButtonGroupPanel("version");
+		versionJRBG.add(new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.ASIS)), e -> {
 			fgm.setVersion(FGModelAdapter.VERSION.ASIS);
 			deselectAll();
 			redraw();
 		});
-		JRadioButton toBeVer = new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.TOBE));
-		toBeVer.addActionListener(e -> {
+		versionJRBG.add(new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.TOBE)), e -> {
 			fgm.setVersion(FGModelAdapter.VERSION.TOBE);
 			deselectAll();
 			redraw();
 		});
-		versionJRBG.add(asIsVer);
-		versionJRBG.add(toBeVer);
 		sharedEndPanel.add(versionJRBG);
 		//viewmode作成
-		JRadioButton viewAll = new JRadioButton("All", true);
-		viewAll.addActionListener(e -> {
+		viewmodeJRBG = new TitledRadioButtonGroupPanel("viewmode");
+		viewmodeJRBG.add(new JRadioButton(FGModelAdapter.VIEWMODE.ALL.toString()), e -> {
 			fgm.setViewmode(FGModelAdapter.VIEWMODE.ALL);
 			deselectAll();
 			redraw();
 		});
-		JRadioButton viewReduced = new JRadioButton("Reduced");
-		viewReduced.addActionListener(e -> {
+		viewmodeJRBG.add(new JRadioButton(FGModelAdapter.VIEWMODE.REDUCED.toString()), e -> {
 			fgm.setViewmode(FGModelAdapter.VIEWMODE.REDUCED);
 			deselectAll();
 			redraw();
 		});
-		TitledRadioButtonGroupPanel viewmodeJRBG = new TitledRadioButtonGroupPanel("viewmode");
-		viewmodeJRBG.add(viewAll);
-		viewmodeJRBG.add(viewReduced);
 		sharedEndPanel.add(viewmodeJRBG);
 		//差分ブラウザを開く
 		JButton diffBrowseButton = new JButton("Usecase Diff Browser");
@@ -216,6 +211,10 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		if (metricsBrowser != null) metricsBrowser.redraw();
 		if (usecaseDiffBrowser != null) usecaseDiffBrowser.redraw();
 		if (scenarioEditor != null) scenarioEditor.redraw();
+
+		//ComponentをRedraw
+		viewmodeJRBG.setSelected(fgm.getVersion().toString());
+		versionJRBG.setSelected(fgm.getViewmode().toString());
 	}
 
 	public void initTextArea() {
