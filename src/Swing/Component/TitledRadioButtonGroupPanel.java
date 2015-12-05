@@ -28,6 +28,13 @@ public class TitledRadioButtonGroupPanel extends JPanel {
 		jRadioButtonList.add(jrb);
 	}
 
+	public void add(JRadioButton jrb, ActionListener actionListener) {
+		jrb.addActionListener(actionListener);
+		super.add(jrb);
+		bg.add(jrb);
+		jRadioButtonList.add(jrb);
+	}
+
 	/**
 	 * 選択中のボタンコマンド（コンストラクタ中のString値）を返す
 	 *
