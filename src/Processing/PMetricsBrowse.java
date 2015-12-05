@@ -3,6 +3,7 @@ package Processing;
 import Metrics.Metrics;
 import Models.Domain;
 import Models.FGModelAdapter;
+import Models.Scenario;
 import Models.Usecase;
 import Processing.Component.ButtonSetFrame;
 import Processing.Component.ListBox;
@@ -167,12 +168,14 @@ public class PMetricsBrowse extends PApplet {
 	}
 
 	public FGModelAdapter fgm;
+	public Scenario scenario;
 
 	private ButtonSetFrame bsf;
 	private ListBox lb;
 
-	public PMetricsBrowse(FGModelAdapter fgm) {
+	public PMetricsBrowse(FGModelAdapter fgm, Scenario scenario) {
 		this.fgm = fgm;
+		this.scenario = scenario;
 	}
 
 	public void setup() {
@@ -211,7 +214,7 @@ public class PMetricsBrowse extends PApplet {
 		bsf.adjust(20, 20, width - 60, 30);
 		bsf.draw(this);
 		//ListBox詰め込んで記述
-		List<ListBoxContent> lbc = MetricsType.getList(metricsType, fgm);
+		List<ListBoxContent> lbc = MetricsType.getList(metricsType, fgm, scenario);
 		lbc.sort((o1, o2) -> o2.param - o1.param);
 		lb.setContents(lbc);
 		lb.adjust(20, 50, width - 40, height - 70, 30, -1);
