@@ -1,9 +1,6 @@
 package Metrics;
 
-import Models.Domain;
-import Models.FGModelAdapter;
-import Models.Step;
-import Models.Usecase;
+import Models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,32 @@ import java.util.stream.Collectors;
  * Metrics計測クラス
  */
 public class Metrics {
+
+	/**
+	 * CEのリストを取得
+	 *
+	 * @param scenario
+	 * @return
+	 */
+	public static List<CE> getCEs(Scenario scenario) {
+		List<CE> ces = new ArrayList<>();
+		for (Step s : scenario.getSteps()) {
+			//cesに存在するか判定
+			boolean isInCes = false;
+			for (CE ce : ces) {
+				if (ce.event.equals(s.Event) &&
+						ce.objectDomainId == s.objectDomainId &&
+						ce.subjectDomainId == s.subjectDomainId) {
+					//あったならカウントアップ
+					ce.count++;
+					isInCes = true;
+				}
+			}
+			//なかったなら新規CE生成
+			if (!isInCes) ces.add(new CE(s.Event, s.subjectDomainId, s.objectDomainId));
+		}
+		return ces;
+	}
 
 	public static int getANOS(Usecase uc, FGModelAdapter fgm) {
 		int ANOS = 0;
