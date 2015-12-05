@@ -1,6 +1,8 @@
 package Swing;
 
 import Models.*;
+import Models.FGModelAdapter.VERSION;
+import Models.FGModelAdapter.VIEWMODE;
 import Processing.*;
 import Swing.Component.TitledRadioButtonGroupPanel;
 
@@ -55,26 +57,26 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//version作成
 		versionJRBG = new TitledRadioButtonGroupPanel("version");
-		versionJRBG.add(new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.ASIS)), e -> {
-			fgm.setVersion(FGModelAdapter.VERSION.ASIS);
+		versionJRBG.add(new JRadioButton(VERSION.getString(VERSION.ASIS)), e -> {
+			fgm.setVersion(VERSION.ASIS);
 			deselectAll();
 			redraw();
 		});
-		versionJRBG.add(new JRadioButton(FGModelAdapter.VERSION.getString(FGModelAdapter.VERSION.TOBE)), e -> {
-			fgm.setVersion(FGModelAdapter.VERSION.TOBE);
+		versionJRBG.add(new JRadioButton(VERSION.getString(VERSION.TOBE)), e -> {
+			fgm.setVersion(VERSION.TOBE);
 			deselectAll();
 			redraw();
 		});
 		sharedEndPanel.add(versionJRBG);
 		//viewmode作成
 		viewmodeJRBG = new TitledRadioButtonGroupPanel("viewmode");
-		viewmodeJRBG.add(new JRadioButton(FGModelAdapter.VIEWMODE.ALL.toString()), e -> {
-			fgm.setViewmode(FGModelAdapter.VIEWMODE.ALL);
+		viewmodeJRBG.add(new JRadioButton(VIEWMODE.ALL.toString()), e -> {
+			fgm.setViewmode(VIEWMODE.ALL);
 			deselectAll();
 			redraw();
 		});
-		viewmodeJRBG.add(new JRadioButton(FGModelAdapter.VIEWMODE.REDUCED.toString()), e -> {
-			fgm.setViewmode(FGModelAdapter.VIEWMODE.REDUCED);
+		viewmodeJRBG.add(new JRadioButton(VIEWMODE.REDUCED.toString()), e -> {
+			fgm.setViewmode(VIEWMODE.REDUCED);
 			deselectAll();
 			redraw();
 		});
@@ -213,7 +215,8 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		if (scenarioEditor != null) scenarioEditor.redraw();
 
 		//ComponentをRedraw
-		viewmodeJRBG.setSelected(fgm.getVersion().toString());
+		// TODO:機能不全？
+		viewmodeJRBG.setSelected(VERSION.getString(fgm.getVersion()));
 		versionJRBG.setSelected(fgm.getViewmode().toString());
 	}
 
