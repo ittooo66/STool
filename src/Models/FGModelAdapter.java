@@ -59,7 +59,15 @@ public class FGModelAdapter {
 	private VIEWMODE viewmode;
 
 	public enum VIEWMODE {
-		ALL, REDUCED
+		ALL {
+			public String toString() {
+				return "All";
+			}
+		}, REDUCED {
+			public String toString() {
+				return "Reduced";
+			}
+		}
 	}
 
 	public void setViewmode(VIEWMODE viewmode) {
