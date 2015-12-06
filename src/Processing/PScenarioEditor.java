@@ -241,7 +241,10 @@ public class PScenarioEditor extends PApplet {
 
 		//選択中のUsecaseを取得、選択が不当（非選択）なら終了
 		Usecase uc = fgm.getUsecaseById(selectedUsecaseId);
-		if (uc == null) return;
+		if (uc == null) {
+			redraw();
+			return;
+		}
 
 		//MainFlow押下時処理
 		if (mainFlowLB.isOn(x, y)) {
