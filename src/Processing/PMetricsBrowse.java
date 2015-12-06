@@ -280,6 +280,7 @@ public class PMetricsBrowse extends PApplet {
 		bsf.addButton("←");
 		bsf.addButton("→");
 		lb = new ListBox();
+		lb.setActiveOfParams(true);
 		lb.setSelectable(false);
 
 		metricsType = MetricsType.ANOS_ASIS;

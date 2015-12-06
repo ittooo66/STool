@@ -17,14 +17,21 @@ public class ListBox {
 	protected List<ListBoxContent> contents;
 	//選択可能かどうか
 	protected boolean isSelectable;
+	//パラメータ表示が有効かどうか
+	protected boolean isActiveOfParams;
 
 	public ListBox() {
 		contents = new ArrayList<>();
 		isSelectable = true;
+		isActiveOfParams = false;
 	}
 
 	public void setSelectable(boolean isSelectable) {
 		this.isSelectable = isSelectable;
+	}
+
+	public void setActiveOfParams(boolean isActiveOfParams) {
+		this.isActiveOfParams = isActiveOfParams;
 	}
 
 	/**
@@ -118,9 +125,9 @@ public class ListBox {
 			pApplet.fill(selectedId == contents.get(j).id ? COLOR.BACKGROUND : COLOR.LINES);
 			pApplet.text(contents.get(j).name, x + 7, y + i * dh, w - 21, dh);
 
-			//パラメータを出力（-1のときは無効として扱う）
+			//ParamがActiveのときパラメータを出力
 			pApplet.textAlign(PConstants.RIGHT, PConstants.CENTER);
-			if (contents.get(j).param != -1)
+			if (isActiveOfParams)
 				pApplet.text(String.valueOf(contents.get(j).param), x + 7, y + i * dh, w - 14, dh);
 		}
 
