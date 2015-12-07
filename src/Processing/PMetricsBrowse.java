@@ -354,13 +354,44 @@ public class PMetricsBrowse extends PApplet {
 
 			return lbc;
 		}
+
+		public static MetricsType parse(String name) {
+			MetricsType mt = ACC_ASIS;
+			do {
+				if (mt.toString().equals(name)) return mt;
+				mt = mt.next();
+			} while (mt != ACC_ASIS);
+			return null;
+		}
 	}
 
 	public FGModelAdapter fgm;
 	public Scenario scenario;
 
 	private ButtonSetFrame bsf;
-	private ListBox lb;
+	private ListBox metricsSelectorLb, lb;
+
+	private SortType sortType = SortType.SYOUJUN;
+
+	private enum SortType {
+		SYOUJUN {
+			public void sort(List<ListBoxContent> lbc) {
+				lbc.sort((o1, o2) -> o1.param - o2.param);
+			}
+		}, KOUJUN {
+			public void sort(List<ListBoxContent> lbc) {
+				lbc.sort((o1, o2) -> o2.param - o1.param);
+			}
+		}, NAMAEJUN {
+			public void sort(List<ListBoxContent> lbc) {
+				lbc.sort((o1, o2) -> o1.name.compareTo(o2.name));
+			}
+		};
+
+		public void sort(List<ListBoxContent> lbc) {
+			return;
+		}
+	}
 
 	public PMetricsBrowse(FGModelAdapter fgm, Scenario scenario) {
 		this.fgm = fgm;
@@ -376,13 +407,19 @@ public class PMetricsBrowse extends PApplet {
 
 		//ButtonSetFrame,ListBoxをSetup
 		bsf = new ButtonSetFrame("Metrics");
-		bsf.addButton("←");
-		bsf.addButton("→");
+		bsf.addButton("↑");
+		bsf.addButton("↓");
+		bsf.addButton("N");
+
 		lb = new ListBox();
 		lb.setActiveOfParams(true);
 		lb.setSelectable(false);
+		metricsSelectorLb = new ListBox();
 
+		//metricsType初期値設定
 		metricsType = MetricsType.ANOS_ASIS;
+
+		redraw();
 	}
 
 	//変更フラグ
@@ -403,36 +440,53 @@ public class PMetricsBrowse extends PApplet {
 		bsf.setTitle(metricsType.toString());
 		bsf.adjust(20, 20, width - 60, 30);
 		bsf.draw(this);
-		//ListBox詰め込んで記述
-		List<ListBoxContent> lbc = MetricsType.getList(metricsType, fgm, scenario);
-		lbc.sort((o1, o2) -> o2.param - o1.param);
+
+		List<ListBoxContent> lbc = new ArrayList<>();
+		//MetricsTypeをlbcにつめこみ
+		MetricsType mt = MetricsType.ACC_ASIS;
+		int id = 0, selectedId = 0;
+		do {
+			lbc.add(new ListBoxContent(id, mt.toString()));
+			if (mt.equals(metricsType)) selectedId = id;
+			mt = mt.next();
+			id++;
+		} while (mt != MetricsType.ACC_ASIS);
+		metricsSelectorLb.setContents(lbc);
+		metricsSelectorLb.adjust(20, 50, 200, height - 70, 30, selectedId);
+		metricsSelectorLb.draw(this);
+
+		//ListBox取得してソート
+		lbc = MetricsType.getList(metricsType, fgm, scenario);
+		sortType.sort(lbc);
+
+		//ListBox詰め込んでDraw
 		lb.setContents(lbc);
-		lb.adjust(20, 50, width - 40, height - 70, 30, -1);
+		lb.adjust(20 + 200, 50, width - 240, height - 70, 30, -1);
 		lb.draw(this);
 	}
 
 	public void mousePressed() {
-		//マウス押下位置
-		int x = mouseX;
-		int y = mouseY;
-
-		//ButtonSetFrame押下判定
-		switch (bsf.getButtonIdOnMouse(x, y)) {
-			case 0://左移動
-				metricsType = metricsType.prev();
-				lb.scroll(0);
+		switch (bsf.getButtonIdOnMouse(mouseX, mouseY)) {
+			case 0:
+				sortType = SortType.SYOUJUN;
 				break;
-			case 1://右移動
-				metricsType = metricsType.next();
-				lb.scroll(0);
+			case 1:
+				sortType = SortType.KOUJUN;
+				break;
+			case 2:
+				sortType = SortType.NAMAEJUN;
 				break;
 		}
+
+		ListBoxContent lbc = metricsSelectorLb.getContentOnMouse(mouseX, mouseY);
+		if (lbc != null) metricsType = MetricsType.parse(lbc.name);
 		redraw();
 	}
 
 	public void mouseWheel(MouseEvent event) {
 		int e = event.getCount() > 0 ? 1 : -1;
 		if (lb.isOn(mouseX, mouseY)) lb.scroll(e);
+		if (metricsSelectorLb.isOn(mouseX, mouseY)) metricsSelectorLb.scroll(e);
 		redraw();
 	}
 
