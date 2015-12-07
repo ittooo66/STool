@@ -2,10 +2,8 @@ package Processing;
 
 import Metrics.Metrics;
 import Metrics.CE;
-import Models.Domain;
-import Models.FGModelAdapter;
-import Models.Scenario;
-import Models.Usecase;
+import Models.*;
+import Models.FGModelAdapter.VERSION;
 import Processing.Component.ButtonSetFrame;
 import Processing.Component.ListBox;
 import Processing.Component.ListBoxContent;
@@ -15,6 +13,7 @@ import processing.event.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class PMetricsBrowse extends PApplet {
 
@@ -42,6 +41,38 @@ public class PMetricsBrowse extends PApplet {
 		}, ANOS_TOBE {
 			public String toString() {
 				return "ANOS(To-Be)";
+			}
+		}, NOS_ASIS {
+			public String toString() {
+				return "NOS(As-Is)";
+			}
+		}, NOS_TOBE {
+			public String toString() {
+				return "NOS(To-Be)";
+			}
+		}, ASPG_ASIS {
+			public String toString() {
+				return "ASPG(As-Is)";
+			}
+		}, ASPG_TOBE {
+			public String toString() {
+				return "ASPG(To-Be)";
+			}
+		}, ASPG_DIFF {
+			public String toString() {
+				return "ASPG Diff(AsIs-ToBe)";
+			}
+		}, SPG_ASIS {
+			public String toString() {
+				return "SPG(As-Is)";
+			}
+		}, SPG_TOBE {
+			public String toString() {
+				return "SPG(To-Be)";
+			}
+		}, SPG_DIFF {
+			public String toString() {
+				return "SPG(AsIs-ToBe)";
 			}
 		}, UCP {
 			public String toString() {
@@ -93,12 +124,12 @@ public class PMetricsBrowse extends PApplet {
 			int id = 0;
 
 			//現在のバージョンを退避
-			FGModelAdapter.VERSION ver = fgm.getVersion();
+			VERSION ver = fgm.getVersion();
 
 			switch (mt) {
 				case ACC_ASIS:
 					//バージョン設定
-					fgm.setVersion(FGModelAdapter.VERSION.ASIS);
+					fgm.setVersion(VERSION.ASIS);
 					for (Usecase uc : fgm.getUsecases()) {
 						//ACC値取得
 						int param = Metrics.getACC(uc, fgm);
@@ -109,7 +140,7 @@ public class PMetricsBrowse extends PApplet {
 					}
 					break;
 				case ACC_TOBE:
-					fgm.setVersion(FGModelAdapter.VERSION.TOBE);
+					fgm.setVersion(VERSION.TOBE);
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getACC(uc, fgm);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
@@ -117,7 +148,7 @@ public class PMetricsBrowse extends PApplet {
 					}
 					break;
 				case ANOS_ASIS:
-					fgm.setVersion(FGModelAdapter.VERSION.ASIS);
+					fgm.setVersion(VERSION.ASIS);
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getANOS(uc, fgm);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs;
@@ -125,15 +156,83 @@ public class PMetricsBrowse extends PApplet {
 					}
 					break;
 				case ANOS_TOBE:
-					fgm.setVersion(FGModelAdapter.VERSION.TOBE);
+					fgm.setVersion(VERSION.TOBE);
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getANOS(uc, fgm);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
 						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
 					}
 					break;
+				case NOS_ASIS:
+					fgm.setVersion(VERSION.ASIS);
+					for (Usecase uc : fgm.getUsecases()) {
+						int param = Metrics.getNOS(uc, fgm);
+						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs;
+						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+					}
+					break;
+				case NOS_TOBE:
+					fgm.setVersion(VERSION.TOBE);
+					for (Usecase uc : fgm.getUsecases()) {
+						int param = Metrics.getNOS(uc, fgm);
+						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
+						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+					}
+					break;
+				case SPG_ASIS:
+					fgm.setVersion(VERSION.ASIS);
+					for (Goal g : fgm.getGoals()) {
+						int param = Metrics.getSPG(g, fgm);
+						boolean isEnable = g.isEnableForAsIs;
+						lbc.add(new ListBoxContent(id++, g.name, param, isEnable));
+					}
+					break;
+				case SPG_TOBE:
+					fgm.setVersion(VERSION.TOBE);
+					for (Goal g : fgm.getGoals()) {
+						int param = Metrics.getSPG(g, fgm);
+						boolean isEnable = g.isEnableForToBe;
+						lbc.add(new ListBoxContent(id++, g.name, param, isEnable));
+					}
+					break;
+				case SPG_DIFF:
+					for (Goal g : fgm.getGoals()) {
+						fgm.setVersion(VERSION.ASIS);
+						int paramAsis = Metrics.getSPG(g, fgm);
+						fgm.setVersion(VERSION.TOBE);
+						int paramTobe = Metrics.getSPG(g, fgm);
+						boolean isEnable = fgm.getVersion() == VERSION.ASIS ? g.isEnableForAsIs : g.isEnableForToBe;
+						lbc.add(new ListBoxContent(id++, g.name, paramAsis - paramTobe, isEnable));
+					}
+					break;
+				case ASPG_ASIS:
+					fgm.setVersion(VERSION.ASIS);
+					for (Goal g : fgm.getGoals()) {
+						int param = Metrics.getASPG(g, fgm);
+						boolean isEnable = g.isEnableForAsIs;
+						lbc.add(new ListBoxContent(id++, g.name, param, isEnable));
+					}
+					break;
+				case ASPG_TOBE:
+					fgm.setVersion(VERSION.TOBE);
+					for (Goal g : fgm.getGoals()) {
+						int param = Metrics.getASPG(g, fgm);
+						boolean isEnable = g.isEnableForToBe;
+						lbc.add(new ListBoxContent(id++, g.name, param, isEnable));
+					}
+					break;
+				case ASPG_DIFF:
+					for (Goal g : fgm.getGoals()) {
+						fgm.setVersion(VERSION.ASIS);
+						int paramAsis = Metrics.getASPG(g, fgm);
+						fgm.setVersion(VERSION.TOBE);
+						int paramTobe = Metrics.getASPG(g, fgm);
+						boolean isEnable = fgm.getVersion() == VERSION.ASIS ? g.isEnableForAsIs : g.isEnableForToBe;
+						lbc.add(new ListBoxContent(id++, g.name, paramAsis - paramTobe, isEnable));
+					}
+					break;
 				case NE_ASIS:
-					fgm.setVersion(FGModelAdapter.VERSION.ASIS);
+					fgm.setVersion(VERSION.ASIS);
 					for (Domain d : fgm.getDomains()) {
 						String name = Domain.DomainType.getPrefix(d.domainType) + ":" + d.name;
 						int param = Metrics.getNE(d, fgm);
@@ -142,7 +241,7 @@ public class PMetricsBrowse extends PApplet {
 					}
 					break;
 				case NE_TOBE:
-					fgm.setVersion(FGModelAdapter.VERSION.TOBE);
+					fgm.setVersion(VERSION.TOBE);
 					for (Domain d : fgm.getDomains()) {
 						String name = Domain.DomainType.getPrefix(d.domainType) + ":" + d.name;
 						int param = Metrics.getNE(d, fgm);
@@ -152,9 +251,9 @@ public class PMetricsBrowse extends PApplet {
 					break;
 				case NE_DIFF:
 					for (Domain d : fgm.getDomains()) {
-						fgm.setVersion(FGModelAdapter.VERSION.ASIS);
+						fgm.setVersion(VERSION.ASIS);
 						int paramAsis = Metrics.getNE(d, fgm);
-						fgm.setVersion(FGModelAdapter.VERSION.TOBE);
+						fgm.setVersion(VERSION.TOBE);
 						int paramTobe = Metrics.getNE(d, fgm);
 						String name = Domain.DomainType.getPrefix(d.domainType) + ":" + d.name;
 						boolean isBold = d.domainType == Domain.DomainType.BIDDABLE;
@@ -239,10 +338,10 @@ public class PMetricsBrowse extends PApplet {
 
 					break;
 				case UCP:
-					fgm.setVersion(FGModelAdapter.VERSION.ASIS);
+					fgm.setVersion(VERSION.ASIS);
 					int paramAsis = Metrics.getUCP(fgm);
 					lbc.add(new ListBoxContent(id++, "Usecase Point(As-Is)", paramAsis));
-					fgm.setVersion(FGModelAdapter.VERSION.TOBE);
+					fgm.setVersion(VERSION.TOBE);
 					int paramTobe = Metrics.getUCP(fgm);
 					lbc.add(new ListBoxContent(id++, "Usecase Point(To-Be)", paramTobe));
 					int paramDiff = paramAsis - paramTobe;
