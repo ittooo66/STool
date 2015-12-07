@@ -58,6 +58,78 @@ public class Metrics {
 		return ANOS;
 	}
 
+	public static int getNOS(Usecase uc, FGModelAdapter fgm) {
+		int NOS = 0;
+		try {
+			NOS += uc.getAllActionStep().size();
+
+			//Include先のユースケースのNOSも含める
+			for (Step s : uc.getAllIncludeStep()) {
+				NOS += getNOS(fgm.getUsecaseById(s.includeUsecaseId), fgm);
+			}
+		} catch (Exception e) {
+			//モデルが不正
+			e.printStackTrace();
+			return -1;
+		}
+		return NOS;
+	}
+
+	public static int getASPG(Goal goal, FGModelAdapter fgm) {
+		int ASPG = 0;
+		try {
+			//こいつ自身がEnableの時
+			if (goal.isEnableForAsIs && fgm.getVersion() == FGModelAdapter.VERSION.ASIS ||
+					goal.isEnableForToBe && fgm.getVersion() == FGModelAdapter.VERSION.TOBE) {
+				//合致するUCのANOSをASPGに加算
+				for (Usecase uc : fgm.getUsecases()) {
+					if (uc.parentLeafGoalId == goal.id) {
+						ASPG += getANOS(uc, fgm);
+					}
+				}
+			}
+
+			//子ゴールのASPGを加算
+			for (Goal g : fgm.getGoals()) {
+				if (g.parentId == goal.id) {
+					ASPG += getASPG(g, fgm);
+				}
+			}
+		} catch (Exception e) {
+			//モデルが不正
+			e.printStackTrace();
+			return -1;
+		}
+		return ASPG;
+	}
+
+	public static int getSPG(Goal goal, FGModelAdapter fgm) {
+		int SPG = 0;
+		try {
+			//こいつ自身がEnableの時
+			if (goal.isEnableForAsIs && fgm.getVersion() == FGModelAdapter.VERSION.ASIS ||
+					goal.isEnableForToBe && fgm.getVersion() == FGModelAdapter.VERSION.TOBE) {
+				//合致するUCのANOSをASPGに加算
+				for (Usecase uc : fgm.getUsecases()) {
+					if (uc.parentLeafGoalId == goal.id) {
+						SPG += getNOS(uc, fgm);
+					}
+				}
+			}
+			//子ゴールのASPGを加算
+			for (Goal g : fgm.getGoals()) {
+				if (g.parentId == goal.id) {
+					SPG += getSPG(g, fgm);
+				}
+			}
+		} catch (Exception e) {
+			//モデルが不正
+			e.printStackTrace();
+			return -1;
+		}
+		return SPG;
+	}
+
 	public static int getACC(Usecase uc, FGModelAdapter fgm) {
 		int ACC = 0;
 		try {
