@@ -87,7 +87,7 @@ public class PMetricsBrowse extends PApplet {
 			}
 		}, NOACC {
 			public String toString() {
-				return "Number Of ACC<1";
+				return "NOACC";
 			}
 		}, CE_ASIS {
 			public String toString() {
