@@ -41,8 +41,11 @@ public class Metrics {
 		int ANOS = 0;
 		try {
 			for (Step s : uc.getAllActionStep()) {
-				if (fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE ||
-						fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE)
+				Domain objDomain = fgm.getDomainById(s.objectDomainId);
+				Domain sbjDomain = fgm.getDomainById(s.subjectDomainId);
+				if (objDomain == null || sbjDomain == null) break;
+				if (objDomain.domainType == Domain.DomainType.BIDDABLE ||
+						sbjDomain.domainType == Domain.DomainType.BIDDABLE)
 					ANOS++;
 			}
 
@@ -257,10 +260,13 @@ public class Metrics {
 			for (Step s : uc.getAllActionStep()) {
 				//Biddable Domainの関与するイベントのみ３ポイントでほかは１ポイント。
 				//両端で計測するので２倍
-				if (fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE) {
+				Domain sbjDomain = fgm.getDomainById(s.subjectDomainId);
+				Domain objDomain = fgm.getDomainById(s.objectDomainId);
+				if (sbjDomain == null || objDomain == null) break;
+				if (sbjDomain.domainType == Domain.DomainType.BIDDABLE) {
 					ucp += 2;
 				}
-				if (fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
+				if (objDomain.domainType == Domain.DomainType.BIDDABLE) {
 					ucp += 2;
 				}
 				ucp += 2;
@@ -306,6 +312,7 @@ public class Metrics {
 
 			UCCount++;
 		}
+		if (UCCount == 0) return 0;
 		return getNOACC(fgm) * 100 / UCCount;
 	}
 }
