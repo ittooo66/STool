@@ -7,7 +7,7 @@ public class Domain implements Cloneable {
 	public String name;
 
 	//ドメインタイプ（enumでNONE,BIDDABLE,CAUSAL,LEXICAL,SYSTEM,DESIGNED）
-	public DomainType domainType;
+	public DomainType domainType = DomainType.NONE;
 
 	public enum DomainType {
 		NONE {
