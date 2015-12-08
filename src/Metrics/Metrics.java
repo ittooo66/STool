@@ -75,6 +75,16 @@ public class Metrics {
 		return NOS;
 	}
 
+	/**
+	 * ExceptionalFlowの数を返す
+	 *
+	 * @param uc
+	 * @return
+	 */
+	public static int getNOE(Usecase uc) {
+		return uc.getExceptionalFlowList().size();
+	}
+
 	public static int getASPG(Goal goal, FGModelAdapter fgm) {
 		int ASPG = 0;
 		try {
@@ -257,5 +267,45 @@ public class Metrics {
 			}
 		}
 		return ucp;
+	}
+
+	/**
+	 * FGM中のACCが1以下の個数を返す。isEnableでない場合、Versionが違う場合は数えない
+	 *
+	 * @param fgm
+	 * @return
+	 */
+	public static int getNOACC(FGModelAdapter fgm) {
+		int NOACC = 0;
+		for (Usecase uc : fgm.getUsecases()) {
+			//カウント対象でなければContinue
+			if (fgm.getVersion() == FGModelAdapter.VERSION.ASIS && !fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs)
+				continue;
+			if (fgm.getVersion() == FGModelAdapter.VERSION.TOBE && !fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe)
+				continue;
+
+			if (getACC(uc, fgm) <= 1) NOACC++;
+		}
+		return NOACC;
+	}
+
+	/**
+	 * FGM中のACCが1以下の個数を返す。isEnableでない場合、Versionが違う場合は数えない
+	 *
+	 * @param fgm
+	 * @return
+	 */
+	public static int getNOACCRate(FGModelAdapter fgm) {
+		int UCCount = 0;
+		for (Usecase uc : fgm.getUsecases()) {
+			//カウント対象でなければContinue
+			if (fgm.getVersion() == FGModelAdapter.VERSION.ASIS && !fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs)
+				continue;
+			if (fgm.getVersion() == FGModelAdapter.VERSION.TOBE && !fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe)
+				continue;
+
+			UCCount++;
+		}
+		return getNOACC(fgm) * 100 / UCCount;
 	}
 }

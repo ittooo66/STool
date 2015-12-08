@@ -13,7 +13,6 @@ import processing.event.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class PMetricsBrowse extends PApplet {
 
@@ -50,6 +49,14 @@ public class PMetricsBrowse extends PApplet {
 			public String toString() {
 				return "NOS(To-Be)";
 			}
+		}, NOE_ASIS {
+			public String toString() {
+				return "NOE(As-Is)";
+			}
+		}, NOE_TOBE {
+			public String toString() {
+				return "NOE(To-Be)";
+			}
 		}, ASPG_ASIS {
 			public String toString() {
 				return "ASPG(As-Is)";
@@ -77,6 +84,10 @@ public class PMetricsBrowse extends PApplet {
 		}, UCP {
 			public String toString() {
 				return "Usecase Point";
+			}
+		}, NOACC {
+			public String toString() {
+				return "Number Of ACC<1";
 			}
 		}, CE_ASIS {
 			public String toString() {
@@ -175,6 +186,22 @@ public class PMetricsBrowse extends PApplet {
 					fgm.setVersion(VERSION.TOBE);
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getNOS(uc, fgm);
+						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
+						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+					}
+					break;
+				case NOE_ASIS:
+					fgm.setVersion(VERSION.ASIS);
+					for (Usecase uc : fgm.getUsecases()) {
+						int param = Metrics.getNOE(uc);
+						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs;
+						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+					}
+					break;
+				case NOE_TOBE:
+					fgm.setVersion(VERSION.TOBE);
+					for (Usecase uc : fgm.getUsecases()) {
+						int param = Metrics.getNOE(uc);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
 						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
 					}
@@ -346,6 +373,20 @@ public class PMetricsBrowse extends PApplet {
 					lbc.add(new ListBoxContent(id++, "Usecase Point(To-Be)", paramTobe));
 					int paramDiff = paramAsis - paramTobe;
 					lbc.add(new ListBoxContent(id++, "Usecase Point Diff(AsIs - ToBe)", paramDiff));
+					break;
+				case NOACC:
+					fgm.setVersion(VERSION.ASIS);
+					int paramAsIs = Metrics.getNOACC(fgm);
+					lbc.add(new ListBoxContent(id++, "NOACC(As-Is)", paramAsIs));
+					fgm.setVersion(VERSION.TOBE);
+					int paramToBe = Metrics.getNOACC(fgm);
+					lbc.add(new ListBoxContent(id++, "NOACC(To-Be)", paramToBe));
+					fgm.setVersion(VERSION.ASIS);
+					int rateAsIs = Metrics.getNOACCRate(fgm);
+					lbc.add(new ListBoxContent(id++, "NOACCRate(As-Is)(%)", rateAsIs));
+					fgm.setVersion(VERSION.TOBE);
+					int rateToBe = Metrics.getNOACCRate(fgm);
+					lbc.add(new ListBoxContent(id++, "NOACCRate(To-Be)(%)", rateToBe));
 					break;
 			}
 
