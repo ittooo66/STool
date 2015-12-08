@@ -21,7 +21,7 @@ public class MetricsBrowser extends JFrame implements ComponentListener {
 
 		//各種設定してVisible
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setBounds(10, 10, 300, 600);
+		this.setBounds(10, 10, 800, 600);
 		this.setTitle("MetricsBrowser");
 		this.setVisible(true);
 
