@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * FGModelAdapter: 融合ゴールモデル、loadXML()とsaveXML()でXML入出力を行える<p>
@@ -18,32 +19,32 @@ public class FGModelAdapter {
 	private VERSION version;
 
 	public enum VERSION {
-		ASIS, TOBE;
-
-		public static String getString(VERSION version) {
-			if (version == null) return null;
-			switch (version) {
-				case ASIS:
-					return "As-Is";
-				case TOBE:
-					return "To-Be";
+		ASIS {
+			public String toString() {
+				return "As-Is";
 			}
-			return null;
+
+		}, TOBE {
+			public String toString() {
+				return "To-Be";
+			}
+
+			public VERSION next() {
+				return ASIS;
+			}
+		};
+
+		public VERSION next() {
+			return values()[ordinal() + 1];
 		}
 
 		public VERSION parse(String version) {
 			if (version == null) return null;
-			if (version.equals(getString(ASIS))) {
+			if (version.equals(ASIS.toString()))
 				return ASIS;
-			} else if (version.equals(getString(TOBE))) {
+			if (version.equals(TOBE.toString()))
 				return TOBE;
-			}
 			return null;
-		}
-
-		public VERSION getNext() {
-			if (this == ASIS) return TOBE;
-			else return ASIS;
 		}
 	}
 
