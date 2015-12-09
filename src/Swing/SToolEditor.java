@@ -215,10 +215,8 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		if (scenarioEditor != null) scenarioEditor.redraw();
 
 		//ComponentをRedraw
-		// TODO:機能不全？
-		System.out.println(fgm.getVersion().toString());
-		viewmodeJRBG.setSelected(fgm.getVersion().toString());
-		versionJRBG.setSelected(fgm.getViewmode().toString());
+		viewmodeJRBG.setSelected(fgm.getViewmode().toString());
+		versionJRBG.setSelected(fgm.getVersion().toString());
 	}
 
 	public void initTextArea() {
