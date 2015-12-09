@@ -206,7 +206,7 @@ public class PScenarioEditor extends PApplet {
 			case 0:
 			case 2:
 				scenario.switchVersion();
-				fgm.setVersion(fgm.getVersion().getNext());
+				fgm.setVersion(fgm.getVersion().next());
 				break;
 			case 1://AddButton
 				addStepsToScenario();

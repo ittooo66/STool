@@ -57,12 +57,12 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		sharedEndPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//version作成
 		versionJRBG = new TitledRadioButtonGroupPanel("version");
-		versionJRBG.add(new JRadioButton(VERSION.getString(VERSION.ASIS)), e -> {
+		versionJRBG.add(new JRadioButton(VERSION.ASIS.toString(), true), e -> {
 			fgm.setVersion(VERSION.ASIS);
 			deselectAll();
 			redraw();
 		});
-		versionJRBG.add(new JRadioButton(VERSION.getString(VERSION.TOBE)), e -> {
+		versionJRBG.add(new JRadioButton(VERSION.TOBE.toString()), e -> {
 			fgm.setVersion(VERSION.TOBE);
 			deselectAll();
 			redraw();
@@ -70,7 +70,7 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		sharedEndPanel.add(versionJRBG);
 		//viewmode作成
 		viewmodeJRBG = new TitledRadioButtonGroupPanel("viewmode");
-		viewmodeJRBG.add(new JRadioButton(VIEWMODE.ALL.toString()), e -> {
+		viewmodeJRBG.add(new JRadioButton(VIEWMODE.ALL.toString(), true), e -> {
 			fgm.setViewmode(VIEWMODE.ALL);
 			deselectAll();
 			redraw();
@@ -216,7 +216,8 @@ public class SToolEditor extends JFrame implements ComponentListener {
 
 		//ComponentをRedraw
 		// TODO:機能不全？
-		viewmodeJRBG.setSelected(VERSION.getString(fgm.getVersion()));
+		System.out.println(fgm.getVersion().toString());
+		viewmodeJRBG.setSelected(fgm.getVersion().toString());
 		versionJRBG.setSelected(fgm.getViewmode().toString());
 	}
 
