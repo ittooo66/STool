@@ -149,8 +149,11 @@ public class Metrics {
 			List<Step> mainFlow = uc.getMainFlow();
 			for (Step s : mainFlow) {
 				if (s.stepType == Step.StepType.ACTION) {
-					if (fgm.getDomainById(s.subjectDomainId).domainType == Domain.DomainType.BIDDABLE ||
-							fgm.getDomainById(s.objectDomainId).domainType == Domain.DomainType.BIDDABLE) {
+					Domain subjectDomain = fgm.getDomainById(s.subjectDomainId);
+					Domain objectDomain = fgm.getDomainById(s.objectDomainId);
+					if (subjectDomain == null || objectDomain == null) break;
+					if (subjectDomain.domainType == Domain.DomainType.BIDDABLE ||
+							objectDomain.domainType == Domain.DomainType.BIDDABLE) {
 						ACC++;
 						break;
 					} else if (s.stepType == Step.StepType.INCLUDE) {

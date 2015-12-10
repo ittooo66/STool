@@ -78,8 +78,9 @@ public class PFGraph extends PApplet {
 		rect(0, 0, 2560, 1440);
 
 		//各リレーションを描画
-		for (int i = 0; i < sToolEditor.fgm.getPFInterfaceList().size(); i++) {
-			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(i);
+		List<PFInterface> pfInterfaces = sToolEditor.fgm.getPFInterfaceList();
+		for (int i = 0; i < pfInterfaces.size(); i++) {
+			PFInterface pfi = pfInterfaces.get(i);
 			Domain rootDomain = pfi.rootDomain;
 			Domain distDomain = pfi.distDomain;
 			if (rootDomain == null || distDomain == null) break;
