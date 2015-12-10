@@ -91,7 +91,7 @@ public class SToolEditor extends JFrame implements ComponentListener {
 		sharedEndPanel.add(scenarioEditButton);
 		//Metricsウィンドウを開く
 		JButton metricsBrowseButton = new JButton("Metrics Browser");
-		metricsBrowseButton.addActionListener(e -> metricsBrowser = new MetricsBrowser(fgm, scenario));
+		metricsBrowseButton.addActionListener(e -> metricsBrowser = new MetricsBrowser(fgm, scenario,ggGraph,pfGraph,ucGraph));
 		sharedEndPanel.add(metricsBrowseButton);
 		/////////////////////////////MenuBar作成/////////////////////////////
 		JMenuBar jMenuBar = new JMenuBar();

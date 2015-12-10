@@ -29,62 +29,119 @@ public class PMetricsBrowse extends PApplet {
 			public String toString() {
 				return "ACC(As-Is)";
 			}
+
+			public String getViewType() {
+				return "UC";
+			}
 		}, ACC_TOBE {
 			public String toString() {
 				return "ACC(To-Be)";
+			}
+
+			public String getViewType() {
+				return "UC";
 			}
 		}, ANOS_ASIS {
 			public String toString() {
 				return "ANOS(As-Is)";
 			}
+
+			public String getViewType() {
+				return "UC";
+			}
 		}, ANOS_TOBE {
 			public String toString() {
 				return "ANOS(To-Be)";
+			}
+
+			public String getViewType() {
+				return "UC";
 			}
 		}, NOS_ASIS {
 			public String toString() {
 				return "NOS(As-Is)";
 			}
+
+			public String getViewType() {
+				return "UC";
+			}
 		}, NOS_TOBE {
 			public String toString() {
 				return "NOS(To-Be)";
+			}
+
+			public String getViewType() {
+				return "UC";
 			}
 		}, NOE_ASIS {
 			public String toString() {
 				return "NOE(As-Is)";
 			}
+
+			public String getViewType() {
+				return "UC";
+			}
 		}, NOE_TOBE {
 			public String toString() {
 				return "NOE(To-Be)";
+			}
+
+			public String getViewType() {
+				return "UC";
 			}
 		}, ASPG_ASIS {
 			public String toString() {
 				return "ASPG(As-Is)";
 			}
+
+			public String getViewType() {
+				return "GG";
+			}
 		}, ASPG_TOBE {
 			public String toString() {
 				return "ASPG(To-Be)";
+			}
+
+			public String getViewType() {
+				return "GG";
 			}
 		}, ASPG_DIFF {
 			public String toString() {
 				return "ASPG Diff(AsIs-ToBe)";
 			}
+
+			public String getViewType() {
+				return "GG";
+			}
 		}, SPG_ASIS {
 			public String toString() {
 				return "SPG(As-Is)";
+			}
+
+			public String getViewType() {
+				return "GG";
 			}
 		}, SPG_TOBE {
 			public String toString() {
 				return "SPG(To-Be)";
 			}
+
+			public String getViewType() {
+				return "GG";
+			}
 		}, SPG_DIFF {
 			public String toString() {
 				return "SPG(AsIs-ToBe)";
+			}
+
+			public String getViewType() {
+				return "GG";
 			}
 		}, UCP {
 			public String toString() {
 				return "Usecase Point";
 			}
+
 		}, NOACC {
 			public String toString() {
 				return "NOACC";
@@ -105,9 +162,17 @@ public class PMetricsBrowse extends PApplet {
 			public String toString() {
 				return "NE(As-Is)";
 			}
+
+			public String getViewType() {
+				return "PF";
+			}
 		}, NE_TOBE {
 			public String toString() {
 				return "NE(To-Be)";
+			}
+
+			public String getViewType() {
+				return "PF";
 			}
 		}, NE_DIFF {
 			@Override
@@ -118,7 +183,13 @@ public class PMetricsBrowse extends PApplet {
 			public String toString() {
 				return "NE Diff (AsIs-ToBe)";
 			}
+
+			public String getViewType() {
+				return "PF";
+			}
 		};
+
+		private String viewType;
 
 		public MetricsType next() {
 			return values()[ordinal() + 1];
@@ -147,7 +218,7 @@ public class PMetricsBrowse extends PApplet {
 						//Enable値取得
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs;
 						//追加
-						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+						lbc.add(new ListBoxContent(uc.id, uc.name, param, isEnable));
 					}
 					break;
 				case ACC_TOBE:
@@ -155,7 +226,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getACC(uc, fgm);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
-						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+						lbc.add(new ListBoxContent(uc.id, uc.name, param, isEnable));
 					}
 					break;
 				case ANOS_ASIS:
@@ -163,7 +234,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getANOS(uc, fgm);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs;
-						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+						lbc.add(new ListBoxContent(uc.id, uc.name, param, isEnable));
 					}
 					break;
 				case ANOS_TOBE:
@@ -171,7 +242,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getANOS(uc, fgm);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
-						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+						lbc.add(new ListBoxContent(uc.id, uc.name, param, isEnable));
 					}
 					break;
 				case NOS_ASIS:
@@ -179,7 +250,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getNOS(uc, fgm);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs;
-						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+						lbc.add(new ListBoxContent(uc.id, uc.name, param, isEnable));
 					}
 					break;
 				case NOS_TOBE:
@@ -187,7 +258,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getNOS(uc, fgm);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
-						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+						lbc.add(new ListBoxContent(uc.id, uc.name, param, isEnable));
 					}
 					break;
 				case NOE_ASIS:
@@ -195,7 +266,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getNOE(uc);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForAsIs;
-						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+						lbc.add(new ListBoxContent(uc.id, uc.name, param, isEnable));
 					}
 					break;
 				case NOE_TOBE:
@@ -203,7 +274,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Usecase uc : fgm.getUsecases()) {
 						int param = Metrics.getNOE(uc);
 						boolean isEnable = fgm.getGoalById(uc.parentLeafGoalId).isEnableForToBe;
-						lbc.add(new ListBoxContent(id++, uc.name, param, isEnable));
+						lbc.add(new ListBoxContent(uc.id, uc.name, param, isEnable));
 					}
 					break;
 				case SPG_ASIS:
@@ -211,7 +282,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Goal g : fgm.getGoals()) {
 						int param = Metrics.getSPG(g, fgm);
 						boolean isEnable = g.isEnableForAsIs;
-						lbc.add(new ListBoxContent(id++, g.name, param, isEnable));
+						lbc.add(new ListBoxContent(g.id, g.name, param, isEnable));
 					}
 					break;
 				case SPG_TOBE:
@@ -219,7 +290,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Goal g : fgm.getGoals()) {
 						int param = Metrics.getSPG(g, fgm);
 						boolean isEnable = g.isEnableForToBe;
-						lbc.add(new ListBoxContent(id++, g.name, param, isEnable));
+						lbc.add(new ListBoxContent(g.id, g.name, param, isEnable));
 					}
 					break;
 				case SPG_DIFF:
@@ -229,7 +300,7 @@ public class PMetricsBrowse extends PApplet {
 						fgm.setVersion(VERSION.TOBE);
 						int paramTobe = Metrics.getSPG(g, fgm);
 						boolean isEnable = fgm.getVersion() == VERSION.ASIS ? g.isEnableForAsIs : g.isEnableForToBe;
-						lbc.add(new ListBoxContent(id++, g.name, paramAsis - paramTobe, isEnable));
+						lbc.add(new ListBoxContent(g.id, g.name, paramAsis - paramTobe, isEnable));
 					}
 					break;
 				case ASPG_ASIS:
@@ -237,7 +308,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Goal g : fgm.getGoals()) {
 						int param = Metrics.getASPG(g, fgm);
 						boolean isEnable = g.isEnableForAsIs;
-						lbc.add(new ListBoxContent(id++, g.name, param, isEnable));
+						lbc.add(new ListBoxContent(g.id, g.name, param, isEnable));
 					}
 					break;
 				case ASPG_TOBE:
@@ -245,7 +316,7 @@ public class PMetricsBrowse extends PApplet {
 					for (Goal g : fgm.getGoals()) {
 						int param = Metrics.getASPG(g, fgm);
 						boolean isEnable = g.isEnableForToBe;
-						lbc.add(new ListBoxContent(id++, g.name, param, isEnable));
+						lbc.add(new ListBoxContent(g.id, g.name, param, isEnable));
 					}
 					break;
 				case ASPG_DIFF:
@@ -255,7 +326,7 @@ public class PMetricsBrowse extends PApplet {
 						fgm.setVersion(VERSION.TOBE);
 						int paramTobe = Metrics.getASPG(g, fgm);
 						boolean isEnable = fgm.getVersion() == VERSION.ASIS ? g.isEnableForAsIs : g.isEnableForToBe;
-						lbc.add(new ListBoxContent(id++, g.name, paramAsis - paramTobe, isEnable));
+						lbc.add(new ListBoxContent(g.id, g.name, paramAsis - paramTobe, isEnable));
 					}
 					break;
 				case NE_ASIS:
@@ -264,7 +335,7 @@ public class PMetricsBrowse extends PApplet {
 						String name = Domain.DomainType.getPrefix(d.domainType) + ":" + d.name;
 						int param = Metrics.getNE(d, fgm);
 						boolean isBold = d.domainType == Domain.DomainType.BIDDABLE;
-						lbc.add(new ListBoxContent(id++, name, param, isBold));
+						lbc.add(new ListBoxContent(d.id, name, param, isBold));
 					}
 					break;
 				case NE_TOBE:
@@ -273,7 +344,7 @@ public class PMetricsBrowse extends PApplet {
 						String name = Domain.DomainType.getPrefix(d.domainType) + ":" + d.name;
 						int param = Metrics.getNE(d, fgm);
 						boolean isBold = d.domainType == Domain.DomainType.BIDDABLE;
-						lbc.add(new ListBoxContent(id++, name, param, isBold));
+						lbc.add(new ListBoxContent(d.id, name, param, isBold));
 					}
 					break;
 				case NE_DIFF:
@@ -284,7 +355,7 @@ public class PMetricsBrowse extends PApplet {
 						int paramTobe = Metrics.getNE(d, fgm);
 						String name = Domain.DomainType.getPrefix(d.domainType) + ":" + d.name;
 						boolean isBold = d.domainType == Domain.DomainType.BIDDABLE;
-						lbc.add(new ListBoxContent(id++, name, paramAsis - paramTobe, isBold));
+						lbc.add(new ListBoxContent(d.id, name, paramAsis - paramTobe, isBold));
 					}
 					break;
 				case CE_ASIS:
@@ -404,10 +475,19 @@ public class PMetricsBrowse extends PApplet {
 			} while (mt != ACC_ASIS);
 			return null;
 		}
+
+		public String getViewType() {
+			return "null";
+		}
 	}
 
 	public FGModelAdapter fgm;
 	public Scenario scenario;
+
+	//選択中ID取得用
+	private GGGraph ggg;
+	private PFGraph pfg;
+	private UCGraph ucg;
 
 	private ButtonSetFrame bsf;
 	private ListBox metricsSelectorLb, lb;
@@ -434,9 +514,12 @@ public class PMetricsBrowse extends PApplet {
 		}
 	}
 
-	public PMetricsBrowse(FGModelAdapter fgm, Scenario scenario) {
+	public PMetricsBrowse(FGModelAdapter fgm, Scenario scenario, GGGraph ggg, PFGraph pfg, UCGraph ucg) {
 		this.fgm = fgm;
 		this.scenario = scenario;
+		this.ggg = ggg;
+		this.pfg = pfg;
+		this.ucg = ucg;
 	}
 
 	public void setup() {
@@ -502,7 +585,19 @@ public class PMetricsBrowse extends PApplet {
 
 		//ListBox詰め込んでDraw
 		lb.setContents(lbc);
-		lb.adjust(20 + 200, 50, width - 240, height - 70, 30, -1);
+		//選択中のドメイン、ゴール、UCを対応
+		selectedId = -1;
+		switch (metricsType.getViewType()) {
+			case "GG":
+				selectedId = ggg.selectedGoalId;
+				break;
+			case "PF":
+				selectedId = pfg.selectedDomainId;
+				break;
+			case "UC":
+				selectedId = ucg.selectedUsecaseId;
+		}
+		lb.adjust(20 + 200, 50, width - 240, height - 70, 30, selectedId);
 		lb.draw(this);
 	}
 

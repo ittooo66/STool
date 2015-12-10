@@ -2,7 +2,10 @@ package Swing;
 
 import Models.FGModelAdapter;
 import Models.Scenario;
+import Processing.GGGraph;
+import Processing.PFGraph;
 import Processing.PMetricsBrowse;
+import Processing.UCGraph;
 
 import javax.swing.*;
 import java.awt.event.ComponentEvent;
@@ -12,10 +15,10 @@ public class MetricsBrowser extends JFrame implements ComponentListener {
 
 	private PMetricsBrowse pMetricsBrowse;
 
-	public MetricsBrowser(FGModelAdapter fgm, Scenario scenario) {
+	public MetricsBrowser(FGModelAdapter fgm, Scenario scenario, GGGraph ggg, PFGraph pfg, UCGraph ucg) {
 
 		//Processing初期化＆追加
-		pMetricsBrowse = new PMetricsBrowse(fgm, scenario);
+		pMetricsBrowse = new PMetricsBrowse(fgm, scenario,ggg,pfg,ucg);
 		pMetricsBrowse.init();
 		this.add(pMetricsBrowse);
 
