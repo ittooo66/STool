@@ -47,6 +47,11 @@ public class PFInterface {
 		eventList.add(event);
 	}
 
+	/**
+	 * イベントのリストを取得
+	 * @param inverse 正方向のイベント＝True、負方向＝False
+	 * @return イベントリスト
+	 */
 	public List<PFEvent> getEvents(boolean inverse) {
 		return eventList.stream().filter(pfe -> inverse == pfe.inverse).collect(Collectors.toList());
 	}

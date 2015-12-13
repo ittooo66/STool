@@ -77,8 +77,10 @@ public class PFGraph extends PApplet {
 		background(COLOR.LINES);
 		rect(0, 0, 2560, 1440);
 
-		//各リレーションを描画
+		//インターフェースのリスト取得
 		List<PFInterface> pfInterfaces = sToolEditor.fgm.getPFInterfaceList();
+
+		//各リレーションを描画
 		for (int i = 0; i < pfInterfaces.size(); i++) {
 			PFInterface pfi = pfInterfaces.get(i);
 			Domain rootDomain = pfi.rootDomain;
@@ -166,8 +168,8 @@ public class PFGraph extends PApplet {
 		translate(-scrollX, -scrollY);
 
 		//インターフェース、イベント描画
-		for (int interfaceIndex = 0; interfaceIndex < sToolEditor.fgm.getPFInterfaceList().size(); interfaceIndex++) {
-			PFInterface pfi = sToolEditor.fgm.getPFInterfaceList().get(interfaceIndex);
+		for (int interfaceIndex = 0; interfaceIndex < pfInterfaces.size(); interfaceIndex++) {
+			PFInterface pfi = pfInterfaces.get(interfaceIndex);
 			if (selectedInterfaceIndex == interfaceIndex) {
 				//pfEvent描画
 				List<PFEvent> pfEventListT = pfi.getEvents(true);

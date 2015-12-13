@@ -20,22 +20,22 @@ public class PMetricsBrowse extends PApplet {
 	private MetricsType metricsType;
 
 	public enum MetricsType {
-		ACC_ASIS {
+		NOS_ASIS {
 			@Override
 			public MetricsType prev() {
 				return NE_DIFF;
 			}
 
 			public String toString() {
-				return "ACC(As-Is)";
+				return "NOS(As-Is)";
 			}
 
 			public String getViewType() {
 				return "UC";
 			}
-		}, ACC_TOBE {
+		}, NOS_TOBE {
 			public String toString() {
-				return "ACC(To-Be)";
+				return "NOS(To-Be)";
 			}
 
 			public String getViewType() {
@@ -57,22 +57,6 @@ public class PMetricsBrowse extends PApplet {
 			public String getViewType() {
 				return "UC";
 			}
-		}, NOS_ASIS {
-			public String toString() {
-				return "NOS(As-Is)";
-			}
-
-			public String getViewType() {
-				return "UC";
-			}
-		}, NOS_TOBE {
-			public String toString() {
-				return "NOS(To-Be)";
-			}
-
-			public String getViewType() {
-				return "UC";
-			}
 		}, NOE_ASIS {
 			public String toString() {
 				return "NOE(As-Is)";
@@ -89,29 +73,29 @@ public class PMetricsBrowse extends PApplet {
 			public String getViewType() {
 				return "UC";
 			}
-		}, ASPG_ASIS {
+		}, ACC_ASIS {
 			public String toString() {
-				return "ASPG(As-Is)";
+				return "ACC(As-Is)";
 			}
 
 			public String getViewType() {
-				return "GG";
+				return "UC";
 			}
-		}, ASPG_TOBE {
+		}, ACC_TOBE {
 			public String toString() {
-				return "ASPG(To-Be)";
+				return "ACC(To-Be)";
 			}
 
 			public String getViewType() {
-				return "GG";
+				return "UC";
 			}
-		}, ASPG_DIFF {
+		}, LOWACC {
 			public String toString() {
-				return "ASPG Diff(AsIs-ToBe)";
+				return "LowACC";
 			}
-
-			public String getViewType() {
-				return "GG";
+		}, UCP {
+			public String toString() {
+				return "Usecase Point";
 			}
 		}, SPG_ASIS {
 			public String toString() {
@@ -137,14 +121,29 @@ public class PMetricsBrowse extends PApplet {
 			public String getViewType() {
 				return "GG";
 			}
-		}, UCP {
+		}, ASPG_ASIS {
 			public String toString() {
-				return "Usecase Point";
+				return "ASPG(As-Is)";
 			}
 
-		}, NOACC {
+			public String getViewType() {
+				return "GG";
+			}
+		}, ASPG_TOBE {
 			public String toString() {
-				return "NOACC";
+				return "ASPG(To-Be)";
+			}
+
+			public String getViewType() {
+				return "GG";
+			}
+		}, ASPG_DIFF {
+			public String toString() {
+				return "ASPG Diff(AsIs-ToBe)";
+			}
+
+			public String getViewType() {
+				return "GG";
 			}
 		}, CE_ASIS {
 			public String toString() {
@@ -177,7 +176,7 @@ public class PMetricsBrowse extends PApplet {
 		}, NE_DIFF {
 			@Override
 			public MetricsType next() {
-				return ACC_ASIS;
+				return NOS_ASIS;
 			}
 
 			public String toString() {
@@ -445,19 +444,19 @@ public class PMetricsBrowse extends PApplet {
 					int paramDiff = paramAsis - paramTobe;
 					lbc.add(new ListBoxContent(id++, "Usecase Point Diff(AsIs - ToBe)", paramDiff));
 					break;
-				case NOACC:
+				case LOWACC:
 					fgm.setVersion(VERSION.ASIS);
-					int paramAsIs = Metrics.getNOACC(fgm);
-					lbc.add(new ListBoxContent(id++, "NOACC(As-Is)", paramAsIs));
+					int paramAsIs = Metrics.getNumberOfLowACC(fgm);
+					lbc.add(new ListBoxContent(id++, "NumberOfLowACC(As-Is)", paramAsIs));
 					fgm.setVersion(VERSION.TOBE);
-					int paramToBe = Metrics.getNOACC(fgm);
-					lbc.add(new ListBoxContent(id++, "NOACC(To-Be)", paramToBe));
+					int paramToBe = Metrics.getNumberOfLowACC(fgm);
+					lbc.add(new ListBoxContent(id++, "NumberOfLowACC(To-Be)", paramToBe));
 					fgm.setVersion(VERSION.ASIS);
-					int rateAsIs = Metrics.getNOACCRate(fgm);
-					lbc.add(new ListBoxContent(id++, "NOACCRate(As-Is)(%)", rateAsIs));
+					int rateAsIs = Metrics.getLowACCRate(fgm);
+					lbc.add(new ListBoxContent(id++, "LowACCRate(As-Is)(%)", rateAsIs));
 					fgm.setVersion(VERSION.TOBE);
-					int rateToBe = Metrics.getNOACCRate(fgm);
-					lbc.add(new ListBoxContent(id++, "NOACCRate(To-Be)(%)", rateToBe));
+					int rateToBe = Metrics.getLowACCRate(fgm);
+					lbc.add(new ListBoxContent(id++, "LowACCRate(To-Be)(%)", rateToBe));
 					break;
 			}
 
@@ -567,14 +566,14 @@ public class PMetricsBrowse extends PApplet {
 
 		List<ListBoxContent> lbc = new ArrayList<>();
 		//MetricsTypeをlbcにつめこみ
-		MetricsType mt = MetricsType.ACC_ASIS;
+		MetricsType mt = MetricsType.NOS_ASIS;
 		int id = 0, selectedId = 0;
 		do {
 			lbc.add(new ListBoxContent(id, mt.toString()));
 			if (mt.equals(metricsType)) selectedId = id;
 			mt = mt.next();
 			id++;
-		} while (mt != MetricsType.ACC_ASIS);
+		} while (mt != MetricsType.NOS_ASIS);
 		metricsSelectorLb.setContents(lbc);
 		metricsSelectorLb.adjust(20, 50, 200, height - 70, 30, selectedId);
 		metricsSelectorLb.draw(this);
@@ -615,7 +614,12 @@ public class PMetricsBrowse extends PApplet {
 		}
 
 		ListBoxContent lbc = metricsSelectorLb.getContentOnMouse(mouseX, mouseY);
-		if (lbc != null) metricsType = MetricsType.parse(lbc.name);
+		if (lbc != null) {
+			//選択したメトリクスタイプに変更
+			metricsType = MetricsType.parse(lbc.name);
+			//スクロール位置初期化
+			lb.scroll(0);
+		}
 		redraw();
 	}
 

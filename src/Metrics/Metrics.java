@@ -284,7 +284,7 @@ public class Metrics {
 	 * @param fgm
 	 * @return
 	 */
-	public static int getNOACC(FGModelAdapter fgm) {
+	public static int getNumberOfLowACC(FGModelAdapter fgm) {
 		int NOACC = 0;
 		for (Usecase uc : fgm.getUsecases()) {
 			//カウント対象でなければContinue
@@ -304,7 +304,7 @@ public class Metrics {
 	 * @param fgm
 	 * @return
 	 */
-	public static int getNOACCRate(FGModelAdapter fgm) {
+	public static int getLowACCRate(FGModelAdapter fgm) {
 		int UCCount = 0;
 		for (Usecase uc : fgm.getUsecases()) {
 			//カウント対象でなければContinue
@@ -316,6 +316,6 @@ public class Metrics {
 			UCCount++;
 		}
 		if (UCCount == 0) return 0;
-		return getNOACC(fgm) * 100 / UCCount;
+		return getNumberOfLowACC(fgm) * 100 / UCCount;
 	}
 }
